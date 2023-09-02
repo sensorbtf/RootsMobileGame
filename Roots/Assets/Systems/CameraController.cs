@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    private Vector3 touchStart;
+    private Vector3 _touchStart;
     public float zoomOutMin = 1;
     public float zoomOutMax = 8;
 
@@ -21,7 +21,7 @@ public class CameraController : MonoBehaviour
     private void Start()
     {
         if (Camera.main != null) 
-            Camera.main.aspect = 9f / 16f; // For a 9:16 ratio
+            Camera.main.aspect = 9f / 16f; // For a 9:16 ratio so will need to dynamically do it in the future
         
         if (leftBoundaryObject != null) leftBoundary = leftBoundaryObject.position.x;
         if (rightBoundaryObject != null) rightBoundary = rightBoundaryObject.position.x;
@@ -34,12 +34,12 @@ public class CameraController : MonoBehaviour
         // Camera Movement
         if (Input.GetMouseButtonDown(0))
         {
-            touchStart = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            _touchStart = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         }
 
         if (Input.GetMouseButton(0))
         {
-            Vector3 direction = touchStart - Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Vector3 direction = _touchStart - Camera.main.ScreenToWorldPoint(Input.mousePosition);
             Camera.main.transform.position += direction;
         }
 
@@ -85,8 +85,8 @@ public class CameraController : MonoBehaviour
         Zoom(scrollData);
     }
 
-    void Zoom(float increment)
+    void Zoom(float p_increment)
     {
-        Camera.main.orthographicSize = Mathf.Clamp(Camera.main.orthographicSize - increment, zoomOutMin, zoomOutMax);
+        Camera.main.orthographicSize = Mathf.Clamp(Camera.main.orthographicSize - p_increment, zoomOutMin, zoomOutMax);
     }
 }
