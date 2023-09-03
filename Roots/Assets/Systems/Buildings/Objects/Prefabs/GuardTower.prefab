@@ -173,5 +173,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b032447fef167d4c9b3195b057fc89a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buildingData: {fileID: 11400000, guid: 8f88cc18557c59c4a82e37fdc87f3f50, type: 2}
-  level: 1
+  BuildingMainData: {fileID: 11400000, guid: 8f88cc18557c59c4a82e37fdc87f3f50, type: 2}
+  CurrentLevel: 0

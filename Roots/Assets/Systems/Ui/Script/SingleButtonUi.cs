@@ -7,5 +7,6 @@ public class SingleButtonUi : MonoBehaviour
     public Button CreateBuilding;
     public Image BuildingIcon;
     public TextMeshProUGUI BuildingName;
+    public TextMeshProUGUI LevelInfo;
     public TextMeshProUGUI BuildingInfo;
 }

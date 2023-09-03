@@ -1,106 +1,141 @@
+using System;
 using System.Collections.Generic;
+using Buildings;
+using GeneralSystems;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Systems
+namespace InGameUi
 {
     public class BuildingPanel : MonoBehaviour
     {
-        [SerializeField] private TextMeshProUGUI _buildingName;
-        [SerializeField] private Button _exitButton;
-        [SerializeField] private Button _upgradeButton;
-        
-        [SerializeField] private GameObject buildingEntryPrefab; 
-        [SerializeField] private GameObject tierPanelPrefab;
-        [SerializeField] private Transform contentTransform;    
+        [SerializeField] private BuildingManager _buildingManager;
 
-        private BuildingName _currentBuilding;
+        [SerializeField] private TextMeshProUGUI _buildingName;
+        [SerializeField] private GameObject buildingEntryPrefab;
+        [SerializeField] private GameObject tierPanelPrefab;
+        [SerializeField] private Transform contentTransform;
+
+        private BuildingData _currentBuildingData;
         private List<GameObject> _runtimeBuildingsUiToDestroy;
-        
-        [SerializeField] private BuildingDatabase buildingDatabase;
 
         private void Start()
         {
-            gameObject.SetActive(false); 
-
+            gameObject.SetActive(false);
+            _buildingManager.OnBuildingClicked += ActivateOnClick;
             _runtimeBuildingsUiToDestroy = new List<GameObject>();
         }
 
-       public void ActivateOnClick(BuildingData p_buildingName, int p_level)
+        private void ActivateOnClick(BuildingData p_buildingName, int p_level)
         {
             gameObject.SetActive(true);
             CameraController.IsUiOpen = true;
 
-            _currentBuilding = p_buildingName.Name;
-            _buildingName.text = p_buildingName.Name.ToString();
+            _currentBuildingData = p_buildingName;
+            _buildingName.text = p_buildingName.type.ToString();
 
-            if (p_buildingName.Name == BuildingName.Cottage)
+            if (p_buildingName.type == BuildingType.Cottage)
             {
-                // Temporary storage to organize buildings by tier
-                Dictionary<int, List<BuildingData>> buildingsByTier = new Dictionary<int, List<BuildingData>>();
-
-                foreach (BuildingData building in buildingDatabase.allBuildings)
-                {
-                    if (!buildingsByTier.ContainsKey(building.UnlockTier))
-                    {
-                        buildingsByTier[building.UnlockTier] = new List<BuildingData>();
-                    }
-
-                    buildingsByTier[building.UnlockTier].Add(building);
-                }
-
-                for (int i = 0; i < 3; i++)
-                {
-                    // Now create UI elements by tier
-                    foreach (int tier in buildingsByTier.Keys)
-                    {
-                        // Instantiate tier panel
-                        GameObject newTierPanel = Instantiate(tierPanelPrefab, contentTransform);
-                        _runtimeBuildingsUiToDestroy.Add(newTierPanel);
-                    
-                        foreach (BuildingData building in buildingsByTier[tier])
-                        {
-                            GameObject newBuildingUi = Instantiate(buildingEntryPrefab, contentTransform);
-                        
-                            SingleButtonUi script = newBuildingUi.GetComponent<SingleButtonUi>();
-                            script.BuildingName.GetComponent<TextMeshProUGUI>().text = building.Name.ToString();
-                            script.BuildingIcon.GetComponent<Image>().sprite = building.Icon;
-                            script.CreateBuilding.onClick.AddListener(() => OnBuildingButtonClicked(building));
-
-                            _runtimeBuildingsUiToDestroy.Add(newBuildingUi);
-                        }
-                    }
-                }
+                HandleCottageView();
             }
-            
+
             // View all buildings in cottage as it is like centrum dowodzenia for fast building
         }
 
-        public void ClosePanel()
+        private void ClosePanel()
         {
-            // closing logic
-
             foreach (var createdUiElement in _runtimeBuildingsUiToDestroy)
             {
                 Destroy(createdUiElement);
             }
+
             CameraController.IsUiOpen = false;
 
+            _currentBuildingData = null;
             _runtimeBuildingsUiToDestroy.Clear();
             gameObject.SetActive(false);
         }
-        
+
         public void UpgradeBuilding()
         {
-            // upgrade logic
-        }
-        
-        private void OnBuildingButtonClicked(BuildingData building)
-        {
-            Debug.Log("Clicked building of: " + building.Name);
-            // Do something
+            _buildingManager.HandleBuildingUpgrade(_currentBuildingData);
         }
 
+        private void OnBuildOrUpgradeButtonClicked(BuildingData p_buildingData, bool p_upgrade)
+        {
+            if (p_upgrade)
+            {
+                _buildingManager.HandleBuildingUpgrade(p_buildingData);
+            }
+            else
+            {
+                _buildingManager.HandleBuildingBuilt(p_buildingData);
+            }
+        }
+
+        private void HandleCottageView()
+        {
+            // Temporary storage to organize buildings by tier
+            Dictionary<int, List<BuildingData>> buildingsByTier = new Dictionary<int, List<BuildingData>>();
+
+            foreach (BuildingData building in _buildingManager.AllBuildingsDatabase.allBuildings)
+            {
+                if (building.type == BuildingType.Cottage)
+                    continue;
+                
+                if (!buildingsByTier.ContainsKey(building.BaseCottageLevelNeeded))
+                {
+                    buildingsByTier[building.BaseCottageLevelNeeded] = new List<BuildingData>();
+                }
+
+                buildingsByTier[building.BaseCottageLevelNeeded].Add(building);
+            }
+
+            // Now create UI elements by tier
+            foreach (int tier in buildingsByTier.Keys)
+            {
+                var newTierPanel = Instantiate(tierPanelPrefab, contentTransform);
+                var isNewBuilding = true;
+                _runtimeBuildingsUiToDestroy.Add(newTierPanel);
+
+                foreach (BuildingData building in buildingsByTier[tier])
+                {
+                    GameObject newBuildingUi = Instantiate(buildingEntryPrefab, contentTransform);
+
+                    SingleButtonUi script = newBuildingUi.GetComponent<SingleButtonUi>();
+                    script.BuildingName.GetComponent<TextMeshProUGUI>().text = building.type.ToString();
+
+                    foreach (var builtBuilding in _buildingManager.CurrentBuildings)
+                    {
+                        if (building.type != builtBuilding.BuildingMainData.type)
+                            continue;
+
+                        script.BuildingIcon.GetComponent<Image>().sprite =
+                            building.PerLevelData[builtBuilding.CurrentLevel].Icon;
+
+                        var nextLevel = builtBuilding.CurrentLevel;
+                        nextLevel++;
+                        
+                        script.LevelInfo.GetComponent<TextMeshProUGUI>().text =
+                            $"{builtBuilding.CurrentLevel} >> {nextLevel}";
+                        
+                        script.CreateBuilding.onClick.AddListener(() => OnBuildOrUpgradeButtonClicked(building, true));
+                        script.CreateBuilding.image.color = Color.yellow;
+                        isNewBuilding = false;
+                    }
+
+                    if (isNewBuilding)
+                    {
+                        script.BuildingIcon.GetComponent<Image>().sprite = building.PerLevelData[0].Icon;
+                        script.LevelInfo.GetComponent<TextMeshProUGUI>().text = $"{0} >> {1}";
+                        script.CreateBuilding.onClick.AddListener(() => OnBuildOrUpgradeButtonClicked(building, false));
+                        script.CreateBuilding.image.color = Color.green;
+                    }
+                    
+                    _runtimeBuildingsUiToDestroy.Add(newBuildingUi);
+                }
+            }
+        }
     }
 }

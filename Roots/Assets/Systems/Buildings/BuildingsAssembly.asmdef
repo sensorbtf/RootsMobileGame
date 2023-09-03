@@ -1,0 +1,17 @@
+{
+    "name": "Buildings",
+    "rootNamespace": "",
+    "references": [
+        "GeneralAssembly",
+        ""
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

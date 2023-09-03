@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-namespace Systems
+namespace Buildings
 {
     [CreateAssetMenu(fileName = "New Building Database", menuName = "Building Database")]
     public class BuildingDatabase : ScriptableObject
