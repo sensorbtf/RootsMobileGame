@@ -1,12 +1,13 @@
 using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Buildings
 {
     [CreateAssetMenu(fileName = "BuildingData", menuName = "ScriptableObjects/BuildingData", order = 1)]
     public class BuildingData : ScriptableObject
     {
-        public BuildingType type;
+        public BuildingType Type;
         public int BaseCottageLevelNeeded;
         [SerializeField] public BaseDataPerLevel[] PerLevelData;
     }
@@ -21,8 +22,11 @@ namespace Buildings
         public Researches[] AvaiableResearches;
         public bool CanProduce;
         public int ProductionPerDay;
+        public bool CanRiseDefenses;
+        public int DefencePointsPerDay;
     }
-
+    
+    [Serializable]
     public class Requirements
     {
         public int ResourcePoints;
@@ -31,6 +35,7 @@ namespace Buildings
         public Researches[] ResearchRequirements;
     }
     
+    [Serializable]
     public class BuildingRequirements
     {
         public BuildingType SpecificBuilding;

@@ -10,11 +10,19 @@ namespace Buildings
     {
         public BuildingData BuildingMainData;
         private int _currentLevel;
+        private bool _hasWorker = false;
+        private bool _isUpgradedOrInBuilding = false;
 
         public int CurrentLevel
         {
             get => _currentLevel;
             set => _currentLevel = value;
+        }        
+        
+        public bool HasWorker
+        {
+            get => _hasWorker;
+            set => _hasWorker = value;
         }
 
         public Building(BuildingData p_buildingData)

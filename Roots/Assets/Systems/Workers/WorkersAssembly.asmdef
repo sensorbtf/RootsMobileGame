@@ -1,11 +1,7 @@
 {
-    "name": "Buildings",
+    "name": "Workers",
     "rootNamespace": "",
-    "references": [
-        "GeneralAssembly",
-        "",
-        "Workers"
-    ],
+    "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,
