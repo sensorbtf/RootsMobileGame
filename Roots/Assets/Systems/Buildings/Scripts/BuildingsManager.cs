@@ -84,32 +84,34 @@ namespace Buildings
         
         public int GatherProductionPointsFromBuildings()
         {
-            int resourcePoints = 0;
+            int resourcePointsToAdd = 0;
 
             foreach (var building in _currentlyBuildBuildings)
             {
                 if (!building.BuildingMainData.PerLevelData[building.CurrentLevel].CanProduce || !building.HasWorker)
                     continue;
 
-                resourcePoints += building.BuildingMainData.PerLevelData[building.CurrentLevel].ProductionPerDay;
+                resourcePointsToAdd += GetProductionDataOfBuilding(building);
+                // add some sort of bonus here to avoid saving up data in Buildingscript
             }
 
-            return resourcePoints;
+            return resourcePointsToAdd;
         }
         
         public int GatherDefensePointsFromBuildings()
         {
-            int resourcePoints = 0;
+            int defensePointsToAdd = 0;
 
-            // foreach (var building in _currentlyBuildBuildings)
-            // {
-            //     if (!building.BuildingMainData.PerLevelData[building.CurrentLevel] || !building.hasWorker)
-            //         continue;
-            //
-            //     resourcePoints += building.BuildingMainData.PerLevelData[building.CurrentLevel].ProductionPerDay;
-            // }
+            foreach (var building in _currentlyBuildBuildings)
+            {
+                if (!building.BuildingMainData.PerLevelData[building.CurrentLevel].CanRiseDefenses || !building.HasWorker)
+                    continue;
 
-            return resourcePoints;
+                defensePointsToAdd += GetDefenseRisingDataOfBuilding(building);
+                // add some sort of bonus here to avoid saving up data in Buildingscript
+            }
+
+            return defensePointsToAdd;
         }
         
         public bool CanUpgradeOrBuildBuilding(BuildingData p_building, int p_currentLevel = 0)
@@ -133,7 +135,7 @@ namespace Buildings
             return true;
         }
         
-        private bool HandleBuildingBuilt(BuildingData p_buildingData)
+        private bool HandleBuildingBuilt(BuildingData p_buildingData) // replace that for queue adding (prefabs will have stages of creation)
         {
             if (_currentlyBuildBuildings.Any(x => x.BuildingMainData.Type == p_buildingData.Type))
                 return false;
@@ -160,7 +162,7 @@ namespace Buildings
                 if (_currentlyBuildBuildings[i].BuildingMainData.Type != p_buildingData.Type)
                     continue;
 
-                _currentlyBuildBuildings[i].CurrentLevel++;
+                _currentlyBuildBuildings[i].HandleLevelUp();
                 return true;
             }
 
@@ -205,6 +207,16 @@ namespace Buildings
         public void RemoveResourcePoints(BuildingData p_buildingData, int p_buildingLevel)
         {
             CurrentResourcePoints -= p_buildingData.PerLevelData[p_buildingLevel].Requirements.ResourcePoints;
+        }
+
+        public int GetProductionDataOfBuilding(Building p_building)
+        {
+            return p_building.BuildingMainData.PerLevelData[p_building.CurrentLevel].ProductionPerDay; // * _bonusesManager.GetBonusForBuilding(p_building)
+        }
+        
+        public int GetDefenseRisingDataOfBuilding(Building p_building)
+        {
+            return p_building.BuildingMainData.PerLevelData[p_building.CurrentLevel].DefencePointsPerDay; // * _bonusesManager.GetBonusForBuilding(p_building)
         }
     }
 

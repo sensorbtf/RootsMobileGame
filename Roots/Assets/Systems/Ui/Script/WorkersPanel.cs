@@ -21,6 +21,7 @@ namespace InGameUi
         [SerializeField] private TextMeshProUGUI _numberOfWorkers;
         [SerializeField] private GameObject _iconPrefab;
         [SerializeField] private GameObject _barPrefab;
+        [SerializeField] private GameObject _finishWorkersAssigningButton;
         [SerializeField] private Transform contentTransform;
 
         private List<GameObject> _runtimeBuildingsUiToDestroy;
@@ -53,30 +54,44 @@ namespace InGameUi
             CameraController.IsUiOpen = true;
             _tabName.text = "Worker Displacement";
 
+            if (_workersManager.WorkersAmount <= 0)
+            {
+                _finishWorkersAssigningButton.SetActive(true);
+                _finishWorkersAssigningButton.GetComponent<Button>().onClick.AddListener(ClosePanel);
+            }
+            else
+            {
+                _finishWorkersAssigningButton.SetActive(false);
+            }
+            
             for (int i = 0; i < 3; i++)
             {
                 var newBar = Instantiate(_barPrefab, contentTransform);
                 _runtimeBuildingsUiToDestroy.Add(newBar);
                 var scriptOfBar = newBar.GetComponent<WorkersDisplacementBarUi>();
-                scriptOfBar.BarText.text = "Resources " + i;
                 // scriptOfBar.BarSprite add when needed
 
                 switch (i)
                 {
                     case 0:
+                        scriptOfBar.BarText.text = "Buildings";
+
+                        foreach (var building in _buildingManager.BuildingsInQueue)
+                        {
+                            Instantiate(_iconPrefab, scriptOfBar.ScrollContext);
+                            _iconPrefab.GetComponent<Image>().sprite = building.Key.PerLevelData[0].Icon;
+                        }
+
                         scriptOfBar.BarButton.onClick.AddListener(OnBuildOrUpgradeButtonClicked);
                         break;
                     case 1:
+                        scriptOfBar.BarText.text = "Resources";
                         scriptOfBar.BarButton.onClick.AddListener(() => OnGatheringOrDefenseButtonClicked(true));
                         break;
                     case 2:
+                        scriptOfBar.BarText.text = "Defense Points";
                         scriptOfBar.BarButton.onClick.AddListener(() => OnGatheringOrDefenseButtonClicked(false));
                         break;
-                }
-                
-                for (int j = 0; j < 6; j++)
-                {
-                    Instantiate(_iconPrefab, scriptOfBar.ScrollContext);
                 }
             }
             

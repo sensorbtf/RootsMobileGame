@@ -111,8 +111,8 @@ namespace InGameUi
                     building.BuildingMainData.PerLevelData[building.CurrentLevel].Icon;
                 
                 script.BuildingInfo.GetComponent<TextMeshProUGUI>().text = p_gathering ? 
-                    $"Production Points Per Day: {building.BuildingMainData.PerLevelData[building.CurrentLevel].ProductionPerDay}" 
-                    : $"Defense Points Per Day: {building.BuildingMainData.PerLevelData[building.CurrentLevel].DefencePointsPerDay}";
+                    $"Production Points Per Day: {_buildingManager.GetProductionDataOfBuilding(building)}" 
+                    : $"Defense Points Per Day: {_buildingManager.GetDefenseRisingDataOfBuilding(building)}";
 
                 if (_buildingManager.CanAssignWorker(building))
                 {

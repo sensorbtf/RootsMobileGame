@@ -9,6 +9,8 @@ namespace Buildings
     {
         public BuildingType Type;
         public int BaseCottageLevelNeeded;
+        public bool CanProduce;
+        public bool CanRiseDefenses;
         [SerializeField] public BaseDataPerLevel[] PerLevelData;
     }
 

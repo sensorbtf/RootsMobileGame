@@ -16,7 +16,6 @@ namespace Buildings
         public int CurrentLevel
         {
             get => _currentLevel;
-            set => _currentLevel = value;
         }        
         
         public bool HasWorker
@@ -36,7 +35,7 @@ namespace Buildings
         {
             if (BuildingMainData != null)
             {
-                CurrentLevel = 1; 
+                _currentLevel = 1; 
             }
         }
 
@@ -46,6 +45,12 @@ namespace Buildings
             {
                 OnBuildingClicked?.Invoke(BuildingMainData, CurrentLevel);
             }
+        }
+
+        public void HandleLevelUp()
+        {
+            _currentLevel++;
+            // prefab upgrade
         }
     }
 }

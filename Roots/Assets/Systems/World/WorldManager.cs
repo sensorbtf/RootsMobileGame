@@ -28,12 +28,9 @@ namespace World
 
         private void Start()
         {
-            StartMission();
-            
             _buildingManager.StartOnWorld();
+            StartMission();
             _workersManager.WorkersAmount = _buildingManager.GetFarmProductionAmount;
-            StartNewDay();
-            _currentDay--;
         }
 
         public void SkipDay()
@@ -48,6 +45,7 @@ namespace World
             // if not: new day has started tooltip: info about last one + panel for worker displacement
             // if yes: checlk if win
             _buildingManager.CurrentResourcePoints += _buildingManager.GatherProductionPointsFromBuildings();
+            _buildingManager.CurrentDefensePoints += _buildingManager.GatherDefensePointsFromBuildings();
             _buildingManager.RefreshQueue();
             //do other thins (days)
             
@@ -56,7 +54,6 @@ namespace World
         
         private void EndMission()
         {
-            _buildingManager.CurrentResourcePoints += _buildingManager.GatherProductionPointsFromBuildings();
             _currentMission++;
             //get resources from basement
         }
@@ -73,6 +70,8 @@ namespace World
             _finalHiddenStormDay = Random.Range(_missionData[_currentMission].DaysOfStormRange.x,
                 _missionData[_currentMission].DaysOfStormRange.y);
             //get resources from basement
+            
+            StartNewDay();
         }
     }
 
