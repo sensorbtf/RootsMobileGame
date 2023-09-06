@@ -13,11 +13,13 @@ MonoBehaviour:
   m_Name: GuardTower
   m_EditorClassIdentifier: 
   Type: 2
+  MainPrefab: {fileID: 5304188990946279282, guid: 927c2f02781c0b24082d75d821d84333, type: 3}
   BaseCottageLevelNeeded: 0
+  CanProduce: 0
+  CanRiseDefenses: 0
   PerLevelData:
   - Icon: {fileID: 21300000, guid: d721056179476024a8dae2dafece882d, type: 3}
-    Prefab: {fileID: 5304188990946279282, guid: 927c2f02781c0b24082d75d821d84333, type: 3}
-    CottageLevelNeeded: 1
+    FinalPrefab: {fileID: 4607380158681491018, guid: c35b578b854f4da4f99e6faf8e7f1f39, type: 3}
     Requirements:
       ResourcePoints: 20
       DaysToComplete: 1
@@ -26,9 +28,10 @@ MonoBehaviour:
     AvaiableResearches: 
     CanProduce: 0
     ProductionPerDay: 0
+    CanRiseDefenses: 0
+    DefencePointsPerDay: 0
   - Icon: {fileID: 21300000, guid: d721056179476024a8dae2dafece882d, type: 3}
-    Prefab: {fileID: 5304188990946279282, guid: 927c2f02781c0b24082d75d821d84333, type: 3}
-    CottageLevelNeeded: 2
+    FinalPrefab: {fileID: 4607380158681491018, guid: c35b578b854f4da4f99e6faf8e7f1f39, type: 3}
     Requirements:
       ResourcePoints: 30
       DaysToComplete: 2
@@ -37,9 +40,10 @@ MonoBehaviour:
     AvaiableResearches: 
     CanProduce: 0
     ProductionPerDay: 0
+    CanRiseDefenses: 0
+    DefencePointsPerDay: 0
   - Icon: {fileID: 21300000, guid: d721056179476024a8dae2dafece882d, type: 3}
-    Prefab: {fileID: 5304188990946279282, guid: 927c2f02781c0b24082d75d821d84333, type: 3}
-    CottageLevelNeeded: 3
+    FinalPrefab: {fileID: 0}
     Requirements:
       ResourcePoints: 40
       DaysToComplete: 3
@@ -48,3 +52,5 @@ MonoBehaviour:
     AvaiableResearches: 
     CanProduce: 0
     ProductionPerDay: 0
+    CanRiseDefenses: 0
+    DefencePointsPerDay: 0

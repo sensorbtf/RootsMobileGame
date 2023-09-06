@@ -7,6 +7,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using World;
 
+// should have been "keep same displacement on new day"
+
 namespace InGameUi
 {
     public class WorkersPanel : MonoBehaviour
@@ -76,10 +78,13 @@ namespace InGameUi
                     case 0:
                         scriptOfBar.BarText.text = "Buildings";
 
-                        foreach (var building in _buildingManager.BuildingsInQueue)
+                        foreach (var building in _buildingManager.CurrentBuildings)
                         {
+                            if (!building.IsBeeingUpgradedOrBuilded)
+                                continue;
+                            
                             Instantiate(_iconPrefab, scriptOfBar.ScrollContext);
-                            _iconPrefab.GetComponent<Image>().sprite = building.Key.PerLevelData[0].Icon;
+                            _iconPrefab.GetComponent<Image>().sprite = building.BuildingMainData.PerLevelData[building.CurrentLevel].Icon;
                         }
 
                         scriptOfBar.BarButton.onClick.AddListener(OnBuildOrUpgradeButtonClicked);

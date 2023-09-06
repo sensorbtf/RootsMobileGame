@@ -143,9 +143,6 @@ namespace InGameUi
 
                     foreach (var builtBuilding in _buildingManager.CurrentBuildings)
                     {
-                        if (building.Type != builtBuilding.BuildingMainData.Type)
-                            continue;
-
                         script.BuildingIcon.GetComponent<Image>().sprite =
                             building.PerLevelData[builtBuilding.CurrentLevel].Icon;
 
@@ -156,7 +153,7 @@ namespace InGameUi
                             $"{builtBuilding.CurrentLevel} >> {nextLevel}";
                         script.CreateBuilding.image.color = Color.yellow;
                         script.CreateBuilding.interactable =
-                            _buildingManager.CanUpgradeOrBuildBuilding(building, builtBuilding.CurrentLevel);
+                            _buildingManager.CanUpgradeBuilding(builtBuilding);
 
                         script.CreateBuilding.onClick.AddListener(() =>
                             OnBuildOrUpgradeButtonClicked(building, builtBuilding.CurrentLevel, newBuildingUi));
@@ -169,7 +166,7 @@ namespace InGameUi
                         script.BuildingIcon.GetComponent<Image>().sprite = building.PerLevelData[0].Icon;
                         script.LevelInfo.GetComponent<TextMeshProUGUI>().text = $"{0} >> {1}";
                         script.CreateBuilding.image.color = Color.green;
-                        script.CreateBuilding.interactable = _buildingManager.CanUpgradeOrBuildBuilding(building);
+                        script.CreateBuilding.interactable = _buildingManager.CanBuildBuilding(building);
                         
                         script.CreateBuilding.onClick.AddListener(() =>
                             OnBuildOrUpgradeButtonClicked(building, 0, newBuildingUi));

@@ -13,13 +13,13 @@ MonoBehaviour:
   m_Name: Cottage
   m_EditorClassIdentifier: 
   Type: 0
+  MainPrefab: {fileID: 6119682596485182148, guid: 043309b48ddeb7f4c98739dad0720116, type: 3}
   BaseCottageLevelNeeded: 0
   CanProduce: 0
   CanRiseDefenses: 0
   PerLevelData:
   - Icon: {fileID: 21300000, guid: 98755408aee6d394fa6bbb4f345fc5fa, type: 3}
-    Prefab: {fileID: 6119682596485182148, guid: 043309b48ddeb7f4c98739dad0720116, type: 3}
-    CottageLevelNeeded: 0
+    FinalPrefab: {fileID: 6119682596485182148, guid: 043309b48ddeb7f4c98739dad0720116, type: 3}
     Requirements:
       ResourcePoints: 0
       DaysToComplete: 2
@@ -31,8 +31,7 @@ MonoBehaviour:
     CanRiseDefenses: 1
     DefencePointsPerDay: 5
   - Icon: {fileID: 21300000, guid: 98755408aee6d394fa6bbb4f345fc5fa, type: 3}
-    Prefab: {fileID: 6119682596485182148, guid: 043309b48ddeb7f4c98739dad0720116, type: 3}
-    CottageLevelNeeded: 1
+    FinalPrefab: {fileID: 6119682596485182148, guid: 043309b48ddeb7f4c98739dad0720116, type: 3}
     Requirements:
       ResourcePoints: 50
       DaysToComplete: 3

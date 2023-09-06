@@ -8,6 +8,7 @@ namespace Buildings
     public class BuildingData : ScriptableObject
     {
         public BuildingType Type;
+        public GameObject MainPrefab;
         public int BaseCottageLevelNeeded;
         public bool CanProduce;
         public bool CanRiseDefenses;
@@ -18,8 +19,7 @@ namespace Buildings
     public class BaseDataPerLevel
     {
         public Sprite Icon;
-        public GameObject Prefab;
-        public int CottageLevelNeeded;
+        public GameObject FinalPrefab;
         public Requirements Requirements;
         public Researches[] AvaiableResearches;
         public bool CanProduce;

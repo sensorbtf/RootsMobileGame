@@ -46,7 +46,7 @@ namespace World
             // if yes: checlk if win
             _buildingManager.CurrentResourcePoints += _buildingManager.GatherProductionPointsFromBuildings();
             _buildingManager.CurrentDefensePoints += _buildingManager.GatherDefensePointsFromBuildings();
-            _buildingManager.RefreshQueue();
+            _buildingManager.RefreshBuildingsBuildTimer();
             //do other thins (days)
             
             OnNewDayStarted?.Invoke();

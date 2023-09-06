@@ -12,11 +12,9 @@ namespace Buildings
         [SerializeField] private BuildingTransforms[] _placesForBuildings; // need to extend
         [SerializeField] private BuildingDatabase _buildingsDatabase;
         private List<Building> _currentlyBuildBuildings;
-        private Dictionary<BuildingData, int> _buildingsInQueue;
 
         public event Action<BuildingData, int> OnBuildingClicked;
         public List<Building> CurrentBuildings => _currentlyBuildBuildings;
-        public Dictionary<BuildingData, int> BuildingsInQueue => _buildingsInQueue;
         public BuildingDatabase AllBuildingsDatabase => _buildingsDatabase;
 
         public int GetFarmProductionAmount
@@ -36,15 +34,14 @@ namespace Buildings
         public void StartOnWorld()
         {
             ShardsOfDestinyAmount = 999;
-            
+
             _currentlyBuildBuildings = new List<Building>();
-            _buildingsInQueue = new Dictionary<BuildingData, int>();
 
             foreach (var buildingToBuild in _buildingsDatabase.allBuildings)
             {
                 if (buildingToBuild.Type is BuildingType.Cottage or BuildingType.Farm)
                 {
-                    HandleBuildingBuilt(buildingToBuild);
+                    HandleBuiltOfBuilding(buildingToBuild, true);
                 }
             }
         }
@@ -61,27 +58,32 @@ namespace Buildings
 
         public void PutBuildingOnQueue(BuildingData p_buildingData, int p_buildingLevel)
         {
-            _buildingsInQueue.Add(p_buildingData, p_buildingData.PerLevelData[p_buildingLevel].Requirements.DaysToComplete);
-        }
-        
-        public void RefreshQueue()
-        {
-            foreach (var building in _buildingsInQueue.ToList())
+            if (p_buildingLevel == 0)
             {
-                _buildingsInQueue[building.Key]--;
-
-                if (_buildingsInQueue[building.Key] > 0) 
-                    continue;
-                
-                if (!HandleBuildingBuilt(building.Key))
-                {
-                    HandleBuildingUpgrade(building.Key);
-                }
-                
-                _buildingsInQueue.Remove(building.Key);
+                HandleBuiltOfBuilding(p_buildingData, false);
+            }
+            else
+            {
+                HandleBuildingUpgrade(p_buildingData, false);
             }
         }
-        
+
+        public void RefreshBuildingsBuildTimer()
+        {
+            foreach (var building in _currentlyBuildBuildings)
+            {
+                if (!building.IsBeeingUpgradedOrBuilded)
+                    continue;
+
+                building.CurrentDayOnQueue++;
+
+                if (building.CurrentDayOnQueue < building.BuildingMainData.PerLevelData[building.CurrentLevel].Requirements.DaysToComplete)
+                    continue;
+
+                building.FinishBuildingSequence();
+            }
+        }
+
         public int GatherProductionPointsFromBuildings()
         {
             int resourcePointsToAdd = 0;
@@ -97,14 +99,15 @@ namespace Buildings
 
             return resourcePointsToAdd;
         }
-        
+
         public int GatherDefensePointsFromBuildings()
         {
             int defensePointsToAdd = 0;
 
             foreach (var building in _currentlyBuildBuildings)
             {
-                if (!building.BuildingMainData.PerLevelData[building.CurrentLevel].CanRiseDefenses || !building.HasWorker)
+                if (!building.BuildingMainData.PerLevelData[building.CurrentLevel].CanRiseDefenses ||
+                    !building.HasWorker)
                     continue;
 
                 defensePointsToAdd += GetDefenseRisingDataOfBuilding(building);
@@ -113,61 +116,101 @@ namespace Buildings
 
             return defensePointsToAdd;
         }
-        
-        public bool CanUpgradeOrBuildBuilding(BuildingData p_building, int p_currentLevel = 0)
+
+        public bool CanBuildBuilding(BuildingData p_building, int p_currentLevel = 0)
         {
-            if (_buildingsInQueue.ContainsKey(p_building))
+            if (_workersManager.WorkersAmount <= 0)
+                return false;
+
+            foreach (var building in _currentlyBuildBuildings)
+            {
+                if (building.BuildingMainData.Type != p_building.Type)
+                    continue;
+                
+                if (building.IsBeeingUpgradedOrBuilded)
+                    return false;
+            }
+            
+            if (CurrentResourcePoints < p_building.PerLevelData[p_currentLevel].Requirements.ResourcePoints)
+            {
+                return false;
+            }
+
+            return true;
+        }
+        
+        public bool CanUpgradeBuilding(Building p_building)
+        {
+            if (_workersManager.WorkersAmount <= 0)
+                return false;
+            
+            if (p_building.IsBeeingUpgradedOrBuilded)
             {
                 //set upgragdingUi
                 return false;
             }
 
-            if (_workersManager.WorkersAmount <= 0)
+            if (CurrentResourcePoints < p_building.BuildingMainData.PerLevelData
+                    [p_building.CurrentLevel].Requirements.ResourcePoints)
             {
                 return false;
             }
 
-            if (CurrentResourcePoints < p_building.PerLevelData[p_currentLevel].Requirements.ResourcePoints)
-            {
-                return false;
-            }
-            
             return true;
         }
-        
-        private bool HandleBuildingBuilt(BuildingData p_buildingData) // replace that for queue adding (prefabs will have stages of creation)
+
+        private bool HandleBuiltOfBuilding(BuildingData p_buildingData, bool p_instant)
         {
             if (_currentlyBuildBuildings.Any(x => x.BuildingMainData.Type == p_buildingData.Type))
                 return false;
-            
+
             foreach (var building in _placesForBuildings)
             {
-                if (building.BuildingData != p_buildingData) 
+                if (building.BuildingData != p_buildingData)
                     continue;
-                
-                var newBuilding = Instantiate(p_buildingData.PerLevelData[0].Prefab, 
-                    building.SiteForBuilding.position, Quaternion.identity);
-                
-                _currentlyBuildBuildings.Add(newBuilding.GetComponent<Building>());
+
+                GameObject newBuildingGo = null;
+                Building newBuilding = null;
+
+                if (p_instant)
+                {
+                    newBuildingGo = Instantiate(p_buildingData.MainPrefab,
+                        building.SiteForBuilding.position, Quaternion.identity);
+                    newBuilding = newBuildingGo.GetComponent<Building>();
+                    newBuilding.IsBeeingUpgradedOrBuilded = false;
+                }
+                else
+                {
+                    newBuildingGo = Instantiate(p_buildingData.MainPrefab, 
+                        building.SiteForBuilding.position, Quaternion.identity);
+                    newBuilding = newBuildingGo.GetComponent<Building>();
+                    newBuilding.InitiateBuildingSequence();
+                }
+
+                _currentlyBuildBuildings.Add(newBuilding);
+
                 return true;
             }
 
             return false;
         }
 
-        private bool HandleBuildingUpgrade(BuildingData p_buildingData)
+        private void HandleBuildingUpgrade(BuildingData p_buildingData, bool p_instant)
         {
             for (int i = 0; i < _currentlyBuildBuildings.Count; i++)
             {
                 if (_currentlyBuildBuildings[i].BuildingMainData.Type != p_buildingData.Type)
                     continue;
 
-                _currentlyBuildBuildings[i].HandleLevelUp();
-                return true;
+                if (p_instant)
+                {
+                    _currentlyBuildBuildings[i].HandleLevelUp();
+                }
+                else
+                {
+                    _currentlyBuildBuildings[i].InitiateUpgradeSequence();
+                }
             }
-
-            Debug.LogError($"Trying to upgrade non-existing building: {p_buildingData}");
-            return false;
         }
 
         private void HandleBuildingClicked(BuildingData p_buildingData, int p_level)
@@ -190,7 +233,7 @@ namespace Buildings
                 _workersManager.WorkersAmount++;
             }
         }
-        
+
         public bool CanAssignWorker(Building p_building)
         {
             foreach (var building in _currentlyBuildBuildings)
@@ -211,12 +254,14 @@ namespace Buildings
 
         public int GetProductionDataOfBuilding(Building p_building)
         {
-            return p_building.BuildingMainData.PerLevelData[p_building.CurrentLevel].ProductionPerDay; // * _bonusesManager.GetBonusForBuilding(p_building)
+            return p_building.BuildingMainData.PerLevelData[p_building.CurrentLevel]
+                .ProductionPerDay; // * _bonusesManager.GetBonusForBuilding(p_building)
         }
-        
+
         public int GetDefenseRisingDataOfBuilding(Building p_building)
         {
-            return p_building.BuildingMainData.PerLevelData[p_building.CurrentLevel].DefencePointsPerDay; // * _bonusesManager.GetBonusForBuilding(p_building)
+            return p_building.BuildingMainData.PerLevelData[p_building.CurrentLevel]
+                .DefencePointsPerDay; // * _bonusesManager.GetBonusForBuilding(p_building)
         }
     }
 
