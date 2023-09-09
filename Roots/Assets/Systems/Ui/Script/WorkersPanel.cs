@@ -43,12 +43,6 @@ namespace InGameUi
             _numberOfWorkers.text = $"Workers: {p_workers.ToString()}";
         }
 
-        private void OnDisable()
-        {
-            //_worldManager.OnNewDayStarted -= ActivatePanel;
-            //_buildingPanel.OnBackToWorkersPanel -= ActivatePanel;
-        }
-
         private void ActivatePanel()
         {
             gameObject.SetActive(true);
@@ -114,6 +108,8 @@ namespace InGameUi
 
             _runtimeBuildingsUiToDestroy.Clear();
             GameplayHud.BlockHud = false;
+            _worldManager.OnNewDayStarted -= ActivatePanel;
+            _buildingPanel.OnBackToWorkersPanel -= ActivatePanel;
             gameObject.SetActive(false);
         }
 

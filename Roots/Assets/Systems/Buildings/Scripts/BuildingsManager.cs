@@ -159,10 +159,10 @@ namespace Buildings
             return true;
         }
 
-        private bool HandleBuiltOfBuilding(BuildingData p_buildingData, bool p_instant)
+        private void HandleBuiltOfBuilding(BuildingData p_buildingData, bool p_instant)
         {
             if (_currentlyBuildBuildings.Any(x => x.BuildingMainData.Type == p_buildingData.Type))
-                return false;
+                return;
 
             foreach (var building in _placesForBuildings)
             {
@@ -178,6 +178,7 @@ namespace Buildings
                         building.SiteForBuilding.position, Quaternion.identity);
                     newBuilding = newBuildingGo.GetComponent<Building>();
                     newBuilding.IsBeeingUpgradedOrBuilded = false;
+                    newBuilding.FinishBuildingSequence();
                 }
                 else
                 {
@@ -188,11 +189,7 @@ namespace Buildings
                 }
 
                 _currentlyBuildBuildings.Add(newBuilding);
-
-                return true;
             }
-
-            return false;
         }
 
         private void HandleBuildingUpgrade(BuildingData p_buildingData, bool p_instant)

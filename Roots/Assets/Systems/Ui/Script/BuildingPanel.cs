@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Buildings;
 using GeneralSystems;
 using TMPro;
@@ -64,13 +65,15 @@ namespace InGameUi
             OnBackToWorkersPanel?.Invoke();
         }
 
-        private void OnBuildOrUpgradeButtonClicked(BuildingData p_buildingData, int p_buildingLevel, GameObject p_panelUi)
+        private void OnBuildOrUpgradeButtonClicked(BuildingData p_buildingData, int p_buildingLevel,
+            GameObject p_panelUi)
         {
             _buildingManager.RemoveResourcePoints(p_buildingData, p_buildingLevel);
-            
-            _buildingManager.CurrentResourcePoints -= p_buildingData.PerLevelData[p_buildingLevel].Requirements.ResourcePoints;
+
+            _buildingManager.CurrentResourcePoints -=
+                p_buildingData.PerLevelData[p_buildingLevel].Requirements.ResourcePoints;
             _workersManager.WorkersAmount--;
-            
+
             p_panelUi.GetComponent<Image>().color = Color.magenta;
             _buildingManager.PutBuildingOnQueue(p_buildingData, p_buildingLevel);
         }
@@ -101,7 +104,7 @@ namespace InGameUi
             gameObject.SetActive(true);
             CameraController.IsUiOpen = true;
             GameplayHud.BlockHud = true;
-            
+
             _buildingName.text = "Start Building";
             _numberOfWorkers.text = $"Workers: {_workersManager.WorkersAmount.ToString()}";
 
@@ -131,7 +134,6 @@ namespace InGameUi
             foreach (int tier in buildingsByTier.Keys)
             {
                 var newTierPanel = Instantiate(tierPanelPrefab, contentTransform);
-                var isNewBuilding = true;
                 _runtimeBuildingsUiToDestroy.Add(newTierPanel);
 
                 foreach (BuildingData building in buildingsByTier[tier])
@@ -140,8 +142,10 @@ namespace InGameUi
 
                     SingleButtonUi script = newBuildingUi.GetComponent<SingleButtonUi>();
                     script.BuildingName.GetComponent<TextMeshProUGUI>().text = building.Type.ToString();
-
-                    foreach (var builtBuilding in _buildingManager.CurrentBuildings)
+                    var builtBuilding =
+                        _buildingManager.CurrentBuildings.FirstOrDefault(x => x.BuildingMainData.Type == building.Type);
+                    
+                    if (builtBuilding != null)
                     {
                         script.BuildingIcon.GetComponent<Image>().sprite =
                             building.PerLevelData[builtBuilding.CurrentLevel].Icon;
@@ -157,20 +161,18 @@ namespace InGameUi
 
                         script.CreateBuilding.onClick.AddListener(() =>
                             OnBuildOrUpgradeButtonClicked(building, builtBuilding.CurrentLevel, newBuildingUi));
-                        
-                        isNewBuilding = false;
                     }
-
-                    if (isNewBuilding)
+                    else
                     {
                         script.BuildingIcon.GetComponent<Image>().sprite = building.PerLevelData[0].Icon;
                         script.LevelInfo.GetComponent<TextMeshProUGUI>().text = $"{0} >> {1}";
                         script.CreateBuilding.image.color = Color.green;
                         script.CreateBuilding.interactable = _buildingManager.CanBuildBuilding(building);
-                        
+
                         script.CreateBuilding.onClick.AddListener(() =>
-                            OnBuildOrUpgradeButtonClicked(building, 0, newBuildingUi));
+                            OnBuildOrUpgradeButtonClicked(building, 0, newBuildingUi));  
                     }
+
 
                     _runtimeBuildingsUiToDestroy.Add(newBuildingUi);
                 }
