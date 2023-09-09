@@ -28,9 +28,10 @@ namespace InGameUi
 
         private List<GameObject> _runtimeBuildingsUiToDestroy;
         
+        public event Action OnBackToMap;
+        
         private void Start()
         {
-            _worldManager.OnNewDayStarted += ActivatePanel;
             _buildingPanel.OnBackToWorkersPanel += ActivatePanel;
             _gatheringDefensePanel.OnBackToWorkersPanel += ActivatePanel;
             _workersManager.OnWorkersUpdated += UpdateWorkersText;
@@ -43,7 +44,7 @@ namespace InGameUi
             _numberOfWorkers.text = $"Workers: {p_workers.ToString()}";
         }
 
-        private void ActivatePanel()
+        public void ActivatePanel()
         {
             gameObject.SetActive(true);
             GameplayHud.BlockHud = true;
@@ -66,7 +67,8 @@ namespace InGameUi
                 _runtimeBuildingsUiToDestroy.Add(newBar);
                 var scriptOfBar = newBar.GetComponent<WorkersDisplacementBarUi>();
                 // scriptOfBar.BarSprite add when needed
-
+                GameObject newEntry = null;
+                
                 switch (i)
                 {
                     case 0:
@@ -77,18 +79,40 @@ namespace InGameUi
                             if (!building.IsBeeingUpgradedOrBuilded)
                                 continue;
                             
-                            Instantiate(_iconPrefab, scriptOfBar.ScrollContext);
-                            _iconPrefab.GetComponent<Image>().sprite = building.BuildingMainData.PerLevelData[building.CurrentLevel].Icon;
+                            newEntry = Instantiate(_iconPrefab, scriptOfBar.ScrollContext);
+                            newEntry.GetComponent<Image>().sprite = building.BuildingMainData.PerLevelData[building.CurrentLevel].Icon;
                         }
 
                         scriptOfBar.BarButton.onClick.AddListener(OnBuildOrUpgradeButtonClicked);
                         break;
                     case 1:
                         scriptOfBar.BarText.text = "Resources";
+                        
+                        foreach (var building in _buildingManager.CurrentBuildings)
+                        {
+                            if (!building.HasWorker || !building.BuildingMainData.PerLevelData[building.CurrentLevel].CanProduce
+                                                    || building.IsBeeingUpgradedOrBuilded) 
+                                continue;
+                            
+                            newEntry = Instantiate(_iconPrefab, scriptOfBar.ScrollContext);
+                            newEntry.GetComponent<Image>().sprite = building.BuildingMainData.PerLevelData[building.CurrentLevel].Icon;
+                        }
+                        
                         scriptOfBar.BarButton.onClick.AddListener(() => OnGatheringOrDefenseButtonClicked(true));
                         break;
                     case 2:
                         scriptOfBar.BarText.text = "Defense Points";
+                        
+                        foreach (var building in _buildingManager.CurrentBuildings)
+                        {
+                            if (!building.HasWorker || !building.BuildingMainData.PerLevelData[building.CurrentLevel].CanRiseDefenses
+                                || building.IsBeeingUpgradedOrBuilded)
+                                continue;
+                            
+                            newEntry = Instantiate(_iconPrefab, scriptOfBar.ScrollContext);
+                            newEntry.GetComponent<Image>().sprite = building.BuildingMainData.PerLevelData[building.CurrentLevel].Icon;
+                        }
+                        
                         scriptOfBar.BarButton.onClick.AddListener(() => OnGatheringOrDefenseButtonClicked(false));
                         break;
                 }
@@ -108,8 +132,9 @@ namespace InGameUi
 
             _runtimeBuildingsUiToDestroy.Clear();
             GameplayHud.BlockHud = false;
-            _worldManager.OnNewDayStarted -= ActivatePanel;
-            _buildingPanel.OnBackToWorkersPanel -= ActivatePanel;
+            // _buildingPanel.OnBackToWorkersPanel -= ActivatePanel;
+            // _gatheringDefensePanel.OnBackToWorkersPanel -= ActivatePanel;
+            OnBackToMap?.Invoke();
             gameObject.SetActive(false);
         }
 
@@ -119,7 +144,8 @@ namespace InGameUi
             _buildingPanel.HandleView(true);
         }
         
-        private void OnGatheringOrDefenseButtonClicked(bool p_gathering)
+        private void 
+            OnGatheringOrDefenseButtonClicked(bool p_gathering)
         {
             ClosePanel();
             _gatheringDefensePanel.HandleView(p_gathering);

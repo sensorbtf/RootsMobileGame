@@ -10,7 +10,7 @@ namespace GeneralSystems
 
         private Vector3 _touchStart;
         public float zoomOutMin = 1;
-        public float zoomOutMax = 8;
+        public float zoomOutMax = 20;
 
         public Transform leftBoundaryObject;
         public Transform rightBoundaryObject;
@@ -102,7 +102,7 @@ namespace GeneralSystems
 
                 float difference = currentMagnitude - prevMagnitude;
 
-                Zoom(difference * 0.01f);
+                Zoom(difference * 0.05f);
             }
 
             // Zoom with Mouse Wheel

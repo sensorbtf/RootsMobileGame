@@ -5,6 +5,7 @@ using Buildings;
 using GeneralSystems;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace InGameUi
@@ -18,7 +19,7 @@ namespace InGameUi
         [SerializeField] private TextMeshProUGUI _numberOfWorkers;
         [SerializeField] private GameObject buildingEntryPrefab;
         [SerializeField] private GameObject tierPanelPrefab;
-        [SerializeField] private GameObject _endWhileDisplacingWorkers;
+        [SerializeField] private GameObject _endBuildingButton;
         [SerializeField] private Transform contentTransform;
 
         private BuildingData _currentBuildingData;
@@ -110,11 +111,11 @@ namespace InGameUi
 
             if (p_fromWorkerPanel)
             {
-                _endWhileDisplacingWorkers.SetActive(true);
+                _endBuildingButton.SetActive(true);
             }
             else
             {
-                _endWhileDisplacingWorkers.SetActive(false);
+                _endBuildingButton.SetActive(false);
             }
 
             // Temporary storage to organize buildings by tier

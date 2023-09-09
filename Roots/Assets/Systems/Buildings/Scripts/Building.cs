@@ -3,18 +3,20 @@ using GeneralSystems;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
+using UnityEngine.UI;
 
 namespace Buildings
 {
-    [Serializable]
     public class Building : MonoBehaviour, IPointerClickHandler
     {
         public BuildingData BuildingMainData;
-        public GameObject BuildingInBuildStage;
+        public SpriteRenderer InGameIcon;
+        public SpriteRenderer GatheringIcon;
         public int CurrentDayOnQueue;
         private int _currentLevel;
         private bool _hasWorker = false;
-        public bool IsBeeingUpgradedOrBuilded = false;
+        [HideInInspector] public bool HaveSomethingToCollect = false;
+        [HideInInspector] public bool IsBeeingUpgradedOrBuilded = false;
 
         public int CurrentLevel
         {
@@ -26,16 +28,33 @@ namespace Buildings
             get => _hasWorker;
             set => _hasWorker = value;
         }
-
-        public Building(BuildingData p_buildingData)
-        {
-            BuildingMainData = p_buildingData;
-        }
-
+        
         public static event Action<BuildingData, int> OnBuildingClicked; 
+        public event Action<PointsType, int> OnPointsGathered; 
+        public event Action<Building, bool> OnWorkDone; 
 
-        public void OnPointerClick(PointerEventData eventData)
+        public void OnPointerClick(PointerEventData p_eventData)
         {
+            if (HaveSomethingToCollect)
+            {
+                if (BuildingMainData.PerLevelData[_currentLevel].CanRiseDefenses)
+                {
+                    OnPointsGathered?.Invoke(PointsType.Defense, BuildingMainData.PerLevelData[_currentLevel].DefensePointsPerDay);
+                }
+                else if (BuildingMainData.PerLevelData[_currentLevel].CanProduce)
+                {
+                    OnPointsGathered?.Invoke(PointsType.Resource, BuildingMainData.PerLevelData[_currentLevel].ProductionPerDay);
+                }
+                else
+                {
+                    Debug.LogError("ERROR. Clicking building with points that its not producing!");    
+                }
+
+                GatheringIcon.sprite = null;
+                HaveSomethingToCollect = false;
+                return;
+            }
+            
             if (!CameraController.isDragging)
             {
                 OnBuildingClicked?.Invoke(BuildingMainData, CurrentLevel);
@@ -47,7 +66,17 @@ namespace Buildings
             _currentLevel++;
             IsBeeingUpgradedOrBuilded = false;
             CurrentDayOnQueue = 0;
-            // prefab upgrade
+            
+            OnWorkDone?.Invoke(this, false);
+        }
+        
+        public void FinishBuildingSequence()
+        {
+            _currentLevel = 1;
+            IsBeeingUpgradedOrBuilded = false;
+            InGameIcon.sprite = BuildingMainData.PerLevelData[_currentLevel].InGameSprite;
+            
+            OnWorkDone?.Invoke(this, false);
         }
         
         public void InitiateBuildingSequence()
@@ -55,23 +84,18 @@ namespace Buildings
             _currentLevel = 0;
             CurrentDayOnQueue = 0;
             IsBeeingUpgradedOrBuilded = true;
-            BuildingInBuildStage.SetActive(true);
         }
 
         public void InitiateUpgradeSequence()
         {
             CurrentDayOnQueue = 0;
             IsBeeingUpgradedOrBuilded = true;
-            Destroy(BuildingMainData.PerLevelData[_currentLevel].FinalPrefab);
-            BuildingInBuildStage.SetActive(true);
         }
         
-        public void FinishBuildingSequence()
+        public void SetCollectionIcon(Sprite p_gatheringIcon)
         {
-            _currentLevel++;
-            IsBeeingUpgradedOrBuilded = false;
-            Instantiate(BuildingMainData.PerLevelData[_currentLevel].FinalPrefab, gameObject.transform);
-            BuildingInBuildStage.SetActive(false);
+            GatheringIcon.sprite = p_gatheringIcon;
+            HaveSomethingToCollect = true;
         }
     }
 }

@@ -10,8 +10,6 @@ namespace Buildings
         public BuildingType Type;
         public GameObject MainPrefab;
         public int BaseCottageLevelNeeded;
-        public bool CanProduce;
-        public bool CanRiseDefenses;
         [SerializeField] public BaseDataPerLevel[] PerLevelData;
     }
 
@@ -19,13 +17,13 @@ namespace Buildings
     public class BaseDataPerLevel
     {
         public Sprite Icon;
-        public GameObject FinalPrefab;
+        public Sprite InGameSprite;
         public Requirements Requirements;
         public Researches[] AvaiableResearches;
         public bool CanProduce;
         public int ProductionPerDay;
         public bool CanRiseDefenses;
-        public int DefencePointsPerDay;
+        [FormerlySerializedAs("DefencePointsPerDay")] public int DefensePointsPerDay;
     }
     
     [Serializable]
@@ -56,5 +54,12 @@ namespace Buildings
         Cottage,
         Farm,
         GuardTower,
+    }
+    
+    public enum PointsType
+    {
+        Resource,
+        Defense,
+        ShardsOfDestiny,
     }
 }

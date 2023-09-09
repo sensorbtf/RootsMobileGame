@@ -13,13 +13,11 @@ MonoBehaviour:
   m_Name: Cottage
   m_EditorClassIdentifier: 
   Type: 0
-  MainPrefab: {fileID: 6119682596485182148, guid: 043309b48ddeb7f4c98739dad0720116, type: 3}
+  MainPrefab: {fileID: 1328426712780355558, guid: 87828ae970e7daa458c1959de94084c4, type: 3}
   BaseCottageLevelNeeded: 0
-  CanProduce: 0
-  CanRiseDefenses: 0
   PerLevelData:
   - Icon: {fileID: 21300000, guid: 98755408aee6d394fa6bbb4f345fc5fa, type: 3}
-    FinalPrefab: {fileID: 6119682596485182148, guid: 043309b48ddeb7f4c98739dad0720116, type: 3}
+    InGameSprite: {fileID: 21300000, guid: 45f08da01b47b114b800eec5c551bb74, type: 3}
     Requirements:
       ResourcePoints: 0
       DaysToComplete: 2
@@ -28,10 +26,10 @@ MonoBehaviour:
     AvaiableResearches: 
     CanProduce: 0
     ProductionPerDay: 0
-    CanRiseDefenses: 1
-    DefencePointsPerDay: 5
+    CanRiseDefenses: 0
+    DefensePointsPerDay: 0
   - Icon: {fileID: 21300000, guid: 98755408aee6d394fa6bbb4f345fc5fa, type: 3}
-    FinalPrefab: {fileID: 6119682596485182148, guid: 043309b48ddeb7f4c98739dad0720116, type: 3}
+    InGameSprite: {fileID: 21300000, guid: 98755408aee6d394fa6bbb4f345fc5fa, type: 3}
     Requirements:
       ResourcePoints: 50
       DaysToComplete: 3
@@ -41,4 +39,4 @@ MonoBehaviour:
     CanProduce: 0
     ProductionPerDay: 0
     CanRiseDefenses: 1
-    DefencePointsPerDay: 10
+    DefensePointsPerDay: 10

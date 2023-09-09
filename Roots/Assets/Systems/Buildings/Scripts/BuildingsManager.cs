@@ -11,6 +11,12 @@ namespace Buildings
         [SerializeField] private WorkersManager _workersManager; // need to extend
         [SerializeField] private BuildingTransforms[] _placesForBuildings; // need to extend
         [SerializeField] private BuildingDatabase _buildingsDatabase;
+        
+        [SerializeField] private Sprite _buildingInBuildStage;
+        [SerializeField] private Sprite _resourcesPointsIcon;
+        [SerializeField] private Sprite _defensePointsIcon;
+        [SerializeField] private Sprite _defenseAndResourcesPointsIcon;
+        
         private List<Building> _currentlyBuildBuildings;
 
         public event Action<BuildingData, int> OnBuildingClicked;
@@ -68,8 +74,32 @@ namespace Buildings
             }
         }
 
-        public void RefreshBuildingsBuildTimer()
+        public void RefreshBuildingsOnNewDay()
         {
+            foreach (var building in _currentlyBuildBuildings)
+            {
+                if (!building.HasWorker || building.IsBeeingUpgradedOrBuilded)
+                    continue;
+
+                if (building.BuildingMainData.PerLevelData[building.CurrentLevel].CanProduce &&
+                    building.BuildingMainData.PerLevelData[building.CurrentLevel].CanRiseDefenses)
+                {
+                    building.SetCollectionIcon(_defenseAndResourcesPointsIcon);
+                }
+                
+                if (building.BuildingMainData.PerLevelData[building.CurrentLevel].CanProduce)
+                {
+                    building.SetCollectionIcon(_resourcesPointsIcon);
+                }
+
+                if ( building.BuildingMainData.PerLevelData[building.CurrentLevel].CanRiseDefenses)
+                {
+                    building.SetCollectionIcon(_defensePointsIcon);
+                }
+
+                // add some sort of bonus here to avoid saving up data in Buildingscript
+            }
+            
             foreach (var building in _currentlyBuildBuildings)
             {
                 if (!building.IsBeeingUpgradedOrBuilded)
@@ -80,41 +110,15 @@ namespace Buildings
                 if (building.CurrentDayOnQueue < building.BuildingMainData.PerLevelData[building.CurrentLevel].Requirements.DaysToComplete)
                     continue;
 
-                building.FinishBuildingSequence();
+                if (building.CurrentLevel == 0)
+                {
+                    building.FinishBuildingSequence();
+                }
+                else
+                {
+                    building.HandleLevelUp();
+                }
             }
-        }
-
-        public int GatherProductionPointsFromBuildings()
-        {
-            int resourcePointsToAdd = 0;
-
-            foreach (var building in _currentlyBuildBuildings)
-            {
-                if (!building.BuildingMainData.PerLevelData[building.CurrentLevel].CanProduce || !building.HasWorker)
-                    continue;
-
-                resourcePointsToAdd += GetProductionDataOfBuilding(building);
-                // add some sort of bonus here to avoid saving up data in Buildingscript
-            }
-
-            return resourcePointsToAdd;
-        }
-
-        public int GatherDefensePointsFromBuildings()
-        {
-            int defensePointsToAdd = 0;
-
-            foreach (var building in _currentlyBuildBuildings)
-            {
-                if (!building.BuildingMainData.PerLevelData[building.CurrentLevel].CanRiseDefenses ||
-                    !building.HasWorker)
-                    continue;
-
-                defensePointsToAdd += GetDefenseRisingDataOfBuilding(building);
-                // add some sort of bonus here to avoid saving up data in Buildingscript
-            }
-
-            return defensePointsToAdd;
         }
 
         public bool CanBuildBuilding(BuildingData p_building, int p_currentLevel = 0)
@@ -186,9 +190,26 @@ namespace Buildings
                         building.SiteForBuilding.position, Quaternion.identity);
                     newBuilding = newBuildingGo.GetComponent<Building>();
                     newBuilding.InitiateBuildingSequence();
+                    newBuilding.InGameIcon.sprite = _buildingInBuildStage;
                 }
 
                 _currentlyBuildBuildings.Add(newBuilding);
+                newBuilding.OnPointsGathered += GatherPoints;
+                newBuilding.OnWorkDone += AssignWorker;
+            }
+        }
+
+        private void GatherPoints(PointsType p_type, int p_amount)
+        {
+            switch (p_type)
+            {
+                case PointsType.Resource:
+                    CurrentResourcePoints += p_amount;
+                    break;
+                
+                case PointsType.Defense:
+                    CurrentDefensePoints += p_amount;
+                    break;
             }
         }
 
@@ -205,6 +226,7 @@ namespace Buildings
                 }
                 else
                 {
+                    _currentlyBuildBuildings[i].InGameIcon.sprite = _buildingInBuildStage;
                     _currentlyBuildBuildings[i].InitiateUpgradeSequence();
                 }
             }
@@ -258,7 +280,20 @@ namespace Buildings
         public int GetDefenseRisingDataOfBuilding(Building p_building)
         {
             return p_building.BuildingMainData.PerLevelData[p_building.CurrentLevel]
-                .DefencePointsPerDay; // * _bonusesManager.GetBonusForBuilding(p_building)
+                .DefensePointsPerDay; // * _bonusesManager.GetBonusForBuilding(p_building)
+        }
+
+        public bool IsAnyBuildingNonGathered()
+        {
+            foreach (var building in _currentlyBuildBuildings)
+            {
+                if (building.HaveSomethingToCollect)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 

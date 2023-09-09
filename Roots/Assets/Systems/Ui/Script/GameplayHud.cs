@@ -1,4 +1,5 @@
-﻿using Buildings;
+﻿using System;
+using Buildings;
 using TMPro;
 using UnityEngine;
 using World;
@@ -6,20 +7,48 @@ using UnityEngine.UI;
 
 namespace InGameUi
 {
-    public class GameplayHud: MonoBehaviour
+    enum DuringDayState
+    {
+        OnCollecting,
+        SettingWorkers,
+        AfterWorkersSet,
+        Working
+    }
+
+    public class GameplayHud : MonoBehaviour
     {
         public static bool BlockHud;
-        
+
         [SerializeField] private WorldManager _worldManager;
         [SerializeField] private BuildingManager _buildingManager;
-        
+        [SerializeField] private WorkersPanel _workersPanel;
+
         [SerializeField] private TextMeshProUGUI CurrentDay;
         [SerializeField] private TextMeshProUGUI DayToStorm;
         [SerializeField] private TextMeshProUGUI ResourcePoints;
         [SerializeField] private TextMeshProUGUI DefensePoints;
         [SerializeField] private TextMeshProUGUI ShardsOfDestiny;
-        
-        [SerializeField] private Button SkipDayButton;
+
+        [SerializeField] private GameObject SkipDayGo;
+        [SerializeField] private GameObject EndMissionGo;
+        [SerializeField] private GameObject EndDayGo;
+
+        private DuringDayState CurrentPlayerState;
+        private Button _skipDayButton;
+        private Button _endMissionButton;
+        private Button _endDayButton;
+        private TextMeshProUGUI _endDayButtonText;
+
+        private void Start()
+        {
+            _skipDayButton = SkipDayGo.GetComponent<Button>();
+            _endMissionButton = EndMissionGo.GetComponent<Button>();
+            _endDayButton = EndDayGo.GetComponent<Button>();
+
+            _endDayButtonText = _endDayButton.GetComponentInChildren<TextMeshProUGUI>();
+
+            _workersPanel.OnBackToMap += SetWorkers;
+        }
 
         private void Update() // Better way to do it?
         {
@@ -30,20 +59,126 @@ namespace InGameUi
             DefensePoints.text = $"Defense Points: {_buildingManager.CurrentDefensePoints.ToString()}";
             ShardsOfDestiny.text = $"Shards Of Destiny: {_buildingManager.ShardsOfDestinyAmount.ToString()}";
 
-            if (BlockHud)
+
+            if (_worldManager.CanLeaveMission())
             {
-                SkipDayButton.interactable = false;
+                EndMissionGo.SetActive(true);
+                _endMissionButton.interactable = true;
             }
             else
             {
-                SkipDayButton.interactable = true;
+                EndMissionGo.SetActive(false);
+                _endMissionButton.interactable = false;
+            }
+
+            MainButtonHandler(); // change that for events on click
+
+            if (BlockHud)
+            {
+                _skipDayButton.interactable = false;
+                _endMissionButton.interactable = false;
+                _endDayButton.interactable = false;
             }
         }
 
-        public void SkipDayOnClick()
+        bool onlyOnce = true;
+
+        private void MainButtonHandler()
         {
+            switch (CurrentPlayerState)
+            {
+                case DuringDayState.OnCollecting:
+
+                    _endDayButtonText.text = "Set Workers";
+
+                    if (_worldManager.CanSetWorkers())
+                    {
+                        _endDayButton.interactable = true;
+
+                        if (onlyOnce)
+                        {
+                            _endDayButton.onClick.AddListener(OpenWorkersDisplacementPanel);
+                            onlyOnce = false;
+                        }
+                    }
+                    else
+                    {
+                        _endDayButton.interactable = false;
+                    }
+
+                    break;
+
+                case DuringDayState.SettingWorkers:
+                    _endDayButtonText.text = "Setting Workers...";
+                    break;
+
+                case DuringDayState.AfterWorkersSet:
+                    _endDayButtonText.text = "Start the day";
+
+                    if (_worldManager.CanStartDay())
+                    {
+                        _endDayButton.interactable = true;
+                        if (onlyOnce)
+                        {
+                            _endDayButton.onClick.AddListener(OnDayStarted);
+                            onlyOnce = false;
+                        }
+                    }
+                    else
+                    {
+                        _endDayButton.interactable = false;
+                    }
+
+                    break;
+
+                case DuringDayState.Working:
+                    _endDayButtonText.text = "Working...";
+                    _endDayButton.interactable = false;
+
+                    if (_worldManager.CanSkipDay())
+                    {
+                        _skipDayButton.interactable = true;
+                        if (onlyOnce)
+                        {
+                            _skipDayButton.onClick.AddListener(OnDaySkipped);
+                            onlyOnce = false;
+                        }
+                    }
+
+                    break;
+            }
+        }
+
+        private void OpenWorkersDisplacementPanel()
+        {
+            CurrentPlayerState = DuringDayState.SettingWorkers;
+            _endDayButton.onClick.RemoveListener(OpenWorkersDisplacementPanel);
+            onlyOnce = true;
+
+            _workersPanel.ActivatePanel();
+        }
+
+        private void SetWorkers()
+        {
+            CurrentPlayerState = DuringDayState.AfterWorkersSet;
+            onlyOnce = true;
+        }
+
+        private void OnDayStarted()
+        {
+            CurrentPlayerState = DuringDayState.Working;
+            _endDayButton.onClick.RemoveListener(OnDayStarted);
+            onlyOnce = true;
+        }
+
+        private void OnDaySkipped()
+        {
+            CurrentPlayerState = DuringDayState.OnCollecting;
+            _skipDayButton.onClick.RemoveListener(OnDaySkipped);
+            _skipDayButton.interactable = false;
+            onlyOnce = true;
+            
             _worldManager.SkipDay();
-            Debug.Log("Skipped Day");
         }
     }
 }

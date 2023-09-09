@@ -18,6 +18,8 @@ namespace World
         private int _stormPower;
         private Vector2Int _stormDaysRange;
 
+        private bool _hasLeftMission = false;
+
         public int NeededResourcePoints => _missionData[_currentMission].NeededResourcePoints;
         public int CurrentDay => _currentDay;
         public int FinalHiddenStormDay => _finalHiddenStormDay;
@@ -41,23 +43,45 @@ namespace World
         private void StartNewDay()
         {
             _currentDay++;
-            // check if storm is not happening
+
+            if (_currentDay == _finalHiddenStormDay)
+            {
+                EndMission();
+            }
+            else
+            {
+                _buildingManager.RefreshBuildingsOnNewDay();
+                
+                if (_buildingManager.IsAnyBuildingNonGathered())
+                {
+                    
+                }
+                
+                
+                OnNewDayStarted?.Invoke();
+            }
+
             // if not: new day has started tooltip: info about last one + panel for worker displacement
             // if yes: checlk if win
-            _buildingManager.CurrentResourcePoints += _buildingManager.GatherProductionPointsFromBuildings();
-            _buildingManager.CurrentDefensePoints += _buildingManager.GatherDefensePointsFromBuildings();
-            _buildingManager.RefreshBuildingsBuildTimer();
+           
             //do other thins (days)
-            
-            OnNewDayStarted?.Invoke();
+
         }
-        
+
         private void EndMission()
         {
+            if (StormPower > _buildingManager.CurrentDefensePoints) // loss
+            {
+                //resultats
+            }
+            else // win
+            {
+                // prepare for fight panel -> placing workers -> resultats
+            }
+            
             _currentMission++;
-            //get resources from basement
         }
-        
+
         private void StartMission()
         {
             if (_currentMission == 0)
@@ -70,8 +94,36 @@ namespace World
             _finalHiddenStormDay = Random.Range(_missionData[_currentMission].DaysOfStormRange.x,
                 _missionData[_currentMission].DaysOfStormRange.y);
             //get resources from basement
-            
+
             StartNewDay();
+        }
+
+        public bool CanSkipDay()
+        {
+            // payment of shards/free skips
+            return true;
+        }
+
+        public bool CanLeaveMission()
+        {
+            if (_currentDay > _stormDaysRange.x && _currentDay < _stormDaysRange.y &&
+                _buildingManager.CurrentResourcePoints > NeededResourcePoints)
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public bool CanSetWorkers()
+        {
+            return !_buildingManager.IsAnyBuildingNonGathered();
+        }
+
+        public bool CanStartDay()
+        {
+            // need manager of minigames. If minigame ended => true
+            return true;
         }
     }
 
