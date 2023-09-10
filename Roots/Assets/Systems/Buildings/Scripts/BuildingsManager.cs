@@ -62,6 +62,19 @@ namespace Buildings
             Building.OnBuildingClicked -= HandleBuildingClicked;
         }
 
+        public Building GetSpecificBuilding(BuildingData p_data)
+        {
+            foreach (var building in _currentlyBuildBuildings)
+            {
+                if (building.BuildingMainData == p_data)
+                {
+                    return building;
+                }
+            }
+
+            return null;
+        }
+
         public void PutBuildingOnQueue(BuildingData p_buildingData)
         {
             var building = _currentlyBuildBuildings.Find(x => x.BuildingMainData == p_buildingData);
@@ -141,7 +154,7 @@ namespace Buildings
 
         public bool CanBuildBuilding(BuildingData p_building)
         {
-            if (_workersManager.BaseWorkersAmounts <= 0)
+            if (_workersManager.IsAnyWorkerFree())
                 return false;
 
             foreach (var building in _currentlyBuildBuildings)
@@ -194,6 +207,7 @@ namespace Buildings
                         building.SiteForBuilding.position, Quaternion.identity);
                     newBuilding = newBuildingGo.GetComponent<Building>();
                     newBuilding.IsBeeingUpgradedOrBuilded = false;
+                    
                     newBuilding.FinishBuildingSequence();
                 }
                 else
@@ -201,8 +215,9 @@ namespace Buildings
                     newBuildingGo = Instantiate(p_buildingData.MainPrefab, 
                         building.SiteForBuilding.position, Quaternion.identity);
                     newBuilding = newBuildingGo.GetComponent<Building>();
-                    newBuilding.InitiateBuildingSequence();
                     newBuilding.InGameIcon.sprite = _buildingInBuildStage;
+                    
+                    newBuilding.InitiateBuildingSequence();
                 }
 
                 _currentlyBuildBuildings.Add(newBuilding);
@@ -261,13 +276,15 @@ namespace Buildings
             if (p_assign)
             {
                 Debug.Log($"Worker added to: " + p_building);
-                _workersManager.WorkersInBuilding--;
+                _workersManager.WorkersInBuilding++;
             }
             else
             {
                 Debug.Log($"Worker Removed from: " + p_building);
-                _workersManager.WorkersInBuilding++;
+                _workersManager.WorkersInBuilding--;
             }
+            
+            p_building.OnWorkDone -= AssignWorker;
         }
 
         public bool CanAssignWorker(Building p_building)

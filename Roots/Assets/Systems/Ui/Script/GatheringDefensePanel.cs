@@ -30,7 +30,6 @@ namespace InGameUi
         private void Start()
         {
             _buildingManager.OnBuildingClicked += ActivateOnClick;
-            _workersManager.OnWorkersUpdated += UpdateWorkersText;
             _runtimeBuildingsUiToDestroy = new List<GameObject>();
             BuildingsOnQueue = new List<Building>();
             gameObject.SetActive(false);
@@ -191,10 +190,6 @@ namespace InGameUi
             UpdateWorkersText(p_gathering);
         }
         
-        private void UpdateWorkersText(int p_workers)
-        {
-            _numberOfWorkers.text = $"Workers: {p_workers.ToString()}";
-        }
 
         private void UpdateWorkersText(bool p_gathering)
         {

@@ -35,7 +35,6 @@ namespace InGameUi
         {
             _buildingPanel.OnBackToWorkersPanel += ActivatePanel;
             _gatheringDefensePanel.OnBackToWorkersPanel += ActivatePanel;
-            _workersManager.OnWorkersUpdated += UpdateWorkersText;
             
             _runtimeBuildingsUiToDestroy = new List<GameObject>();
             gameObject.SetActive(false);
@@ -175,21 +174,12 @@ namespace InGameUi
             _gatheringDefensePanel.HandleView(p_gathering);
         }
         
-        private void UpdateWorkersText(int p_workers)
-        {
-            _numberOfWorkers.text = $"Workers: {p_workers.ToString()} (+{_workersManager.OverallAssignedWorkers})";
-        }
-
         private void UpdateWorkersText()
         {
-            if (_workersManager.OverallAssignedWorkers >= 0)
-            {
-                _numberOfWorkers.text = $"Workers: {_workersManager.BaseWorkersAmounts.ToString()} (+{_workersManager.OverallAssignedWorkers})";
-            }
-            else
-            {
-                _numberOfWorkers.text = $"Workers: {_workersManager.BaseWorkersAmounts.ToString()} ({_workersManager.OverallAssignedWorkers})";
-            }
+            _buildingPanel.RefreshWorkersAmount();
+            _numberOfWorkers.text = $"Workers: {_workersManager.BaseWorkersAmounts.ToString()}/{_workersManager.OverallAssignedWorkers}";
+            
+            //_gatheringDefensePanel.ConfirmWorkersAssigment();
         }
     }
 }

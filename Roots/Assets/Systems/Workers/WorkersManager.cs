@@ -8,16 +8,11 @@ public class WorkersManager : MonoBehaviour
     private int _workersInDefences;
     private int _workersInResources;
 
-    public event Action<int> OnWorkersUpdated;
     
     public int BaseWorkersAmounts
     {
         get => _baseBaseWorkersAmount;
-        set
-        {
-            _baseBaseWorkersAmount = value;
-            OnWorkersUpdated?.Invoke(_baseBaseWorkersAmount);
-        }
+        set => _baseBaseWorkersAmount = value;
     }
     
     public int WorkersInBuilding
@@ -48,5 +43,10 @@ public class WorkersManager : MonoBehaviour
         _workersInBuilding = 0;
         _workersInDefences = 0;
         _workersInResources = 0;
+    }
+
+    public bool IsAnyWorkerFree()
+    {
+        return OverallAssignedWorkers == BaseWorkersAmounts;
     }
 }
