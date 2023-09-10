@@ -14,7 +14,7 @@ namespace Buildings
         public SpriteRenderer GatheringIcon;
         public int CurrentDayOnQueue;
         private int _currentLevel;
-        private bool _hasWorker = false;
+        private bool _haveWorker = false;
         [HideInInspector] public bool HaveSomethingToCollect = false;
         [HideInInspector] public bool IsBeeingUpgradedOrBuilded = false;
 
@@ -23,10 +23,10 @@ namespace Buildings
             get => _currentLevel;
         }        
         
-        public bool HasWorker
+        public bool HaveWorker
         {
-            get => _hasWorker;
-            set => _hasWorker = value;
+            get => _haveWorker;
+            set => _haveWorker = value;
         }
         
         public static event Action<BuildingData, int> OnBuildingClicked; 

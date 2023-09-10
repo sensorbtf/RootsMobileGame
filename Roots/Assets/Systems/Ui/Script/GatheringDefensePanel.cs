@@ -22,6 +22,7 @@ namespace InGameUi
 
         private BuildingData _currentBuildingData;
         private int _currentBuildingLevel;
+        [HideInInspector] public List<Building> BuildingsOnQueue;
         private List<GameObject> _runtimeBuildingsUiToDestroy;
 
         public event Action OnBackToWorkersPanel;
@@ -31,13 +32,8 @@ namespace InGameUi
             _buildingManager.OnBuildingClicked += ActivateOnClick;
             _workersManager.OnWorkersUpdated += UpdateWorkersText;
             _runtimeBuildingsUiToDestroy = new List<GameObject>();
+            BuildingsOnQueue = new List<Building>();
             gameObject.SetActive(false);
-        }
-
-        private void OnDisable()
-        {
-            //_buildingManager.OnBuildingClicked -= ActivateOnClick;
-            //_buildingManager.OnWorkersUpdated -= UpdateWorkersText;
         }
 
         private void ActivateOnClick(BuildingData p_specificBuilding, int p_level)
@@ -46,7 +42,6 @@ namespace InGameUi
             _currentBuildingLevel = p_level;
             _panelName.text = p_specificBuilding.Type.ToString();
 
-            //_buildingManager.c
             // View all buildings in cottage as it is like centrum dowodzenia for fast building
         }
 
@@ -54,11 +49,6 @@ namespace InGameUi
         {
             ClosePanel();
             OnBackToWorkersPanel?.Invoke();
-        }
-
-        private void UpdateWorkersText(int p_workers)
-        {
-            _numberOfWorkers.text = $"Workers: {p_workers.ToString()}";
         }
 
         private void ClosePanel()
@@ -76,6 +66,16 @@ namespace InGameUi
 
             gameObject.SetActive(false);
         }
+        
+        public void ConfirmWorkersAssigment()
+        {
+            foreach (var building in BuildingsOnQueue)
+            {
+                _buildingManager.AssignWorker(building, true);
+            }
+
+            BuildingsOnQueue.Clear();
+        }
 
         public void HandleView(bool p_gathering)
         {
@@ -83,6 +83,7 @@ namespace InGameUi
             CameraController.IsUiOpen = true;
             GameplayHud.BlockHud = true;
             _endWhileDisplacingWorkers.SetActive(true);
+            UpdateWorkersText(p_gathering);
             
             // Now create UI elements by tier
             foreach (var building in _buildingManager.CurrentBuildings)
@@ -114,46 +115,103 @@ namespace InGameUi
                     $"Production Points Per Day: {_buildingManager.GetProductionDataOfBuilding(building)}" 
                     : $"Defense Points Per Day: {_buildingManager.GetDefenseRisingDataOfBuilding(building)}";
 
-                if (_buildingManager.CanAssignWorker(building))
+                if (building.HaveWorker)
                 {
-                    script.SelectWorker.image.color = Color.green;
-                    script.SelectWorker.interactable = _workersManager.WorkersAmount > 0;
-                    script.SelectWorker.onClick.AddListener(() => TryToAssignWorkerFromUi(building, newGathering, true));
+                    script.SelectWorker.image.color = Color.cyan;
+                    script.SelectWorker.interactable = true;
+                    script.SelectWorker.onClick.AddListener(() => AssigningWorkerHandler(building, script, false, p_gathering));
                 }
                 else
                 {
-                    script.SelectWorker.image.color = Color.yellow;
-                    script.SelectWorker.interactable = true;
-                    script.SelectWorker.onClick.AddListener(() => TryToAssignWorkerFromUi(building, newGathering, false));
+                    script.SelectWorker.image.color = Color.green;
+                    script.SelectWorker.interactable = true;//AssignedWorkers < 0;
+                    script.SelectWorker.onClick.AddListener(() => AssigningWorkerHandler(building, script, true, p_gathering));
+                }
+
+                if (building.HaveWorker)
+                {
+                    script.GetComponent<Image>().color = Color.magenta;
+                }
+                else
+                {
+                    script.GetComponent<Image>().color = Color.gray;
                 }
             }
         }
 
-        private void TryToAssignWorkerFromUi(Building p_building, GameObject p_newGathering, bool p_assign)
+        private void AssigningWorkerHandler(Building p_building, SingleGatheringUi p_newGatheringPanel, bool p_assign, bool p_gathering)
         {
-            OnButtonClicked(p_building, p_newGathering, p_assign);
-            SingleGatheringUi script = p_newGathering.GetComponent<SingleGatheringUi>();
-            script.SelectWorker.onClick.RemoveAllListeners();   
+            p_newGatheringPanel.SelectWorker.onClick.RemoveAllListeners();   
 
             if (p_assign)
             {
-                script.SelectWorker.image.color = Color.yellow;                    
-                script.SelectWorker.interactable = true;
-                script.SelectWorker.onClick.AddListener(() => TryToAssignWorkerFromUi(p_building, p_newGathering, false));   
+                p_newGatheringPanel.SelectWorker.image.color = Color.cyan;                    
+                p_newGatheringPanel.SelectWorker.interactable = true;
+                p_newGatheringPanel.SelectWorker.onClick.AddListener(() => AssigningWorkerHandler(p_building, p_newGatheringPanel, false, p_gathering));   
             }
             else
             {
-                script.SelectWorker.image.color = Color.green;
-                script.SelectWorker.interactable = _workersManager.WorkersAmount > 0;
-                script.SelectWorker.onClick.AddListener(() => TryToAssignWorkerFromUi(p_building, p_newGathering, true));   
+                p_newGatheringPanel.SelectWorker.image.color = Color.green;
+                p_newGatheringPanel.SelectWorker.interactable = true;//AssignedWorkers > 0;
+                p_newGatheringPanel.SelectWorker.onClick.AddListener(() => AssigningWorkerHandler(p_building, p_newGatheringPanel, true, p_gathering));   
             }
+            
+            OnButtonClicked(p_building, p_assign, p_gathering);
         }
         
-        private void OnButtonClicked(Building p_building, GameObject p_panelUi, bool p_assign)
+        private void OnButtonClicked(Building p_building, bool p_assign, bool p_gathering)
         {
-            _buildingManager.AssignWorker(p_building, p_assign);
+            if (p_assign)
+            {
+                if (p_gathering)
+                {
+                    _workersManager.WorkersInResources--;
+                }
+                else
+                {
+                    _workersManager.WorkersInDefences--;
+                }
 
-            p_panelUi.GetComponent<Image>().color = !p_assign ? Color.gray : Color.magenta;
+                BuildingsOnQueue.Add(p_building);
+            }
+            else
+            {
+                if (p_gathering)
+                {
+                    _workersManager.WorkersInResources++;
+                }
+                else
+                {
+                    _workersManager.WorkersInDefences++;
+                }
+
+                BuildingsOnQueue.Remove(p_building);
+            }
+
+            UpdateWorkersText(p_gathering);
+        }
+        
+        private void UpdateWorkersText(int p_workers)
+        {
+            _numberOfWorkers.text = $"Workers: {p_workers.ToString()}";
+        }
+
+        private void UpdateWorkersText(bool p_gathering)
+        {
+            if (p_gathering)
+            {
+                if (_workersManager.WorkersInResources >= 0)
+                {
+                    _numberOfWorkers.text = $"Workers: {_workersManager.BaseWorkersAmounts.ToString()} (+{_workersManager.WorkersInResources})";
+                }
+            }
+            else
+            {
+                if (_workersManager.WorkersInDefences >= 0)
+                {
+                    _numberOfWorkers.text = $"Workers: {_workersManager.BaseWorkersAmounts.ToString()} (+{_workersManager.WorkersInDefences})";
+                }
+            }
         }
     }
 }

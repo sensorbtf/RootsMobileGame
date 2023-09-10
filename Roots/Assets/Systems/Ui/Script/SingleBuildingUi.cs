@@ -1,10 +1,11 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-public class SingleButtonUi : MonoBehaviour
+public class SingleBuildingUi : MonoBehaviour
 {
-    public Button CreateBuilding;
+    [FormerlySerializedAs("CreateBuilding")] public Button CreateOrUpgradeBuilding;
     public Image BuildingIcon;
     public TextMeshProUGUI BuildingName;
     public TextMeshProUGUI LevelInfo;

@@ -32,7 +32,7 @@ namespace World
         {
             _buildingManager.StartOnWorld();
             StartMission();
-            _workersManager.WorkersAmount = _buildingManager.GetFarmProductionAmount;
+            _workersManager.BaseWorkersAmounts = _buildingManager.GetFarmProductionAmount;
         }
 
         public void SkipDay()

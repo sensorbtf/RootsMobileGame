@@ -31,7 +31,7 @@ namespace Buildings
     {
         public int ResourcePoints;
         public int DaysToComplete;
-        public BuildingRequirements[] BuildingRequirements;
+        public BuildingRequirements[] OtherBuildingRequirements;
         public Researches[] ResearchRequirements;
     }
     

@@ -62,15 +62,33 @@ namespace Buildings
             Building.OnBuildingClicked -= HandleBuildingClicked;
         }
 
-        public void PutBuildingOnQueue(BuildingData p_buildingData, int p_buildingLevel)
+        public void PutBuildingOnQueue(BuildingData p_buildingData)
         {
-            if (p_buildingLevel == 0)
+            var building = _currentlyBuildBuildings.Find(x => x.BuildingMainData == p_buildingData);
+            
+            if (building == null)
             {
                 HandleBuiltOfBuilding(p_buildingData, false);
             }
             else
             {
-                HandleBuildingUpgrade(p_buildingData, false);
+                HandleUpgradeOfBuilding(p_buildingData, false);
+            }
+            
+            AssignWorker(_currentlyBuildBuildings.Find(x => x.BuildingMainData == p_buildingData), true);
+        }
+        
+        public void ModifyBuildingOnQueue(BuildingData p_buildingData, bool p_assign)
+        {
+            var building = _currentlyBuildBuildings.Find(x => x.BuildingMainData == p_buildingData);
+
+            if (building.HaveWorker)
+            {
+                AssignWorker(building, false);
+            }
+            else
+            {
+                AssignWorker(building, true);
             }
         }
 
@@ -78,7 +96,7 @@ namespace Buildings
         {
             foreach (var building in _currentlyBuildBuildings)
             {
-                if (!building.HasWorker || building.IsBeeingUpgradedOrBuilded)
+                if (!building.HaveWorker || building.IsBeeingUpgradedOrBuilded)
                     continue;
 
                 if (building.BuildingMainData.PerLevelData[building.CurrentLevel].CanProduce &&
@@ -102,7 +120,7 @@ namespace Buildings
             
             foreach (var building in _currentlyBuildBuildings)
             {
-                if (!building.IsBeeingUpgradedOrBuilded)
+                if (!building.IsBeeingUpgradedOrBuilded || !building.HaveWorker)
                     continue;
 
                 building.CurrentDayOnQueue++;
@@ -121,9 +139,9 @@ namespace Buildings
             }
         }
 
-        public bool CanBuildBuilding(BuildingData p_building, int p_currentLevel = 0)
+        public bool CanBuildBuilding(BuildingData p_building)
         {
-            if (_workersManager.WorkersAmount <= 0)
+            if (_workersManager.BaseWorkersAmounts <= 0)
                 return false;
 
             foreach (var building in _currentlyBuildBuildings)
@@ -135,7 +153,7 @@ namespace Buildings
                     return false;
             }
             
-            if (CurrentResourcePoints < p_building.PerLevelData[p_currentLevel].Requirements.ResourcePoints)
+            if (CurrentResourcePoints < p_building.PerLevelData[0].Requirements.ResourcePoints)
             {
                 return false;
             }
@@ -145,15 +163,9 @@ namespace Buildings
         
         public bool CanUpgradeBuilding(Building p_building)
         {
-            if (_workersManager.WorkersAmount <= 0)
+            if (_workersManager.BaseWorkersAmounts - _workersManager.OverallAssignedWorkers == 0)
                 return false;
             
-            if (p_building.IsBeeingUpgradedOrBuilded)
-            {
-                //set upgragdingUi
-                return false;
-            }
-
             if (CurrentResourcePoints < p_building.BuildingMainData.PerLevelData
                     [p_building.CurrentLevel].Requirements.ResourcePoints)
             {
@@ -199,21 +211,7 @@ namespace Buildings
             }
         }
 
-        private void GatherPoints(PointsType p_type, int p_amount)
-        {
-            switch (p_type)
-            {
-                case PointsType.Resource:
-                    CurrentResourcePoints += p_amount;
-                    break;
-                
-                case PointsType.Defense:
-                    CurrentDefensePoints += p_amount;
-                    break;
-            }
-        }
-
-        private void HandleBuildingUpgrade(BuildingData p_buildingData, bool p_instant)
+        private void HandleUpgradeOfBuilding(BuildingData p_buildingData, bool p_instant)
         {
             for (int i = 0; i < _currentlyBuildBuildings.Count; i++)
             {
@@ -231,6 +229,20 @@ namespace Buildings
                 }
             }
         }
+        
+        private void GatherPoints(PointsType p_type, int p_amount)
+        {
+            switch (p_type)
+            {
+                case PointsType.Resource:
+                    CurrentResourcePoints += p_amount;
+                    break;
+                
+                case PointsType.Defense:
+                    CurrentDefensePoints += p_amount;
+                    break;
+            }
+        }
 
         private void HandleBuildingClicked(BuildingData p_buildingData, int p_level)
         {
@@ -241,15 +253,20 @@ namespace Buildings
 
         public void AssignWorker(Building p_building, bool p_assign)
         {
-            p_building.HasWorker = p_assign;
+            if (p_assign && p_building.HaveWorker)
+                return;
+            
+            p_building.HaveWorker = p_assign;
+            
             if (p_assign)
             {
                 Debug.Log($"Worker added to: " + p_building);
-                _workersManager.WorkersAmount--;
+                _workersManager.WorkersInBuilding--;
             }
             else
             {
-                _workersManager.WorkersAmount++;
+                Debug.Log($"Worker Removed from: " + p_building);
+                _workersManager.WorkersInBuilding++;
             }
         }
 
@@ -259,7 +276,7 @@ namespace Buildings
             {
                 if (p_building.BuildingMainData.Type == building.BuildingMainData.Type)
                 {
-                    return !building.HasWorker;
+                    return !building.HaveWorker;
                 }
             }
 
@@ -269,6 +286,11 @@ namespace Buildings
         public void RemoveResourcePoints(BuildingData p_buildingData, int p_buildingLevel)
         {
             CurrentResourcePoints -= p_buildingData.PerLevelData[p_buildingLevel].Requirements.ResourcePoints;
+        }
+        
+        public void AddResourcePoints(BuildingData p_buildingData, int p_buildingLevel)
+        {
+            CurrentResourcePoints += p_buildingData.PerLevelData[p_buildingLevel].Requirements.ResourcePoints;
         }
 
         public int GetProductionDataOfBuilding(Building p_building)

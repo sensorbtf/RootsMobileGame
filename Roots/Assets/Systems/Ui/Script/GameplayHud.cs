@@ -47,6 +47,7 @@ namespace InGameUi
 
             _endDayButtonText = _endDayButton.GetComponentInChildren<TextMeshProUGUI>();
 
+            SkipDayGo.SetActive(false);
             _workersPanel.OnBackToMap += SetWorkers;
         }
 
@@ -138,6 +139,7 @@ namespace InGameUi
                     if (_worldManager.CanSkipDay())
                     {
                         _skipDayButton.interactable = true;
+                        
                         if (onlyOnce)
                         {
                             _skipDayButton.onClick.AddListener(OnDaySkipped);
@@ -167,6 +169,7 @@ namespace InGameUi
         private void OnDayStarted()
         {
             CurrentPlayerState = DuringDayState.Working;
+            SkipDayGo.SetActive(true);
             _endDayButton.onClick.RemoveListener(OnDayStarted);
             onlyOnce = true;
         }
@@ -175,6 +178,7 @@ namespace InGameUi
         {
             CurrentPlayerState = DuringDayState.OnCollecting;
             _skipDayButton.onClick.RemoveListener(OnDaySkipped);
+            SkipDayGo.SetActive(false);
             _skipDayButton.interactable = false;
             onlyOnce = true;
             

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using Buildings;
 using GeneralSystems;
 using TMPro;
@@ -15,7 +16,7 @@ namespace InGameUi
     {
         [SerializeField] private BuildingManager _buildingManager;
         [SerializeField] private WorkersManager _workersManager;
-        [SerializeField] private WorldManager _worldManager;
+        
         [SerializeField] private BuildingPanel _buildingPanel;
         [SerializeField] private GatheringDefensePanel _gatheringDefensePanel;
 
@@ -35,13 +36,9 @@ namespace InGameUi
             _buildingPanel.OnBackToWorkersPanel += ActivatePanel;
             _gatheringDefensePanel.OnBackToWorkersPanel += ActivatePanel;
             _workersManager.OnWorkersUpdated += UpdateWorkersText;
+            
             _runtimeBuildingsUiToDestroy = new List<GameObject>();
             gameObject.SetActive(false);
-        }
-
-        private void UpdateWorkersText(int p_workers)
-        {
-            _numberOfWorkers.text = $"Workers: {p_workers.ToString()}";
         }
 
         public void ActivatePanel()
@@ -49,12 +46,15 @@ namespace InGameUi
             gameObject.SetActive(true);
             GameplayHud.BlockHud = true;
             CameraController.IsUiOpen = true;
+            
             _tabName.text = "Worker Displacement";
-
-            if (_workersManager.WorkersAmount <= 0)
+            
+            UpdateWorkersText();
+            
+            if (_workersManager.BaseWorkersAmounts - _workersManager.OverallAssignedWorkers == 0)
             {
                 _finishWorkersAssigningButton.SetActive(true);
-                _finishWorkersAssigningButton.GetComponent<Button>().onClick.AddListener(ClosePanel);
+                _finishWorkersAssigningButton.GetComponent<Button>().onClick.AddListener(AssignWorkersForNewDay);
             }
             else
             {
@@ -74,13 +74,29 @@ namespace InGameUi
                     case 0:
                         scriptOfBar.BarText.text = "Buildings";
 
-                        foreach (var building in _buildingManager.CurrentBuildings)
+                        foreach (var data in _buildingPanel.BuildingsToShow)
                         {
-                            if (!building.IsBeeingUpgradedOrBuilded)
-                                continue;
-                            
                             newEntry = Instantiate(_iconPrefab, scriptOfBar.ScrollContext);
-                            newEntry.GetComponent<Image>().sprite = building.BuildingMainData.PerLevelData[building.CurrentLevel].Icon;
+                            ButtonIconPrefab references = newEntry.GetComponent<ButtonIconPrefab>();
+                            var building = _buildingManager.CurrentBuildings.Find(x => x.BuildingMainData == data.Key);
+                            
+                            if (building != null)
+                            {
+                                references.BuildingIcon.image.sprite = data.Key.PerLevelData[building.CurrentLevel].Icon;
+                            }
+                            else
+                            {
+                                references.BuildingIcon.image.sprite = data.Key.PerLevelData[0].Icon;
+                            }
+
+                            if (data.Value)
+                            {
+                                references.NewGo.SetActive(true);
+                            }
+                            else
+                            {
+                                references.NewGo.SetActive(false);
+                            }
                         }
 
                         scriptOfBar.BarButton.onClick.AddListener(OnBuildOrUpgradeButtonClicked);
@@ -88,10 +104,9 @@ namespace InGameUi
                     case 1:
                         scriptOfBar.BarText.text = "Resources";
                         
-                        foreach (var building in _buildingManager.CurrentBuildings)
+                        foreach (var building in _gatheringDefensePanel.BuildingsOnQueue)
                         {
-                            if (!building.HasWorker || !building.BuildingMainData.PerLevelData[building.CurrentLevel].CanProduce
-                                                    || building.IsBeeingUpgradedOrBuilded) 
+                            if (!building.BuildingMainData.PerLevelData[building.CurrentLevel].CanProduce)
                                 continue;
                             
                             newEntry = Instantiate(_iconPrefab, scriptOfBar.ScrollContext);
@@ -103,10 +118,9 @@ namespace InGameUi
                     case 2:
                         scriptOfBar.BarText.text = "Defense Points";
                         
-                        foreach (var building in _buildingManager.CurrentBuildings)
+                        foreach (var building in _gatheringDefensePanel.BuildingsOnQueue)
                         {
-                            if (!building.HasWorker || !building.BuildingMainData.PerLevelData[building.CurrentLevel].CanRiseDefenses
-                                || building.IsBeeingUpgradedOrBuilded)
+                            if (!building.BuildingMainData.PerLevelData[building.CurrentLevel].CanRiseDefenses)
                                 continue;
                             
                             newEntry = Instantiate(_iconPrefab, scriptOfBar.ScrollContext);
@@ -127,15 +141,26 @@ namespace InGameUi
             {
                 Destroy(createdUiElement);
             }
-
-            CameraController.IsUiOpen = false;
-
+            
             _runtimeBuildingsUiToDestroy.Clear();
+            CameraController.IsUiOpen = false;
             GameplayHud.BlockHud = false;
-            // _buildingPanel.OnBackToWorkersPanel -= ActivatePanel;
-            // _gatheringDefensePanel.OnBackToWorkersPanel -= ActivatePanel;
             OnBackToMap?.Invoke();
             gameObject.SetActive(false);
+        }
+        
+        private void AssignWorkersForNewDay()
+        {
+            _buildingPanel.ConfirmWorkersAssigment();
+            _gatheringDefensePanel.ConfirmWorkersAssigment();
+            _workersManager.ResetAssignedWorkers();
+
+            foreach (var building in _buildingPanel.BuildingsToShow.ToList())
+            {
+                _buildingPanel.BuildingsToShow[building.Key] = false;
+            }
+            
+            ClosePanel();
         }
 
         private void OnBuildOrUpgradeButtonClicked()
@@ -144,11 +169,27 @@ namespace InGameUi
             _buildingPanel.HandleView(true);
         }
         
-        private void 
-            OnGatheringOrDefenseButtonClicked(bool p_gathering)
+        private void OnGatheringOrDefenseButtonClicked(bool p_gathering)
         {
             ClosePanel();
             _gatheringDefensePanel.HandleView(p_gathering);
+        }
+        
+        private void UpdateWorkersText(int p_workers)
+        {
+            _numberOfWorkers.text = $"Workers: {p_workers.ToString()} (+{_workersManager.OverallAssignedWorkers})";
+        }
+
+        private void UpdateWorkersText()
+        {
+            if (_workersManager.OverallAssignedWorkers >= 0)
+            {
+                _numberOfWorkers.text = $"Workers: {_workersManager.BaseWorkersAmounts.ToString()} (+{_workersManager.OverallAssignedWorkers})";
+            }
+            else
+            {
+                _numberOfWorkers.text = $"Workers: {_workersManager.BaseWorkersAmounts.ToString()} ({_workersManager.OverallAssignedWorkers})";
+            }
         }
     }
 }
