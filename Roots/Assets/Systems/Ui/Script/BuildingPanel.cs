@@ -24,7 +24,7 @@ namespace InGameUi
         private int _currentBuildingLevel;
         private List<GameObject> _runtimeBuildingsUiToDestroy;
         private List<BuildingData> _buildingsOnInPanelQueue;
-        //private Dictionary<BuildingData, bool> _buildingsOnCurrentlyBuildingQueue;
+        private Dictionary<BuildingData, SingleBuildingUi> _createdUiElements;
 
         [HideInInspector] public Dictionary<BuildingData, bool> BuildingsToShow;
         public event Action OnBackToWorkersPanel;
@@ -35,6 +35,7 @@ namespace InGameUi
             _runtimeBuildingsUiToDestroy = new List<GameObject>();
             _buildingsOnInPanelQueue = new List<BuildingData>();
             BuildingsToShow = new Dictionary<BuildingData, bool>();
+            _createdUiElements = new Dictionary<BuildingData, SingleBuildingUi>();
             gameObject.SetActive(false);
         }
 
@@ -54,6 +55,7 @@ namespace InGameUi
             }
 
             _runtimeBuildingsUiToDestroy.Clear();
+            _createdUiElements.Clear();
             gameObject.SetActive(false);
         }
 
@@ -115,8 +117,9 @@ namespace InGameUi
                 foreach (BuildingData buildingData in p_buildingsByTier[tier])
                 {
                     GameObject newBuildingUi = Instantiate(buildingEntryPrefab, contentTransform);
-                    
                     SingleBuildingUi script = newBuildingUi.GetComponent<SingleBuildingUi>();
+                    _createdUiElements.Add(buildingData, script);
+                    
                     script.BuildingName.GetComponent<TextMeshProUGUI>().text = buildingData.Type.ToString();
                     script.BuildingInfo.GetComponent<TextMeshProUGUI>().text = "";
 
@@ -213,39 +216,39 @@ namespace InGameUi
         }
 
         private void AssigningWorkerHandler(BuildingData p_buildingData, int p_buildingLevel,
-            SingleBuildingUi p_newGathering, bool p_assign)  // REFRESHING AFTER CLICKING
+            SingleBuildingUi p_uiScript, bool p_assign)  // REFRESHING AFTER CLICKING
         {
-            p_newGathering.CreateOrUpgradeBuilding.onClick.RemoveAllListeners();
+            p_uiScript.CreateOrUpgradeBuilding.onClick.RemoveAllListeners();
 
             if (p_assign)
             {
-                p_newGathering.CreateOrUpgradeBuilding.image.color = Color.cyan; // in progress
-                p_newGathering.CreateOrUpgradeBuilding.interactable = true;
+                p_uiScript.CreateOrUpgradeBuilding.image.color = Color.cyan; // in progress
+                p_uiScript.CreateOrUpgradeBuilding.interactable = true;
 
-                p_newGathering.BuildingInfo.GetComponent<TextMeshProUGUI>().text = "Started Working";
-                p_newGathering.LevelInfo.GetComponent<TextMeshProUGUI>().text = "Cancel";
+                p_uiScript.BuildingInfo.GetComponent<TextMeshProUGUI>().text = "Started Working";
+                p_uiScript.LevelInfo.GetComponent<TextMeshProUGUI>().text = "Cancel";
 
-                p_newGathering.CreateOrUpgradeBuilding.onClick.AddListener(() => AssigningWorkerHandler(p_buildingData,
-                    p_buildingLevel, p_newGathering, false));
+                p_uiScript.CreateOrUpgradeBuilding.onClick.AddListener(() => AssigningWorkerHandler(p_buildingData,
+                    p_buildingLevel, p_uiScript, false));
             }
             else
             {
-                p_newGathering.CreateOrUpgradeBuilding.image.color = Color.green;
-                p_newGathering.CreateOrUpgradeBuilding.interactable = _workersManager.BaseWorkersAmounts > 0;
+                p_uiScript.CreateOrUpgradeBuilding.image.color = Color.green;
+                p_uiScript.CreateOrUpgradeBuilding.interactable = _workersManager.BaseWorkersAmounts > 0;
                 var building = _buildingManager.GetSpecificBuilding(p_buildingData);
 
                 if (building == null)
                 {
-                    UpdateRequirementsText(p_newGathering, p_buildingData.PerLevelData[0].Requirements);
-                    p_newGathering.LevelInfo.GetComponent<TextMeshProUGUI>().text = "Build";
+                    UpdateRequirementsText(p_uiScript, p_buildingData.PerLevelData[0].Requirements);
+                    p_uiScript.LevelInfo.GetComponent<TextMeshProUGUI>().text = "Build";
                 }
                 else
                 {
                     var nextLevel = building.CurrentLevel;
                     nextLevel++;
 
-                    p_newGathering.LevelInfo.GetComponent<TextMeshProUGUI>().text = $"{building.CurrentLevel} >> {nextLevel}";
-                    UpdateRequirementsText(p_newGathering, p_buildingData.PerLevelData[building.CurrentLevel].Requirements);
+                    p_uiScript.LevelInfo.GetComponent<TextMeshProUGUI>().text = $"{building.CurrentLevel} >> {nextLevel}";
+                    UpdateRequirementsText(p_uiScript, p_buildingData.PerLevelData[building.CurrentLevel].Requirements);
                 }
                 
                 if (BuildingsToShow.ContainsKey(p_buildingData))
@@ -253,8 +256,8 @@ namespace InGameUi
                     BuildingsToShow.Remove(p_buildingData);
                 }
 
-                p_newGathering.CreateOrUpgradeBuilding.onClick.AddListener(() => AssigningWorkerHandler(p_buildingData,
-                    p_buildingLevel, p_newGathering, true));
+                p_uiScript.CreateOrUpgradeBuilding.onClick.AddListener(() => AssigningWorkerHandler(p_buildingData,
+                    p_buildingLevel, p_uiScript, true));
             }
 
             OnButtonClicked(p_buildingData, p_buildingLevel, p_assign);
@@ -276,6 +279,64 @@ namespace InGameUi
             }
 
             UpdateWorkersText();
+            UpdateOtherButtonsUi();
+        }
+
+        private void UpdateOtherButtonsUi()
+        {
+            foreach (var element in _createdUiElements)
+            {
+                var building = _buildingManager.GetSpecificBuilding(element.Key);
+                
+                if (building == null)
+                {
+                    if (_buildingsOnInPanelQueue.Contains(element.Key))
+                    {
+                        element.Value.BuildingInfo.GetComponent<TextMeshProUGUI>().text = "In Progress";
+                        element.Value.LevelInfo.GetComponent<TextMeshProUGUI>().text = "Cancel";
+
+                        element.Value.CreateOrUpgradeBuilding.interactable = true;
+                        element.Value.CreateOrUpgradeBuilding.image.color = Color.yellow;  
+                    }
+                    else
+                    {
+                        if (_buildingManager.CanBuildBuilding(element.Key))
+                        {
+                            element.Value.CreateOrUpgradeBuilding.image.color = Color.green;
+                            element.Value.CreateOrUpgradeBuilding.interactable = true;
+                        }
+                        else
+                        {
+                            element.Value.CreateOrUpgradeBuilding.image.color = Color.red;
+                            element.Value.CreateOrUpgradeBuilding.interactable = false;
+                        }  
+                    } 
+                }
+                else
+                {
+                    element.Value.BuildingIcon.GetComponent<Image>().sprite = element.Key.PerLevelData[building.CurrentLevel].Icon;
+
+                    if (!building.IsBeeingUpgradedOrBuilded &&
+                        !_buildingsOnInPanelQueue.Contains(building.BuildingMainData)) // open way to upgrade
+                    {
+                        if (_buildingManager.CanUpgradeBuilding(building))
+                        {
+                            element.Value.CreateOrUpgradeBuilding.interactable = true;
+                            element.Value.CreateOrUpgradeBuilding.image.color = Color.green;
+                        }
+                        else
+                        {
+                            element.Value.CreateOrUpgradeBuilding.interactable = false;
+                            element.Value.CreateOrUpgradeBuilding.image.color = Color.red;
+                        }
+                    }
+                    else if (_buildingsOnInPanelQueue.Contains(building.BuildingMainData))
+                    {
+                        element.Value.CreateOrUpgradeBuilding.interactable = true;
+                        element.Value.CreateOrUpgradeBuilding.image.color = Color.yellow;  
+                    }
+                }
+            }
         }
 
         public void ConfirmWorkersAssigment()
