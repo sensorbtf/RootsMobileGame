@@ -77,7 +77,7 @@ namespace Buildings
 
         public void PutBuildingOnQueue(BuildingData p_buildingData)
         {
-            var building = _currentlyBuildBuildings.Find(x => x.BuildingMainData == p_buildingData);
+            var building = GetSpecificBuilding(p_buildingData);
             
             if (building == null)
             {
@@ -88,21 +88,12 @@ namespace Buildings
                 HandleUpgradeOfBuilding(p_buildingData, false);
             }
             
-            AssignWorker(_currentlyBuildBuildings.Find(x => x.BuildingMainData == p_buildingData), true);
+            AssignWorker(GetSpecificBuilding(p_buildingData), true);
         }
         
-        public void ModifyBuildingOnQueue(BuildingData p_buildingData, bool p_assign)
+        public void HandleBuildingsModifications(Building p_building)
         {
-            var building = _currentlyBuildBuildings.Find(x => x.BuildingMainData == p_buildingData);
-
-            if (building.HaveWorker)
-            {
-                AssignWorker(building, false);
-            }
-            else
-            {
-                AssignWorker(building, true);
-            }
+            AssignWorker(p_building, !p_building.HaveWorker);
         }
 
         public void RefreshBuildingsOnNewDay()
@@ -268,7 +259,7 @@ namespace Buildings
 
         public void AssignWorker(Building p_building, bool p_assign)
         {
-            if (p_assign && p_building.HaveWorker)
+            if (p_assign && p_building.HaveWorker || !p_assign && !p_building.HaveWorker)
                 return;
             
             p_building.HaveWorker = p_assign;

@@ -53,6 +53,7 @@ namespace InGameUi
             if (_workersManager.BaseWorkersAmounts - _workersManager.OverallAssignedWorkers == 0)
             {
                 _finishWorkersAssigningButton.SetActive(true);
+                _finishWorkersAssigningButton.GetComponent<Button>().onClick.RemoveAllListeners();
                 _finishWorkersAssigningButton.GetComponent<Button>().onClick.AddListener(AssignWorkersForNewDay);
             }
             else
@@ -77,24 +78,37 @@ namespace InGameUi
                         {
                             newEntry = Instantiate(_iconPrefab, scriptOfBar.ScrollContext);
                             ButtonIconPrefab references = newEntry.GetComponent<ButtonIconPrefab>();
+                            
+                            references.NewGo.SetActive(true);
+                            references.NewInfo.text = "In Progress";
+                            
+                            if (data.Value)
+                            {
+                                references.NewInfo.text = "New";
+                                references.NewInfo.color = Color.yellow;
+                            }
+                            
                             var building = _buildingManager.CurrentBuildings.Find(x => x.BuildingMainData == data.Key);
                             
                             if (building != null)
                             {
                                 references.BuildingIcon.image.sprite = data.Key.PerLevelData[building.CurrentLevel].Icon;
+
+                                if (building.IsCanceled)
+                                {
+                                    references.NewInfo.text = "Paused";
+                                    references.NewInfo.color = Color.blue;
+                                }
+
+                                if (_buildingPanel.WillBuildingBeCancelled(building))
+                                {
+                                    references.NewInfo.text = "Will Be Paused";
+                                    references.NewInfo.color = Color.blue;
+                                }
                             }
                             else
                             {
                                 references.BuildingIcon.image.sprite = data.Key.PerLevelData[0].Icon;
-                            }
-
-                            if (data.Value)
-                            {
-                                references.NewGo.SetActive(true);
-                            }
-                            else
-                            {
-                                references.NewGo.SetActive(false);
                             }
                         }
 

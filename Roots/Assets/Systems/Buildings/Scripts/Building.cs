@@ -28,6 +28,8 @@ namespace Buildings
             get => _haveWorker;
             set => _haveWorker = value;
         }
+
+        public bool IsCanceled => IsBeeingUpgradedOrBuilded && !_haveWorker;
         
         public static event Action<BuildingData, int> OnBuildingClicked; 
         public event Action<PointsType, int> OnPointsGathered; 
@@ -66,7 +68,8 @@ namespace Buildings
             _currentLevel++;
             IsBeeingUpgradedOrBuilded = false;
             CurrentDayOnQueue = 0;
-            
+            InGameIcon.sprite = BuildingMainData.PerLevelData[_currentLevel].InGameSprite;
+
             OnWorkDone?.Invoke(this, false);
         }
         
