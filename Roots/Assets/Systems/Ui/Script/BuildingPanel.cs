@@ -158,7 +158,7 @@ namespace InGameUi
 
                         if (builtBuilding.IsBeeingUpgradedOrBuilded)
                         {
-                            if (builtBuilding.HaveWorker && _buildingsInBuildToInfluence[builtBuilding])
+                            if (_buildingsInBuildToInfluence[builtBuilding])
                             {
                                 HandleInProgressBuildingCreation(script, buildingData, 0, true);
                                 continue;

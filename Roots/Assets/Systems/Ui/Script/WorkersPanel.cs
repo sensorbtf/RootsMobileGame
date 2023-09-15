@@ -16,7 +16,7 @@ namespace InGameUi
     {
         [SerializeField] private BuildingManager _buildingManager;
         [SerializeField] private WorkersManager _workersManager;
-        
+
         [SerializeField] private BuildingPanel _buildingPanel;
         [SerializeField] private GatheringDefensePanel _gatheringDefensePanel;
 
@@ -28,14 +28,14 @@ namespace InGameUi
         [SerializeField] private Transform contentTransform;
 
         private List<GameObject> _runtimeBuildingsUiToDestroy;
-        
+
         public event Action OnBackToMap;
-        
+
         private void Start()
         {
             _buildingPanel.OnBackToWorkersPanel += ActivatePanel;
             _gatheringDefensePanel.OnBackToWorkersPanel += ActivatePanel;
-            
+
             _runtimeBuildingsUiToDestroy = new List<GameObject>();
             gameObject.SetActive(false);
         }
@@ -45,11 +45,11 @@ namespace InGameUi
             gameObject.SetActive(true);
             GameplayHud.BlockHud = true;
             CameraController.IsUiOpen = true;
-            
+
             _tabName.text = "Worker Displacement";
-            
+
             UpdateWorkersText();
-            
+
             if (_workersManager.BaseWorkersAmounts - _workersManager.OverallAssignedWorkers == 0)
             {
                 _finishWorkersAssigningButton.SetActive(true);
@@ -60,7 +60,7 @@ namespace InGameUi
             {
                 _finishWorkersAssigningButton.SetActive(false);
             }
-            
+
             for (int i = 0; i < 3; i++)
             {
                 var newBar = Instantiate(_barPrefab, contentTransform);
@@ -68,7 +68,7 @@ namespace InGameUi
                 var scriptOfBar = newBar.GetComponent<WorkersDisplacementBarUi>();
                 // scriptOfBar.BarSprite add when needed
                 GameObject newEntry = null;
-                
+
                 switch (i)
                 {
                     case 0:
@@ -78,37 +78,50 @@ namespace InGameUi
                         {
                             newEntry = Instantiate(_iconPrefab, scriptOfBar.ScrollContext);
                             ButtonIconPrefab references = newEntry.GetComponent<ButtonIconPrefab>();
-                            
+
                             references.NewGo.SetActive(true);
                             references.InfoGo.SetActive(true);
                             references.NewInfo.text = "In Progress";
-                            
+
                             if (data.Value)
                             {
-                                references.NewInfo.text = "New";
+                                references.NewInfo.text = "Will be build";
                                 references.NewInfo.color = Color.yellow;
                             }
-                            
+
                             var building = _buildingManager.CurrentBuildings.Find(x => x.BuildingMainData == data.Key);
-                            
+
                             if (building != null)
                             {
-                                references.BuildingIcon.image.sprite = data.Key.PerLevelData[building.CurrentLevel].Icon;
-                                var daysToComplete =
+                                references.BuildingIcon.image.sprite =
+                                    data.Key.PerLevelData[building.CurrentLevel].Icon;
+                                var daysToComplete = 
                                     building.BuildingMainData.PerLevelData[building.CurrentLevel].Requirements
                                         .DaysToComplete - building.CurrentDayOnQueue;
-                                references.Informations.text = $"End in: {daysToComplete}";
-                                references.Informations.color = Color.magenta;
                                 
-                                if (building.IsCanceled)
-                                {
-                                    references.NewInfo.text = "Paused";
-                                    references.NewInfo.color = Color.blue;
-                                }
-                                else if (_buildingPanel.WillBuildingBeCancelled(building))
+                                references.Informations.text = $"End in: {daysToComplete} day(s)";
+                                references.Informations.color = Color.magenta;
+
+                                if (data.Value) 
+                                    continue;
+                                
+                                references.NewInfo.text = "Paused";
+                                references.NewInfo.color = Color.blue;
+
+                                if (building.HaveWorker && _buildingPanel.WillBuildingBeCancelled(building))
                                 {
                                     references.NewInfo.text = "Will Be Paused";
                                     references.NewInfo.color = Color.blue;
+                                }
+                                else if (!building.HaveWorker && !_buildingPanel.WillBuildingBeCancelled(building))
+                                {
+                                    references.NewInfo.text = "Will be resumed";
+                                    references.NewInfo.color = Color.yellow; 
+                                }
+                                else if (building.HaveWorker)
+                                {   
+                                    references.NewInfo.text = "In Progress";
+                                    references.NewInfo.color = Color.green;
                                 }
                             }
                             else
@@ -121,35 +134,37 @@ namespace InGameUi
                         break;
                     case 1:
                         scriptOfBar.BarText.text = "Resources";
-                        
+
                         foreach (var building in _gatheringDefensePanel.BuildingsOnQueue)
                         {
                             if (!building.BuildingMainData.PerLevelData[building.CurrentLevel].CanProduce)
                                 continue;
-                            
+
                             newEntry = Instantiate(_iconPrefab, scriptOfBar.ScrollContext);
-                            newEntry.GetComponent<Image>().sprite = building.BuildingMainData.PerLevelData[building.CurrentLevel].Icon;
+                            newEntry.GetComponent<Image>().sprite =
+                                building.BuildingMainData.PerLevelData[building.CurrentLevel].Icon;
                         }
-                        
+
                         scriptOfBar.BarButton.onClick.AddListener(() => OnGatheringOrDefenseButtonClicked(true));
                         break;
                     case 2:
                         scriptOfBar.BarText.text = "Defense Points";
-                        
+
                         foreach (var building in _gatheringDefensePanel.BuildingsOnQueue)
                         {
                             if (!building.BuildingMainData.PerLevelData[building.CurrentLevel].CanRiseDefenses)
                                 continue;
-                            
+
                             newEntry = Instantiate(_iconPrefab, scriptOfBar.ScrollContext);
-                            newEntry.GetComponent<Image>().sprite = building.BuildingMainData.PerLevelData[building.CurrentLevel].Icon;
+                            newEntry.GetComponent<Image>().sprite =
+                                building.BuildingMainData.PerLevelData[building.CurrentLevel].Icon;
                         }
-                        
+
                         scriptOfBar.BarButton.onClick.AddListener(() => OnGatheringOrDefenseButtonClicked(false));
                         break;
                 }
             }
-            
+
             // View all buildings in cottage as it is like centrum dowodzenia for fast building
         }
 
@@ -159,14 +174,14 @@ namespace InGameUi
             {
                 Destroy(createdUiElement);
             }
-            
+
             _runtimeBuildingsUiToDestroy.Clear();
             CameraController.IsUiOpen = false;
             GameplayHud.BlockHud = false;
             OnBackToMap?.Invoke();
             gameObject.SetActive(false);
         }
-        
+
         private void AssignWorkersForNewDay()
         {
             _buildingPanel.ConfirmWorkersAssigment();
@@ -177,7 +192,7 @@ namespace InGameUi
             {
                 _buildingPanel.BuildingsToShow[building.Key] = false;
             }
-            
+
             ClosePanel();
         }
 
@@ -186,18 +201,19 @@ namespace InGameUi
             ClosePanel();
             _buildingPanel.HandleView(true);
         }
-        
+
         private void OnGatheringOrDefenseButtonClicked(bool p_gathering)
         {
             ClosePanel();
             _gatheringDefensePanel.HandleView(p_gathering);
         }
-        
+
         private void UpdateWorkersText()
         {
             _buildingPanel.RefreshWorkersAmount();
-            _numberOfWorkers.text = $"Workers: {_workersManager.BaseWorkersAmounts.ToString()}/{_workersManager.OverallAssignedWorkers}";
-            
+            _numberOfWorkers.text =
+                $"Workers: {_workersManager.BaseWorkersAmounts.ToString()}/{_workersManager.OverallAssignedWorkers}";
+
             //_gatheringDefensePanel.ConfirmWorkersAssigment();
         }
     }

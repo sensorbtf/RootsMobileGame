@@ -101,7 +101,10 @@ namespace Buildings
         {
             foreach (var building in _currentlyBuildBuildings)
             {
-                if (!building.HaveWorker || building.IsBeeingUpgradedOrBuilded)
+                if (building.IsBeeingUpgradedOrBuilded)
+                    continue;
+                
+                if (!building.HaveWorker)
                     continue;
 
                 if (building.BuildingMainData.PerLevelData[building.CurrentLevel].CanProduce &&
