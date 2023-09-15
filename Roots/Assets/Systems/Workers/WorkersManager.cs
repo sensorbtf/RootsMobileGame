@@ -47,6 +47,13 @@ public class WorkersManager : MonoBehaviour
 
     public bool IsAnyWorkerFree()
     {
-        return OverallAssignedWorkers == BaseWorkersAmounts;
+        if (_baseBaseWorkersAmount == OverallAssignedWorkers)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
     }
 }

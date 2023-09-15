@@ -10,5 +10,7 @@ namespace InGameUi
         public Button BuildingIcon;
         public GameObject NewGo;
         public TextMeshProUGUI NewInfo;
+        public GameObject InfoGo;
+        public TextMeshProUGUI Informations;
     }
 }

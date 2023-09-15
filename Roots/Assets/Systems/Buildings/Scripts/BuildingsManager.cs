@@ -20,6 +20,7 @@ namespace Buildings
         private List<Building> _currentlyBuildBuildings;
 
         public event Action<BuildingData, int> OnBuildingClicked;
+        public event Action<Building> OnBuildingBuilt;
         public List<Building> CurrentBuildings => _currentlyBuildBuildings;
         public BuildingDatabase AllBuildingsDatabase => _buildingsDatabase;
 
@@ -145,7 +146,7 @@ namespace Buildings
 
         public bool CanBuildBuilding(BuildingData p_building)
         {
-            if (_workersManager.IsAnyWorkerFree())
+            if (!_workersManager.IsAnyWorkerFree())
                 return false;
 
             foreach (var building in _currentlyBuildBuildings)
@@ -167,7 +168,7 @@ namespace Buildings
         
         public bool CanUpgradeBuilding(Building p_building)
         {
-            if (_workersManager.BaseWorkersAmounts - _workersManager.OverallAssignedWorkers == 0)
+            if (!_workersManager.IsAnyWorkerFree())
                 return false;
             
             if (CurrentResourcePoints < p_building.BuildingMainData.PerLevelData
@@ -214,7 +215,13 @@ namespace Buildings
                 _currentlyBuildBuildings.Add(newBuilding);
                 newBuilding.OnPointsGathered += GatherPoints;
                 newBuilding.OnWorkDone += AssignWorker;
+                newBuilding.OnWorkDone += HandleBuildingBuilt;
             }
+        }
+
+        private void HandleBuildingBuilt(Building p_building, bool p_nonUsableHere)
+        {
+            OnBuildingBuilt?.Invoke(p_building);
         }
 
         private void HandleUpgradeOfBuilding(BuildingData p_buildingData, bool p_instant)

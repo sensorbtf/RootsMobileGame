@@ -80,6 +80,7 @@ namespace InGameUi
                             ButtonIconPrefab references = newEntry.GetComponent<ButtonIconPrefab>();
                             
                             references.NewGo.SetActive(true);
+                            references.InfoGo.SetActive(true);
                             references.NewInfo.text = "In Progress";
                             
                             if (data.Value)
@@ -93,14 +94,18 @@ namespace InGameUi
                             if (building != null)
                             {
                                 references.BuildingIcon.image.sprite = data.Key.PerLevelData[building.CurrentLevel].Icon;
-
+                                var daysToComplete =
+                                    building.BuildingMainData.PerLevelData[building.CurrentLevel].Requirements
+                                        .DaysToComplete - building.CurrentDayOnQueue;
+                                references.Informations.text = $"End in: {daysToComplete}";
+                                references.Informations.color = Color.magenta;
+                                
                                 if (building.IsCanceled)
                                 {
                                     references.NewInfo.text = "Paused";
                                     references.NewInfo.color = Color.blue;
                                 }
-
-                                if (_buildingPanel.WillBuildingBeCancelled(building))
+                                else if (_buildingPanel.WillBuildingBeCancelled(building))
                                 {
                                     references.NewInfo.text = "Will Be Paused";
                                     references.NewInfo.color = Color.blue;
