@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Buildings;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -31,6 +32,8 @@ namespace World
 
         public event Action OnNewDayStarted;
         public event Action OnResourcesRequirementsMeet;
+        public event Action OnLeaveDecision;
+        public event Action<List<BuildingType>> OnStormWon;
 
         private void Start()
         {
@@ -66,7 +69,7 @@ namespace World
                 if (_buildingManager.CurrentResourcePoints >= NeededResourcePoints)
                 {
                     OnResourcesRequirementsMeet?.Invoke();
-                    
+
                     return;
                 }
 
@@ -75,18 +78,16 @@ namespace World
 
             // if not: new day has started tooltip: info about last one + panel for worker displacement
             // if yes: checlk if win
-           
-            //do other thins (days)
 
+            //do other thins (days)
         }
 
         public void HandleNewDayStarted()
         {
             _buildingManager.RefreshBuildingsOnNewDay();
-                
+
             if (_buildingManager.IsAnyBuildingNonGathered())
             {
-                    
             }
 
             OnNewDayStarted?.Invoke();
@@ -96,27 +97,57 @@ namespace World
         {
             if (StormPower > _buildingManager.CurrentDefensePoints) // loss
             {
-                //resultats
+                HandleStormWon(false);
             }
             else // win
             {
                 // prepare for fight panel -> placing workers -> resultats
             }
-            
-            _currentMission++;
         }
 
-        private void StartMission()
+        public void LeaveMission()
+        {
+            OnLeaveDecision?.Invoke();
+        }
+
+        public void HandleStormWon(bool p_lowerDamages)
+        {
+            List<BuildingType> damagedBuildings = new List<BuildingType>();
+
+            foreach (var building in _buildingManager.CurrentBuildings)
+            {
+                if (building.IsProtected)
+                    continue;
+                    
+                int random = Random.Range(0, p_lowerDamages ? 3 : 5);
+
+                if (random == 1) // need better evaluation
+                {
+                    building.IsDamaged = true;
+                    damagedBuildings.Add(building.BuildingMainData.Type);
+                }
+            }
+            
+            OnStormWon?.Invoke(damagedBuildings);
+        }
+
+        public void StartMission()
         {
             if (_currentMission == 0)
             {
                 _buildingManager.CurrentResourcePoints += _startingWorldResources;
             }
 
+            _currentMission++;
+            _currentDay = 0;
+            
             _stormPower = Random.Range(_missionData[_currentMission].StormPowerRange.x,
                 _missionData[_currentMission].StormPowerRange.y);
             _finalHiddenStormDay = Random.Range(_missionData[_currentMission].DaysOfStormRange.x,
                 _missionData[_currentMission].DaysOfStormRange.y);
+            
+            Debug.Log("_finalHiddenStormDay" + _finalHiddenStormDay + " in " + _currentMission + " mission");
+            
             //get resources from basement
 
             _workersManager.BaseWorkersAmounts = _buildingManager.GetFarmProductionAmount;

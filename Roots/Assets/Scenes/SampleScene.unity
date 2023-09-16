@@ -6388,11 +6388,14 @@ MonoBehaviour:
   _buildingManager: {fileID: 1903800807}
   _workersManager: {fileID: 1823812590}
   _missionData:
-  - NeededResourcePoints: 200
-    DaysOfStormRange: {x: 10, y: 15}
+  - NeededResourcePoints: 100
+    DaysOfStormRange: {x: 2, y: 3}
     StormPowerRange: {x: 50, y: 80}
-  - NeededResourcePoints: 250
-    DaysOfStormRange: {x: 12, y: 17}
+  - NeededResourcePoints: 150
+    DaysOfStormRange: {x: 3, y: 4}
+    StormPowerRange: {x: 70, y: 90}
+  - NeededResourcePoints: 200
+    DaysOfStormRange: {x: 5, y: 7}
     StormPowerRange: {x: 70, y: 90}
   _startingWorldResources: 50
   _freeDaysSkipAmount: 3

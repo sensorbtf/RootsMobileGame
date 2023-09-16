@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using Buildings;
 using UnityEngine;
 using World;
 
@@ -8,15 +10,51 @@ namespace InGameUi
     {
         [SerializeField] private WorldManager _worldManager;
         private DecisionMakingRefs _uiReferences;
+        
         private void Start()
         {
-            _worldManager.OnResourcesRequirementsMeet += ViewResourcesMetCondition;
+            _worldManager.OnResourcesRequirementsMeet += ViewResourcesMetPanel;
+            _worldManager.OnLeaveDecision += ViewLeavePanel;
+            _worldManager.OnStormWon += ViewStormConsequencesPanel;
             _uiReferences = gameObject.GetComponent<DecisionMakingRefs>();
             
             gameObject.SetActive(false);
         }
+        
+        //Add panel of BeforeStormWorkersAssignig
 
-        private void ViewResourcesMetCondition()
+        private void ViewStormConsequencesPanel(List<BuildingType> p_destroyedBuildings)
+        {
+            gameObject.SetActive(true);
+
+            _uiReferences.Title.text = "Destroyed Buildings";
+            _uiReferences.Description.text = "";
+            
+            foreach (var buildingType in p_destroyedBuildings)
+            {
+                _uiReferences.Description.text += buildingType +", ";
+            }
+            
+            _uiReferences.YesButton.onClick.AddListener(DealWithStormEffects);
+            _uiReferences.YesButtonText.text = "Start New Mission";
+            //_uiReferences.NoButton.onClick.AddListener(() => HandleLeaveEffects(false));
+            _uiReferences.NoButtonText.text = "Wut";
+        }
+        
+        private void ViewLeavePanel()
+        {
+            gameObject.SetActive(true);
+
+            _uiReferences.Title.text = "You left your settlement unprotected";
+            _uiReferences.Description.text = "As usual, monsters came with storm and started to demolish everything on their way";
+            
+            _uiReferences.YesButton.onClick.AddListener(() => HandleLeaveEffects(true));
+            _uiReferences.YesButtonText.text = "Continue";
+            _uiReferences.NoButton.onClick.AddListener(() => HandleLeaveEffects(false));
+            _uiReferences.NoButtonText.text = "Offer Destiny Shards for least damages";
+        }
+
+        private void ViewResourcesMetPanel()
         {
             gameObject.SetActive(true);
 
@@ -33,13 +71,33 @@ namespace InGameUi
         {
             if (p_wantToLeave)
             {
-                _worldManager.EndMission();
+                _worldManager.LeaveMission();
             }
             else
             {
                 _worldManager.HandleNewDayStarted();
             }
             
+            gameObject.SetActive(false);
+        }
+        
+        private void HandleLeaveEffects(bool p_continueWithoutDSSpent)
+        {
+            if (p_continueWithoutDSSpent)
+            {
+                _worldManager.HandleStormWon(false);
+            }
+            else
+            {
+                _worldManager.HandleStormWon(true);
+            }
+            
+            gameObject.SetActive(false);
+        }
+        
+        private void DealWithStormEffects()
+        {
+            _worldManager.StartMission();
             gameObject.SetActive(false);
         }
     }

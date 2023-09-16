@@ -17,6 +17,8 @@ namespace Buildings
         [HideInInspector] public int CurrentDayOnQueue;
         [HideInInspector] public bool HaveSomethingToCollect = false;
         [HideInInspector] public bool IsBeeingUpgradedOrBuilded = false;
+        [HideInInspector] public bool IsProtected = false;
+        [HideInInspector] public bool IsDamaged = false;
 
         public int CurrentLevel
         {
