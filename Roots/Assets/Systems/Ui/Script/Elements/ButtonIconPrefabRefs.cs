@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 namespace InGameUi
 {
-    public class ButtonIconPrefab : MonoBehaviour
+    public class ButtonIconPrefabRefs : MonoBehaviour
     {
         public Button BuildingIcon;
         public GameObject NewGo;

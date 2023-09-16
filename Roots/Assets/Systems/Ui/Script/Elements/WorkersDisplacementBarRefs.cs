@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
-public class WorkersDisplacementBarUi : MonoBehaviour
+public class WorkersDisplacementBarRefs : MonoBehaviour
 {
     public Button BarButton;
     public Image BarSprite;

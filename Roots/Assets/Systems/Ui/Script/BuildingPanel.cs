@@ -26,7 +26,7 @@ namespace InGameUi
         
         private List<GameObject> _runtimeBuildingsUiToDestroy;
         private List<BuildingData> _buildingsOnInPanelQueue;
-        private Dictionary<BuildingData, SingleBuildingUi> _createdUiElements;
+        private Dictionary<BuildingData, SingleBuildingRefs> _createdUiElements;
         private Dictionary<Building, bool> _buildingsInBuildToInfluence;
         private Dictionary<Building, bool> _influencedBuildings;
 
@@ -43,7 +43,7 @@ namespace InGameUi
             _influencedBuildings = new Dictionary<Building, bool>();
 
             BuildingsToShow = new Dictionary<BuildingData, bool>();
-            _createdUiElements = new Dictionary<BuildingData, SingleBuildingUi>();
+            _createdUiElements = new Dictionary<BuildingData, SingleBuildingRefs>();
             gameObject.SetActive(false);
         }
 
@@ -143,7 +143,7 @@ namespace InGameUi
                     GameObject newBuildingUi = Instantiate(buildingEntryPrefab, contentTransform);
                     _runtimeBuildingsUiToDestroy.Add(newBuildingUi);
 
-                    SingleBuildingUi script = newBuildingUi.GetComponent<SingleBuildingUi>();
+                    SingleBuildingRefs script = newBuildingUi.GetComponent<SingleBuildingRefs>();
                     _createdUiElements.Add(buildingData, script);
 
                     script.BuildingName.GetComponent<TextMeshProUGUI>().text = buildingData.Type.ToString();
@@ -194,116 +194,116 @@ namespace InGameUi
             }
         }
 
-        private void HandleCurrentBuildingCreation(SingleBuildingUi p_uiScript, Building p_building)
+        private void HandleCurrentBuildingCreation(SingleBuildingRefs p_refsScript, Building p_building)
         {
             var nextLevel = p_building.CurrentLevel;
             nextLevel++;
 
-            p_uiScript.LevelInfo.GetComponent<TextMeshProUGUI>().text =
+            p_refsScript.LevelInfo.GetComponent<TextMeshProUGUI>().text =
                 $"{p_building.CurrentLevel} >> {nextLevel}";
 
             if (_buildingManager.CanUpgradeBuilding(p_building))
             {
-                p_uiScript.CreateOrUpgradeBuilding.interactable = true;
-                p_uiScript.CreateOrUpgradeBuilding.image.color = Color.green;
+                p_refsScript.CreateOrUpgradeBuilding.interactable = true;
+                p_refsScript.CreateOrUpgradeBuilding.image.color = Color.green;
             }
             else
             {
-                p_uiScript.CreateOrUpgradeBuilding.interactable = false;
-                p_uiScript.CreateOrUpgradeBuilding.image.color = Color.red;
+                p_refsScript.CreateOrUpgradeBuilding.interactable = false;
+                p_refsScript.CreateOrUpgradeBuilding.image.color = Color.red;
             }
             
-            UpdateRequirementsText(p_uiScript, p_building.BuildingMainData.PerLevelData[p_building.CurrentLevel].Requirements);
+            UpdateRequirementsText(p_refsScript, p_building.BuildingMainData.PerLevelData[p_building.CurrentLevel].Requirements);
             
-            p_uiScript.CreateOrUpgradeBuilding.onClick.RemoveAllListeners();
-            p_uiScript.CreateOrUpgradeBuilding.onClick.AddListener(() =>
+            p_refsScript.CreateOrUpgradeBuilding.onClick.RemoveAllListeners();
+            p_refsScript.CreateOrUpgradeBuilding.onClick.AddListener(() =>
                 AssigningWorkerHandler(p_building.BuildingMainData, p_building.CurrentLevel,
-                    p_uiScript, true)); // unabling usual working for defense/resources + kicking out worker
+                    p_refsScript, true)); // unabling usual working for defense/resources + kicking out worker
         }
 
-        private void HandleInProgressBuildingCreation(SingleBuildingUi p_uiScript, BuildingData p_buildingData,
+        private void HandleInProgressBuildingCreation(SingleBuildingRefs p_refsScript, BuildingData p_buildingData,
             int p_level, bool p_isInParmamentProgress = false) // add red cross to icon. Clicking -> canceling building
         {
-            p_uiScript.BuildingInfo.GetComponent<TextMeshProUGUI>().text = "In Progress";
-            p_uiScript.LevelInfo.GetComponent<TextMeshProUGUI>().text = "Cancel";
+            p_refsScript.BuildingInfo.GetComponent<TextMeshProUGUI>().text = "In Progress";
+            p_refsScript.LevelInfo.GetComponent<TextMeshProUGUI>().text = "Cancel";
 
-            p_uiScript.CreateOrUpgradeBuilding.interactable = true;
-            p_uiScript.CreateOrUpgradeBuilding.image.color = Color.yellow;
+            p_refsScript.CreateOrUpgradeBuilding.interactable = true;
+            p_refsScript.CreateOrUpgradeBuilding.image.color = Color.yellow;
 
-            p_uiScript.CreateOrUpgradeBuilding.onClick.RemoveAllListeners();
-            p_uiScript.CreateOrUpgradeBuilding.onClick.AddListener(() =>
-                AssigningWorkerHandler(p_buildingData, p_level, p_uiScript, false, p_isInParmamentProgress));
+            p_refsScript.CreateOrUpgradeBuilding.onClick.RemoveAllListeners();
+            p_refsScript.CreateOrUpgradeBuilding.onClick.AddListener(() =>
+                AssigningWorkerHandler(p_buildingData, p_level, p_refsScript, false, p_isInParmamentProgress));
         }
 
 
-        private void HandleCompletelyNewBuildingCreation(SingleBuildingUi p_uiScript, BuildingData p_buildingData)
+        private void HandleCompletelyNewBuildingCreation(SingleBuildingRefs p_refsScript, BuildingData p_buildingData)
         {
-            p_uiScript.LevelInfo.GetComponent<TextMeshProUGUI>().text = "Build";
-            UpdateRequirementsText(p_uiScript, p_buildingData.PerLevelData[0].Requirements);
+            p_refsScript.LevelInfo.GetComponent<TextMeshProUGUI>().text = "Build";
+            UpdateRequirementsText(p_refsScript, p_buildingData.PerLevelData[0].Requirements);
 
             if (_buildingManager.CanBuildBuilding(p_buildingData))
             {
-                p_uiScript.CreateOrUpgradeBuilding.image.color = Color.green;
-                p_uiScript.CreateOrUpgradeBuilding.interactable = true;
+                p_refsScript.CreateOrUpgradeBuilding.image.color = Color.green;
+                p_refsScript.CreateOrUpgradeBuilding.interactable = true;
             }
             else
             {
-                p_uiScript.CreateOrUpgradeBuilding.image.color = Color.red;
-                p_uiScript.CreateOrUpgradeBuilding.interactable = false;
+                p_refsScript.CreateOrUpgradeBuilding.image.color = Color.red;
+                p_refsScript.CreateOrUpgradeBuilding.interactable = false;
             }
             
-            p_uiScript.CreateOrUpgradeBuilding.onClick.RemoveAllListeners();
-            p_uiScript.CreateOrUpgradeBuilding.onClick.AddListener(() =>
-                AssigningWorkerHandler(p_buildingData, 0, p_uiScript, true));
+            p_refsScript.CreateOrUpgradeBuilding.onClick.RemoveAllListeners();
+            p_refsScript.CreateOrUpgradeBuilding.onClick.AddListener(() =>
+                AssigningWorkerHandler(p_buildingData, 0, p_refsScript, true));
         }
 
-        private void HandleStartedBuildingWork(SingleBuildingUi p_uiScript, BuildingData p_buildingData,
+        private void HandleStartedBuildingWork(SingleBuildingRefs p_refsScript, BuildingData p_buildingData,
             int p_buildingLevel, bool p_isInParmamentProgress = false)
         {
-            p_uiScript.CreateOrUpgradeBuilding.image.color = Color.cyan; // in progress
-            p_uiScript.CreateOrUpgradeBuilding.interactable = true;
+            p_refsScript.CreateOrUpgradeBuilding.image.color = Color.cyan; // in progress
+            p_refsScript.CreateOrUpgradeBuilding.interactable = true;
 
-            p_uiScript.BuildingInfo.GetComponent<TextMeshProUGUI>().text = "In Progress";
-            p_uiScript.LevelInfo.GetComponent<TextMeshProUGUI>().text = "Cancel";
+            p_refsScript.BuildingInfo.GetComponent<TextMeshProUGUI>().text = "In Progress";
+            p_refsScript.LevelInfo.GetComponent<TextMeshProUGUI>().text = "Cancel";
 
-            p_uiScript.CreateOrUpgradeBuilding.onClick.RemoveAllListeners();
-            p_uiScript.CreateOrUpgradeBuilding.onClick.AddListener(() => AssigningWorkerHandler(p_buildingData,
-                p_buildingLevel, p_uiScript, false, p_isInParmamentProgress));
+            p_refsScript.CreateOrUpgradeBuilding.onClick.RemoveAllListeners();
+            p_refsScript.CreateOrUpgradeBuilding.onClick.AddListener(() => AssigningWorkerHandler(p_buildingData,
+                p_buildingLevel, p_refsScript, false, p_isInParmamentProgress));
         }
 
-        private void HandleCancelledBuildingWork(SingleBuildingUi p_uiScript, BuildingData p_buildingData,
+        private void HandleCancelledBuildingWork(SingleBuildingRefs p_refsScript, BuildingData p_buildingData,
             int p_buildingLevel, bool p_isInParmamentProgress = false)
         {
-            p_uiScript.CreateOrUpgradeBuilding.image.color = Color.blue; // in progress
-            p_uiScript.CreateOrUpgradeBuilding.interactable = _workersManager.IsAnyWorkerFree();
+            p_refsScript.CreateOrUpgradeBuilding.image.color = Color.blue; // in progress
+            p_refsScript.CreateOrUpgradeBuilding.interactable = _workersManager.IsAnyWorkerFree();
 
-            p_uiScript.BuildingInfo.GetComponent<TextMeshProUGUI>().text = "Cancelled";
-            p_uiScript.LevelInfo.GetComponent<TextMeshProUGUI>().text = "Back To Work";
+            p_refsScript.BuildingInfo.GetComponent<TextMeshProUGUI>().text = "Cancelled";
+            p_refsScript.LevelInfo.GetComponent<TextMeshProUGUI>().text = "Back To Work";
 
-            p_uiScript.CreateOrUpgradeBuilding.onClick.RemoveAllListeners();
-            p_uiScript.CreateOrUpgradeBuilding.onClick.AddListener(() => AssigningWorkerHandler(p_buildingData,
-                p_buildingLevel, p_uiScript, true, p_isInParmamentProgress));
+            p_refsScript.CreateOrUpgradeBuilding.onClick.RemoveAllListeners();
+            p_refsScript.CreateOrUpgradeBuilding.onClick.AddListener(() => AssigningWorkerHandler(p_buildingData,
+                p_buildingLevel, p_refsScript, true, p_isInParmamentProgress));
         }
 
         private void AssigningWorkerHandler(BuildingData p_buildingData, int p_buildingLevel,
-            SingleBuildingUi p_uiScript, bool p_assign,
+            SingleBuildingRefs p_refsScript, bool p_assign,
             bool p_isInPernamentBuilding = false) // REFRESHING AFTER CLICKING
         {
             if (p_assign)
             {
-                HandleStartedBuildingWork(p_uiScript, p_buildingData, p_buildingLevel, p_isInPernamentBuilding);
+                HandleStartedBuildingWork(p_refsScript, p_buildingData, p_buildingLevel, p_isInPernamentBuilding);
             }
             else
             {
-                p_uiScript.CreateOrUpgradeBuilding.image.color = Color.green;
-                p_uiScript.CreateOrUpgradeBuilding.interactable = _workersManager.IsAnyWorkerFree();
+                p_refsScript.CreateOrUpgradeBuilding.image.color = Color.green;
+                p_refsScript.CreateOrUpgradeBuilding.interactable = _workersManager.IsAnyWorkerFree();
 
                 var building = _buildingManager.GetSpecificBuilding(p_buildingData);
 
                 if (building == null)
                 {
-                    UpdateRequirementsText(p_uiScript, p_buildingData.PerLevelData[0].Requirements);
-                    p_uiScript.LevelInfo.GetComponent<TextMeshProUGUI>().text = "Build";
+                    UpdateRequirementsText(p_refsScript, p_buildingData.PerLevelData[0].Requirements);
+                    p_refsScript.LevelInfo.GetComponent<TextMeshProUGUI>().text = "Build";
                     
                     if (BuildingsToShow.ContainsKey(p_buildingData))
                     {
@@ -315,9 +315,9 @@ namespace InGameUi
                     var nextLevel = building.CurrentLevel;
                     nextLevel++;
 
-                    p_uiScript.LevelInfo.GetComponent<TextMeshProUGUI>().text =
+                    p_refsScript.LevelInfo.GetComponent<TextMeshProUGUI>().text =
                         $"{building.CurrentLevel} >> {nextLevel}";
-                    UpdateRequirementsText(p_uiScript, p_buildingData.PerLevelData[building.CurrentLevel].Requirements);
+                    UpdateRequirementsText(p_refsScript, p_buildingData.PerLevelData[building.CurrentLevel].Requirements);
                     
                     if (BuildingsToShow.ContainsKey(p_buildingData))
                     {
@@ -328,9 +328,9 @@ namespace InGameUi
                     }
                 }
                 
-                p_uiScript.CreateOrUpgradeBuilding.onClick.RemoveAllListeners();
-                p_uiScript.CreateOrUpgradeBuilding.onClick.AddListener(() => AssigningWorkerHandler(p_buildingData,
-                    p_buildingLevel, p_uiScript, true, p_isInPernamentBuilding));
+                p_refsScript.CreateOrUpgradeBuilding.onClick.RemoveAllListeners();
+                p_refsScript.CreateOrUpgradeBuilding.onClick.AddListener(() => AssigningWorkerHandler(p_buildingData,
+                    p_buildingLevel, p_refsScript, true, p_isInPernamentBuilding));
             }
 
             OnButtonClicked(p_buildingData, p_buildingLevel, p_assign, p_isInPernamentBuilding);
@@ -466,7 +466,7 @@ namespace InGameUi
                 $"Workers: {_workersManager.BaseWorkersAmounts.ToString()}/{_workersManager.WorkersInBuilding}";
         }
 
-        private void UpdateRequirementsText(SingleBuildingUi p_script, Requirements p_requirements)
+        private void UpdateRequirementsText(SingleBuildingRefs p_script, Requirements p_requirements)
         {
             p_script.BuildingInfo.GetComponent<TextMeshProUGUI>().text =
                 $"Resource Points: {p_requirements.ResourcePoints}\n" +

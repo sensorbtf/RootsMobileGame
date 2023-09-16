@@ -65,7 +65,7 @@ namespace InGameUi
             {
                 var newBar = Instantiate(_barPrefab, contentTransform);
                 _runtimeBuildingsUiToDestroy.Add(newBar);
-                var scriptOfBar = newBar.GetComponent<WorkersDisplacementBarUi>();
+                var scriptOfBar = newBar.GetComponent<WorkersDisplacementBarRefs>();
                 // scriptOfBar.BarSprite add when needed
                 GameObject newEntry = null;
 
@@ -77,7 +77,7 @@ namespace InGameUi
                         foreach (var data in _buildingPanel.BuildingsToShow)
                         {
                             newEntry = Instantiate(_iconPrefab, scriptOfBar.ScrollContext);
-                            ButtonIconPrefab references = newEntry.GetComponent<ButtonIconPrefab>();
+                            ButtonIconPrefabRefs references = newEntry.GetComponent<ButtonIconPrefabRefs>();
 
                             references.NewGo.SetActive(true);
                             references.InfoGo.SetActive(true);
@@ -139,10 +139,19 @@ namespace InGameUi
                         {
                             if (!building.BuildingMainData.PerLevelData[building.CurrentLevel].CanProduce)
                                 continue;
+                            
 
                             newEntry = Instantiate(_iconPrefab, scriptOfBar.ScrollContext);
                             newEntry.GetComponent<Image>().sprite =
                                 building.BuildingMainData.PerLevelData[building.CurrentLevel].Icon;
+                            
+                            ButtonIconPrefabRefs references = newEntry.GetComponent<ButtonIconPrefabRefs>();
+
+                            references.NewGo.SetActive(false);
+                            references.InfoGo.SetActive(true);
+                            
+                            references.Informations.text = "Worker Assigned";
+                            references.Informations.color = Color.magenta;
                         }
 
                         scriptOfBar.BarButton.onClick.AddListener(() => OnGatheringOrDefenseButtonClicked(true));
@@ -158,6 +167,14 @@ namespace InGameUi
                             newEntry = Instantiate(_iconPrefab, scriptOfBar.ScrollContext);
                             newEntry.GetComponent<Image>().sprite =
                                 building.BuildingMainData.PerLevelData[building.CurrentLevel].Icon;
+                            
+                            ButtonIconPrefabRefs references = newEntry.GetComponent<ButtonIconPrefabRefs>();
+
+                            references.NewGo.SetActive(false);
+                            references.InfoGo.SetActive(true);
+                            
+                            references.Informations.text = "Worker Assigned";
+                            references.Informations.color = Color.magenta;
                         }
 
                         scriptOfBar.BarButton.onClick.AddListener(() => OnGatheringOrDefenseButtonClicked(false));
@@ -211,8 +228,9 @@ namespace InGameUi
         private void UpdateWorkersText()
         {
             _buildingPanel.RefreshWorkersAmount();
-            _numberOfWorkers.text =
-                $"Workers: {_workersManager.BaseWorkersAmounts.ToString()}/{_workersManager.OverallAssignedWorkers}";
+            //_gatheringDefensePanel.RefreshWorkersAmount();
+            
+            _numberOfWorkers.text = $"Workers: {_workersManager.BaseWorkersAmounts.ToString()}/{_workersManager.OverallAssignedWorkers}";
 
             //_gatheringDefensePanel.ConfirmWorkersAssigment();
         }

@@ -69,7 +69,8 @@ namespace Buildings
             IsBeeingUpgradedOrBuilded = false;
             CurrentDayOnQueue = 0;
             InGameIcon.sprite = BuildingMainData.PerLevelData[_currentLevel].InGameSprite;
-
+            _haveWorker = false;
+            
             OnWorkDone?.Invoke(this, false);
         }
         
@@ -78,6 +79,7 @@ namespace Buildings
             _currentLevel = 1;
             IsBeeingUpgradedOrBuilded = false;
             InGameIcon.sprite = BuildingMainData.PerLevelData[_currentLevel].InGameSprite;
+            _haveWorker = false;
             
             OnWorkDone?.Invoke(this, false);
         }
@@ -99,6 +101,7 @@ namespace Buildings
         {
             GatheringIcon.sprite = p_gatheringIcon;
             HaveSomethingToCollect = true;
+            _haveWorker = false;
         }
     }
 }

@@ -38,6 +38,8 @@ namespace InGameUi
         private Button _endMissionButton;
         private Button _endDayButton;
         private TextMeshProUGUI _endDayButtonText;
+        
+        bool _wasMainButtonRefreshed = true;
 
         private void Start()
         {
@@ -81,30 +83,26 @@ namespace InGameUi
                 _endDayButton.interactable = false;
             }
         }
-
-        bool onlyOnce = true;
-
+        
         private void MainButtonHandler()
         {
             switch (CurrentPlayerState)
             {
                 case DuringDayState.OnCollecting:
 
-                    _endDayButtonText.text = "Set Workers";
+                    if (!_worldManager.CanSetWorkers())
+                    {
+                        _endDayButtonText.text = "Collect Points";
+                        return;
+                    }
 
-                    if (_worldManager.CanSetWorkers())
+                    if (_wasMainButtonRefreshed)
                     {
                         _endDayButton.interactable = true;
 
-                        if (onlyOnce)
-                        {
-                            _endDayButton.onClick.AddListener(OpenWorkersDisplacementPanel);
-                            onlyOnce = false;
-                        }
-                    }
-                    else
-                    {
-                        _endDayButton.interactable = false;
+                        _endDayButtonText.text = "Set Workers";
+                        _endDayButton.onClick.AddListener(OpenWorkersDisplacementPanel);
+                        _wasMainButtonRefreshed = false;
                     }
 
                     break;
@@ -119,10 +117,10 @@ namespace InGameUi
                     if (_worldManager.CanStartDay())
                     {
                         _endDayButton.interactable = true;
-                        if (onlyOnce)
+                        if (_wasMainButtonRefreshed)
                         {
                             _endDayButton.onClick.AddListener(OnDayStarted);
-                            onlyOnce = false;
+                            _wasMainButtonRefreshed = false;
                         }
                     }
                     else
@@ -139,11 +137,11 @@ namespace InGameUi
                     if (_worldManager.CanSkipDay())
                     {
                         _skipDayButton.interactable = true;
-                        
-                        if (onlyOnce)
+
+                        if (_wasMainButtonRefreshed)
                         {
                             _skipDayButton.onClick.AddListener(OnDaySkipped);
-                            onlyOnce = false;
+                            _wasMainButtonRefreshed = false;
                         }
                     }
 
@@ -155,7 +153,7 @@ namespace InGameUi
         {
             CurrentPlayerState = DuringDayState.SettingWorkers;
             _endDayButton.onClick.RemoveListener(OpenWorkersDisplacementPanel);
-            onlyOnce = true;
+            _wasMainButtonRefreshed = true;
 
             _workersPanel.ActivatePanel();
         }
@@ -163,7 +161,7 @@ namespace InGameUi
         private void SetWorkers()
         {
             CurrentPlayerState = DuringDayState.AfterWorkersSet;
-            onlyOnce = true;
+            _wasMainButtonRefreshed = true;
         }
 
         private void OnDayStarted()
@@ -171,7 +169,7 @@ namespace InGameUi
             CurrentPlayerState = DuringDayState.Working;
             SkipDayGo.SetActive(true);
             _endDayButton.onClick.RemoveListener(OnDayStarted);
-            onlyOnce = true;
+            _wasMainButtonRefreshed = true;
         }
 
         private void OnDaySkipped()
@@ -180,8 +178,8 @@ namespace InGameUi
             _skipDayButton.onClick.RemoveListener(OnDaySkipped);
             SkipDayGo.SetActive(false);
             _skipDayButton.interactable = false;
-            onlyOnce = true;
-            
+            _wasMainButtonRefreshed = true;
+
             _worldManager.SkipDay();
         }
     }

@@ -574,7 +574,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: faac98d6a86069f49af37ba9d268bc06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CreateBuilding: {fileID: 3472150488935105635}
+  CreateOrUpgradeBuilding: {fileID: 3472150488935105635}
   BuildingIcon: {fileID: 4274115197284237525}
   BuildingName: {fileID: 3485629723594187470}
   LevelInfo: {fileID: 2322199327624918570}

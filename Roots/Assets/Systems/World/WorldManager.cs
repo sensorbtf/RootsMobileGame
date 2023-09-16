@@ -27,12 +27,12 @@ namespace World
         public Vector2Int StormDaysRange => _missionData[_currentMission].DaysOfStormRange;
 
         public event Action OnNewDayStarted;
+        public event Action OnResourcesRequirementsMeet;
 
         private void Start()
         {
             _buildingManager.StartOnWorld();
             StartMission();
-            _workersManager.BaseWorkersAmounts = _buildingManager.GetFarmProductionAmount;
         }
 
         public void SkipDay()
@@ -50,15 +50,14 @@ namespace World
             }
             else
             {
-                _buildingManager.RefreshBuildingsOnNewDay();
-                
-                if (_buildingManager.IsAnyBuildingNonGathered())
+                if (_buildingManager.CurrentResourcePoints >= NeededResourcePoints)
                 {
+                    OnResourcesRequirementsMeet?.Invoke();
                     
+                    return;
                 }
-                
-                
-                OnNewDayStarted?.Invoke();
+
+                HandleNewDayStarted();
             }
 
             // if not: new day has started tooltip: info about last one + panel for worker displacement
@@ -68,7 +67,19 @@ namespace World
 
         }
 
-        private void EndMission()
+        public void HandleNewDayStarted()
+        {
+            _buildingManager.RefreshBuildingsOnNewDay();
+                
+            if (_buildingManager.IsAnyBuildingNonGathered())
+            {
+                    
+            }
+
+            OnNewDayStarted?.Invoke();
+        }
+
+        public void EndMission()
         {
             if (StormPower > _buildingManager.CurrentDefensePoints) // loss
             {
@@ -94,6 +105,8 @@ namespace World
             _finalHiddenStormDay = Random.Range(_missionData[_currentMission].DaysOfStormRange.x,
                 _missionData[_currentMission].DaysOfStormRange.y);
             //get resources from basement
+
+            _workersManager.BaseWorkersAmounts = _buildingManager.GetFarmProductionAmount;
 
             StartNewDay();
         }
