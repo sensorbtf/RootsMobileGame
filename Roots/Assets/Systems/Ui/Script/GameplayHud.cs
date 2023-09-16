@@ -64,7 +64,7 @@ namespace InGameUi
             CurrentDay.text = $"Current day: {_worldManager.CurrentDay.ToString()}";
             DayToStorm.text = $"Storm in: {_worldManager.StormDaysRange.ToString()}";
             ResourcePoints.text = $"Resource Points: {_buildingManager.CurrentResourcePoints.ToString()} / " +
-                                  $"{_worldManager.NeededResourcePoints}";
+                                  $"{_worldManager.RequiredResourcePoints}";
             DefensePoints.text = $"Defense Points: {_buildingManager.CurrentDefensePoints.ToString()}";
             ShardsOfDestiny.text = $"Shards Of Destiny: {_buildingManager.ShardsOfDestinyAmount.ToString()}";
 

@@ -15,7 +15,7 @@ namespace InGameUi
         {
             _worldManager.OnResourcesRequirementsMeet += ViewResourcesMetPanel;
             _worldManager.OnLeaveDecision += ViewLeavePanel;
-            _worldManager.OnStormWon += ViewStormConsequencesPanel;
+            _worldManager.OnStormCame += ViewStormConsequencesPanel;
             _uiReferences = gameObject.GetComponent<DecisionMakingRefs>();
             
             gameObject.SetActive(false);
@@ -23,27 +23,29 @@ namespace InGameUi
         
         //Add panel of BeforeStormWorkersAssignig
 
-        private void ViewStormConsequencesPanel(List<BuildingType> p_destroyedBuildings)
+        private void ViewStormConsequencesPanel(List<BuildingType> p_destroyedBuildings, bool p_won)
         {
             gameObject.SetActive(true);
+            GameplayHud.BlockHud = true;
 
             _uiReferences.Title.text = "Destroyed Buildings";
             _uiReferences.Description.text = "";
             
             foreach (var buildingType in p_destroyedBuildings)
             {
-                _uiReferences.Description.text += buildingType +", ";
+                _uiReferences.Description.text += buildingType + "\n";
             }
             
-            _uiReferences.YesButton.onClick.AddListener(DealWithStormEffects);
+            _uiReferences.YesButton.onClick.AddListener(() => DealWithStormEffects(p_won));
             _uiReferences.YesButtonText.text = "Start New Mission";
-            //_uiReferences.NoButton.onClick.AddListener(() => HandleLeaveEffects(false));
+            _uiReferences.NoButton.interactable = false;
             _uiReferences.NoButtonText.text = "Wut";
         }
         
         private void ViewLeavePanel()
         {
             gameObject.SetActive(true);
+            GameplayHud.BlockHud = true;
 
             _uiReferences.Title.text = "You left your settlement unprotected";
             _uiReferences.Description.text = "As usual, monsters came with storm and started to demolish everything on their way";
@@ -57,6 +59,7 @@ namespace InGameUi
         private void ViewResourcesMetPanel()
         {
             gameObject.SetActive(true);
+            GameplayHud.BlockHud = true;
 
             _uiReferences.Title.text = "You gathered enough resources";
             _uiReferences.Description.text = "Do you want to leave earlier?";
@@ -79,26 +82,29 @@ namespace InGameUi
             }
             
             gameObject.SetActive(false);
+            GameplayHud.BlockHud = false;
         }
         
         private void HandleLeaveEffects(bool p_continueWithoutDSSpent)
         {
             if (p_continueWithoutDSSpent)
             {
-                _worldManager.HandleStormWon(false);
+                _worldManager.EndMission(true, false);
             }
             else
             {
-                _worldManager.HandleStormWon(true);
+                _worldManager.EndMission(true, false);
             }
             
             gameObject.SetActive(false);
+            GameplayHud.BlockHud = false;
         }
         
-        private void DealWithStormEffects()
+        private void DealWithStormEffects(bool p_won)
         {
-            _worldManager.StartMission();
+            _worldManager.StartMission(p_won);
             gameObject.SetActive(false);
+            GameplayHud.BlockHud = false;
         }
     }
 }

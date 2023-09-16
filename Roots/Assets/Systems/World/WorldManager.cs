@@ -22,7 +22,7 @@ namespace World
 
         private bool _hasLeftMission = false;
 
-        public int NeededResourcePoints => _missionData[_currentMission].NeededResourcePoints;
+        public int RequiredResourcePoints => _missionData[_currentMission].NeededResourcePoints;
         public int CurrentDay => _currentDay;
         public int FinalHiddenStormDay => _finalHiddenStormDay;
         public int StormPower => _stormPower;
@@ -33,12 +33,12 @@ namespace World
         public event Action OnNewDayStarted;
         public event Action OnResourcesRequirementsMeet;
         public event Action OnLeaveDecision;
-        public event Action<List<BuildingType>> OnStormWon;
+        public event Action<List<BuildingType>, bool> OnStormCame;
 
         private void Start()
         {
             _buildingManager.StartOnWorld();
-            StartMission();
+            StartMission(true);
         }
 
         public void SkipDay(WayToSkip p_skipSource)
@@ -62,11 +62,11 @@ namespace World
 
             if (_currentDay == _finalHiddenStormDay)
             {
-                EndMission();
+                EndMission(false, false);
             }
             else
             {
-                if (_buildingManager.CurrentResourcePoints >= NeededResourcePoints)
+                if (_buildingManager.CurrentResourcePoints >= RequiredResourcePoints)
                 {
                     OnResourcesRequirementsMeet?.Invoke();
 
@@ -93,16 +93,33 @@ namespace World
             OnNewDayStarted?.Invoke();
         }
 
-        public void EndMission()
+        public void EndMission(bool p_byLeft, bool p_lowerDamages)
         {
-            if (StormPower > _buildingManager.CurrentDefensePoints) // loss
+            if (p_byLeft)
             {
-                HandleStormWon(false);
+                HandleBuildingDestroying(p_lowerDamages, true);
             }
-            else // win
+            else
             {
-                // prepare for fight panel -> placing workers -> resultats
+                if (StormPower > _buildingManager.CurrentDefensePoints) // loss
+                {
+                    HandleBuildingDestroying(false, false);
+                }
+                else
+                {
+                    HandleBuildingDestroying(p_lowerDamages, true);
+
+                    // prepare for fight panel -> placing workers -> resultats
+                }
             }
+
+            EndMissionHandler();
+        }
+
+        private void EndMissionHandler()
+        {
+            _buildingManager.EndMissionHandler();
+            HandleResourceBasementTransition(true);
         }
 
         public void LeaveMission()
@@ -110,15 +127,15 @@ namespace World
             OnLeaveDecision?.Invoke();
         }
 
-        public void HandleStormWon(bool p_lowerDamages)
+        private void HandleBuildingDestroying(bool p_lowerDamages, bool p_haveWon)
         {
             List<BuildingType> damagedBuildings = new List<BuildingType>();
 
             foreach (var building in _buildingManager.CurrentBuildings)
             {
-                if (building.IsProtected)
-                    continue;
-                    
+                // if (building.IsProtected)
+                //     continue;
+
                 int random = Random.Range(0, p_lowerDamages ? 3 : 5);
 
                 if (random == 1) // need better evaluation
@@ -127,32 +144,33 @@ namespace World
                     damagedBuildings.Add(building.BuildingMainData.Type);
                 }
             }
-            
-            OnStormWon?.Invoke(damagedBuildings);
+
+            OnStormCame?.Invoke(damagedBuildings, p_haveWon);
         }
 
-        public void StartMission()
+        public void StartMission(bool p_progressInMissions) // if !progress == lower points in ranking
         {
             if (_currentMission == 0)
             {
                 _buildingManager.CurrentResourcePoints += _startingWorldResources;
             }
 
-            _currentMission++;
+            if (p_progressInMissions)
+            {
+                _currentMission++;
+            }
+
             _currentDay = 0;
-            
+
             _stormPower = Random.Range(_missionData[_currentMission].StormPowerRange.x,
                 _missionData[_currentMission].StormPowerRange.y);
             _finalHiddenStormDay = Random.Range(_missionData[_currentMission].DaysOfStormRange.x,
                 _missionData[_currentMission].DaysOfStormRange.y);
-            
+
             Debug.Log("_finalHiddenStormDay" + _finalHiddenStormDay + " in " + _currentMission + " mission");
-            
-            //get resources from basement
 
             _workersManager.BaseWorkersAmounts = _buildingManager.GetFarmProductionAmount;
-
-            StartNewDay();
+            HandleResourceBasementTransition(false); //get resources from basement
         }
 
         public bool CanSkipDay(out WayToSkip p_reason)
@@ -175,10 +193,24 @@ namespace World
             }
         }
 
+        private void HandleResourceBasementTransition(bool p_putInto)
+        {
+            if (p_putInto)
+            {
+                _buildingManager.CurrentResourcePoints -= RequiredResourcePoints;
+                _buildingManager.ResourcesInBasement = _buildingManager.CurrentResourcePoints;
+            }
+            else
+            {
+                _buildingManager.CurrentResourcePoints += _buildingManager.ResourcesInBasement;
+                _buildingManager.ResourcesInBasement = 0;
+            }
+        }
+
         public bool CanLeaveMission()
         {
             if (_currentDay > _stormDaysRange.x && _currentDay < _stormDaysRange.y &&
-                _buildingManager.CurrentResourcePoints > NeededResourcePoints)
+                _buildingManager.CurrentResourcePoints > RequiredResourcePoints)
             {
                 return true;
             }

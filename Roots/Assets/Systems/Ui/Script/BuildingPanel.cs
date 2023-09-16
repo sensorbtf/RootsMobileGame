@@ -23,7 +23,7 @@ namespace InGameUi
 
         private BuildingData _currentBuildingData;
         private int _currentBuildingLevel;
-        
+
         private List<GameObject> _runtimeBuildingsUiToDestroy;
         private List<BuildingData> _buildingsOnInPanelQueue;
         private Dictionary<BuildingData, SingleBuildingRefs> _createdUiElements;
@@ -37,6 +37,7 @@ namespace InGameUi
         {
             //_buildingManager.OnBuildingClicked += ActivateOnClick;
             _buildingManager.OnBuildingBuilt += HandleBuildEnded;
+            _buildingManager.OnBuildingDestroyed += HandleBuildEnded;
             _runtimeBuildingsUiToDestroy = new List<GameObject>();
             _buildingsOnInPanelQueue = new List<BuildingData>();
             _buildingsInBuildToInfluence = new Dictionary<Building, bool>();
@@ -103,6 +104,11 @@ namespace InGameUi
                     {
                         _buildingsInBuildToInfluence.Remove(building);
                     }
+
+                    if (building.IsDamaged)
+                    {
+                        _buildingsInBuildToInfluence.TryAdd(building, building.HaveWorker);
+                    }
                 }
                 else
                 {
@@ -155,6 +161,17 @@ namespace InGameUi
                     {
                         script.BuildingIcon.GetComponent<Image>().sprite =
                             buildingData.PerLevelData[builtBuilding.CurrentLevel].Icon;
+
+                        if (builtBuilding.IsDamaged)
+                        {
+                            script.BuildingIcon.color = Color.red;
+                        }
+
+                        if (builtBuilding.IsDamaged)
+                        {
+                            HandleBuildingToRepairCreation(script, builtBuilding);
+                            continue;
+                        }
 
                         if (builtBuilding.IsBeeingUpgradedOrBuilded)
                         {
@@ -212,9 +229,10 @@ namespace InGameUi
                 p_refsScript.CreateOrUpgradeBuilding.interactable = false;
                 p_refsScript.CreateOrUpgradeBuilding.image.color = Color.red;
             }
-            
-            UpdateRequirementsText(p_refsScript, p_building.BuildingMainData.PerLevelData[p_building.CurrentLevel].Requirements);
-            
+
+            UpdateRequirementsText(p_refsScript,
+                p_building.BuildingMainData.PerLevelData[p_building.CurrentLevel].Requirements);
+
             p_refsScript.CreateOrUpgradeBuilding.onClick.RemoveAllListeners();
             p_refsScript.CreateOrUpgradeBuilding.onClick.AddListener(() =>
                 AssigningWorkerHandler(p_building.BuildingMainData, p_building.CurrentLevel,
@@ -222,19 +240,50 @@ namespace InGameUi
         }
 
         private void HandleInProgressBuildingCreation(SingleBuildingRefs p_refsScript, BuildingData p_buildingData,
-            int p_level, bool p_isInParmamentProgress = false) // add red cross to icon. Clicking -> canceling building
+            int p_level, bool p_wasBuilt = false) // add red cross to icon. Clicking -> canceling building
         {
-            p_refsScript.BuildingInfo.GetComponent<TextMeshProUGUI>().text = "In Progress";
-            p_refsScript.LevelInfo.GetComponent<TextMeshProUGUI>().text = "Cancel";
+            var building = _buildingManager.GetSpecificBuilding(p_buildingData);
+            
+            if (building != null && _buildingManager.GetSpecificBuilding(p_buildingData).IsDamaged)
+            {
+                p_refsScript.BuildingInfo.GetComponent<TextMeshProUGUI>().text = "Repairing In Progress";
+                p_refsScript.LevelInfo.GetComponent<TextMeshProUGUI>().text = "Cancel Repairing";
+            }
+            else
+            {
+                p_refsScript.BuildingInfo.GetComponent<TextMeshProUGUI>().text = "In Progress";
+                p_refsScript.LevelInfo.GetComponent<TextMeshProUGUI>().text = "Cancel";
+            }
 
             p_refsScript.CreateOrUpgradeBuilding.interactable = true;
             p_refsScript.CreateOrUpgradeBuilding.image.color = Color.yellow;
 
             p_refsScript.CreateOrUpgradeBuilding.onClick.RemoveAllListeners();
             p_refsScript.CreateOrUpgradeBuilding.onClick.AddListener(() =>
-                AssigningWorkerHandler(p_buildingData, p_level, p_refsScript, false, p_isInParmamentProgress));
+                AssigningWorkerHandler(p_buildingData, p_level, p_refsScript, false, p_wasBuilt));
         }
 
+        private void HandleBuildingToRepairCreation(SingleBuildingRefs p_refsScript, Building p_building)
+        {
+            p_refsScript.LevelInfo.GetComponent<TextMeshProUGUI>().text = "Repair";
+            p_refsScript.BuildingInfo.GetComponent<TextMeshProUGUI>().text =
+                $"Days To Complete: {p_building.BuildingMainData.PerLevelData[p_building.CurrentLevel].Requirements.DaysToComplete}\n";
+
+            if (_workersManager.IsAnyWorkerFree())
+            {
+                p_refsScript.CreateOrUpgradeBuilding.image.color = Color.green;
+                p_refsScript.CreateOrUpgradeBuilding.interactable = true;
+            }
+            else
+            {
+                p_refsScript.CreateOrUpgradeBuilding.image.color = Color.red;
+                p_refsScript.CreateOrUpgradeBuilding.interactable = false;
+            }
+
+            p_refsScript.CreateOrUpgradeBuilding.onClick.RemoveAllListeners();
+            p_refsScript.CreateOrUpgradeBuilding.onClick.AddListener(() =>
+                AssigningWorkerHandler(p_building.BuildingMainData, p_building.CurrentLevel, p_refsScript, true, true));
+        }
 
         private void HandleCompletelyNewBuildingCreation(SingleBuildingRefs p_refsScript, BuildingData p_buildingData)
         {
@@ -251,7 +300,7 @@ namespace InGameUi
                 p_refsScript.CreateOrUpgradeBuilding.image.color = Color.red;
                 p_refsScript.CreateOrUpgradeBuilding.interactable = false;
             }
-            
+
             p_refsScript.CreateOrUpgradeBuilding.onClick.RemoveAllListeners();
             p_refsScript.CreateOrUpgradeBuilding.onClick.AddListener(() =>
                 AssigningWorkerHandler(p_buildingData, 0, p_refsScript, true));
@@ -272,26 +321,35 @@ namespace InGameUi
         }
 
         private void HandleCancelledBuildingWork(SingleBuildingRefs p_refsScript, BuildingData p_buildingData,
-            int p_buildingLevel, bool p_isInParmamentProgress = false)
+            int p_buildingLevel, bool p_isBuilt = false)
         {
             p_refsScript.CreateOrUpgradeBuilding.image.color = Color.blue; // in progress
             p_refsScript.CreateOrUpgradeBuilding.interactable = _workersManager.IsAnyWorkerFree();
 
-            p_refsScript.BuildingInfo.GetComponent<TextMeshProUGUI>().text = "Cancelled";
-            p_refsScript.LevelInfo.GetComponent<TextMeshProUGUI>().text = "Back To Work";
+            var building = _buildingManager.GetSpecificBuilding(p_buildingData);
+            
+            if (building != null && _buildingManager.GetSpecificBuilding(p_buildingData).IsDamaged)
+            {
+                p_refsScript.BuildingInfo.GetComponent<TextMeshProUGUI>().text = "Repairing Cancelled";
+                p_refsScript.LevelInfo.GetComponent<TextMeshProUGUI>().text = "Start Repairing";
+            }
+            else
+            {
+                p_refsScript.BuildingInfo.GetComponent<TextMeshProUGUI>().text = "Cancelled";
+                p_refsScript.LevelInfo.GetComponent<TextMeshProUGUI>().text = "Back To Work";
+            }
 
             p_refsScript.CreateOrUpgradeBuilding.onClick.RemoveAllListeners();
             p_refsScript.CreateOrUpgradeBuilding.onClick.AddListener(() => AssigningWorkerHandler(p_buildingData,
-                p_buildingLevel, p_refsScript, true, p_isInParmamentProgress));
+                p_buildingLevel, p_refsScript, true, p_isBuilt));
         }
 
         private void AssigningWorkerHandler(BuildingData p_buildingData, int p_buildingLevel,
-            SingleBuildingRefs p_refsScript, bool p_assign,
-            bool p_isInPernamentBuilding = false) // REFRESHING AFTER CLICKING
+            SingleBuildingRefs p_refsScript, bool p_assign, bool p_isBuilt = false)
         {
             if (p_assign)
             {
-                HandleStartedBuildingWork(p_refsScript, p_buildingData, p_buildingLevel, p_isInPernamentBuilding);
+                HandleStartedBuildingWork(p_refsScript, p_buildingData, p_buildingLevel, p_isBuilt);
             }
             else
             {
@@ -304,7 +362,7 @@ namespace InGameUi
                 {
                     UpdateRequirementsText(p_refsScript, p_buildingData.PerLevelData[0].Requirements);
                     p_refsScript.LevelInfo.GetComponent<TextMeshProUGUI>().text = "Build";
-                    
+
                     if (BuildingsToShow.ContainsKey(p_buildingData))
                     {
                         BuildingsToShow.Remove(p_buildingData);
@@ -317,8 +375,9 @@ namespace InGameUi
 
                     p_refsScript.LevelInfo.GetComponent<TextMeshProUGUI>().text =
                         $"{building.CurrentLevel} >> {nextLevel}";
-                    UpdateRequirementsText(p_refsScript, p_buildingData.PerLevelData[building.CurrentLevel].Requirements);
-                    
+                    UpdateRequirementsText(p_refsScript,
+                        p_buildingData.PerLevelData[building.CurrentLevel].Requirements);
+
                     if (BuildingsToShow.ContainsKey(p_buildingData))
                     {
                         if (!building.IsBeeingUpgradedOrBuilded)
@@ -327,22 +386,21 @@ namespace InGameUi
                         }
                     }
                 }
-                
+
                 p_refsScript.CreateOrUpgradeBuilding.onClick.RemoveAllListeners();
                 p_refsScript.CreateOrUpgradeBuilding.onClick.AddListener(() => AssigningWorkerHandler(p_buildingData,
-                    p_buildingLevel, p_refsScript, true, p_isInPernamentBuilding));
+                    p_buildingLevel, p_refsScript, true, p_isBuilt));
             }
 
-            OnButtonClicked(p_buildingData, p_buildingLevel, p_assign, p_isInPernamentBuilding);
+            OnButtonClicked(p_buildingData, p_buildingLevel, p_assign, p_isBuilt);
         }
 
-        private void OnButtonClicked(BuildingData p_buildingData, int p_buildingLevel, bool p_assign,
-            bool p_isInPernamentBuilding)
+        private void OnButtonClicked(BuildingData p_buildingData, int p_buildingLevel, bool p_assign, bool p_wasBuilt)
         {
-            if (p_isInPernamentBuilding)
+            if (p_wasBuilt)
             {
                 var building = _buildingManager.GetSpecificBuilding(p_buildingData);
-                
+
                 _influencedBuildings.TryAdd(building, _buildingsInBuildToInfluence[building]);
                 _buildingsInBuildToInfluence[building] = !_buildingsInBuildToInfluence[building];
             }
@@ -361,7 +419,7 @@ namespace InGameUi
                     _buildingManager.AddResourcePoints(p_buildingData, p_buildingLevel);
                 }
             }
-            
+
             RefreshWorkersAmount();
             UpdateWorkersText();
             UpdateOtherButtonsUi();
@@ -402,15 +460,23 @@ namespace InGameUi
                     element.Value.BuildingIcon.GetComponent<Image>().sprite =
                         element.Key.PerLevelData[building.CurrentLevel].Icon;
 
+                    if (building.IsDamaged && !_buildingsInBuildToInfluence[building])
+                    {
+                        HandleBuildingToRepairCreation(element.Value, building);
+                        continue;
+                    }
+                    
                     if (building.IsBeeingUpgradedOrBuilded)
                     {
                         if (_buildingsInBuildToInfluence[building])
                         {
-                            HandleInProgressBuildingCreation(element.Value, building.BuildingMainData, building.CurrentLevel, true);
+                            HandleInProgressBuildingCreation(element.Value, building.BuildingMainData,
+                                building.CurrentLevel, true);
                             continue;
                         }
 
-                        HandleCancelledBuildingWork(element.Value, building.BuildingMainData, building.CurrentLevel, true);
+                        HandleCancelledBuildingWork(element.Value, building.BuildingMainData, building.CurrentLevel,
+                            true);
                         continue;
                     }
 
@@ -447,7 +513,7 @@ namespace InGameUi
             {
                 if (!_influencedBuildings.ContainsKey(building.Key))
                     continue;
-                
+
                 if (_influencedBuildings[building.Key] != _buildingsInBuildToInfluence[building.Key])
                 {
                     _buildingManager.HandleBuildingsModifications(building.Key);
@@ -477,10 +543,10 @@ namespace InGameUi
         {
             _workersManager.WorkersInBuilding = 0;
             List<BuildingData> addedBuildings = new List<BuildingData>();
-            
+
             foreach (var building in _buildingManager.CurrentBuildings)
             {
-                if (!building.IsBeeingUpgradedOrBuilded) 
+                if (!building.IsBeeingUpgradedOrBuilded)
                     continue;
 
                 if (_buildingsInBuildToInfluence.ContainsKey(building))
@@ -510,13 +576,15 @@ namespace InGameUi
             }
         }
 
-        public bool WillBuildingBeCancelled(Building p_building)
+        public bool WillBuildingBeCancelled(Building p_building, out bool p_wasOnList)
         {
             if (_buildingsInBuildToInfluence.ContainsKey(p_building))
             {
+                p_wasOnList = true;
                 return !_buildingsInBuildToInfluence[p_building];
             }
 
+            p_wasOnList = false;
             return false;
         }
 
