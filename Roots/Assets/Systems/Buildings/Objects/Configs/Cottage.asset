@@ -20,7 +20,7 @@ MonoBehaviour:
     InGameSprite: {fileID: 21300000, guid: 45f08da01b47b114b800eec5c551bb74, type: 3}
     Requirements:
       ResourcePoints: 0
-      DaysToComplete: 2
+      DaysToComplete: 0
       OtherBuildingRequirements: []
       ResearchRequirements: 
     AvaiableResearches: 
@@ -31,15 +31,15 @@ MonoBehaviour:
   - Icon: {fileID: 21300000, guid: 98755408aee6d394fa6bbb4f345fc5fa, type: 3}
     InGameSprite: {fileID: 21300000, guid: 98755408aee6d394fa6bbb4f345fc5fa, type: 3}
     Requirements:
-      ResourcePoints: 50
-      DaysToComplete: 2
+      ResourcePoints: 30
+      DaysToComplete: 3
       OtherBuildingRequirements: []
       ResearchRequirements: 
     AvaiableResearches: 
     CanProduce: 0
     ProductionPerDay: 0
-    CanRiseDefenses: 1
-    DefensePointsPerDay: 10
+    CanRiseDefenses: 0
+    DefensePointsPerDay: 0
   - Icon: {fileID: 21300000, guid: 98755408aee6d394fa6bbb4f345fc5fa, type: 3}
     InGameSprite: {fileID: 21300000, guid: 98755408aee6d394fa6bbb4f345fc5fa, type: 3}
     Requirements:

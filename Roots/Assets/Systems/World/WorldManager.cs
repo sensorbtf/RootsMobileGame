@@ -11,6 +11,7 @@ namespace World
         [SerializeField] private WorkersManager _workersManager;
         [SerializeField] private Mission[] _missionData;
         [SerializeField] private int _startingWorldResources = 0;
+        [SerializeField] private int _freeDaysSkipAmount = 5;
 
         private int _currentDay = 0;
         private int _currentMission = 0;
@@ -25,6 +26,8 @@ namespace World
         public int FinalHiddenStormDay => _finalHiddenStormDay;
         public int StormPower => _stormPower;
         public Vector2Int StormDaysRange => _missionData[_currentMission].DaysOfStormRange;
+        public int FreeSkipsLeft => _freeDaysSkipAmount;
+        public int DestinyShardsSkipPrice = 10;
 
         public event Action OnNewDayStarted;
         public event Action OnResourcesRequirementsMeet;
@@ -35,8 +38,18 @@ namespace World
             StartMission();
         }
 
-        public void SkipDay()
+        public void SkipDay(WayToSkip p_skipSource)
         {
+            switch (p_skipSource)
+            {
+                case WayToSkip.FreeSkip:
+                    _freeDaysSkipAmount--;
+                    break;
+                case WayToSkip.PaidSkip:
+                    _buildingManager.ShardsOfDestinyAmount -= DestinyShardsSkipPrice;
+                    break;
+            }
+
             StartNewDay();
         }
 
@@ -111,10 +124,24 @@ namespace World
             StartNewDay();
         }
 
-        public bool CanSkipDay()
+        public bool CanSkipDay(out WayToSkip p_reason)
         {
-            // payment of shards/free skips
-            return true;
+            if (_freeDaysSkipAmount > 0)
+            {
+                p_reason = WayToSkip.FreeSkip;
+                return true;
+            }
+
+            if (_buildingManager.ShardsOfDestinyAmount >= DestinyShardsSkipPrice)
+            {
+                p_reason = WayToSkip.PaidSkip;
+                return true;
+            }
+            else
+            {
+                p_reason = WayToSkip.CantSkip;
+                return false;
+            }
         }
 
         public bool CanLeaveMission()
@@ -146,5 +173,14 @@ namespace World
         public int NeededResourcePoints;
         public Vector2Int DaysOfStormRange;
         public Vector2Int StormPowerRange;
+    }
+
+    public enum WayToSkip
+    {
+        CantSkip = 0,
+        FreeSkip = 1,
+        PaidSkip = 2,
+        AddSkip = 3,
+        NormalTimeSkip = 4,
     }
 }
