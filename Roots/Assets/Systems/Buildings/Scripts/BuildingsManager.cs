@@ -34,9 +34,9 @@ namespace Buildings
             }
         }
 
-        public int CurrentResourcePoints = 0;
-        public int CurrentDefensePoints = 0;
-        public int ShardsOfDestinyAmount = 999;
+        [HideInInspector] public int CurrentResourcePoints = 0;
+        [HideInInspector] public int CurrentDefensePoints = 0;
+        [HideInInspector] public int ShardsOfDestinyAmount = 999;
 
         public void StartOnWorld()
         {

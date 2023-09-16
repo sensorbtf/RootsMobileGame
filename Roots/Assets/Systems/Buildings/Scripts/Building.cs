@@ -12,9 +12,9 @@ namespace Buildings
         public BuildingData BuildingMainData;
         public SpriteRenderer InGameIcon;
         public SpriteRenderer GatheringIcon;
-        public int CurrentDayOnQueue;
         private int _currentLevel;
         private bool _haveWorker = false;
+        [HideInInspector] public int CurrentDayOnQueue;
         [HideInInspector] public bool HaveSomethingToCollect = false;
         [HideInInspector] public bool IsBeeingUpgradedOrBuilded = false;
 

@@ -13,6 +13,7 @@ namespace InGameUi
     {
         [SerializeField] private BuildingManager _buildingManager;
         [SerializeField] private WorkersManager _workersManager;
+        [SerializeField] private BuildingPanel _buildingPanel;
 
         [SerializeField] private TextMeshProUGUI _panelName;
         [SerializeField] private TextMeshProUGUI _numberOfWorkers;
@@ -119,32 +120,25 @@ namespace InGameUi
                     ? $"Production Points Per Day: {_buildingManager.GetProductionDataOfBuilding(building)}"
                     : $"Defense Points Per Day: {_buildingManager.GetDefenseRisingDataOfBuilding(building)}";
 
-                if (building.HaveWorker || BuildingsOnQueue.Contains(building))
+                if (building.IsBeeingUpgradedOrBuilded || _buildingPanel.WillBuildingBeUpgraded(building))
                 {
-                    AssignWorkerHandler(building, script, p_gathering);
+                    script.InConstruction.SetActive(true);
+                    script.CreateOrUpgradeBuilding.interactable = false;
                 }
                 else
                 {
-                    UnAssignWorkerHandler(building, script, p_gathering);
+                    script.InConstruction.SetActive(false);
+                    
+                    if (building.HaveWorker || BuildingsOnQueue.Contains(building))
+                    {
+                        AssignWorkerHandler(building, script, p_gathering);
+                    }
+                    else
+                    {
+                        UnAssignWorkerHandler(building, script, p_gathering);
+                    }
                 }
             }
-        }
-
-        private void AssigningWorkerHandler(Building p_building, SingleBuildingRefs script, bool p_assign,
-            bool p_gathering)
-        {
-            script.CreateOrUpgradeBuilding.onClick.RemoveAllListeners();
-
-            if (p_assign)
-            {
-                AssignWorkerHandler(p_building, script, p_gathering);
-            }
-            else
-            {
-                UnAssignWorkerHandler(p_building, script, p_gathering);
-            }
-
-            OnButtonClicked(p_building, p_assign, p_gathering);
         }
 
         private void AssignWorkerHandler(Building p_building, SingleBuildingRefs script, bool p_gathering)
@@ -167,6 +161,23 @@ namespace InGameUi
             script.CreateOrUpgradeBuilding.onClick.RemoveAllListeners();
             script.CreateOrUpgradeBuilding.onClick.AddListener(() =>
                 AssigningWorkerHandler(p_building, script, true, p_gathering));
+        }
+        
+        private void AssigningWorkerHandler(Building p_building, SingleBuildingRefs script, bool p_assign,
+            bool p_gathering)
+        {
+            script.CreateOrUpgradeBuilding.onClick.RemoveAllListeners();
+
+            if (p_assign)
+            {
+                AssignWorkerHandler(p_building, script, p_gathering);
+            }
+            else
+            {
+                UnAssignWorkerHandler(p_building, script, p_gathering);
+            }
+
+            OnButtonClicked(p_building, p_assign, p_gathering);
         }
 
         private void OnButtonClicked(Building p_building, bool p_assign, bool p_gathering)
@@ -206,6 +217,9 @@ namespace InGameUi
         {
             foreach (var building in _createdUiElements)
             {
+                if (building.Key.IsBeeingUpgradedOrBuilded || _buildingPanel.WillBuildingBeUpgraded(building.Key))
+                    continue;
+                
                 if (BuildingsOnQueue.Contains(building.Key))
                 {
                     AssignWorkerHandler(building.Key, building.Value, building.Key.BuildingMainData.PerLevelData[building.Key.CurrentLevel].CanProduce);
@@ -222,12 +236,12 @@ namespace InGameUi
             if (p_gathering)
             {
                 _numberOfWorkers.text =
-                    $"Workers: {_workersManager.BaseWorkersAmounts.ToString()}/{_workersManager.WorkersInResources}";
+                    $"Workers: {_workersManager.BaseWorkersAmounts.ToString()}/{_workersManager.OverallAssignedWorkers}";
             }
             else
             {
                 _numberOfWorkers.text =
-                    $"Workers: {_workersManager.BaseWorkersAmounts.ToString()}/{_workersManager.WorkersInDefences}";
+                    $"Workers: {_workersManager.BaseWorkersAmounts.ToString()}/{_workersManager.OverallAssignedWorkers}";
             }
         }
     }

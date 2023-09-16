@@ -463,7 +463,7 @@ namespace InGameUi
         private void UpdateWorkersText()
         {
             _numberOfWorkers.text =
-                $"Workers: {_workersManager.BaseWorkersAmounts.ToString()}/{_workersManager.WorkersInBuilding}";
+                $"Workers: {_workersManager.BaseWorkersAmounts.ToString()}/{_workersManager.OverallAssignedWorkers}";
         }
 
         private void UpdateRequirementsText(SingleBuildingRefs p_script, Requirements p_requirements)
@@ -519,7 +519,17 @@ namespace InGameUi
 
             return false;
         }
-        
+
+        public bool WillBuildingBeUpgraded(Building p_building)
+        {
+            if (_buildingsOnInPanelQueue.Contains(p_building.BuildingMainData))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
         private void HandleBuildEnded(Building p_building)
         {
             BuildingsToShow.Remove(p_building.BuildingMainData);

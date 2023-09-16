@@ -4051,6 +4051,7 @@ Transform:
   - {fileID: 405837966}
   - {fileID: 1100190143}
   - {fileID: 403002964}
+  - {fileID: 1185689986}
   m_Father: {fileID: 1903800806}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -6307,6 +6308,37 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1178454010}
   m_CullTransparentMesh: 1
+--- !u!1 &1185689985
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1185689986}
+  m_Layer: 0
+  m_Name: Woodcutter
+  m_TagString: Untagged
+  m_Icon: {fileID: 4162164826716764455, guid: 0000000000000000d000000000000000, type: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1185689986
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1185689985}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -8.87, y: 11.44, z: -0.1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 636867709}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1218957327
 GameObject:
   m_ObjectHideFlags: 0
@@ -9413,6 +9445,8 @@ MonoBehaviour:
     BuildingData: {fileID: 11400000, guid: e70846e0adbb3aa479d40b9c018c4289, type: 2}
   - SiteForBuilding: {fileID: 403002964}
     BuildingData: {fileID: 11400000, guid: 8f88cc18557c59c4a82e37fdc87f3f50, type: 2}
+  - SiteForBuilding: {fileID: 1185689986}
+    BuildingData: {fileID: 11400000, guid: 4a65e65cc3bb9514d9b61ad00dfb87cc, type: 2}
   _buildingsDatabase: {fileID: 11400000, guid: b3edb7efaacaa7243b73c8807b123489, type: 2}
   _buildingInBuildStage: {fileID: 21300000, guid: 45f08da01b47b114b800eec5c551bb74, type: 3}
   _resourcesPointsIcon: {fileID: 21300000, guid: 9ce0aa9ec4e105943959eaff215907b9, type: 3}
@@ -10139,6 +10173,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _buildingManager: {fileID: 1903800807}
   _workersManager: {fileID: 1823812590}
+  _buildingPanel: {fileID: 455143713}
   _panelName: {fileID: 1328725343}
   _numberOfWorkers: {fileID: 151299854}
   _gatheringDefenseEntryPrefab: {fileID: 6617740715642735727, guid: bc464fec032160e489522e76e974a0d4, type: 3}

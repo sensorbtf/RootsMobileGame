@@ -47,6 +47,8 @@ namespace Buildings
         Cottage = 0,
         Farm = 1,
         GuardTower = 2,
+        Woodcutter = 3 
+        
     }
     
     public enum Researches
