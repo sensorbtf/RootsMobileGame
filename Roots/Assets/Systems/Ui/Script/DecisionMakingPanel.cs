@@ -21,8 +21,6 @@ namespace InGameUi
             gameObject.SetActive(false);
         }
         
-        //Add panel of BeforeStormWorkersAssignig
-
         private void ViewStormConsequencesPanel(List<BuildingType> p_destroyedBuildings, bool p_won)
         {
             gameObject.SetActive(true);
@@ -35,11 +33,12 @@ namespace InGameUi
             {
                 _uiReferences.Description.text += buildingType + "\n";
             }
+
+            _uiReferences.YesButtonText.text = p_won ? "Start New Mission" : "Try Again";
             
             _uiReferences.YesButton.onClick.AddListener(() => DealWithStormEffects(p_won));
-            _uiReferences.YesButtonText.text = "Start New Mission";
             _uiReferences.NoButton.interactable = false;
-            _uiReferences.NoButtonText.text = "Wut";
+            _uiReferences.NoButtonText.text = "Not Available";
         }
         
         private void ViewLeavePanel()
@@ -65,7 +64,7 @@ namespace InGameUi
             _uiReferences.Description.text = "Do you want to leave earlier?";
             
             _uiReferences.YesButton.onClick.AddListener(() => HandleLeaveDecision(true));
-            _uiReferences.YesButtonText.text = "Yes, leave base for monsters";
+            _uiReferences.YesButtonText.text = "Yes, leave everything for monsters";
             _uiReferences.NoButton.onClick.AddListener(() => HandleLeaveDecision(false));
             _uiReferences.NoButtonText.text = "No, keep working.";
         }

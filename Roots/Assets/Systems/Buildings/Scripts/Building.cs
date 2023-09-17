@@ -18,7 +18,7 @@ namespace Buildings
         [HideInInspector] public int CurrentDayOnQueue;
         [HideInInspector] public bool HaveSomethingToCollect = false;
         [HideInInspector] public bool IsBeeingUpgradedOrBuilded = false;
-        //[HideInInspector] public bool IsProtected = false;
+        [HideInInspector] public bool IsProtected = false;
 
         public int CurrentLevel
         {
@@ -40,11 +40,12 @@ namespace Buildings
                 {
                     IsBeeingUpgradedOrBuilded = false;
                     InGameIcon.color = Color.red;
-                    OnBuildingDestroyed?.Invoke(this);
+                    OnBuildingDamaged?.Invoke(this);
                 }
                 else
                 {
                     InGameIcon.color = Color.white;
+                    OnWorkDone?.Invoke(this, false);
                 }
                 
                 _isDamaged = value;
@@ -56,7 +57,8 @@ namespace Buildings
         public static event Action<BuildingData, int> OnBuildingClicked; 
         public event Action<PointsType, int> OnPointsGathered; 
         public event Action<Building, bool> OnWorkDone; 
-        public event Action<Building> OnBuildingDestroyed; 
+        public event Action<Building> OnBuildingDamaged;
+        public event Action<Building> OnBuildingDestroyed;
 
         public void OnPointerClick(PointerEventData p_eventData)
         {
@@ -85,17 +87,7 @@ namespace Buildings
                 OnBuildingClicked?.Invoke(BuildingMainData, CurrentLevel);
             }
         }
-
-        public void HandleLevelUp()
-        {
-            _currentLevel++;
-            IsBeeingUpgradedOrBuilded = false;
-            CurrentDayOnQueue = 0;
-            InGameIcon.sprite = BuildingMainData.PerLevelData[_currentLevel].InGameSprite;
-            _haveWorker = false;
-            
-            OnWorkDone?.Invoke(this, false);
-        }
+        
         
         public void FinishBuildingSequence()
         {
@@ -112,6 +104,17 @@ namespace Buildings
             _currentLevel = 0;
             CurrentDayOnQueue = 0;
             IsBeeingUpgradedOrBuilded = true;
+        }
+        
+        public void HandleLevelUp()
+        {
+            _currentLevel++;
+            IsBeeingUpgradedOrBuilded = false;
+            CurrentDayOnQueue = 0;
+            InGameIcon.sprite = BuildingMainData.PerLevelData[_currentLevel].InGameSprite;
+            _haveWorker = false;
+            
+            OnWorkDone?.Invoke(this, false);
         }
 
         public void InitiateUpgradeSequence()

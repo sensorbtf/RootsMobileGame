@@ -653,7 +653,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   CreateOrUpgradeBuilding: {fileID: 3472150488935105635}
   BuildingIcon: {fileID: 4274115197284237525}
-  InConstruction: {fileID: 278332784116301829}
+  TypeOfOutcome: {fileID: 0}
+  IsInConstruction: {fileID: 278332784116301829}
   BuildingName: {fileID: 3485629723594187470}
   LevelInfo: {fileID: 7668403408773221373}
   BuildingInfo: {fileID: 8609160176944741492}

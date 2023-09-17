@@ -7,7 +7,8 @@ public class SingleBuildingRefs : MonoBehaviour
 {
     public Button CreateOrUpgradeBuilding;
     public Image BuildingIcon;
-    public GameObject InConstruction;
+    public Image TypeOfOutcome;
+    public GameObject IsInConstruction;
     public TextMeshProUGUI BuildingName;
     public TextMeshProUGUI LevelInfo;
     public TextMeshProUGUI BuildingInfo;

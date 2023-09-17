@@ -33,6 +33,7 @@ namespace World
         public event Action OnNewDayStarted;
         public event Action OnResourcesRequirementsMeet;
         public event Action OnLeaveDecision;
+        public event Action OnDefendingVillage;
         public event Action<List<BuildingType>, bool> OnStormCame;
 
         private void Start()
@@ -97,23 +98,21 @@ namespace World
         {
             if (p_byLeft)
             {
-                HandleBuildingDestroying(p_lowerDamages, true);
+                HandleEndMissionConsequences(p_lowerDamages, true);
             }
             else
             {
                 if (StormPower > _buildingManager.CurrentDefensePoints) // loss
                 {
-                    HandleBuildingDestroying(false, false);
+                    HandleEndMissionConsequences(false, false);
                 }
                 else
                 {
-                    HandleBuildingDestroying(p_lowerDamages, true);
-
-                    // prepare for fight panel -> placing workers -> resultats
+                    OnDefendingVillage?.Invoke();
+                    return;
+                    //HandleEndMissionConsequences(p_lowerDamages, true);
                 }
             }
-
-            EndMissionHandler();
         }
 
         private void EndMissionHandler()
@@ -127,14 +126,14 @@ namespace World
             OnLeaveDecision?.Invoke();
         }
 
-        private void HandleBuildingDestroying(bool p_lowerDamages, bool p_haveWon)
+        public void HandleEndMissionConsequences(bool p_lowerDamages, bool p_haveWon)
         {
             List<BuildingType> damagedBuildings = new List<BuildingType>();
 
             foreach (var building in _buildingManager.CurrentBuildings)
             {
-                // if (building.IsProtected)
-                //     continue;
+                if (building.IsProtected)
+                    continue;
 
                 int random = Random.Range(0, p_lowerDamages ? 3 : 5);
 
@@ -145,6 +144,7 @@ namespace World
                 }
             }
 
+            EndMissionHandler();
             OnStormCame?.Invoke(damagedBuildings, p_haveWon);
         }
 
@@ -167,7 +167,8 @@ namespace World
             _finalHiddenStormDay = Random.Range(_missionData[_currentMission].DaysOfStormRange.x,
                 _missionData[_currentMission].DaysOfStormRange.y);
 
-            Debug.Log("_finalHiddenStormDay" + _finalHiddenStormDay + " in " + _currentMission + " mission");
+            Debug.Log("Storm power" + _stormPower+ "_finalHiddenStormDay" + _finalHiddenStormDay 
+                      + " in " + _currentMission + " mission");
 
             _workersManager.BaseWorkersAmounts = _buildingManager.GetFarmProductionAmount;
             HandleResourceBasementTransition(false); //get resources from basement

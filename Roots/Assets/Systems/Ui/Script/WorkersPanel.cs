@@ -107,15 +107,25 @@ namespace InGameUi
                                 
                                 references.NewInfo.text = "Paused";
                                 references.NewInfo.color = Color.blue;
-                                var isBuildingOnTempList =
+                                var willBeCancelled =
                                     _buildingPanel.WillBuildingBeCancelled(building, out bool wasOnList);
 
-                                if (building.HaveWorker && isBuildingOnTempList)
+                                if (building.HaveWorker && willBeCancelled)
                                 {
                                     references.NewInfo.text = "Will Be Paused";
                                     references.NewInfo.color = Color.blue;
                                 }
-                                else if (!building.HaveWorker && !isBuildingOnTempList && wasOnList)
+                                else if (building.IsDamaged && !building.HaveWorker && !willBeCancelled && wasOnList)
+                                {
+                                    references.NewInfo.text = "Will be repaired";
+                                    references.NewInfo.color = Color.green; 
+                                }
+                                else if (building.IsDamaged && !building.HaveWorker && willBeCancelled && wasOnList)
+                                {
+                                    references.NewInfo.text = "Will be Paused";
+                                    references.NewInfo.color = Color.green; 
+                                }
+                                else if (!building.HaveWorker && !willBeCancelled && wasOnList)
                                 {
                                     references.NewInfo.text = "Will be resumed";
                                     references.NewInfo.color = Color.yellow; 

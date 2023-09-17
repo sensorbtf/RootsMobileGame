@@ -7,7 +7,7 @@ public class WorkersManager : MonoBehaviour
     private int _workersInBuilding;
     private int _workersInDefences;
     private int _workersInResources;
-
+    private int _workersDefending;
     
     public int BaseWorkersAmounts
     {
@@ -33,9 +33,15 @@ public class WorkersManager : MonoBehaviour
         set => _workersInResources = value;
     }    
     
+    public int WorkersDefending
+    {
+        get => _workersDefending;
+        set => _workersDefending = value;
+    }
+    
     public int OverallAssignedWorkers
     {
-        get => _workersInResources + _workersInBuilding + _workersInDefences;
+        get => _workersInResources + _workersInBuilding + _workersInDefences + _workersDefending;
     }
 
     public void ResetAssignedWorkers()
@@ -43,6 +49,7 @@ public class WorkersManager : MonoBehaviour
         _workersInBuilding = 0;
         _workersInDefences = 0;
         _workersInResources = 0;
+        _workersInDefences = 0;
     }
 
     public bool IsAnyWorkerFree()

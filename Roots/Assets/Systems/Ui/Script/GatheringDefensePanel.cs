@@ -122,12 +122,19 @@ namespace InGameUi
 
                 if (building.IsBeeingUpgradedOrBuilded || _buildingPanel.WillBuildingBeUpgraded(building))
                 {
-                    script.InConstruction.SetActive(true);
+                    script.IsInConstruction.SetActive(true);                    
+                    script.IsInConstruction.GetComponent<Image>().color = Color.white;
+                    script.CreateOrUpgradeBuilding.interactable = false;
+                }
+                else if (building.IsDamaged)
+                {
+                    script.IsInConstruction.SetActive(true);
+                    script.IsInConstruction.GetComponent<Image>().color = Color.red;
                     script.CreateOrUpgradeBuilding.interactable = false;
                 }
                 else
                 {
-                    script.InConstruction.SetActive(false);
+                    script.IsInConstruction.SetActive(false);
                     
                     if (building.HaveWorker || BuildingsOnQueue.Contains(building))
                     {
