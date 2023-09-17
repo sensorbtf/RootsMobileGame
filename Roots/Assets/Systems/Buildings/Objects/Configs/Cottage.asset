@@ -16,39 +16,34 @@ MonoBehaviour:
   MainPrefab: {fileID: 1328426712780355558, guid: 87828ae970e7daa458c1959de94084c4, type: 3}
   BaseCottageLevelNeeded: 1
   PerLevelData:
-  - Icon: {fileID: 21300000, guid: 98755408aee6d394fa6bbb4f345fc5fa, type: 3}
+  - Icon: {fileID: 21300000, guid: 4e69dfbbdc1157d44aee0225c3291d03, type: 3}
     InGameSprite: {fileID: 21300000, guid: 45f08da01b47b114b800eec5c551bb74, type: 3}
     Requirements:
       ResourcePoints: 0
       DaysToComplete: 0
       OtherBuildingRequirements: []
-      ResearchRequirements: 
-    AvaiableResearches: 
     CanProduce: 0
     ProductionPerDay: 0
     CanRiseDefenses: 0
     DefensePointsPerDay: 0
-  - Icon: {fileID: 21300000, guid: 98755408aee6d394fa6bbb4f345fc5fa, type: 3}
-    InGameSprite: {fileID: 21300000, guid: 98755408aee6d394fa6bbb4f345fc5fa, type: 3}
+  - Icon: {fileID: 21300000, guid: 4e69dfbbdc1157d44aee0225c3291d03, type: 3}
+    InGameSprite: {fileID: 21300000, guid: 4e69dfbbdc1157d44aee0225c3291d03, type: 3}
     Requirements:
       ResourcePoints: 30
       DaysToComplete: 3
       OtherBuildingRequirements: []
-      ResearchRequirements: 
-    AvaiableResearches: 
     CanProduce: 0
     ProductionPerDay: 0
     CanRiseDefenses: 0
     DefensePointsPerDay: 0
-  - Icon: {fileID: 21300000, guid: 98755408aee6d394fa6bbb4f345fc5fa, type: 3}
-    InGameSprite: {fileID: 21300000, guid: 98755408aee6d394fa6bbb4f345fc5fa, type: 3}
+  - Icon: {fileID: 21300000, guid: 4e69dfbbdc1157d44aee0225c3291d03, type: 3}
+    InGameSprite: {fileID: 21300000, guid: 4e69dfbbdc1157d44aee0225c3291d03, type: 3}
     Requirements:
       ResourcePoints: 50
       DaysToComplete: 3
       OtherBuildingRequirements: []
-      ResearchRequirements: 
-    AvaiableResearches: 
     CanProduce: 0
     ProductionPerDay: 0
     CanRiseDefenses: 1
     DefensePointsPerDay: 15
+  TechnologyPerLevel: {fileID: 0}

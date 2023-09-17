@@ -54,7 +54,7 @@ namespace Buildings
         
         public bool IsCanceled => IsBeeingUpgradedOrBuilded && !_haveWorker;
         
-        public static event Action<BuildingData, int> OnBuildingClicked; 
+        public event Action<Building> OnBuildingClicked; 
         public event Action<PointsType, int> OnPointsGathered; 
         public event Action<Building, bool> OnWorkDone; 
         public event Action<Building> OnBuildingDamaged;
@@ -84,7 +84,7 @@ namespace Buildings
             
             if (!CameraController.isDragging)
             {
-                OnBuildingClicked?.Invoke(BuildingMainData, CurrentLevel);
+                OnBuildingClicked?.Invoke(this);
             }
         }
         

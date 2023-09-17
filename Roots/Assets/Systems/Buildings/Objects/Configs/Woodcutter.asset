@@ -22,8 +22,6 @@ MonoBehaviour:
       ResourcePoints: 20
       DaysToComplete: 1
       OtherBuildingRequirements: []
-      ResearchRequirements: 
-    AvaiableResearches: 
     CanProduce: 1
     ProductionPerDay: 10
     CanRiseDefenses: 0
@@ -34,8 +32,6 @@ MonoBehaviour:
       ResourcePoints: 30
       DaysToComplete: 2
       OtherBuildingRequirements: []
-      ResearchRequirements: 
-    AvaiableResearches: 
     CanProduce: 1
     ProductionPerDay: 20
     CanRiseDefenses: 0
@@ -46,9 +42,8 @@ MonoBehaviour:
       ResourcePoints: 60
       DaysToComplete: 3
       OtherBuildingRequirements: []
-      ResearchRequirements: 
-    AvaiableResearches: 
     CanProduce: 1
     ProductionPerDay: 30
     CanRiseDefenses: 0
     DefensePointsPerDay: 0
+  TechnologyPerLevel: {fileID: 11400000, guid: 60df8f1c2368c674faf18d34c26b7773, type: 2}

@@ -32,20 +32,10 @@ namespace InGameUi
 
         private void Start()
         {
-            _buildingManager.OnBuildingClicked += ActivateOnClick;
             _runtimeBuildingsUiToDestroy = new List<GameObject>();
             _createdUiElements = new Dictionary<Building, SingleBuildingRefs>();
             BuildingsOnQueue = new List<Building>();
             gameObject.SetActive(false);
-        }
-
-        private void ActivateOnClick(BuildingData p_specificBuilding, int p_level)
-        {
-            _currentBuildingData = p_specificBuilding;
-            _currentBuildingLevel = p_level;
-            _panelName.text = p_specificBuilding.Type.ToString();
-
-            // View all buildings in cottage as it is like centrum dowodzenia for fast building
         }
 
         public void BackToWorkerTab()

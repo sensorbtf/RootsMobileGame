@@ -23,7 +23,7 @@ namespace Buildings
         public Sprite ResourcesPointsIcon;
         public Sprite DefensePointsIcon;
         
-        public event Action<BuildingData, int> OnBuildingClicked;
+        public event Action<Building> OnBuildingClicked;
         public event Action<Building> OnBuildingBuilt;
         public event Action<Building> OnBuildingDestroyed;
         public List<Building> CurrentBuildings => _currentlyBuildBuildings;
@@ -101,17 +101,7 @@ namespace Buildings
                 }
             }
         }
-
-        private void OnEnable()
-        {
-            Building.OnBuildingClicked += HandleBuildingClicked;
-        }
-
-        private void OnDisable()
-        {
-            Building.OnBuildingClicked -= HandleBuildingClicked;
-        }
-
+        
         public Building GetSpecificBuilding(BuildingData p_data)
         {
             foreach (var building in _currentlyBuildBuildings)
@@ -276,6 +266,7 @@ namespace Buildings
                 _currentlyBuildBuildings.Add(newBuilding);
                 newBuilding.OnPointsGathered += GatherPoints;
                 newBuilding.OnWorkDone += AssignWorker;
+                newBuilding.OnBuildingClicked += HandleBuildingClicked;
                 newBuilding.OnWorkDone += HandleBuildingBuilt;
                 newBuilding.OnBuildingDamaged += HandleBuildingDamaged;
             }
@@ -324,11 +315,9 @@ namespace Buildings
             }
         }
 
-        private void HandleBuildingClicked(BuildingData p_buildingData, int p_level)
+        private void HandleBuildingClicked(Building p_building)
         {
-            Debug.Log($"Building clicked: {p_buildingData}, Level: {p_level}");
-
-            OnBuildingClicked?.Invoke(p_buildingData, p_level);
+            OnBuildingClicked?.Invoke(p_building);
         }
 
         public void AssignWorker(Building p_building, bool p_assign)

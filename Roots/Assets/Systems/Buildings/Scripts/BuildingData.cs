@@ -11,6 +11,7 @@ namespace Buildings
         public GameObject MainPrefab;
         public int BaseCottageLevelNeeded;
         [SerializeField] public BaseDataPerLevel[] PerLevelData;
+        [SerializeField] public TechnologyData TechnologyPerLevel;
     }
 
     [Serializable]
@@ -19,7 +20,6 @@ namespace Buildings
         public Sprite Icon;
         public Sprite InGameSprite;
         public Requirements Requirements;
-        public Researches[] AvaiableResearches;
         public bool CanProduce;
         public int ProductionPerDay;
         public bool CanRiseDefenses;
@@ -32,7 +32,6 @@ namespace Buildings
         public int ResourcePoints;
         public int DaysToComplete;
         public BuildingRequirements[] OtherBuildingRequirements;
-        public Researches[] ResearchRequirements;
     }
     
     [Serializable]
@@ -49,13 +48,6 @@ namespace Buildings
         GuardTower = 2,
         Woodcutter = 3 
         
-    }
-    
-    public enum Researches
-    {
-        Cottage,
-        Farm,
-        GuardTower,
     }
     
     public enum PointsType

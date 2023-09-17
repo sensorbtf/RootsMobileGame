@@ -128,6 +128,7 @@ MonoBehaviour:
   CurrentDayOnQueue: 0
   HaveSomethingToCollect: 0
   IsBeeingUpgradedOrBuilded: 0
+  IsProtected: 0
 --- !u!1001 &1521950040370447432
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -344,9 +345,21 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7782280717702744981, guid: f89c2262d3f414c41ba14e629414b622, type: 3}
+      propertyPath: m_Size.x
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7782280717702744981, guid: f89c2262d3f414c41ba14e629414b622, type: 3}
+      propertyPath: m_Size.y
+      value: 4.03
+      objectReference: {fileID: 0}
+    - target: {fileID: 7782280717702744981, guid: f89c2262d3f414c41ba14e629414b622, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 98755408aee6d394fa6bbb4f345fc5fa, type: 3}
+      objectReference: {fileID: 21300000, guid: 4e69dfbbdc1157d44aee0225c3291d03, type: 3}
+    - target: {fileID: 7782280717702744981, guid: f89c2262d3f414c41ba14e629414b622, type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8586269573173428084, guid: f89c2262d3f414c41ba14e629414b622, type: 3}
       propertyPath: m_Name
       value: BuildingIcon
