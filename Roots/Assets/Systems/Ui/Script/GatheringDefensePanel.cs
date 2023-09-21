@@ -4,7 +4,6 @@ using Buildings;
 using GeneralSystems;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace InGameUi
@@ -23,7 +22,7 @@ namespace InGameUi
 
         private BuildingData _currentBuildingData;
         private int _currentBuildingLevel;
-        [HideInInspector] public List<Building> BuildingsOnQueue;  // ITS NOT WORKING. TRY ADDING -> BACK -> FORWARD TO PANEL. NEED TO SAVE LIKE 
+        [HideInInspector] public List<Building> BuildingsOnQueue; 
         
         private Dictionary<Building, SingleBuildingRefs> _createdUiElements;
         private List<GameObject> _runtimeBuildingsUiToDestroy;

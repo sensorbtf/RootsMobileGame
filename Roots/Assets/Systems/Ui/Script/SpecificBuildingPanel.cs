@@ -22,7 +22,6 @@ namespace InGameUi
         [SerializeField] private GameObject _goBackGo;
         [SerializeField] private GameObject _lvlUpGo;
         [SerializeField] private GameObject _getIntoWorkGo;
-        [SerializeField] private GameObject _panelGo;
         [SerializeField] private Slider _levelUpProgression;
         [SerializeField] private TextMeshProUGUI _sliderValue;
         [SerializeField] private Transform _contentTransform;
@@ -39,7 +38,7 @@ namespace InGameUi
         private TechnologyDataPerLevel[] _technology;
 
         public TechnologyDataPerLevel TechnologyData => _technology[_currentBuilding.CurrentTechnologyLvl];
-        public event Action<BuildingType> OpenMiniGameOfType;
+        public event Action<Building> OpenMiniGameOfType;
 
         private void Start()
         {
@@ -69,7 +68,7 @@ namespace InGameUi
             gameObject.SetActive(false);
         }
 
-        private void ActivateOnClick(Building p_building)
+        public void ActivateOnClick(Building p_building)
         {
             ClosePanel();
             gameObject.SetActive(true);
@@ -80,10 +79,11 @@ namespace InGameUi
             _lvlUpButton.interactable = false;
             
             _startMiniGameButton.onClick.RemoveAllListeners();
-            _startMiniGameButton.onClick.AddListener(() => StartMiniGame(p_building.BuildingMainData.Type));
+            _startMiniGameButton.onClick.AddListener(() => StartMiniGame(p_building));
 
             _goBackButton.interactable = true;
             _goBackButton.onClick.AddListener(ClosePanel);
+            
             _currentBuilding = p_building;
             _technology = p_building.BuildingMainData.Technology.DataPerTechnologyLevel;
             HandleView();
@@ -187,11 +187,10 @@ namespace InGameUi
             ActivateOnClick(p_building);
         }
 
-        private void StartMiniGame(BuildingType p_type)
+        private void StartMiniGame(Building p_building)
         {
-            _panelGo.SetActive(false);
-            
-            OpenMiniGameOfType?.Invoke(p_type);
+            gameObject.SetActive(false);
+            OpenMiniGameOfType?.Invoke(p_building);
         }
     }
 }
