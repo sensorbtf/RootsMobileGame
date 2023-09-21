@@ -126,9 +126,11 @@ MonoBehaviour:
   InGameIcon: {fileID: 505754554763115416}
   GatheringIcon: {fileID: 6315732626488919103}
   CurrentDayOnQueue: 0
+  CurrentTechnologyDayOnQueue: 0
   HaveSomethingToCollect: 0
   IsBeeingUpgradedOrBuilded: 0
   IsProtected: 0
+  CurrentTechnologyLvl: 0
 --- !u!1001 &1521950040370447432
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -374,8 +376,8 @@ SpriteRenderer:
   m_CorrespondingSourceObject: {fileID: 7782280717702744981, guid: f89c2262d3f414c41ba14e629414b622, type: 3}
   m_PrefabInstance: {fileID: 7711563348952461325}
   m_PrefabAsset: {fileID: 0}
---- !u!224 &8439736024323659261 stripped
-RectTransform:
+--- !u!4 &8439736024323659261 stripped
+Transform:
   m_CorrespondingSourceObject: {fileID: 2169342148856161776, guid: f89c2262d3f414c41ba14e629414b622, type: 3}
   m_PrefabInstance: {fileID: 7711563348952461325}
   m_PrefabAsset: {fileID: 0}

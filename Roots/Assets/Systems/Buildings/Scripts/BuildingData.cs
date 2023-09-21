@@ -11,7 +11,7 @@ namespace Buildings
         public GameObject MainPrefab;
         public int BaseCottageLevelNeeded;
         [SerializeField] public BaseDataPerLevel[] PerLevelData;
-        [SerializeField] public TechnologyData TechnologyPerLevel;
+        [FormerlySerializedAs("TechnologyPerLevel")] [SerializeField] public TechnologyData Technology;
     }
 
     [Serializable]

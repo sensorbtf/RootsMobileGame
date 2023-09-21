@@ -16,9 +16,11 @@ namespace Buildings
         private bool _haveWorker = false;
         private bool _isDamaged = false;
         [HideInInspector] public int CurrentDayOnQueue;
+        [HideInInspector] public int CurrentTechnologyDayOnQueue;
         [HideInInspector] public bool HaveSomethingToCollect = false;
         [HideInInspector] public bool IsBeeingUpgradedOrBuilded = false;
         [HideInInspector] public bool IsProtected = false;
+        [HideInInspector] public int CurrentTechnologyLvl = 0;
 
         public int CurrentLevel
         {
@@ -51,8 +53,6 @@ namespace Buildings
                 _isDamaged = value;
             }
         }
-        
-        public bool IsCanceled => IsBeeingUpgradedOrBuilded && !_haveWorker;
         
         public event Action<Building> OnBuildingClicked; 
         public event Action<PointsType, int> OnPointsGathered; 
@@ -128,6 +128,12 @@ namespace Buildings
             GatheringIcon.sprite = p_gatheringIcon;
             HaveSomethingToCollect = true;
             _haveWorker = false;
+        }
+
+        public void UpgradeTechnologyLevel()
+        {
+            CurrentTechnologyLvl++;
+            CurrentTechnologyDayOnQueue = 0;
         }
     }
 }

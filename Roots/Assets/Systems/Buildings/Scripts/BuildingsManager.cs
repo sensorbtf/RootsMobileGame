@@ -95,7 +95,7 @@ namespace Buildings
 
             foreach (var buildingToBuild in _buildingsDatabase.allBuildings)
             {
-                if (buildingToBuild.Type is BuildingType.Cottage or BuildingType.Farm)
+                if (buildingToBuild.Type is BuildingType.Cottage or BuildingType.Farm or BuildingType.Woodcutter)
                 {
                     HandleBuiltOfBuilding(buildingToBuild, true);
                 }
@@ -142,6 +142,8 @@ namespace Buildings
             {
                 if (building.IsBeeingUpgradedOrBuilded || !building.HaveWorker || building.IsDamaged)
                     continue;
+
+                building.CurrentTechnologyDayOnQueue++;
 
                 if (building.BuildingMainData.PerLevelData[building.CurrentLevel].CanProduce &&
                     building.BuildingMainData.PerLevelData[building.CurrentLevel].CanRiseDefenses)

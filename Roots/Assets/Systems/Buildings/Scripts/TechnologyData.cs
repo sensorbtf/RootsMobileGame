@@ -14,16 +14,16 @@ namespace Buildings
     public class TechnologyDataPerLevel
     {
         public int RequiredBuildingLevel;
-        public OtherBuildingsRequirements OtherBuildingsRequirements;
+        public OtherBuildingsRequirements[] OtherBuildingsRequirements;
         public int WorksDayToAchieve;
         public float MinigameDuration;
-        public float Effciency;
+        public float Efficiency;
     }
 
     [Serializable]
     public class OtherBuildingsRequirements
     {
-        public BuildingType NeededBuilding;
-        public int NeededBuildingLevel;
+        public BuildingType Building;
+        public int Level;
     }
 }

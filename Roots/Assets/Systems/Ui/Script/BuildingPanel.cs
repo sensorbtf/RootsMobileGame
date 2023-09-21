@@ -35,7 +35,6 @@ namespace InGameUi
 
         private void Start()
         {
-            //_buildingManager.OnBuildingClicked += ActivateOnClick;
             _buildingManager.OnBuildingBuilt += HandleBuildEnded;
             _buildingManager.OnBuildingDestroyed += HandleBuildEnded;
             _runtimeBuildingsUiToDestroy = new List<GameObject>();
@@ -68,14 +67,6 @@ namespace InGameUi
 
             gameObject.SetActive(false);
         }
-
-        // private void ActivateOnClick(BuildingData p_specificBuilding, int p_level)
-        // {
-        //     _currentBuildingData = p_specificBuilding;
-        //     _currentBuildingLevel = p_level;
-        //
-        //     HandleView();
-        // }
 
         public void BackToWorkerTab()
         {

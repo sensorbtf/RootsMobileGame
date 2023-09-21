@@ -15,15 +15,22 @@ MonoBehaviour:
   DataPerTechnologyLevel:
   - RequiredBuildingLevel: 1
     OtherBuildingsRequirements:
-      NeededBuilding: 0
-      NeededBuildingLevel: 1
+    - Building: 0
+      Level: 1
     WorksDayToAchieve: 1
     MinigameDuration: 10
-    Effciency: 1
-  - RequiredBuildingLevel: 2
+    Efficiency: 1
+  - RequiredBuildingLevel: 1
     OtherBuildingsRequirements:
-      NeededBuilding: 0
-      NeededBuildingLevel: 1
+    - Building: 0
+      Level: 1
     WorksDayToAchieve: 2
     MinigameDuration: 11
-    Effciency: 2
+    Efficiency: 1.2
+  - RequiredBuildingLevel: 22
+    OtherBuildingsRequirements:
+    - Building: 0
+      Level: 2
+    WorksDayToAchieve: 3
+    MinigameDuration: 12
+    Efficiency: 1.3
