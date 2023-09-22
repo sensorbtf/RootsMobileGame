@@ -13,6 +13,7 @@ public class MinigamesPanel : MonoBehaviour
     [SerializeField] private GameObject _woodcutterMinigame;
 
     private Building _currentBuilding;
+    private GameObject _currentMinigame;
     
     private void Start()
     {
@@ -28,13 +29,16 @@ public class MinigamesPanel : MonoBehaviour
         gameObject.SetActive(true);
         _currentBuilding = p_building;
         
+        // check what sort of minigame should activate
+        // check what will I get from specific building resources/defense points/both
+        // select right minigame and type
+        
         if (p_building.BuildingMainData.Type == BuildingType.Woodcutter)
         {
-            var minigame = Instantiate(_woodcutterMinigame, _minigamesPanelGo.transform);
-            var script = minigame.GetComponent<ClickerMinigame>();
+            _currentMinigame = Instantiate(_woodcutterMinigame, _minigamesPanelGo.transform);
+            var script = _currentMinigame.GetComponent<ClickerMinigame>();
             
-            script.StartTheGame(_specificBuildingPanel.TechnologyData);
-
+            script.StartTheGame(p_building);
             script.OnResourcesCollected += GoBackToSpecificPanel;
         }
     }
@@ -44,5 +48,6 @@ public class MinigamesPanel : MonoBehaviour
         _minigamesPanelGo.SetActive(false);
         gameObject.SetActive(false);
         _specificBuildingPanel.ActivateOnClick(_currentBuilding);
+        Destroy(_currentMinigame);
     }
 }

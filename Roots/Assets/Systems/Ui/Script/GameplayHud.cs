@@ -63,10 +63,10 @@ namespace InGameUi
         {
             CurrentDay.text = $"Current day: {_worldManager.CurrentDay.ToString()}";
             DayToStorm.text = $"Storm in: {_worldManager.StormDaysRange.ToString()}";
-            ResourcePoints.text = $"Resource Points: {_buildingManager.CurrentResourcePoints.ToString()} / " +
+            ResourcePoints.text = $"{_buildingManager.CurrentResourcePoints.ToString()} / " +
                                   $"{_worldManager.RequiredResourcePoints}";
-            DefensePoints.text = $"Defense Points: {_buildingManager.CurrentDefensePoints.ToString()}";
-            ShardsOfDestiny.text = $"Shards Of Destiny: {_buildingManager.ShardsOfDestinyAmount.ToString()}";
+            DefensePoints.text = $"{_buildingManager.CurrentDefensePoints.ToString()}";
+            ShardsOfDestiny.text = $"{_buildingManager.ShardsOfDestinyAmount.ToString()}";
 
             double elapsedSeconds = (DateTime.UtcNow - _startTime).TotalSeconds;
             _timeLeftInSeconds = _dayDurationInSeconds - (float)elapsedSeconds;
@@ -110,7 +110,7 @@ namespace InGameUi
             {
                 case DuringDayState.OnCollecting:
 
-                    if (!_worldManager.CanSetWorkers())
+                    if (_buildingManager.IsAnyBuildingNonGathered())
                     {
                         _endDayButtonText.text = "Collect Points";
                         return;

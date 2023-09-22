@@ -26,6 +26,7 @@ namespace Buildings
         public event Action<Building> OnBuildingClicked;
         public event Action<Building> OnBuildingBuilt;
         public event Action<Building> OnBuildingDestroyed;
+        public event Action OnResourcePointsGather;
         public List<Building> CurrentBuildings => _currentlyBuildBuildings;
         public BuildingDatabase AllBuildingsDatabase => _buildingsDatabase;
 
@@ -169,31 +170,7 @@ namespace Buildings
                 if (!building.HaveWorker)
                     continue;
 
-                building.CurrentDayOnQueue++;
-
-                if (building.IsBeeingUpgradedOrBuilded)
-                {
-                    if (building.CurrentDayOnQueue < 
-                        building.BuildingMainData.PerLevelData[building.CurrentLevel].Requirements.DaysToComplete)
-                        continue;
-                    
-                    if (building.CurrentLevel == 0)
-                    {
-                        building.FinishBuildingSequence();
-                    }
-                    else
-                    {
-                        building.HandleLevelUp();
-                    }
-                }
-
-                if (building.IsDamaged)
-                {
-                    if (building.CurrentDayOnQueue < 1)
-                        continue;
-
-                    building.IsDamaged = false;
-                }
+                building.HandleNewDay();
             }
         }
 
@@ -309,6 +286,7 @@ namespace Buildings
             {
                 case PointsType.Resource:
                     CurrentResourcePoints += p_amount;
+                    OnResourcePointsGather?.Invoke();
                     break;
 
                 case PointsType.Defense:

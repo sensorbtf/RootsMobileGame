@@ -28,14 +28,16 @@ namespace InGameUi
         [SerializeField] private Transform contentTransform;
 
         private List<GameObject> _runtimeBuildingsUiToDestroy;
-
+        private Button _button;
+        private TextMeshProUGUI _buttonText;
         public event Action OnBackToMap;
 
         private void Start()
         {
             _buildingPanel.OnBackToWorkersPanel += ActivatePanel;
             _gatheringDefensePanel.OnBackToWorkersPanel += ActivatePanel;
-
+            _buttonText = _finishWorkersAssigningButton.GetComponentInChildren<TextMeshProUGUI>();
+            _button = _finishWorkersAssigningButton.GetComponent<Button>();
             _runtimeBuildingsUiToDestroy = new List<GameObject>();
             gameObject.SetActive(false);
         }
@@ -49,17 +51,7 @@ namespace InGameUi
             _tabName.text = "Worker Displacement";
 
             UpdateWorkersText();
-
-            if (_workersManager.BaseWorkersAmounts - _workersManager.OverallAssignedWorkers == 0)
-            {
-                _finishWorkersAssigningButton.SetActive(true);
-                _finishWorkersAssigningButton.GetComponent<Button>().onClick.RemoveAllListeners();
-                _finishWorkersAssigningButton.GetComponent<Button>().onClick.AddListener(AssignWorkersForNewDay);
-            }
-            else
-            {
-                _finishWorkersAssigningButton.SetActive(false);
-            }
+            UpdateButtonText();
 
             for (int i = 0; i < 3; i++)
             {
@@ -193,9 +185,8 @@ namespace InGameUi
                         break;
                 }
             }
-
-            // View all buildings in cottage as it is like centrum dowodzenia for fast building
         }
+        
 
         private void ClosePanel()
         {
@@ -240,11 +231,25 @@ namespace InGameUi
         private void UpdateWorkersText()
         {
             _buildingPanel.RefreshWorkersAmount();
-            //_gatheringDefensePanel.RefreshWorkersAmount();
-            
             _numberOfWorkers.text = $"Workers: {_workersManager.BaseWorkersAmounts.ToString()}/{_workersManager.OverallAssignedWorkers}";
+        }
+        
+        private void UpdateButtonText()
+        {
+            _finishWorkersAssigningButton.SetActive(true);
 
-            //_gatheringDefensePanel.ConfirmWorkersAssigment();
+            if (_workersManager.BaseWorkersAmounts - _workersManager.OverallAssignedWorkers == 0)
+            {
+                _button.onClick.RemoveAllListeners();
+                _button.onClick.AddListener(AssignWorkersForNewDay);
+                _button.interactable = true;
+                _buttonText.text = "Start the day";
+            }
+            else
+            {
+                _buttonText.text = "Set workers to work before starting the day";
+                _button.interactable = false;
+            }
         }
     }
 }

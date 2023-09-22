@@ -24,21 +24,24 @@ public class ClickerMinigame : MonoBehaviour
     private bool _countdownEnd;
     private float _score = 0;
 
-    public float Timer => _timer;
-    public bool IsGameActive => _isGameActive;
-    
     public event Action OnResourcesCollected;
 
-    public void StartTheGame(TechnologyDataPerLevel p_technologyDataPerLevel)
+    public void StartTheGame(Building p_building)
     {
         _score = 0;
 
-        _timer = p_technologyDataPerLevel.MinigameDuration;
-        _efficiency = p_technologyDataPerLevel.Efficiency;
+        _timer = p_building.BuildingMainData.Technology.DataPerTechnologyLevel[p_building.CurrentTechnologyLvl].MinigameDuration;
+        _efficiency = p_building.BuildingMainData.Technology.DataPerTechnologyLevel[p_building.CurrentTechnologyLvl].Efficiency;
+        
+        // make an selection of points to gather (probably better to do it in MiniGamesPanel with enums)
         
         _leftSideButton.onClick.AddListener(AddScore);
         _rightSideButton.onClick.AddListener(AddScore);
+        _leftSideButton.interactable = false;
+        _rightSideButton.interactable = false;
+        
         _collectPointsButton.onClick.AddListener(EndMinigame);
+        _collectPointsButton.interactable = false;
         
         StartCoroutine(StartCountdown());
     }
@@ -61,8 +64,9 @@ public class ClickerMinigame : MonoBehaviour
             _isGameActive = false;
             _leftSideButton.interactable = false;
             _rightSideButton.interactable = false;
-
-            _timeText.text = $"Click to collect: {_score} points"; // some sort of przelicznik
+            
+            _collectPointsButton.interactable = true;
+            _timeText.text = $"Click to collect: {_score} resource points"; // some sort of przelicznik
         }
     }
 

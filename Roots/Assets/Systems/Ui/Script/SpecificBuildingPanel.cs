@@ -80,7 +80,8 @@ namespace InGameUi
             
             _startMiniGameButton.onClick.RemoveAllListeners();
             _startMiniGameButton.onClick.AddListener(() => StartMiniGame(p_building));
-
+            _startMiniGameButton.interactable = p_building.CanPlayMinigame();
+            
             _goBackButton.interactable = true;
             _goBackButton.onClick.AddListener(ClosePanel);
             
@@ -190,6 +191,7 @@ namespace InGameUi
         private void StartMiniGame(Building p_building)
         {
             gameObject.SetActive(false);
+            p_building.PlayedMinigame = true;
             OpenMiniGameOfType?.Invoke(p_building);
         }
     }

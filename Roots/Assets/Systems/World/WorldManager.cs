@@ -40,6 +40,8 @@ namespace World
         {
             _buildingManager.StartOnWorld();
             StartMission(true);
+
+            _buildingManager.OnResourcePointsGather += CheckResourcePoints;
         }
 
         public void SkipDay(WayToSkip p_skipSource)
@@ -67,13 +69,11 @@ namespace World
             }
             else
             {
-                if (_buildingManager.CurrentResourcePoints >= RequiredResourcePoints)
+                if (!_buildingManager.IsAnyBuildingNonGathered())
                 {
-                    OnResourcesRequirementsMeet?.Invoke();
-
-                    return;
+                    CheckResourcePoints();
                 }
-
+                
                 HandleNewDayStarted();
             }
 
@@ -83,13 +83,17 @@ namespace World
             //do other thins (days)
         }
 
+        private void CheckResourcePoints()
+        {
+            if (_buildingManager.CurrentResourcePoints < RequiredResourcePoints) 
+                return;
+            
+            OnResourcesRequirementsMeet?.Invoke();
+        }
+
         public void HandleNewDayStarted()
         {
             _buildingManager.RefreshBuildingsOnNewDay();
-
-            if (_buildingManager.IsAnyBuildingNonGathered())
-            {
-            }
 
             OnNewDayStarted?.Invoke();
         }
@@ -217,11 +221,6 @@ namespace World
             }
 
             return false;
-        }
-
-        public bool CanSetWorkers()
-        {
-            return !_buildingManager.IsAnyBuildingNonGathered();
         }
 
         public bool CanStartDay()

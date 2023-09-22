@@ -22,6 +22,8 @@ namespace Buildings
         [HideInInspector] public bool IsProtected = false;
         [HideInInspector] public int CurrentTechnologyLvl = 0;
 
+        private BaseDataPerLevel _currentLevelData => BuildingMainData.PerLevelData[_currentLevel];
+        
         public int CurrentLevel
         {
             get => _currentLevel;
@@ -42,18 +44,26 @@ namespace Buildings
                 {
                     IsBeeingUpgradedOrBuilded = false;
                     InGameIcon.color = Color.red;
+                    CurrentDayOnQueue = 0;
                     OnBuildingDamaged?.Invoke(this);
                 }
                 else
                 {
                     InGameIcon.color = Color.white;
+                    CurrentDayOnQueue = 0;
                     OnWorkDone?.Invoke(this, false);
                 }
                 
                 _isDamaged = value;
             }
         }
-        
+
+        public bool ProducesDefensePoints => _currentLevelData.CanRiseDefenses;
+        public bool ProducesResourcePoints => _currentLevelData.CanProduce;
+        public bool ProducesDefenseAndResourcePoints => _currentLevelData.CanRiseDefenses && _currentLevelData.CanProduce;
+
+        public bool PlayedMinigame;
+
         public event Action<Building> OnBuildingClicked; 
         public event Action<PointsType, int> OnPointsGathered; 
         public event Action<Building, bool> OnWorkDone; 
@@ -64,13 +74,13 @@ namespace Buildings
         {
             if (HaveSomethingToCollect)
             {
-                if (BuildingMainData.PerLevelData[_currentLevel].CanRiseDefenses)
+                if (_currentLevelData.CanRiseDefenses)
                 {
-                    OnPointsGathered?.Invoke(PointsType.Defense, BuildingMainData.PerLevelData[_currentLevel].DefensePointsPerDay);
+                    OnPointsGathered?.Invoke(PointsType.Defense, _currentLevelData.DefensePointsPerDay);
                 }
-                else if (BuildingMainData.PerLevelData[_currentLevel].CanProduce)
+                else if (_currentLevelData.CanProduce)
                 {
-                    OnPointsGathered?.Invoke(PointsType.Resource, BuildingMainData.PerLevelData[_currentLevel].ProductionPerDay);
+                    OnPointsGathered?.Invoke(PointsType.Resource, _currentLevelData.ProductionPerDay);
                 }
                 else
                 {
@@ -93,7 +103,7 @@ namespace Buildings
         {
             _currentLevel = 1;
             IsBeeingUpgradedOrBuilded = false;
-            InGameIcon.sprite = BuildingMainData.PerLevelData[_currentLevel].InGameSprite;
+            InGameIcon.sprite = _currentLevelData.InGameSprite;
             _haveWorker = false;
             
             OnWorkDone?.Invoke(this, false);
@@ -111,7 +121,7 @@ namespace Buildings
             _currentLevel++;
             IsBeeingUpgradedOrBuilded = false;
             CurrentDayOnQueue = 0;
-            InGameIcon.sprite = BuildingMainData.PerLevelData[_currentLevel].InGameSprite;
+            InGameIcon.sprite = _currentLevelData.InGameSprite;
             _haveWorker = false;
             
             OnWorkDone?.Invoke(this, false);
@@ -134,6 +144,40 @@ namespace Buildings
         {
             CurrentTechnologyLvl++;
             CurrentTechnologyDayOnQueue = 0;
+        }
+
+        public bool CanPlayMinigame()
+        {
+            return _haveWorker && !PlayedMinigame && !_isDamaged && !IsBeeingUpgradedOrBuilded;
+        }
+
+        public void HandleNewDay()
+        {
+            PlayedMinigame = false;
+            CurrentDayOnQueue++;
+            
+            if (_isDamaged)
+            {
+                if (CurrentDayOnQueue < 1)
+                    return;
+
+                IsDamaged = false;
+            }
+            
+            if (IsBeeingUpgradedOrBuilded)
+            {
+                if (CurrentDayOnQueue < _currentLevelData.Requirements.DaysToComplete)
+                    return;
+                    
+                if (CurrentLevel == 0)
+                {
+                    FinishBuildingSequence();
+                }
+                else
+                {
+                    HandleLevelUp();
+                }
+            }
         }
     }
 }
