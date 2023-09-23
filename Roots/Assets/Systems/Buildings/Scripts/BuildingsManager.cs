@@ -35,7 +35,7 @@ namespace Buildings
             get
             {
                 var building = _currentlyBuildBuildings.Find(x => x.BuildingMainData.Type == BuildingType.Farm);
-                return building.BuildingMainData.PerLevelData[building.CurrentLevel].ProductionPerDay;
+                return building.BuildingMainData.PerLevelData[building.CurrentLevel].ProductionAmountPerDay;
             }
         }
 
@@ -44,7 +44,7 @@ namespace Buildings
             get
             {
                 var building = _currentlyBuildBuildings.Find(x => x.BuildingMainData.Type == BuildingType.Cottage);
-                return building.BuildingMainData.PerLevelData[building.CurrentLevel].ProductionPerDay;
+                return building.BuildingMainData.PerLevelData[building.CurrentLevel].ProductionAmountPerDay;
             }
         }
 
@@ -146,20 +146,23 @@ namespace Buildings
 
                 building.CurrentTechnologyDayOnQueue++;
 
-                if (building.BuildingMainData.PerLevelData[building.CurrentLevel].CanProduce &&
-                    building.BuildingMainData.PerLevelData[building.CurrentLevel].CanRiseDefenses)
+                switch (building.BuildingMainData.PerLevelData[building.CurrentLevel].ProductionType)
                 {
-                    building.SetCollectionIcon(DefenseAndResourcesPointsIcon);
-                }
-
-                if (building.BuildingMainData.PerLevelData[building.CurrentLevel].CanProduce)
-                {
-                    building.SetCollectionIcon(ResourcesPointsIcon);
-                }
-
-                if (building.BuildingMainData.PerLevelData[building.CurrentLevel].CanRiseDefenses)
-                {
-                    building.SetCollectionIcon(DefensePointsIcon);
+                    case PointsType.Nothing:
+                        break;
+                    case PointsType.Resource:
+                        building.SetCollectionIcon(ResourcesPointsIcon);
+                        break;
+                    case PointsType.Defense:
+                        building.SetCollectionIcon(DefensePointsIcon);
+                        break;
+                    case PointsType.ResourcesAndDefense:
+                        building.SetCollectionIcon(DefenseAndResourcesPointsIcon);
+                        break;
+                    case PointsType.ShardsOfDestiny:
+                        break;
+                    default:
+                        break;
                 }
 
                 // add some sort of bonus here to avoid saving up data in Buildingscript
@@ -332,14 +335,9 @@ namespace Buildings
         public int GetProductionDataOfBuilding(Building p_building)
         {
             return p_building.BuildingMainData.PerLevelData[p_building.CurrentLevel]
-                .ProductionPerDay; // * _bonusesManager.GetBonusForBuilding(p_building)
+                .ProductionAmountPerDay; // * _bonusesManager.GetBonusForBuilding(p_building)
         }
 
-        public int GetDefenseRisingDataOfBuilding(Building p_building)
-        {
-            return p_building.BuildingMainData.PerLevelData[p_building.CurrentLevel]
-                .DefensePointsPerDay; // * _bonusesManager.GetBonusForBuilding(p_building)
-        }
 
         public bool IsAnyBuildingNonGathered()
         {
@@ -362,6 +360,35 @@ namespace Buildings
                 building.IsProtected = false;
                 
                 // any way of attacking 
+            }
+        }
+
+        public void HandlePointsManipulation(PointsType p_pointsType, int p_pointsNumber, bool p_add)
+        {
+            int value = p_pointsNumber;
+         
+            if (!p_add)
+            {
+                value = 0 - p_pointsNumber;
+            }
+
+            switch (p_pointsType)
+            {
+                case PointsType.Resource:
+                    CurrentResourcePoints += value;
+                    break;
+                case PointsType.Defense:
+                    CurrentDefensePoints += value;
+                    break;
+                case PointsType.ResourcesAndDefense:
+                    CurrentDefensePoints += value;
+                    CurrentResourcePoints += value;
+                    break;
+                case PointsType.ShardsOfDestiny:
+                    ShardsOfDestinyAmount += value;
+                    break;
+                default:
+                    break;
             }
         }
     }

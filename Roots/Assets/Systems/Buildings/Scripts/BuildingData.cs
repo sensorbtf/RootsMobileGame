@@ -11,7 +11,7 @@ namespace Buildings
         public GameObject MainPrefab;
         public int BaseCottageLevelNeeded;
         [SerializeField] public BaseDataPerLevel[] PerLevelData;
-        [FormerlySerializedAs("TechnologyPerLevel")] [SerializeField] public TechnologyData Technology;
+        [SerializeField] public TechnologyData Technology;
     }
 
     [Serializable]
@@ -20,10 +20,8 @@ namespace Buildings
         public Sprite Icon;
         public Sprite InGameSprite;
         public Requirements Requirements;
-        public bool CanProduce;
-        public int ProductionPerDay;
-        public bool CanRiseDefenses;
-        [FormerlySerializedAs("DefencePointsPerDay")] public int DefensePointsPerDay;
+        public PointsType ProductionType;
+        public int ProductionAmountPerDay;
     }
     
     [Serializable]
@@ -52,8 +50,10 @@ namespace Buildings
     
     public enum PointsType
     {
-        Resource,
-        Defense,
-        ShardsOfDestiny,
+        Nothing = 0,
+        Resource = 1,
+        Defense = 2,
+        ResourcesAndDefense = 3,
+        ShardsOfDestiny = 4
     }
 }

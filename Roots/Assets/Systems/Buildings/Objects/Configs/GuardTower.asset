@@ -22,28 +22,22 @@ MonoBehaviour:
       ResourcePoints: 20
       DaysToComplete: 1
       OtherBuildingRequirements: []
-    CanProduce: 0
-    ProductionPerDay: 0
-    CanRiseDefenses: 1
-    DefensePointsPerDay: 0
+    ProductionType: 2
+    ProductionAmountPerDay: 5
   - Icon: {fileID: 21300000, guid: d0a291ae06554044d8ae09a202a9e6b5, type: 3}
     InGameSprite: {fileID: 21300000, guid: d0a291ae06554044d8ae09a202a9e6b5, type: 3}
     Requirements:
       ResourcePoints: 30
       DaysToComplete: 2
       OtherBuildingRequirements: []
-    CanProduce: 0
-    ProductionPerDay: 0
-    CanRiseDefenses: 1
-    DefensePointsPerDay: 10
+    ProductionType: 2
+    ProductionAmountPerDay: 10
   - Icon: {fileID: 21300000, guid: d0a291ae06554044d8ae09a202a9e6b5, type: 3}
     InGameSprite: {fileID: 21300000, guid: d0a291ae06554044d8ae09a202a9e6b5, type: 3}
     Requirements:
       ResourcePoints: 40
       DaysToComplete: 3
       OtherBuildingRequirements: []
-    CanProduce: 0
-    ProductionPerDay: 0
-    CanRiseDefenses: 1
-    DefensePointsPerDay: 15
-  Technology: {fileID: 0}
+    ProductionType: 2
+    ProductionAmountPerDay: 15
+  Technology: {fileID: 11400000, guid: 60df8f1c2368c674faf18d34c26b7773, type: 2}

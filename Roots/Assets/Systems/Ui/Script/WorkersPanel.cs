@@ -141,9 +141,9 @@ namespace InGameUi
 
                         foreach (var building in _gatheringDefensePanel.BuildingsOnQueue)
                         {
-                            if (!building.BuildingMainData.PerLevelData[building.CurrentLevel].CanProduce)
+                            if (building.BuildingMainData.PerLevelData[building.CurrentLevel].ProductionType != PointsType.ResourcesAndDefense &&
+                                building.BuildingMainData.PerLevelData[building.CurrentLevel].ProductionType != PointsType.Resource)
                                 continue;
-                            
 
                             newEntry = Instantiate(_iconPrefab, scriptOfBar.ScrollContext);
                             newEntry.GetComponent<Image>().sprite =
@@ -165,7 +165,8 @@ namespace InGameUi
 
                         foreach (var building in _gatheringDefensePanel.BuildingsOnQueue)
                         {
-                            if (!building.BuildingMainData.PerLevelData[building.CurrentLevel].CanRiseDefenses)
+                            if (building.BuildingMainData.PerLevelData[building.CurrentLevel].ProductionType != PointsType.ResourcesAndDefense &&
+                                building.BuildingMainData.PerLevelData[building.CurrentLevel].ProductionType != PointsType.Defense)
                                 continue;
 
                             newEntry = Instantiate(_iconPrefab, scriptOfBar.ScrollContext);

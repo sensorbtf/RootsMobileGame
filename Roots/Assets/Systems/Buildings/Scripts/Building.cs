@@ -2,8 +2,6 @@ using System;
 using GeneralSystems;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.Serialization;
-using UnityEngine.UI;
 
 namespace Buildings
 {
@@ -58,9 +56,7 @@ namespace Buildings
             }
         }
 
-        public bool ProducesDefensePoints => _currentLevelData.CanRiseDefenses;
-        public bool ProducesResourcePoints => _currentLevelData.CanProduce;
-        public bool ProducesDefenseAndResourcePoints => _currentLevelData.CanRiseDefenses && _currentLevelData.CanProduce;
+        public PointsType ProductionType => _currentLevelData.ProductionType;
 
         public bool PlayedMinigame;
 
@@ -74,19 +70,8 @@ namespace Buildings
         {
             if (HaveSomethingToCollect)
             {
-                if (_currentLevelData.CanRiseDefenses)
-                {
-                    OnPointsGathered?.Invoke(PointsType.Defense, _currentLevelData.DefensePointsPerDay);
-                }
-                else if (_currentLevelData.CanProduce)
-                {
-                    OnPointsGathered?.Invoke(PointsType.Resource, _currentLevelData.ProductionPerDay);
-                }
-                else
-                {
-                    Debug.LogError("ERROR. Clicking building with points that its not producing!");    
-                }
-
+                OnPointsGathered?.Invoke(ProductionType, _currentLevelData.ProductionAmountPerDay);
+   
                 GatheringIcon.sprite = null;
                 HaveSomethingToCollect = false;
                 return;

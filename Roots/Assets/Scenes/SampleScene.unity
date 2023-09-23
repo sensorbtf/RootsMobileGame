@@ -13306,7 +13306,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _specificBuildingPanel: {fileID: 1850506696}
   _minigamesPanelGo: {fileID: 5873017475837463214}
-  _woodcutterMinigame: {fileID: 1458857352782118226, guid: 0fe0de437f2d0ab4880a78a1de6dee95, type: 3}
+  _minigamesPerBuilding:
+  - _minigame: {fileID: 1458857352782118226, guid: 0fe0de437f2d0ab4880a78a1de6dee95, type: 3}
+    _buildings: 03000000
 --- !u!1 &5791620529660895287
 GameObject:
   m_ObjectHideFlags: 0

@@ -84,14 +84,16 @@ namespace InGameUi
             {
                 if (p_gathering)
                 {
-                    if (!building.BuildingMainData.PerLevelData[building.CurrentLevel].CanProduce)
+                    if (building.BuildingMainData.PerLevelData[building.CurrentLevel].ProductionType != PointsType.Resource &&
+                        building.BuildingMainData.PerLevelData[building.CurrentLevel].ProductionType != PointsType.ResourcesAndDefense)
                     {
                         continue;
                     }
                 }
                 else
                 {
-                    if (!building.BuildingMainData.PerLevelData[building.CurrentLevel].CanRiseDefenses)
+                    if (building.BuildingMainData.PerLevelData[building.CurrentLevel].ProductionType != PointsType.Defense &&
+                        building.BuildingMainData.PerLevelData[building.CurrentLevel].ProductionType != PointsType.ResourcesAndDefense)
                     {
                         continue;
                     }
@@ -107,7 +109,7 @@ namespace InGameUi
 
                 script.BuildingInfo.GetComponent<TextMeshProUGUI>().text = p_gathering
                     ? $"Production Points Per Day: {_buildingManager.GetProductionDataOfBuilding(building)}"
-                    : $"Defense Points Per Day: {_buildingManager.GetDefenseRisingDataOfBuilding(building)}";
+                    : $"Defense Points Per Day: {_buildingManager.GetProductionDataOfBuilding(building)}";
 
                 if (building.IsBeeingUpgradedOrBuilded || _buildingPanel.WillBuildingBeUpgraded(building))
                 {
@@ -215,14 +217,18 @@ namespace InGameUi
             {
                 if (building.Key.IsBeeingUpgradedOrBuilded || _buildingPanel.WillBuildingBeUpgraded(building.Key))
                     continue;
-                
+
+                bool CanProduce = building.Key.BuildingMainData.PerLevelData[building.Key.CurrentLevel].ProductionType == PointsType.Resource ||
+                    building.Key.BuildingMainData.PerLevelData[building.Key.CurrentLevel].ProductionType == PointsType.ResourcesAndDefense;
+
+
                 if (BuildingsOnQueue.Contains(building.Key))
                 {
-                    AssignWorkerHandler(building.Key, building.Value, building.Key.BuildingMainData.PerLevelData[building.Key.CurrentLevel].CanProduce);
+                    AssignWorkerHandler(building.Key, building.Value,CanProduce);
                 }
                 else
                 {
-                    UnAssignWorkerHandler(building.Key, building.Value, building.Key.BuildingMainData.PerLevelData[building.Key.CurrentLevel].CanProduce);
+                    UnAssignWorkerHandler(building.Key, building.Value, CanProduce);
                 }
             }
         }

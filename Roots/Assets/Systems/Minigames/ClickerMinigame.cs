@@ -18,13 +18,12 @@ public class ClickerMinigame : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _coutdownText;
     
     private float _timer;        
-    private float _countdownTimer = 3;   
     private float _efficiency;        
     private bool _isGameActive;
-    private bool _countdownEnd;
     private float _score = 0;
+    private PointsType _type;
 
-    public event Action OnResourcesCollected;
+    public event Action<PointsType, int> OnResourcesCollected;
 
     public void StartTheGame(Building p_building)
     {
@@ -32,9 +31,8 @@ public class ClickerMinigame : MonoBehaviour
 
         _timer = p_building.BuildingMainData.Technology.DataPerTechnologyLevel[p_building.CurrentTechnologyLvl].MinigameDuration;
         _efficiency = p_building.BuildingMainData.Technology.DataPerTechnologyLevel[p_building.CurrentTechnologyLvl].Efficiency;
-        
-        // make an selection of points to gather (probably better to do it in MiniGamesPanel with enums)
-        
+        _type = p_building.ProductionType;
+
         _leftSideButton.onClick.AddListener(AddScore);
         _rightSideButton.onClick.AddListener(AddScore);
         _leftSideButton.interactable = false;
@@ -48,7 +46,7 @@ public class ClickerMinigame : MonoBehaviour
 
     private void EndMinigame()
     {
-        OnResourcesCollected?.Invoke();
+        OnResourcesCollected?.Invoke(_type, (int)_score);
     }
 
     private void Update()
