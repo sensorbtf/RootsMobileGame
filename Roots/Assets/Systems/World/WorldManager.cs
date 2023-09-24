@@ -79,7 +79,8 @@ namespace World
 
             // if not: new day has started tooltip: info about last one + panel for worker displacement
             // if yes: checlk if win
-
+            // afterone "keep working" there should be turned on button "End Mission"
+            // need gods
             //do other thins (days)
         }
 
