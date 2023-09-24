@@ -68,13 +68,13 @@ namespace World
                 EndMission(false, false);
             }
             else
-            {
+            {   
+                HandleNewDayStarted();
+
                 if (!_buildingManager.IsAnyBuildingNonGathered())
                 {
                     CheckResourcePoints();
                 }
-                
-                HandleNewDayStarted();
             }
 
             // if not: new day has started tooltip: info about last one + panel for worker displacement

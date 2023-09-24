@@ -13304,6 +13304,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a3b1cb9b608648f490abfc7f5afea82c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _buildingsManager: {fileID: 1903800807}
   _specificBuildingPanel: {fileID: 1850506696}
   _minigamesPanelGo: {fileID: 5873017475837463214}
   _minigamesPerBuilding:
