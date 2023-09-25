@@ -19,6 +19,7 @@ namespace Minigames
             _rightSideButton.onClick.AddListener(AddScore);
             _leftSideButton.interactable = false;
             _rightSideButton.interactable = false;
+
         }
 
         private new void Update()
