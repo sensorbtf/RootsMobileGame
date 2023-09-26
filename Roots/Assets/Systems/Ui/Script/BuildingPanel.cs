@@ -408,13 +408,13 @@ namespace InGameUi
                 {
                     _workersManager.WorkersInBuilding++;
                     _buildingsOnInPanelQueue.Add(p_buildingData);
-                    _buildingManager.RemoveResourcePoints(p_buildingData, p_buildingLevel);
+                    _buildingManager.HandlePointsManipulation(PointsType.Resource, p_buildingData.PerLevelData[p_buildingLevel].Requirements.ResourcePoints, false);
                 }
                 else
                 {
                     _workersManager.WorkersInBuilding--;
                     _buildingsOnInPanelQueue.Remove(p_buildingData);
-                    _buildingManager.AddResourcePoints(p_buildingData, p_buildingLevel);
+                    _buildingManager.HandlePointsManipulation(PointsType.Resource, p_buildingData.PerLevelData[p_buildingLevel].Requirements.ResourcePoints, true);
                 }
             }
 

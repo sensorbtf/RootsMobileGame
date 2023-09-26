@@ -34,6 +34,7 @@ namespace InGameUi
         [SerializeField] private GameObject SkipDayGo;
         [SerializeField] private GameObject EndMissionGo;
         [SerializeField] private GameObject EndDayGo;
+        [SerializeField] private GameObject VinetePanel;
         [SerializeField] private TextMeshProUGUI _skipDayText;
         [SerializeField] private TextMeshProUGUI _paidSkipDayText;
 
@@ -57,6 +58,7 @@ namespace InGameUi
             _endDayButtonText = _endDayButton.GetComponentInChildren<TextMeshProUGUI>();
             SkipDayGo.SetActive(false);
             _workersPanel.OnBackToMap += SetWorkers;
+            BlockHud = false;
         }
 
         private void Update() // Better way to do it?
@@ -96,13 +98,16 @@ namespace InGameUi
 
             MainButtonHandler(); // change that for events on click
 
-            if (BlockHud)
-            {
-                _skipDayButton.interactable = false;
-                _endMissionButton.interactable = false;
-                _endDayButton.interactable = false;
-            }
+            VinetePanel.SetActive(BlockHud);
+
+            // if (BlockHud)
+            // {
+            //     _skipDayButton.interactable = false;
+            //     _endMissionButton.interactable = false;
+            //     _endDayButton.interactable = false;
+            // }
         }
+        
 
         private void MainButtonHandler()
         {

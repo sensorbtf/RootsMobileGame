@@ -51,7 +51,6 @@ namespace Buildings
                     CurrentDayOnQueue = 0;
                     OnWorkDone?.Invoke(this, false);
                 }
-                
                 _isDamaged = value;
             }
         }
@@ -82,7 +81,6 @@ namespace Buildings
                 OnBuildingClicked?.Invoke(this);
             }
         }
-        
         
         public void FinishBuildingSequence()
         {

@@ -18,11 +18,11 @@ namespace Buildings
         private int _currentResourcePoints;
         private int _currentDefensePoints;
         private int _shardsOfDestinyAmount;
-        
+
         public Sprite DefenseAndResourcesPointsIcon;
         public Sprite ResourcesPointsIcon;
         public Sprite DefensePointsIcon;
-        
+
         public event Action<Building> OnBuildingClicked;
         public event Action<Building> OnBuildingBuilt;
         public event Action<Building> OnBuildingDestroyed;
@@ -77,7 +77,7 @@ namespace Buildings
             }
         }
 
-        public int ShardsOfDestinyAmount         
+        public int ShardsOfDestinyAmount
         {
             get => _shardsOfDestinyAmount;
             set
@@ -102,7 +102,7 @@ namespace Buildings
                 }
             }
         }
-        
+
         public Building GetSpecificBuilding(BuildingData p_data)
         {
             foreach (var building in _currentlyBuildBuildings)
@@ -258,7 +258,7 @@ namespace Buildings
         {
             OnBuildingBuilt?.Invoke(p_building);
         }
-        
+
         private void HandleBuildingDamaged(Building p_building)
         {
             OnBuildingDestroyed?.Invoke(p_building);
@@ -285,17 +285,7 @@ namespace Buildings
 
         private void GatherPoints(PointsType p_type, int p_amount)
         {
-            switch (p_type)
-            {
-                case PointsType.Resource:
-                    CurrentResourcePoints += p_amount;
-                    OnResourcePointsGather?.Invoke();
-                    break;
-
-                case PointsType.Defense:
-                    CurrentDefensePoints += p_amount;
-                    break;
-            }
+            HandlePointsManipulation(p_type, p_amount, true);
         }
 
         private void HandleBuildingClicked(Building p_building)
@@ -322,22 +312,11 @@ namespace Buildings
             }
         }
 
-        public void RemoveResourcePoints(BuildingData p_buildingData, int p_buildingLevel)
-        {
-            CurrentResourcePoints -= p_buildingData.PerLevelData[p_buildingLevel].Requirements.ResourcePoints;
-        }
-
-        public void AddResourcePoints(BuildingData p_buildingData, int p_buildingLevel)
-        {
-            CurrentResourcePoints += p_buildingData.PerLevelData[p_buildingLevel].Requirements.ResourcePoints;
-        }
-
         public int GetProductionDataOfBuilding(Building p_building)
         {
             return p_building.BuildingMainData.PerLevelData[p_building.CurrentLevel]
                 .ProductionAmountPerDay; // * _bonusesManager.GetBonusForBuilding(p_building)
         }
-
 
         public bool IsAnyBuildingNonGathered()
         {
@@ -358,7 +337,7 @@ namespace Buildings
             {
                 building.HaveWorker = false;
                 building.IsProtected = false;
-                
+
                 // any way of attacking 
             }
         }
@@ -366,7 +345,7 @@ namespace Buildings
         public void HandlePointsManipulation(PointsType p_pointsType, int p_pointsNumber, bool p_add)
         {
             int value = p_pointsNumber;
-         
+
             if (!p_add)
             {
                 value = 0 - p_pointsNumber;
