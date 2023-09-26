@@ -27,6 +27,10 @@ namespace Buildings
         public event Action<Building> OnBuildingBuilt;
         public event Action<Building> OnBuildingDestroyed;
         public event Action OnResourcePointsGather;
+        
+        public event Action<int> OnResourcePointsChange;
+        public event Action<int> OnDefensePointsChange;
+        public event Action<int> OnDestinyShardsPointsChange;
         public List<Building> CurrentBuildings => _currentlyBuildBuildings;
         public BuildingDatabase AllBuildingsDatabase => _buildingsDatabase;
 
@@ -63,6 +67,8 @@ namespace Buildings
                 _currentResourcePoints = value;
                 if (_currentResourcePoints < 0)
                     _currentResourcePoints = 0;
+                
+                OnResourcePointsChange?.Invoke(value);
             }
         }
 
@@ -72,8 +78,11 @@ namespace Buildings
             set
             {
                 _currentDefensePoints = value;
+                
                 if (_currentDefensePoints < 0)
                     _currentDefensePoints = 0;
+                
+                OnDefensePointsChange?.Invoke(value);
             }
         }
 
@@ -85,6 +94,8 @@ namespace Buildings
                 _shardsOfDestinyAmount = value;
                 if (_shardsOfDestinyAmount < 0)
                     _shardsOfDestinyAmount = 0;
+                
+                OnDestinyShardsPointsChange?.Invoke(value);
             }
         }
 

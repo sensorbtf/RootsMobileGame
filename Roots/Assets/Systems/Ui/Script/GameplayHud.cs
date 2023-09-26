@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using Buildings;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.Serialization;
 using World;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 namespace InGameUi
 {
@@ -19,7 +22,8 @@ namespace InGameUi
     public class GameplayHud : MonoBehaviour
     {
         public static bool BlockHud;
-
+        [SerializeField] private Canvas _mainCanvas; 
+        
         [SerializeField] private WorldManager _worldManager;
         [SerializeField] private BuildingManager _buildingManager;
         [SerializeField] private WorkersPanel _workersPanel;
@@ -48,27 +52,108 @@ namespace InGameUi
         private bool _canUseSkipByTime = false;
         private float _timeLeftInSeconds; // 10 minutes * 60 seconds
         private DateTime _startTime;
-
+        private Dictionary<RectTransform, List<GameObject>> _createdImages;
+        
         private void Start()
         {
+            _createdImages = new Dictionary<RectTransform, List<GameObject>>
+            {
+                { ResourcePoints.rectTransform, new List<GameObject>() },
+                { DefensePoints.rectTransform, new List<GameObject>() },
+                { ShardsOfDestiny.rectTransform, new List<GameObject>() }
+            };
+
             _skipDayButton = SkipDayGo.GetComponent<Button>();
             _endMissionButton = EndMissionGo.GetComponent<Button>();
             _endDayButton = EndDayGo.GetComponent<Button>();
 
             _endDayButtonText = _endDayButton.GetComponentInChildren<TextMeshProUGUI>();
             SkipDayGo.SetActive(false);
-            _workersPanel.OnBackToMap += SetWorkers;
             BlockHud = false;
+
+            _workersPanel.OnBackToMap += SetWorkers;
+            _buildingManager.OnResourcePointsChange += RefreshResourcePoints;
+            _buildingManager.OnDefensePointsChange += RefreshDefensePoints;
+            _buildingManager.OnDestinyShardsPointsChange += RefreshShardsPoints;
+            
+            ShardsOfDestiny.text = $"{_buildingManager.ShardsOfDestinyAmount.ToString()}";
+            DefensePoints.text = $"{_buildingManager.CurrentDefensePoints.ToString()}";
+            ResourcePoints.text = $"{_buildingManager.CurrentResourcePoints.ToString()} / " +
+                                  $"{_worldManager.RequiredResourcePoints}";
+        }
+
+        private void RefreshShardsPoints(int p_points)
+        {
+            ShardsOfDestiny.text = $"{_buildingManager.ShardsOfDestinyAmount.ToString()}";
+        }
+
+        private void RefreshDefensePoints(int p_points)
+        {
+            DefensePoints.text = $"{_buildingManager.CurrentDefensePoints.ToString()}";
+        }
+        
+        private void RefreshResourcePoints(int p_points)
+        {
+            ResourcePoints.text = $"{_buildingManager.CurrentResourcePoints.ToString()} / " +
+                                  $"{_worldManager.RequiredResourcePoints}";
+
+            TryToCreatePoints(p_points, PointsType.Resource);
+        }
+
+        private void TryToCreatePoints(int p_points, PointsType p_pointsType)
+        {
+            if (p_points <= 0)
+                return;
+
+            int dividedPoints = p_points / 4;
+            
+            for (int i = 0; i < dividedPoints; i++)
+            {
+                GameObject imageObject = new GameObject("ResourcePoint" + i);
+                imageObject.transform.SetParent(_mainCanvas.transform);
+                Image image = imageObject.AddComponent<Image>();
+
+                RectTransform rectTransform = imageObject.GetComponent<RectTransform>();
+                rectTransform.sizeDelta = new Vector2(50, 50);
+                rectTransform.position = TransparentPanelClickHandler.LastClickPosition;
+
+                switch (p_pointsType)
+                {
+                    case PointsType.Resource:
+                        image.sprite = _buildingManager.ResourcesPointsIcon;
+                        _createdImages[ResourcePoints.rectTransform].Add(imageObject);
+                        break;
+                    case PointsType.Defense:
+                        image.sprite = _buildingManager.DefensePointsIcon;
+                        _createdImages[DefensePoints.rectTransform].Add(imageObject);
+                        break;
+                }
+            }
+        }
+
+        private void MovePoints()
+        {
+            foreach (var specificImages in _createdImages)
+            {
+                for (int i = specificImages.Value.Count - 1; i >= 0; i--)
+                {
+                    GameObject imageObject = specificImages.Value[i];
+                    RectTransform rectTransform = imageObject.GetComponent<RectTransform>();
+                    rectTransform.position = Vector2.MoveTowards(rectTransform.position, specificImages.Key.transform.position, 1000 * Time.deltaTime);
+
+                    if (Vector2.Distance(rectTransform.position, specificImages.Key.transform.position) < 0.1f)
+                    {
+                        specificImages.Value.RemoveAt(i);
+                        Destroy(imageObject);
+                    }
+                }
+            }
         }
 
         private void Update() // Better way to do it?
         {
             CurrentDay.text = $"Current day: {_worldManager.CurrentDay.ToString()}";
             DayToStorm.text = $"Storm in: {_worldManager.StormDaysRange.ToString()}";
-            ResourcePoints.text = $"{_buildingManager.CurrentResourcePoints.ToString()} / " +
-                                  $"{_worldManager.RequiredResourcePoints}";
-            DefensePoints.text = $"{_buildingManager.CurrentDefensePoints.ToString()}";
-            ShardsOfDestiny.text = $"{_buildingManager.ShardsOfDestinyAmount.ToString()}";
 
             double elapsedSeconds = (DateTime.UtcNow - _startTime).TotalSeconds;
             _timeLeftInSeconds = _dayDurationInSeconds - (float)elapsedSeconds;
@@ -96,19 +181,12 @@ namespace InGameUi
                 _endMissionButton.interactable = false;
             }
 
+            MovePoints();
             MainButtonHandler(); // change that for events on click
 
             VinetePanel.SetActive(BlockHud);
-
-            // if (BlockHud)
-            // {
-            //     _skipDayButton.interactable = false;
-            //     _endMissionButton.interactable = false;
-            //     _endDayButton.interactable = false;
-            // }
         }
         
-
         private void MainButtonHandler()
         {
             switch (CurrentPlayerState)
