@@ -11,19 +11,21 @@ namespace World
         [SerializeField] private BuildingManager _buildingManager;
         [SerializeField] private WorkersManager _workersManager;
         [SerializeField] private Mission[] _missionData;
+        [SerializeField] private QuestSO[] _questData;
         [SerializeField] private int _startingWorldResources = 0;
         [SerializeField] private int _freeDaysSkipAmount = 5;
 
         private int _currentDay = 0;
         private int _currentMission = 0;
+        private int _currentRank = 0;
         private int _finalHiddenStormDay = -1;
         private int _stormPower;
         private Vector2Int _stormDaysRange;
 
-        private bool _hasLeftMission = false;
-
         public int RequiredResourcePoints => _missionData[_currentMission].NeededResourcePoints;
         public int CurrentDay => _currentDay;
+        public int CurrentRank => _currentRank;
+        public int CurrentMission => _currentMission;
         public int FinalHiddenStormDay => _finalHiddenStormDay;
         public int StormPower => _stormPower;
         public Vector2Int StormDaysRange => _missionData[_currentMission].DaysOfStormRange;
@@ -52,7 +54,7 @@ namespace World
                     _freeDaysSkipAmount--;
                     break;
                 case WayToSkip.PaidSkip:
-                    _buildingManager.ShardsOfDestinyAmount -= DestinyShardsSkipPrice;
+                    _buildingManager.HandlePointsManipulation(PointsType.ShardsOfDestiny, DestinyShardsSkipPrice, false);
                     break;
             }
 
@@ -157,7 +159,7 @@ namespace World
         {
             if (_currentMission == 0)
             {
-                _buildingManager.CurrentResourcePoints += _startingWorldResources;
+                _buildingManager.HandlePointsManipulation(PointsType.Resource, _startingWorldResources, true);
             }
 
             if (p_progressInMissions)
@@ -203,31 +205,66 @@ namespace World
         {
             if (p_putInto)
             {
-                _buildingManager.CurrentResourcePoints -= RequiredResourcePoints;
+                _buildingManager.HandlePointsManipulation(PointsType.Resource, RequiredResourcePoints, false);
                 _buildingManager.ResourcesInBasement = _buildingManager.CurrentResourcePoints;
             }
             else
             {
-                _buildingManager.CurrentResourcePoints += _buildingManager.ResourcesInBasement;
+                _buildingManager.HandlePointsManipulation(PointsType.Resource, _buildingManager.ResourcesInBasement, true);
                 _buildingManager.ResourcesInBasement = 0;
             }
-        }
-
-        public bool CanLeaveMission()
-        {
-            if (_currentDay > _stormDaysRange.x && _currentDay < _stormDaysRange.y &&
-                _buildingManager.CurrentResourcePoints > RequiredResourcePoints)
-            {
-                return true;
-            }
-
-            return false;
         }
 
         public bool CanStartDay()
         {
             // need manager of minigames. If minigame ended => true
             return true;
+        }
+
+        public string GetFirstMissionText()
+        {
+            string textToReturn = null;
+            
+            switch (_questData[_currentRank].FirstQuest.QuestKind)
+            {
+                case QuestType.AchieveBuildingLvl:
+                    textToReturn = $"Get {_questData[_currentRank].FirstQuest.TargetName} to {_questData[_currentRank].FirstQuest.TargetAmount} lvl";
+                    break;
+                case QuestType.AchieveTechnologyLvl:
+                    textToReturn = $"Develop technology in {_questData[_currentRank].FirstQuest.TargetName} to {_questData[_currentRank].FirstQuest.TargetAmount} lvl";
+                    break;
+                case QuestType.MinigameResourcePoints:
+                    textToReturn = $"Get {_questData[_currentRank].FirstQuest.TargetAmount} resource points from minigame";
+                    break;
+                case QuestType.MinigameDefensePoints:
+                    textToReturn = $"Get {_questData[_currentRank].FirstQuest.TargetAmount} defense points from minigame";
+                    break;
+            }
+
+            return textToReturn;
+        }
+        
+        public string GetSecondMissionText()
+        {
+            string textToReturn = null;
+            
+            switch (_questData[_currentRank].SecondQuest.QuestKind)
+            {
+                case QuestType.AchieveBuildingLvl:
+                    textToReturn = $"Get {_questData[_currentRank].SecondQuest.TargetName} to {_questData[_currentRank].SecondQuest.TargetAmount} lvl";
+                    break;
+                case QuestType.AchieveTechnologyLvl:
+                    textToReturn = $"Develop technology in {_questData[_currentRank].SecondQuest.TargetName} to {_questData[_currentRank].SecondQuest.TargetAmount} lvl";
+                    break;
+                case QuestType.MinigameResourcePoints:
+                    textToReturn = $"Get {_questData[_currentRank].SecondQuest.TargetAmount} resource points from minigame";
+                    break;
+                case QuestType.MinigameDefensePoints:
+                    textToReturn = $"Get {_questData[_currentRank].SecondQuest.TargetAmount} defense points from minigame";
+                    break;
+            }
+
+            return textToReturn;
         }
     }
 

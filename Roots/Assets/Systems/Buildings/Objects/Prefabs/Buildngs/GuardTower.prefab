@@ -31,8 +31,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 8439736024323659261}
   - {fileID: 2719830546844117594}
+  - {fileID: 8439736024323659261}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: -180, z: 0}
@@ -79,7 +79,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 5.07, y: 4.010888}
+  m_Size: {x: 5.07, y: 11.4}
   m_EdgeRadius: 0
 --- !u!114 &2576674177329011405
 MonoBehaviour:
@@ -126,8 +126,12 @@ MonoBehaviour:
   InGameIcon: {fileID: 505754554763115416}
   GatheringIcon: {fileID: 6315732626488919103}
   CurrentDayOnQueue: 0
+  CurrentTechnologyDayOnQueue: 0
   HaveSomethingToCollect: 0
   IsBeeingUpgradedOrBuilded: 0
+  IsProtected: 0
+  CurrentTechnologyLvl: 0
+  PlayedMinigame: 0
 --- !u!1001 &1521950040370447432
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -296,6 +300,14 @@ PrefabInstance:
       value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 2169342148856161776, guid: f89c2262d3f414c41ba14e629414b622, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2169342148856161776, guid: f89c2262d3f414c41ba14e629414b622, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2169342148856161776, guid: f89c2262d3f414c41ba14e629414b622, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -346,7 +358,15 @@ PrefabInstance:
     - target: {fileID: 7782280717702744981, guid: f89c2262d3f414c41ba14e629414b622, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: d721056179476024a8dae2dafece882d, type: 3}
+      objectReference: {fileID: 21300000, guid: d0a291ae06554044d8ae09a202a9e6b5, type: 3}
+    - target: {fileID: 7782280717702744981, guid: f89c2262d3f414c41ba14e629414b622, type: 3}
+      propertyPath: m_DrawMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7782280717702744981, guid: f89c2262d3f414c41ba14e629414b622, type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8586269573173428084, guid: f89c2262d3f414c41ba14e629414b622, type: 3}
       propertyPath: m_Name
       value: BuildingIcon
@@ -361,8 +381,8 @@ SpriteRenderer:
   m_CorrespondingSourceObject: {fileID: 7782280717702744981, guid: f89c2262d3f414c41ba14e629414b622, type: 3}
   m_PrefabInstance: {fileID: 7711563348952461325}
   m_PrefabAsset: {fileID: 0}
---- !u!224 &8439736024323659261 stripped
-RectTransform:
+--- !u!4 &8439736024323659261 stripped
+Transform:
   m_CorrespondingSourceObject: {fileID: 2169342148856161776, guid: f89c2262d3f414c41ba14e629414b622, type: 3}
   m_PrefabInstance: {fileID: 7711563348952461325}
   m_PrefabAsset: {fileID: 0}

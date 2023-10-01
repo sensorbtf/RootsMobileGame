@@ -13,6 +13,7 @@ namespace Buildings
         private int _currentLevel;
         private bool _haveWorker = false;
         private bool _isDamaged = false;
+        private bool _playedMinigame = false;
         [HideInInspector] public int CurrentDayOnQueue;
         [HideInInspector] public int CurrentTechnologyDayOnQueue;
         [HideInInspector] public bool HaveSomethingToCollect = false;
@@ -57,7 +58,11 @@ namespace Buildings
 
         public PointsType ProductionType => _currentLevelData.ProductionType;
 
-        public bool PlayedMinigame;
+        public bool PlayedMinigame
+        {
+            get => _playedMinigame;
+            set => _playedMinigame = value;
+        }
 
         public event Action<Building> OnBuildingClicked; 
         public event Action<PointsType, int> OnPointsGathered; 

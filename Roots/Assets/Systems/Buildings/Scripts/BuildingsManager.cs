@@ -27,10 +27,10 @@ namespace Buildings
         public event Action<Building> OnBuildingBuilt;
         public event Action<Building> OnBuildingDestroyed;
         public event Action OnResourcePointsGather;
-        
-        public event Action<int> OnResourcePointsChange;
-        public event Action<int> OnDefensePointsChange;
-        public event Action<int> OnDestinyShardsPointsChange;
+
+        public event Action<int, bool> OnResourcePointsChange;
+        public event Action<int, bool> OnDefensePointsChange;
+        public event Action<int, bool> OnDestinyShardsPointsChange;
         public List<Building> CurrentBuildings => _currentlyBuildBuildings;
         public BuildingDatabase AllBuildingsDatabase => _buildingsDatabase;
 
@@ -59,49 +59,15 @@ namespace Buildings
             get => _resourcesStoredInBasement;
         }
 
-        public int CurrentResourcePoints
-        {
-            get => _currentResourcePoints;
-            set
-            {
-                _currentResourcePoints = value;
-                if (_currentResourcePoints < 0)
-                    _currentResourcePoints = 0;
-                
-                OnResourcePointsChange?.Invoke(value);
-            }
-        }
+        public int CurrentResourcePoints => _currentResourcePoints;
 
-        public int CurrentDefensePoints
-        {
-            get => _currentDefensePoints;
-            set
-            {
-                _currentDefensePoints = value;
-                
-                if (_currentDefensePoints < 0)
-                    _currentDefensePoints = 0;
-                
-                OnDefensePointsChange?.Invoke(value);
-            }
-        }
+        public int CurrentDefensePoints => _currentDefensePoints;
 
-        public int ShardsOfDestinyAmount
-        {
-            get => _shardsOfDestinyAmount;
-            set
-            {
-                _shardsOfDestinyAmount = value;
-                if (_shardsOfDestinyAmount < 0)
-                    _shardsOfDestinyAmount = 0;
-                
-                OnDestinyShardsPointsChange?.Invoke(value);
-            }
-        }
-
+        public int ShardsOfDestinyAmount => _shardsOfDestinyAmount;
+        
         public void StartOnWorld()
         {
-            ShardsOfDestinyAmount = 999;
+            HandlePointsManipulation(PointsType.ShardsOfDestiny, 250, true);
 
             _currentlyBuildBuildings = new List<Building>();
 
@@ -296,7 +262,7 @@ namespace Buildings
 
         private void GatherPoints(PointsType p_type, int p_amount)
         {
-            HandlePointsManipulation(p_type, p_amount, true);
+            HandlePointsManipulation(p_type, p_amount, true, true);
         }
 
         private void HandleBuildingClicked(Building p_building)
@@ -353,33 +319,60 @@ namespace Buildings
             }
         }
 
-        public void HandlePointsManipulation(PointsType p_pointsType, int p_pointsNumber, bool p_add)
+        public void HandlePointsManipulation(PointsType p_pointsType, int p_pointsNumber, bool p_add, bool p_createEffect = false)
         {
-            int value = p_pointsNumber;
+            int specificValue = p_pointsNumber;
 
             if (!p_add)
             {
-                value = 0 - p_pointsNumber;
+                specificValue = 0 - p_pointsNumber;
             }
 
             switch (p_pointsType)
             {
                 case PointsType.Resource:
-                    CurrentResourcePoints += value;
+                    ManipulateResourcePoints(specificValue, p_createEffect);
                     break;
                 case PointsType.Defense:
-                    CurrentDefensePoints += value;
+                    ManipulateDefencePoints(specificValue, p_createEffect);
                     break;
                 case PointsType.ResourcesAndDefense:
-                    CurrentDefensePoints += value;
-                    CurrentResourcePoints += value;
+                    ManipulateResourcePoints(specificValue, p_createEffect);
+                    ManipulateDefencePoints(specificValue, p_createEffect);
                     break;
                 case PointsType.ShardsOfDestiny:
-                    ShardsOfDestinyAmount += value;
+                    ManipulateShardsOfDestiny(specificValue, p_createEffect);
                     break;
                 default:
                     break;
             }
+        }
+        
+        private void ManipulateDefencePoints(int p_amountOfResources, bool p_createEffect = false)
+        {
+            _currentDefensePoints += p_amountOfResources;
+            if (_currentDefensePoints < 0)
+                _currentDefensePoints = 0;
+
+            OnDefensePointsChange?.Invoke(p_amountOfResources, p_createEffect);
+        }
+
+        private void ManipulateResourcePoints(int p_amountOfResources, bool p_createEffect = false)
+        {
+            _currentResourcePoints += p_amountOfResources;
+            if (_currentResourcePoints < 0)
+                _currentResourcePoints = 0;
+
+            OnResourcePointsChange?.Invoke(p_amountOfResources, p_createEffect);
+        }
+
+        private void ManipulateShardsOfDestiny(int p_amountOfResources, bool p_createEffect = false)
+        {
+            _shardsOfDestinyAmount += p_amountOfResources;
+            if (_shardsOfDestinyAmount < 0)
+                _shardsOfDestinyAmount = 0;
+
+            OnDestinyShardsPointsChange?.Invoke(p_amountOfResources, p_createEffect);
         }
     }
 

@@ -39,14 +39,21 @@ namespace InGameUi
         [SerializeField] private GameObject EndMissionGo;
         [SerializeField] private GameObject EndDayGo;
         [SerializeField] private GameObject VinetePanel;
+        [SerializeField] private GameObject FirstMissionGo;
+        [SerializeField] private GameObject SecondMissionGo;
         [SerializeField] private TextMeshProUGUI _skipDayText;
         [SerializeField] private TextMeshProUGUI _paidSkipDayText;
+        [SerializeField] private TextMeshProUGUI _currentRankText;
+        [SerializeField] private TextMeshProUGUI _currentMissionText;
 
         private DuringDayState CurrentPlayerState;
         private Button _skipDayButton;
         private Button _endMissionButton;
         private Button _endDayButton;
+        
         private TextMeshProUGUI _endDayButtonText;
+        private TextMeshProUGUI _firstMissionText;
+        private TextMeshProUGUI _secondMissionText;
 
         private bool _wasMainButtonRefreshed = true;
         private bool _canUseSkipByTime = false;
@@ -68,36 +75,59 @@ namespace InGameUi
             _endDayButton = EndDayGo.GetComponent<Button>();
 
             _endDayButtonText = _endDayButton.GetComponentInChildren<TextMeshProUGUI>();
+            _firstMissionText = FirstMissionGo.GetComponentInChildren<TextMeshProUGUI>();
+            _secondMissionText = SecondMissionGo.GetComponentInChildren<TextMeshProUGUI>();
+            
             SkipDayGo.SetActive(false);
+            EndMissionGo.SetActive(false);
             BlockHud = false;
 
             _workersPanel.OnBackToMap += SetWorkers;
             _buildingManager.OnResourcePointsChange += RefreshResourcePoints;
             _buildingManager.OnDefensePointsChange += RefreshDefensePoints;
             _buildingManager.OnDestinyShardsPointsChange += RefreshShardsPoints;
+
+            _worldManager.OnResourcesRequirementsMeet += ActivateEndMissionButton;
             
             ShardsOfDestiny.text = $"{_buildingManager.ShardsOfDestinyAmount.ToString()}";
             DefensePoints.text = $"{_buildingManager.CurrentDefensePoints.ToString()}";
             ResourcePoints.text = $"{_buildingManager.CurrentResourcePoints.ToString()} / " +
                                   $"{_worldManager.RequiredResourcePoints}";
+
+            _firstMissionText.text = _worldManager.GetFirstMissionText();
+            _secondMissionText.text = _worldManager.GetSecondMissionText();
+            _currentRankText.text = _worldManager.CurrentRank.ToString();
+            _currentMissionText.text = _worldManager.CurrentDay.ToString();
         }
 
-        private void RefreshShardsPoints(int p_points)
+        private void RefreshShardsPoints(int p_points, bool p_makeIcons)
         {
             ShardsOfDestiny.text = $"{_buildingManager.ShardsOfDestinyAmount.ToString()}";
+            
+            if (p_makeIcons)
+            {
+                TryToCreatePoints(p_points, PointsType.ShardsOfDestiny);
+            }
         }
 
-        private void RefreshDefensePoints(int p_points)
+        private void RefreshDefensePoints(int p_points, bool p_makeIcons)
         {
             DefensePoints.text = $"{_buildingManager.CurrentDefensePoints.ToString()}";
+            
+            if (p_makeIcons)
+            {
+                TryToCreatePoints(p_points, PointsType.Defense);
+            }
         }
         
-        private void RefreshResourcePoints(int p_points)
+        private void RefreshResourcePoints(int p_points, bool p_makeIcons)
         {
             ResourcePoints.text = $"{_buildingManager.CurrentResourcePoints.ToString()} / " +
                                   $"{_worldManager.RequiredResourcePoints}";
-
-            TryToCreatePoints(p_points, PointsType.Resource);
+            if (p_makeIcons)
+            {
+                TryToCreatePoints(p_points, PointsType.Resource);
+            }
         }
 
         private void TryToCreatePoints(int p_points, PointsType p_pointsType)
@@ -115,7 +145,14 @@ namespace InGameUi
 
                 RectTransform rectTransform = imageObject.GetComponent<RectTransform>();
                 rectTransform.sizeDelta = new Vector2(50, 50);
-                rectTransform.position = TransparentPanelClickHandler.LastClickPosition;
+                Vector3 lastClickPosition = TransparentPanelClickHandler.LastClickPosition;
+                
+                float jitter = 50f; 
+                lastClickPosition.x += Random.Range(-jitter, jitter);
+                lastClickPosition.y += Random.Range(-jitter, jitter);
+
+                // Set the jittered position to the RectTransform
+                rectTransform.position = lastClickPosition;
 
                 switch (p_pointsType)
                 {
@@ -139,7 +176,8 @@ namespace InGameUi
                 {
                     GameObject imageObject = specificImages.Value[i];
                     RectTransform rectTransform = imageObject.GetComponent<RectTransform>();
-                    rectTransform.position = Vector2.MoveTowards(rectTransform.position, specificImages.Key.transform.position, 1000 * Time.deltaTime);
+                    rectTransform.position = Vector2.MoveTowards(rectTransform.position, 
+                        specificImages.Key.transform.position, 1000 * Time.deltaTime);
 
                     if (Vector2.Distance(rectTransform.position, specificImages.Key.transform.position) < 0.1f)
                     {
@@ -168,17 +206,6 @@ namespace InGameUi
             else
             {
                 _canUseSkipByTime = true;
-            }
-
-            if (_worldManager.CanLeaveMission())
-            {
-                EndMissionGo.SetActive(true);
-                _endMissionButton.interactable = true;
-            }
-            else
-            {
-                EndMissionGo.SetActive(false);
-                _endMissionButton.interactable = false;
             }
 
             MovePoints();
@@ -269,6 +296,12 @@ namespace InGameUi
 
                     break;
             }
+        }
+        
+        private void ActivateEndMissionButton()
+        {
+            EndMissionGo.SetActive(true);
+            _endMissionButton.interactable = true;
         }
 
         private void OpenWorkersDisplacementPanel()
