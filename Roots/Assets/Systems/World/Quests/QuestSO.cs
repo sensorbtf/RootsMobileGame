@@ -8,17 +8,34 @@ namespace World
     public class QuestSO : ScriptableObject
     {
         public int ShardsOfDestinyReward;
-        public Quest FirstQuest;
-        public Quest SecondQuest;
+        public Quest[] Quests;
     }
 
     [Serializable]
     public class Quest
     {
+        private bool _isCompleted = false;
+        
+        public Action<Quest> OnCompletion;
+        
         public QuestType QuestKind;
         public BuildingType TargetName;  
         public int TargetAmount;  
-        public int ShardsOfDestinyReward;  
+        public int ShardsOfDestinyReward;
+        public bool IsCompleted {
+            get
+            {
+                return _isCompleted;
+            }
+            set
+            {
+                _isCompleted = value;
+                if (_isCompleted)
+                {
+                    OnCompletion?.Invoke(this);
+                }
+            }
+        }
     }
     
     public enum QuestType

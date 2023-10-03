@@ -22,6 +22,7 @@ namespace World
         private int _stormPower;
         private Vector2Int _stormDaysRange;
 
+        public QuestSO CurrentQuests => _questData[_currentRank];
         public int RequiredResourcePoints => _missionData[_currentMission].NeededResourcePoints;
         public int CurrentDay => _currentDay;
         public int CurrentRank => _currentRank;
@@ -44,6 +45,21 @@ namespace World
             StartMission(true);
 
             _buildingManager.OnResourcePointsGather += CheckResourcePoints;
+            _buildingManager.OnBuildingStateChanged += CheckBuildingMissions;
+        }
+
+        private void CheckBuildingMissions(Building p_building) // create mission manager
+        {
+            foreach (var quest in CurrentQuests.Quests)
+            {
+                if (quest.QuestKind != QuestType.AchieveBuildingLvl || quest.TargetName != p_building.BuildingMainData.Type)
+                    continue;
+
+                if (quest.TargetAmount == p_building.CurrentLevel)
+                {
+                    quest.IsCompleted = true; // event for HUD panel. Need to remember about refreshing listeners on every quest change (rank up)
+                }
+            }
         }
 
         public void SkipDay(WayToSkip p_skipSource)
@@ -221,46 +237,23 @@ namespace World
             return true;
         }
 
-        public string GetFirstMissionText()
+        public string GetSpecificMissionText(int p_index)
         {
             string textToReturn = null;
             
-            switch (_questData[_currentRank].FirstQuest.QuestKind)
+            switch (CurrentQuests.Quests[p_index].QuestKind)
             {
                 case QuestType.AchieveBuildingLvl:
-                    textToReturn = $"Get {_questData[_currentRank].FirstQuest.TargetName} to {_questData[_currentRank].FirstQuest.TargetAmount} lvl";
+                    textToReturn = $"Get {CurrentQuests.Quests[0].TargetName} to {CurrentQuests.Quests[0].TargetAmount} lvl";
                     break;
                 case QuestType.AchieveTechnologyLvl:
-                    textToReturn = $"Develop technology in {_questData[_currentRank].FirstQuest.TargetName} to {_questData[_currentRank].FirstQuest.TargetAmount} lvl";
+                    textToReturn = $"Develop technology in {CurrentQuests.Quests[0].TargetName} to {CurrentQuests.Quests[0].TargetAmount} lvl";
                     break;
                 case QuestType.MinigameResourcePoints:
-                    textToReturn = $"Get {_questData[_currentRank].FirstQuest.TargetAmount} resource points from minigame";
+                    textToReturn = $"Get {CurrentQuests.Quests[0].TargetAmount} resource points from minigame";
                     break;
                 case QuestType.MinigameDefensePoints:
-                    textToReturn = $"Get {_questData[_currentRank].FirstQuest.TargetAmount} defense points from minigame";
-                    break;
-            }
-
-            return textToReturn;
-        }
-        
-        public string GetSecondMissionText()
-        {
-            string textToReturn = null;
-            
-            switch (_questData[_currentRank].SecondQuest.QuestKind)
-            {
-                case QuestType.AchieveBuildingLvl:
-                    textToReturn = $"Get {_questData[_currentRank].SecondQuest.TargetName} to {_questData[_currentRank].SecondQuest.TargetAmount} lvl";
-                    break;
-                case QuestType.AchieveTechnologyLvl:
-                    textToReturn = $"Develop technology in {_questData[_currentRank].SecondQuest.TargetName} to {_questData[_currentRank].SecondQuest.TargetAmount} lvl";
-                    break;
-                case QuestType.MinigameResourcePoints:
-                    textToReturn = $"Get {_questData[_currentRank].SecondQuest.TargetAmount} resource points from minigame";
-                    break;
-                case QuestType.MinigameDefensePoints:
-                    textToReturn = $"Get {_questData[_currentRank].SecondQuest.TargetAmount} defense points from minigame";
+                    textToReturn = $"Get {CurrentQuests.Quests[0].TargetAmount} defense points from minigame";
                     break;
             }
 

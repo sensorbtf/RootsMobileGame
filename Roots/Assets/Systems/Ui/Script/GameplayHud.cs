@@ -94,10 +94,26 @@ namespace InGameUi
             ResourcePoints.text = $"{_buildingManager.CurrentResourcePoints.ToString()} / " +
                                   $"{_worldManager.RequiredResourcePoints}";
 
-            _firstMissionText.text = _worldManager.GetFirstMissionText();
-            _secondMissionText.text = _worldManager.GetSecondMissionText();
+            _firstMissionText.text = _worldManager.GetSpecificMissionText(0);
+            _secondMissionText.text = _worldManager.GetSpecificMissionText(1);
+            _worldManager.CurrentQuests.Quests[0].OnCompletion += HandleFirstQuestCompletion;
+            _worldManager.CurrentQuests.Quests[1].OnCompletion += HandleSecondQuestCompletion;
             _currentRankText.text = _worldManager.CurrentRank.ToString();
-            _currentMissionText.text = _worldManager.CurrentDay.ToString();
+            _currentMissionText.text = _worldManager.CurrentMission.ToString();
+        }
+
+        private void HandleFirstQuestCompletion(Quest p_completedQuest)
+        {
+            // activate UX 
+            // activate button for getting reward
+            // after click - ux for full task completion
+            // check if _currentRank < _currentMission
+            // yes - let player lvl up
+            // no - info about need to copmlete X mission
+        }
+
+        private void HandleSecondQuestCompletion(Quest p_completedQuest)
+        {
         }
 
         private void RefreshShardsPoints(int p_points, bool p_makeIcons)

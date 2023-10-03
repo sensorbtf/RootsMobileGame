@@ -35,7 +35,7 @@ namespace InGameUi
 
         private void Start()
         {
-            _buildingManager.OnBuildingBuilt += HandleBuildEnded;
+            _buildingManager.OnBuildingStateChanged += HandleBuildEnded;
             _buildingManager.OnBuildingDestroyed += HandleBuildEnded;
             _runtimeBuildingsUiToDestroy = new List<GameObject>();
             _buildingsOnInPanelQueue = new List<BuildingData>();

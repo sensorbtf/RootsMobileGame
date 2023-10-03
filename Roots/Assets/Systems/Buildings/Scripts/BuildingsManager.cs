@@ -24,7 +24,7 @@ namespace Buildings
         public Sprite DefensePointsIcon;
 
         public event Action<Building> OnBuildingClicked;
-        public event Action<Building> OnBuildingBuilt;
+        public event Action<Building> OnBuildingStateChanged;
         public event Action<Building> OnBuildingDestroyed;
         public event Action OnResourcePointsGather;
 
@@ -224,16 +224,16 @@ namespace Buildings
 
                 _currentlyBuildBuildings.Add(newBuilding);
                 newBuilding.OnPointsGathered += GatherPoints;
-                newBuilding.OnWorkDone += AssignWorker;
+                newBuilding.OnWorkDone += PublishBuildingBuiltEvent;
                 newBuilding.OnBuildingClicked += HandleBuildingClicked;
-                newBuilding.OnWorkDone += HandleBuildingBuilt;
                 newBuilding.OnBuildingDamaged += HandleBuildingDamaged;
             }
         }
 
-        private void HandleBuildingBuilt(Building p_building, bool p_nonUsableHere)
+        private void PublishBuildingBuiltEvent(Building p_building, bool p_unassignWorkers)
         {
-            OnBuildingBuilt?.Invoke(p_building);
+            AssignWorker(p_building, p_unassignWorkers);
+            OnBuildingStateChanged?.Invoke(p_building);
         }
 
         private void HandleBuildingDamaged(Building p_building)
