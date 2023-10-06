@@ -22,7 +22,8 @@ namespace World
         public BuildingType TargetName;  
         public int TargetAmount;  
         public int ShardsOfDestinyReward;
-        public bool IsCompleted {
+        public bool IsCompleted 
+        {
             get
             {
                 return _isCompleted;

@@ -39,21 +39,32 @@ namespace InGameUi
         [SerializeField] private GameObject EndMissionGo;
         [SerializeField] private GameObject EndDayGo;
         [SerializeField] private GameObject VinetePanel;
-        [SerializeField] private GameObject FirstMissionGo;
-        [SerializeField] private GameObject SecondMissionGo;
+
         [SerializeField] private TextMeshProUGUI _skipDayText;
         [SerializeField] private TextMeshProUGUI _paidSkipDayText;
         [SerializeField] private TextMeshProUGUI _currentRankText;
         [SerializeField] private TextMeshProUGUI _currentMissionText;
 
+        // Quests
+        [SerializeField] private GameObject FirstMissionGo;
+        [SerializeField] private GameObject SecondMissionGo;
+        [SerializeField] private GameObject FirstMissionRewardGo;
+        [SerializeField] private GameObject SecondMissionRewardGo;
+        private TextMeshProUGUI _firstMissionText;
+        private TextMeshProUGUI _secondMissionText;
+            
+        private Button _firstMissionButton;
+        private Button _secondMissionButton;
+        private TextMeshProUGUI _firstMissionButtonText;
+        private TextMeshProUGUI _secondMissionButtonText;
+        // Quests
+        
         private DuringDayState CurrentPlayerState;
         private Button _skipDayButton;
         private Button _endMissionButton;
         private Button _endDayButton;
         
         private TextMeshProUGUI _endDayButtonText;
-        private TextMeshProUGUI _firstMissionText;
-        private TextMeshProUGUI _secondMissionText;
 
         private bool _wasMainButtonRefreshed = true;
         private bool _canUseSkipByTime = false;
@@ -78,6 +89,13 @@ namespace InGameUi
             _firstMissionText = FirstMissionGo.GetComponentInChildren<TextMeshProUGUI>();
             _secondMissionText = SecondMissionGo.GetComponentInChildren<TextMeshProUGUI>();
             
+            _firstMissionButtonText = FirstMissionRewardGo.GetComponent<TextMeshProUGUI>();
+            _secondMissionButtonText = SecondMissionRewardGo.GetComponent<TextMeshProUGUI>();
+            _firstMissionButton = FirstMissionRewardGo.GetComponent<Button>();
+            _secondMissionButton = SecondMissionRewardGo.GetComponent<Button>();
+            FirstMissionRewardGo.SetActive(false);
+            SecondMissionRewardGo.SetActive(false);
+
             SkipDayGo.SetActive(false);
             EndMissionGo.SetActive(false);
             BlockHud = false;
@@ -107,13 +125,21 @@ namespace InGameUi
             // activate UX 
             // activate button for getting reward
             // after click - ux for full task completion
-            // check if _currentRank < _currentMission
-            // yes - let player lvl up
-            // no - info about need to copmlete X mission
+            if (_worldManager.CurrentQuests.Quests[1].IsCompleted)
+            {
+                // check if 2 missions are completed _currentRank < _currentMission
+                // yes - let player lvl up
+                // no - info about need to copmlete X mission 
+            }
         }
 
         private void HandleSecondQuestCompletion(Quest p_completedQuest)
         {
+
+            if (_worldManager.CurrentQuests.Quests[0].IsCompleted)
+            {
+                
+            }
         }
 
         private void RefreshShardsPoints(int p_points, bool p_makeIcons)
