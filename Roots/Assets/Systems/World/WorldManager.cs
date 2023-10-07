@@ -38,6 +38,7 @@ namespace World
         public event Action OnLeaveDecision;
         public event Action OnDefendingVillage;
         public event Action OnMissionProgress;
+        public event Action OnNewMissionStart;
         public event Action<List<BuildingType>, bool> OnStormCame;
 
         private void Start()
@@ -177,7 +178,7 @@ namespace World
                 OnMissionProgress?.Invoke();
             }
 
-            _currentDay = 0;
+            _currentDay = 1;
 
             _stormPower = Random.Range(_missionData[_currentMission].StormPowerRange.x,
                 _missionData[_currentMission].StormPowerRange.y);
@@ -189,6 +190,8 @@ namespace World
 
             _workersManager.BaseWorkersAmounts = _buildingManager.GetFarmProductionAmount;
             HandleResourceBasementTransition(false); //get resources from basement
+            
+            OnNewMissionStart?.Invoke();
         }
 
         public bool CanSkipDay(out WayToSkip p_reason)
