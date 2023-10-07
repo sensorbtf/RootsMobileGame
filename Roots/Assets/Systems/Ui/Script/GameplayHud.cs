@@ -121,7 +121,7 @@ namespace InGameUi
 
             _worldManager.CurrentQuests.Quests[0].OnCompletion += HandleFirstQuestCompletion;
             _worldManager.CurrentQuests.Quests[1].OnCompletion += HandleSecondQuestCompletion;
-            _worldManager.OnMissionProgress += CheckQuestsCompletion;
+            //_worldManager.OnMissionProgress += CheckQuestsCompletion;
             _worldManager.OnMissionProgress += RefreshQuestsText;
             _worldManager.OnNewMissionStart += RefreshStormSlider;
             _worldManager.OnNewDayStarted += NewDayHandler;
@@ -417,8 +417,6 @@ namespace InGameUi
             _firstMissionButton.onClick.AddListener(() =>
                 GatherPointsFromQuest(0, p_completedQuest.ShardsOfDestinyReward));
             _firstMissionButtonText.text = $"Collect {p_completedQuest.ShardsOfDestinyReward} Destiny Shards";
-
-            CheckQuestsCompletion();
         }
 
         private void HandleSecondQuestCompletion(Quest p_completedQuest)
@@ -430,8 +428,6 @@ namespace InGameUi
             _secondMissionButton.onClick.AddListener(() =>
                 GatherPointsFromQuest(1, p_completedQuest.ShardsOfDestinyReward));
             _secondMissionButtonText.text = $"Collect {p_completedQuest.ShardsOfDestinyReward} Destiny Shards";
-
-            CheckQuestsCompletion();
         }
 
         private void GatherPointsFromQuest(int p_questIndex, int p_destinyShardsPoints)
@@ -448,6 +444,8 @@ namespace InGameUi
             }
 
             _buildingManager.HandlePointsManipulation(PointsType.ShardsOfDestiny, p_destinyShardsPoints, true, true);
+            
+            CheckQuestsCompletion();
         }
 
         private void CheckQuestsCompletion()
@@ -462,7 +460,8 @@ namespace InGameUi
                 _currentRankText.text = "Click To Rank Up";
                 button.onClick.RemoveAllListeners();
                 button.onClick.AddListener(HandleQuestsCompletion);
-
+                button.interactable = true;
+                
                 QuestsCompletedGo.SetActive(false);
             }
             else
@@ -483,6 +482,8 @@ namespace InGameUi
 
             _worldManager.CurrentQuests.Quests[0].OnCompletion += HandleFirstQuestCompletion;
             _worldManager.CurrentQuests.Quests[1].OnCompletion += HandleSecondQuestCompletion;
+
+            _currentRankText.GetComponent<Button>().interactable = false;
         }
 
         private void RefreshQuestsText()

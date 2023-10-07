@@ -104,11 +104,12 @@ namespace World
             OnResourcesRequirementsMeet?.Invoke();
         }
 
-        public void HandleNewDayStarted()
+        public void HandleNewDayStarted(bool p_invoke = true)
         {
             _buildingManager.RefreshBuildingsOnNewDay();
 
-            OnNewDayStarted?.Invoke();
+            if (p_invoke)
+                OnNewDayStarted?.Invoke();
         }
 
         public void EndMission(bool p_byLeft, bool p_lowerDamages)
@@ -260,14 +261,25 @@ namespace World
         public string GetSpecificQuestObjectiveText(int p_index)
         {
             string textToReturn = null;
+            var level = 0;
+            Building building = null;
             
             switch (CurrentQuests.Quests[p_index].QuestKind)
             {
                 case QuestType.AchieveBuildingLvl:
-                    textToReturn = $"Current level: {_buildingManager.GetSpecificBuilding(CurrentQuests.Quests[0].TargetName).CurrentLevel} to {CurrentQuests.Quests[0].TargetAmount} lvl";
+                    building = _buildingManager.GetSpecificBuilding(CurrentQuests.Quests[0].TargetName);
+                    
+                    if (building != null)
+                        level = building.CurrentLevel;
+                    
+                    textToReturn = $"Current level: {level}";
                     break;
                 case QuestType.AchieveTechnologyLvl:
-                    textToReturn = $"Current level: {_buildingManager.GetSpecificBuilding(CurrentQuests.Quests[0].TargetName).CurrentTechnologyLvl} to {CurrentQuests.Quests[0].TargetAmount} lvl";
+                    building = _buildingManager.GetSpecificBuilding(CurrentQuests.Quests[0].TargetName);
+                    
+                    if (building != null)
+                        level = building.CurrentTechnologyLvl;
+                    textToReturn = $"Current level: {level}";
                     break;
                 case QuestType.MinigameResourcePoints: case QuestType.MinigameDefensePoints:
                     textToReturn = $"{CurrentQuests.Quests[0].AchievedTargetAmount}/{CurrentQuests.Quests[0].TargetAmount}";

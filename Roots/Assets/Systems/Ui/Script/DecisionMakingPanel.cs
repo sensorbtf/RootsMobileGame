@@ -77,7 +77,7 @@ namespace InGameUi
             }
             else
             {
-                _worldManager.HandleNewDayStarted();
+                _worldManager.HandleNewDayStarted(false);
             }
             
             gameObject.SetActive(false);
