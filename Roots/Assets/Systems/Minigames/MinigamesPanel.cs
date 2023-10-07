@@ -52,7 +52,7 @@ namespace Minigames
             var script = _currentMinigame.GetComponent<RightLeftClickerMinigame>();
 
             script.StartTheGame(p_building);
-            script.OnResourcesCollected += GoBackToSpecificPanel;
+            script.OnMiniGamePointsCollected += GoBackToSpecificPanel;
         }
 
         private void GoBackToSpecificPanel(PointsType p_pointsType, int p_pointsNumber)
@@ -60,10 +60,9 @@ namespace Minigames
             _minigamesPanelGo.SetActive(false);
             gameObject.SetActive(false);
             _specificBuildingPanel.ActivateOnClick(_currentBuilding);
-            _buildingsManager.HandlePointsManipulation(p_pointsType, p_pointsNumber, true);
+            _buildingsManager.HandlePointsManipulation(p_pointsType, p_pointsNumber, true, true);
             Destroy(_currentMinigame);
         }
-
 
         [Serializable]
         public class MinigamesPerBuildings

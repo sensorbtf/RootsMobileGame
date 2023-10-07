@@ -37,6 +37,7 @@ namespace World
         public event Action OnResourcesRequirementsMeet;
         public event Action OnLeaveDecision;
         public event Action OnDefendingVillage;
+        public event Action OnMissionProgress;
         public event Action<List<BuildingType>, bool> OnStormCame;
 
         private void Start()
@@ -46,19 +47,11 @@ namespace World
 
             _buildingManager.OnResourcePointsGather += CheckResourcePoints;
             _buildingManager.OnBuildingStateChanged += CheckBuildingMissions;
-        }
+            _buildingManager.OnBuildingTechnologyLvlUp += CheckTechnologyBuildingMissions;
 
-        private void CheckBuildingMissions(Building p_building) // create mission manager
-        {
-            foreach (var quest in CurrentQuests.Quests)
+            foreach (var building in _buildingManager.CurrentBuildings) // no need?
             {
-                if (quest.QuestKind != QuestType.AchieveBuildingLvl || quest.TargetName != p_building.BuildingMainData.Type)
-                    continue;
-
-                if (quest.TargetAmount == p_building.CurrentLevel)
-                {
-                    quest.IsCompleted = true; // event for HUD panel. Need to remember about refreshing listeners on every quest change (rank up)
-                }
+                CheckBuildingMissions(building);
             }
         }
 
@@ -181,6 +174,7 @@ namespace World
             if (p_progressInMissions)
             {
                 _currentMission++;
+                OnMissionProgress?.Invoke();
             }
 
             _currentDay = 0;
@@ -237,7 +231,7 @@ namespace World
             return true;
         }
 
-        public string GetSpecificMissionText(int p_index)
+        public string GetSpecificQuestText(int p_index)
         {
             string textToReturn = null;
             
@@ -258,6 +252,59 @@ namespace World
             }
 
             return textToReturn;
+        }
+        
+        public string GetSpecificQuestObjectiveText(int p_index)
+        {
+            string textToReturn = null;
+            
+            switch (CurrentQuests.Quests[p_index].QuestKind)
+            {
+                case QuestType.AchieveBuildingLvl:
+                    textToReturn = $"Current level: {_buildingManager.GetSpecificBuilding(CurrentQuests.Quests[0].TargetName).CurrentLevel} to {CurrentQuests.Quests[0].TargetAmount} lvl";
+                    break;
+                case QuestType.AchieveTechnologyLvl:
+                    textToReturn = $"Current level: {_buildingManager.GetSpecificBuilding(CurrentQuests.Quests[0].TargetName).CurrentTechnologyLvl} to {CurrentQuests.Quests[0].TargetAmount} lvl";
+                    break;
+                case QuestType.MinigameResourcePoints: case QuestType.MinigameDefensePoints:
+                    textToReturn = $"{CurrentQuests.Quests[0].AchievedTargetAmount}/{CurrentQuests.Quests[0].TargetAmount}";
+                    break;
+            }
+
+            return textToReturn;
+        }
+        
+        private void CheckBuildingMissions(Building p_building) 
+        {
+            foreach (var quest in CurrentQuests.Quests)
+            {
+                if (quest.QuestKind != QuestType.AchieveBuildingLvl || quest.TargetName != p_building.BuildingMainData.Type)
+                    continue;
+
+                if (quest.TargetAmount >= p_building.CurrentLevel)
+                {
+                    quest.IsCompleted = true;
+                }
+            }
+        }        
+        
+        private void CheckTechnologyBuildingMissions(Building p_building) 
+        {
+            foreach (var quest in CurrentQuests.Quests)
+            {
+                if (quest.QuestKind != QuestType.AchieveTechnologyLvl || quest.TargetName != p_building.BuildingMainData.Type)
+                    continue;
+
+                if (quest.TargetAmount >= p_building.CurrentTechnologyLvl)
+                {
+                    quest.IsCompleted = true;
+                }
+            }
+        }
+
+        public void HandleRankUp()
+        {
+            _currentRank++;
         }
     }
 

@@ -22,9 +22,11 @@ namespace Buildings
         public Sprite DefenseAndResourcesPointsIcon;
         public Sprite ResourcesPointsIcon;
         public Sprite DefensePointsIcon;
+        public Sprite ShardsOfDestinyIcon;
 
         public event Action<Building> OnBuildingClicked;
         public event Action<Building> OnBuildingStateChanged;
+        public event Action<Building> OnBuildingTechnologyLvlUp;
         public event Action<Building> OnBuildingDestroyed;
         public event Action OnResourcePointsGather;
 
@@ -80,11 +82,11 @@ namespace Buildings
             }
         }
 
-        public Building GetSpecificBuilding(BuildingData p_data)
+        public Building GetSpecificBuilding(BuildingType p_data)
         {
             foreach (var building in _currentlyBuildBuildings)
             {
-                if (building.BuildingMainData == p_data)
+                if (building.BuildingMainData.Type == p_data)
                 {
                     return building;
                 }
@@ -95,7 +97,7 @@ namespace Buildings
 
         public void PutBuildingOnQueue(BuildingData p_buildingData)
         {
-            var building = GetSpecificBuilding(p_buildingData);
+            var building = GetSpecificBuilding(p_buildingData.Type);
 
             if (building == null)
             {
@@ -106,7 +108,7 @@ namespace Buildings
                 HandleUpgradeOfBuilding(p_buildingData, false);
             }
 
-            AssignWorker(GetSpecificBuilding(p_buildingData), true);
+            AssignWorker(GetSpecificBuilding(p_buildingData.Type), true);
         }
 
         public void HandleBuildingsModifications(Building p_building)
@@ -225,11 +227,17 @@ namespace Buildings
                 _currentlyBuildBuildings.Add(newBuilding);
                 newBuilding.OnPointsGathered += GatherPoints;
                 newBuilding.OnWorkDone += PublishBuildingBuiltEvent;
+                newBuilding.OnTechnologyUpgrade += PublishBuildingTechnologyEvent;
                 newBuilding.OnBuildingClicked += HandleBuildingClicked;
                 newBuilding.OnBuildingDamaged += HandleBuildingDamaged;
             }
         }
 
+        private void PublishBuildingTechnologyEvent(Building p_building)
+        {
+            OnBuildingTechnologyLvlUp?.Invoke(p_building);
+        }
+        
         private void PublishBuildingBuiltEvent(Building p_building, bool p_unassignWorkers)
         {
             AssignWorker(p_building, p_unassignWorkers);

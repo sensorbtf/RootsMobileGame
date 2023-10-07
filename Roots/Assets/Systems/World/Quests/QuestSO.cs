@@ -15,6 +15,7 @@ namespace World
     public class Quest
     {
         private bool _isCompleted = false;
+        private int _achievedTargetAmount = 0;
         
         public Action<Quest> OnCompletion;
         
@@ -37,6 +38,8 @@ namespace World
                 }
             }
         }
+
+        public int AchievedTargetAmount { get => _achievedTargetAmount; set => _achievedTargetAmount = value; }
     }
     
     public enum QuestType

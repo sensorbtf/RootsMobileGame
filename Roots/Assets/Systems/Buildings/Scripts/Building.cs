@@ -68,6 +68,7 @@ namespace Buildings
         public event Action<PointsType, int> OnPointsGathered; 
         public event Action<Building, bool> OnWorkDone; 
         public event Action<Building> OnBuildingDamaged;
+        public event Action<Building> OnTechnologyUpgrade;
         public event Action<Building> OnBuildingDestroyed;
 
         public void OnPointerClick(PointerEventData p_eventData)
@@ -132,11 +133,13 @@ namespace Buildings
         {
             CurrentTechnologyLvl++;
             CurrentTechnologyDayOnQueue = 0;
+            
+            OnTechnologyUpgrade.Invoke(this);
         }
 
         public bool CanPlayMinigame()
         {
-            return _haveWorker && !PlayedMinigame && !_isDamaged && !IsBeeingUpgradedOrBuilded;
+            return _haveWorker && !PlayedMinigame && !_isDamaged && !IsBeeingUpgradedOrBuilded && CurrentTechnologyLvl > 0;
         }
 
         public void HandleNewDay()

@@ -25,7 +25,7 @@ namespace Minigames
         public TextMeshProUGUI _coutdownText;
         public Button _collectPointsButton;
         
-        public event Action<PointsType, int> OnResourcesCollected;
+        public event Action<PointsType, int> OnMiniGamePointsCollected;
 
         public void StartTheGame(Building p_building)
         {
@@ -43,7 +43,7 @@ namespace Minigames
 
         private void EndMinigame()
         {
-            OnResourcesCollected?.Invoke(_type, (int)_score);
+            OnMiniGamePointsCollected?.Invoke(_type, (int)_score);
         }
 
         public virtual void Update()

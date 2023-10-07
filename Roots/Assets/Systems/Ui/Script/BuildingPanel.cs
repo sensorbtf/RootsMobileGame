@@ -147,7 +147,7 @@ namespace InGameUi
                     script.BuildingName.GetComponent<TextMeshProUGUI>().text = buildingData.Type.ToString();
                     script.BuildingInfo.GetComponent<TextMeshProUGUI>().text = "";
 
-                    var builtBuilding = _buildingManager.GetSpecificBuilding(buildingData);
+                    var builtBuilding = _buildingManager.GetSpecificBuilding(buildingData.Type);
 
                     if (builtBuilding != null) // is builded or building is in progress
                     {
@@ -354,7 +354,7 @@ namespace InGameUi
                 p_refsScript.CreateOrUpgradeBuilding.image.color = Color.green;
                 p_refsScript.CreateOrUpgradeBuilding.interactable = _workersManager.IsAnyWorkerFree();
 
-                var building = _buildingManager.GetSpecificBuilding(p_buildingData);
+                var building = _buildingManager.GetSpecificBuilding(p_buildingData.Type);
 
                 if (building == null)
                 {
@@ -397,7 +397,7 @@ namespace InGameUi
         {
             if (p_wasBuilt)
             {
-                var building = _buildingManager.GetSpecificBuilding(p_buildingData);
+                var building = _buildingManager.GetSpecificBuilding(p_buildingData.Type);
 
                 _influencedBuildings.TryAdd(building, _builtOrDamagedBuildings[building]);
                 _builtOrDamagedBuildings[building] = !_builtOrDamagedBuildings[building];
@@ -427,7 +427,7 @@ namespace InGameUi
         {
             foreach (var element in _createdUiElements)
             {
-                var building = _buildingManager.GetSpecificBuilding(element.Key);
+                var building = _buildingManager.GetSpecificBuilding(element.Key.Type);
 
                 if (building == null)
                 {
