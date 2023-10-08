@@ -21,23 +21,41 @@ MonoBehaviour:
     Requirements:
       ResourcePoints: 0
       DaysToComplete: 0
-      OtherBuildingRequirements: []
-    ProductionType: 2
-    ProductionAmountPerDay: 5
+    ProductionType: 0
+    ProductionAmountPerDay: 0
   - Icon: {fileID: 21300000, guid: 4e69dfbbdc1157d44aee0225c3291d03, type: 3}
     InGameSprite: {fileID: 21300000, guid: 4e69dfbbdc1157d44aee0225c3291d03, type: 3}
     Requirements:
       ResourcePoints: 30
       DaysToComplete: 3
-      OtherBuildingRequirements: []
-    ProductionType: 2
+    ProductionType: 0
+    ProductionAmountPerDay: 5
+  - Icon: {fileID: 21300000, guid: 4e69dfbbdc1157d44aee0225c3291d03, type: 3}
+    InGameSprite: {fileID: 21300000, guid: 4e69dfbbdc1157d44aee0225c3291d03, type: 3}
+    Requirements:
+      ResourcePoints: 50
+      DaysToComplete: 3
+    ProductionType: 0
     ProductionAmountPerDay: 10
   - Icon: {fileID: 21300000, guid: 4e69dfbbdc1157d44aee0225c3291d03, type: 3}
     InGameSprite: {fileID: 21300000, guid: 4e69dfbbdc1157d44aee0225c3291d03, type: 3}
     Requirements:
       ResourcePoints: 50
       DaysToComplete: 3
-      OtherBuildingRequirements: []
-    ProductionType: 2
+    ProductionType: 0
     ProductionAmountPerDay: 15
+  - Icon: {fileID: 21300000, guid: 4e69dfbbdc1157d44aee0225c3291d03, type: 3}
+    InGameSprite: {fileID: 21300000, guid: 4e69dfbbdc1157d44aee0225c3291d03, type: 3}
+    Requirements:
+      ResourcePoints: 50
+      DaysToComplete: 3
+    ProductionType: 0
+    ProductionAmountPerDay: 20
+  - Icon: {fileID: 21300000, guid: 4e69dfbbdc1157d44aee0225c3291d03, type: 3}
+    InGameSprite: {fileID: 21300000, guid: 4e69dfbbdc1157d44aee0225c3291d03, type: 3}
+    Requirements:
+      ResourcePoints: 50
+      DaysToComplete: 3
+    ProductionType: 0
+    ProductionAmountPerDay: 25
   Technology: {fileID: 0}

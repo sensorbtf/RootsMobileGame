@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Buildings;
+using JetBrains.Annotations;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -36,6 +38,8 @@ namespace InGameUi
         [SerializeField] private GameObject StormSliderBackground;
         [SerializeField] private GameObject StormDaysPrefab;
         [SerializeField] private GameObject StormHandle;
+        
+        [SerializeField] private Sprite StormImage;
 
         [SerializeField] private int _dayDurationInSeconds = 60;
         [SerializeField] private GameObject SkipDayGo;
@@ -60,7 +64,6 @@ namespace InGameUi
         private Button _firstMissionButton;
         private Button _secondMissionButton;
         private TextMeshProUGUI _firstMissionButtonText;
-
         private TextMeshProUGUI _secondMissionButtonText;
         // Quests
 
@@ -77,9 +80,12 @@ namespace InGameUi
         private float _singleDayGoWidth; // 10 minutes * 60 seconds
         private DateTime _startTime;
         private Dictionary<RectTransform, List<GameObject>> _createdImages;
-
+        private List<GameObject> _createdDaysStorm;
+        
         private void Start()
         {
+            _createdDaysStorm = new List<GameObject>();
+            
             _createdImages = new Dictionary<RectTransform, List<GameObject>>
             {
                 { ResourcePoints.rectTransform, new List<GameObject>() },
@@ -119,9 +125,8 @@ namespace InGameUi
             ResourcePoints.text = $"{_buildingManager.CurrentResourcePoints.ToString()} / " +
                                   $"{_worldManager.RequiredResourcePoints}";
 
-            _worldManager.CurrentQuests.Quests[0].OnCompletion += HandleFirstQuestCompletion;
-            _worldManager.CurrentQuests.Quests[1].OnCompletion += HandleSecondQuestCompletion;
-            //_worldManager.OnMissionProgress += CheckQuestsCompletion;
+            _worldManager.CurrentQuests[0].OnCompletion += HandleFirstQuestCompletion;
+            _worldManager.CurrentQuests[1].OnCompletion += HandleSecondQuestCompletion;
             _worldManager.OnMissionProgress += RefreshQuestsText;
             _worldManager.OnNewMissionStart += RefreshStormSlider;
             _worldManager.OnNewDayStarted += NewDayHandler;
@@ -130,18 +135,21 @@ namespace InGameUi
         private void NewDayHandler()
         {
             StormSlider.value++;
+            int roundedInt = Convert.ToInt32(StormSlider.value);
 
-            if (StormSlider.value >= _worldManager.StormDaysRange.x)
+            if (roundedInt >= _worldManager.StormDaysRange.x)
             {
                 StormHandle.GetComponent<Image>().color = Color.red;
+                StormSlider.fillRect.GetComponent<Image>().color = new Color(255,0,0,0.5f);
             }
-            
-            if (!(StormSlider.value < 1.5f) || !(StormSlider.value > 0.6f)) // just 1
+
+            if (roundedInt != 1)
                 return;
-            
-            var rect = StormHandle.GetComponent<RectTransform>().sizeDelta;
+
+            var rectGo = StormHandle.GetComponent<RectTransform>();
+            var rect = rectGo.anchoredPosition;
             rect.x = _singleDayGoWidth;
-            StormHandle.GetComponent<RectTransform>().anchoredPosition = rect;
+            rectGo.anchoredPosition = rect;
         }
 
         private void RefreshStormSlider()
@@ -150,11 +158,18 @@ namespace InGameUi
             
             for (int i = 0; i < _worldManager.StormDaysRange.y; i++)
             {
-                Instantiate(StormDaysPrefab, StormSliderBackground.transform);
+                var gO = Instantiate(StormDaysPrefab, StormSliderBackground.transform);
+                var currentDay = i + 1;
+                
+                gO.GetComponentInChildren<TextMeshProUGUI>().text = currentDay.ToString();
+                if (i >= _worldManager.StormDaysRange.x)
+                    gO.GetComponentInChildren<Image>().sprite = StormImage;
+                
+                _createdDaysStorm.Add(gO);
             }
 
             _singleDayGoWidth = -StormSliderBackground.GetComponent<RectTransform>().rect.width /
-                              _worldManager.StormDaysRange.y/2 - 5;
+                              _worldManager.StormDaysRange.y/2;
 
             NewDayHandler();
         }
@@ -198,7 +213,7 @@ namespace InGameUi
 
             for (int i = 0; i < dividedPoints; i++)
             {
-                GameObject imageObject = new GameObject("ResourcePoint" + i);
+                GameObject imageObject = new GameObject("Points" + i);
                 imageObject.transform.SetParent(_mainCanvas.transform);
                 Image image = imageObject.AddComponent<Image>();
 
@@ -414,9 +429,8 @@ namespace InGameUi
 
             _firstMissionButton.interactable = true;
             _firstMissionButton.onClick.RemoveAllListeners();
-            _firstMissionButton.onClick.AddListener(() =>
-                GatherPointsFromQuest(0, p_completedQuest.ShardsOfDestinyReward));
-            _firstMissionButtonText.text = $"Collect {p_completedQuest.ShardsOfDestinyReward} Destiny Shards";
+            _firstMissionButton.onClick.AddListener(() => GatherPointsFromQuest(0, p_completedQuest));
+            _firstMissionButtonText.text = $"Collect {p_completedQuest.SpecificQuest.ShardsOfDestinyReward} Destiny Shards";
         }
 
         private void HandleSecondQuestCompletion(Quest p_completedQuest)
@@ -425,13 +439,14 @@ namespace InGameUi
 
             _secondMissionButton.interactable = true;
             _secondMissionButton.onClick.RemoveAllListeners();
-            _secondMissionButton.onClick.AddListener(() =>
-                GatherPointsFromQuest(1, p_completedQuest.ShardsOfDestinyReward));
-            _secondMissionButtonText.text = $"Collect {p_completedQuest.ShardsOfDestinyReward} Destiny Shards";
+            _secondMissionButton.onClick.AddListener(() => GatherPointsFromQuest(1, p_completedQuest));
+            _secondMissionButtonText.text = $"Collect {p_completedQuest.SpecificQuest.ShardsOfDestinyReward} Destiny Shards";
         }
 
-        private void GatherPointsFromQuest(int p_questIndex, int p_destinyShardsPoints)
+        private void GatherPointsFromQuest(int p_questIndex, Quest p_quest)
         {
+            p_quest.IsRedeemed = true;
+            
             if (p_questIndex == 0)
             {
                 _firstMissionButton.interactable = false;
@@ -443,15 +458,15 @@ namespace InGameUi
                 _secondMissionButtonText.text = "Completed";
             }
 
-            _buildingManager.HandlePointsManipulation(PointsType.ShardsOfDestiny, p_destinyShardsPoints, true, true);
+            _buildingManager.HandlePointsManipulation(PointsType.ShardsOfDestiny, p_quest.SpecificQuest.ShardsOfDestinyReward, true, true);
             
             CheckQuestsCompletion();
         }
 
         private void CheckQuestsCompletion()
         {
-            if (!_worldManager.CurrentQuests.Quests[0].IsCompleted ||
-                !_worldManager.CurrentQuests.Quests[1].IsCompleted)
+            if (!_worldManager.CurrentQuests[0].IsRedeemed ||
+                !_worldManager.CurrentQuests[1].IsRedeemed)
                 return;
 
             if (_worldManager.CurrentRank < _worldManager.CurrentMission)
@@ -474,14 +489,14 @@ namespace InGameUi
 
         private void HandleQuestsCompletion()
         {
-            _worldManager.CurrentQuests.Quests[0].OnCompletion -= HandleFirstQuestCompletion;
-            _worldManager.CurrentQuests.Quests[1].OnCompletion -= HandleSecondQuestCompletion;
+            _worldManager.CurrentQuests[0].OnCompletion -= HandleFirstQuestCompletion;
+            _worldManager.CurrentQuests[1].OnCompletion -= HandleSecondQuestCompletion;
 
             _worldManager.HandleRankUp();
             RefreshQuestsText();
 
-            _worldManager.CurrentQuests.Quests[0].OnCompletion += HandleFirstQuestCompletion;
-            _worldManager.CurrentQuests.Quests[1].OnCompletion += HandleSecondQuestCompletion;
+            _worldManager.CurrentQuests[0].OnCompletion += HandleFirstQuestCompletion;
+            _worldManager.CurrentQuests[1].OnCompletion += HandleSecondQuestCompletion;
 
             _currentRankText.GetComponent<Button>().interactable = false;
         }

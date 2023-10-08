@@ -29,7 +29,7 @@ namespace Buildings
     {
         public int ResourcePoints;
         public int DaysToComplete;
-        public BuildingRequirements[] OtherBuildingRequirements;
+        //public BuildingRequirements[] OtherBuildingRequirements;
     }
     
     [Serializable]
@@ -44,8 +44,9 @@ namespace Buildings
         Cottage = 0,
         Farm = 1,
         GuardTower = 2,
-        Woodcutter = 3 
-        
+        Woodcutter = 3,
+        Alchemical_Hut = 4,
+        Mining_Shaft = 5,
     }
     
     public enum PointsType

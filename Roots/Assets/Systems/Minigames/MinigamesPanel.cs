@@ -6,12 +6,14 @@ using Buildings;
 using InGameUi;
 using UnityEngine;
 using UnityEngine.UI;
+using World;
 
 namespace Minigames
 {
     public class MinigamesPanel : MonoBehaviour
     {
         [SerializeField] private BuildingManager _buildingsManager;
+        [SerializeField] private WorldManager _worldManager;
         [SerializeField] private SpecificBuildingPanel _specificBuildingPanel;
         [SerializeField] private GameObject _minigamesPanelGo;
         [SerializeField] private MinigamesPerBuildings[] _minigamesPerBuilding;
@@ -61,6 +63,7 @@ namespace Minigames
             gameObject.SetActive(false);
             _specificBuildingPanel.ActivateOnClick(_currentBuilding);
             _buildingsManager.HandlePointsManipulation(p_pointsType, p_pointsNumber, true, true);
+            _worldManager.HandleResourcesQuests(p_pointsType, p_pointsNumber);
             Destroy(_currentMinigame);
         }
 

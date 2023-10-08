@@ -89,6 +89,9 @@ namespace InGameUi
 
             foreach (var building in _buildingManager.CurrentBuildings)
             {
+                if (building.BuildingMainData.Type == BuildingType.Cottage)
+                    continue;
+                
                 if (!building.IsBeeingUpgradedOrBuilded)
                 {
                     if (_builtOrDamagedBuildings.ContainsKey(building) && !building.IsDamaged)
@@ -117,6 +120,9 @@ namespace InGameUi
 
             foreach (BuildingData building in _buildingManager.AllBuildingsDatabase.allBuildings)
             {
+                if (building.Type == BuildingType.Cottage)
+                    continue;
+                
                 if (!buildingsByTier.ContainsKey(building.BaseCottageLevelNeeded))
                 {
                     buildingsByTier[building.BaseCottageLevelNeeded] = new List<BuildingData>();

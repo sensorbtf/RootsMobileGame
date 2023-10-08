@@ -11,7 +11,7 @@ namespace World
         [SerializeField] private BuildingManager _buildingManager;
         [SerializeField] private WorkersManager _workersManager;
         [SerializeField] private Mission[] _missionData;
-        [SerializeField] private QuestSO[] _questData;
+        [SerializeField] private CurrentQuests[] _questData;
         [SerializeField] private int _startingWorldResources = 0;
         [SerializeField] private int _freeDaysSkipAmount = 5;
 
@@ -22,7 +22,7 @@ namespace World
         private int _stormPower;
         private Vector2Int _stormDaysRange;
 
-        public QuestSO CurrentQuests => _questData[_currentRank];
+        public Quest[] CurrentQuests => _questData[_currentRank].CurrentLevelQuests;
         public int RequiredResourcePoints => _missionData[_currentMission].NeededResourcePoints;
         public int CurrentDay => _currentDay;
         public int CurrentRank => _currentRank;
@@ -239,19 +239,19 @@ namespace World
         {
             string textToReturn = null;
             
-            switch (CurrentQuests.Quests[p_index].QuestKind)
+            switch (CurrentQuests[p_index].SpecificQuest.QuestKind)
             {
                 case QuestType.AchieveBuildingLvl:
-                    textToReturn = $"Get {CurrentQuests.Quests[0].TargetName} to {CurrentQuests.Quests[0].TargetAmount} lvl";
+                    textToReturn = $"Get {CurrentQuests[p_index].SpecificQuest.TargetName} to {CurrentQuests[p_index].SpecificQuest.TargetAmount} lvl";
                     break;
                 case QuestType.AchieveTechnologyLvl:
-                    textToReturn = $"Develop technology in {CurrentQuests.Quests[0].TargetName} to {CurrentQuests.Quests[0].TargetAmount} lvl";
+                    textToReturn = $"Develop technology in {CurrentQuests[p_index].SpecificQuest.TargetName} to {CurrentQuests[p_index].SpecificQuest.TargetAmount} lvl";
                     break;
                 case QuestType.MinigameResourcePoints:
-                    textToReturn = $"Get {CurrentQuests.Quests[0].TargetAmount} resource points from minigame";
+                    textToReturn = $"Get {CurrentQuests[p_index].SpecificQuest.TargetAmount} resource points from minigame";
                     break;
                 case QuestType.MinigameDefensePoints:
-                    textToReturn = $"Get {CurrentQuests.Quests[0].TargetAmount} defense points from minigame";
+                    textToReturn = $"Get {CurrentQuests[p_index].SpecificQuest.TargetAmount} defense points from minigame";
                     break;
             }
 
@@ -264,10 +264,10 @@ namespace World
             var level = 0;
             Building building = null;
             
-            switch (CurrentQuests.Quests[p_index].QuestKind)
+            switch (CurrentQuests[p_index].SpecificQuest.QuestKind)
             {
                 case QuestType.AchieveBuildingLvl:
-                    building = _buildingManager.GetSpecificBuilding(CurrentQuests.Quests[0].TargetName);
+                    building = _buildingManager.GetSpecificBuilding(CurrentQuests[p_index].SpecificQuest.TargetName);
                     
                     if (building != null)
                         level = building.CurrentLevel;
@@ -275,14 +275,14 @@ namespace World
                     textToReturn = $"Current level: {level}";
                     break;
                 case QuestType.AchieveTechnologyLvl:
-                    building = _buildingManager.GetSpecificBuilding(CurrentQuests.Quests[0].TargetName);
+                    building = _buildingManager.GetSpecificBuilding(CurrentQuests[p_index].SpecificQuest.TargetName);
                     
                     if (building != null)
                         level = building.CurrentTechnologyLvl;
                     textToReturn = $"Current level: {level}";
                     break;
                 case QuestType.MinigameResourcePoints: case QuestType.MinigameDefensePoints:
-                    textToReturn = $"{CurrentQuests.Quests[0].AchievedTargetAmount}/{CurrentQuests.Quests[0].TargetAmount}";
+                    textToReturn = $"{CurrentQuests[0].AchievedTargetAmount}/{CurrentQuests[p_index].SpecificQuest.TargetAmount}";
                     break;
             }
 
@@ -291,12 +291,12 @@ namespace World
         
         private void CheckBuildingMissions(Building p_building) 
         {
-            foreach (var quest in CurrentQuests.Quests)
+            foreach (var quest in CurrentQuests)
             {
-                if (quest.QuestKind != QuestType.AchieveBuildingLvl || quest.TargetName != p_building.BuildingMainData.Type)
+                if (quest.SpecificQuest.QuestKind != QuestType.AchieveBuildingLvl || quest.SpecificQuest.TargetName != p_building.BuildingMainData.Type)
                     continue;
 
-                if (quest.TargetAmount >= p_building.CurrentLevel)
+                if (quest.SpecificQuest.TargetAmount >= p_building.CurrentLevel)
                 {
                     quest.IsCompleted = true;
                 }
@@ -305,14 +305,36 @@ namespace World
         
         private void CheckTechnologyBuildingMissions(Building p_building) 
         {
-            foreach (var quest in CurrentQuests.Quests)
+            foreach (var quest in CurrentQuests)
             {
-                if (quest.QuestKind != QuestType.AchieveTechnologyLvl || quest.TargetName != p_building.BuildingMainData.Type)
+                if (quest.SpecificQuest.QuestKind != QuestType.AchieveTechnologyLvl || quest.SpecificQuest.TargetName != p_building.BuildingMainData.Type)
                     continue;
 
-                if (quest.TargetAmount >= p_building.CurrentTechnologyLvl)
+                if (quest.SpecificQuest.TargetAmount >= p_building.CurrentTechnologyLvl)
                 {
                     quest.IsCompleted = true;
+                }
+            }
+        }
+        
+        public void HandleResourcesQuests(PointsType p_pointsType, int p_pointsNumber)
+        {
+            foreach (var quest in CurrentQuests)
+            {
+                if (quest.SpecificQuest.QuestKind == QuestType.MinigameResourcePoints)
+                {
+                    if (p_pointsType is PointsType.Resource or PointsType.ResourcesAndDefense)
+                    {
+                        quest.AchievedTargetAmount += p_pointsNumber;
+                    }
+                }
+
+                if (quest.SpecificQuest.QuestKind == QuestType.MinigameDefensePoints)
+                {
+                    if (p_pointsType is PointsType.Defense or PointsType.ResourcesAndDefense)
+                    {
+                        quest.AchievedTargetAmount += p_pointsNumber;
+                    }
                 }
             }
         }
@@ -320,6 +342,7 @@ namespace World
         public void HandleRankUp()
         {
             _currentRank++;
+            _buildingManager.HandleUpgradeOfBuilding(BuildingType.Cottage, true);
         }
     }
 

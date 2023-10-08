@@ -105,7 +105,7 @@ namespace Buildings
             }
             else
             {
-                HandleUpgradeOfBuilding(p_buildingData, false);
+                HandleUpgradeOfBuilding(p_buildingData.Type, false);
             }
 
             AssignWorker(GetSpecificBuilding(p_buildingData.Type), true);
@@ -249,11 +249,11 @@ namespace Buildings
             OnBuildingDestroyed?.Invoke(p_building);
         }
 
-        private void HandleUpgradeOfBuilding(BuildingData p_buildingData, bool p_instant)
+        public void HandleUpgradeOfBuilding(BuildingType p_buildingType, bool p_instant)
         {
             for (int i = 0; i < _currentlyBuildBuildings.Count; i++)
             {
-                if (_currentlyBuildBuildings[i].BuildingMainData.Type != p_buildingData.Type)
+                if (_currentlyBuildBuildings[i].BuildingMainData.Type != p_buildingType)
                     continue;
 
                 if (p_instant)
