@@ -1,0 +1,21 @@
+                    -HV:\GryUnity\RootsMobileGame\RootsMobileGame\Roots\Library\Bee\Android\Prj\IL2CPP\Gradle\unityLibrary\src\main\cpp
+-DCMAKE_SYSTEM_NAME=Android
+-DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+-DCMAKE_SYSTEM_VERSION=22
+-DANDROID_PLATFORM=android-22
+-DANDROID_ABI=armeabi-v7a
+-DCMAKE_ANDROID_ARCH_ABI=armeabi-v7a
+-DANDROID_NDK=V:\Unity\Hub\Editor\2023.1.16f1\Editor\Data\PlaybackEngines\AndroidPlayer\NDK
+-DCMAKE_ANDROID_NDK=V:\Unity\Hub\Editor\2023.1.16f1\Editor\Data\PlaybackEngines\AndroidPlayer\NDK
+-DCMAKE_TOOLCHAIN_FILE=V:\Unity\Hub\Editor\2023.1.16f1\Editor\Data\PlaybackEngines\AndroidPlayer\NDK\build\cmake\android.toolchain.cmake
+-DCMAKE_MAKE_PROGRAM=V:\Unity\Hub\Editor\2023.1.16f1\Editor\Data\PlaybackEngines\AndroidPlayer\SDK\cmake\3.22.1\bin\ninja.exe
+-DCMAKE_LIBRARY_OUTPUT_DIRECTORY=V:\GryUnity\RootsMobileGame\RootsMobileGame\Roots\Library\Bee\Android\Prj\IL2CPP\Gradle\unityLibrary\build\intermediates\cxx\RelWithDebInfo\2n6x4b3v\obj\armeabi-v7a
+-DCMAKE_RUNTIME_OUTPUT_DIRECTORY=V:\GryUnity\RootsMobileGame\RootsMobileGame\Roots\Library\Bee\Android\Prj\IL2CPP\Gradle\unityLibrary\build\intermediates\cxx\RelWithDebInfo\2n6x4b3v\obj\armeabi-v7a
+-DCMAKE_BUILD_TYPE=RelWithDebInfo
+-DCMAKE_FIND_ROOT_PATH=V:\GryUnity\RootsMobileGame\RootsMobileGame\Roots\.utmp\RelWithDebInfo\2n6x4b3v\prefab\armeabi-v7a\prefab
+-BV:\GryUnity\RootsMobileGame\RootsMobileGame\Roots\.utmp\RelWithDebInfo\2n6x4b3v\armeabi-v7a
+-GNinja
+-DBUILD_GRADLE_DIRECTORY=V:\GryUnity\RootsMobileGame\RootsMobileGame\Roots\Library\Bee\Android\Prj\IL2CPP\Gradle\unityLibrary
+-DANDROID_STL=c++_shared
+                    Build command args: []
+                    Version: 2

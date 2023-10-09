@@ -26,8 +26,6 @@ namespace GeneralSystems
         private void Start()
         {
             _camera = Camera.main;
-            if (Camera.main != null)
-                Camera.main.aspect = 9f / 16f; 
 
             if (leftBoundaryObject != null) _leftBoundary = leftBoundaryObject.position.x;
             if (rightBoundaryObject != null) _rightBoundary = rightBoundaryObject.position.x;
