@@ -30,6 +30,10 @@ namespace InGameUi
         [SerializeField] private BuildingManager _buildingManager;
         [SerializeField] private WorkersPanel _workersPanel;
 
+        [SerializeField] private Image ResourcePointsImage;
+        [SerializeField] private Image DefensePointsImage;
+        [SerializeField] private Image ShardsOfDestinyImage;
+        
         [SerializeField] private TextMeshProUGUI ResourcePoints;
         [SerializeField] private TextMeshProUGUI DefensePoints;
         [SerializeField] private TextMeshProUGUI ShardsOfDestiny;
@@ -88,9 +92,9 @@ namespace InGameUi
             
             _createdImages = new Dictionary<RectTransform, List<GameObject>>
             {
-                { ResourcePoints.rectTransform, new List<GameObject>() },
-                { DefensePoints.rectTransform, new List<GameObject>() },
-                { ShardsOfDestiny.rectTransform, new List<GameObject>() }
+                { ResourcePointsImage.rectTransform, new List<GameObject>() },
+                { DefensePointsImage.rectTransform, new List<GameObject>() },
+                { ShardsOfDestinyImage.rectTransform, new List<GameObject>() }
             };
 
             _skipDayButton = SkipDayGo.GetComponent<Button>();
@@ -232,15 +236,15 @@ namespace InGameUi
                 {
                     case PointsType.Resource:
                         image.sprite = _buildingManager.ResourcesPointsIcon;
-                        _createdImages[ResourcePoints.rectTransform].Add(imageObject);
+                        _createdImages[ResourcePointsImage.rectTransform].Add(imageObject);
                         break;
                     case PointsType.Defense:
                         image.sprite = _buildingManager.DefensePointsIcon;
-                        _createdImages[DefensePoints.rectTransform].Add(imageObject);
+                        _createdImages[DefensePointsImage.rectTransform].Add(imageObject);
                         break;
                     case PointsType.ShardsOfDestiny:
                         image.sprite = _buildingManager.ShardsOfDestinyIcon;
-                        _createdImages[ShardsOfDestiny.rectTransform].Add(imageObject);
+                        _createdImages[ShardsOfDestinyImage.rectTransform].Add(imageObject);
                         break;
                 }
             }
