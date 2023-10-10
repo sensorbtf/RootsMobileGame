@@ -200,8 +200,17 @@ namespace InGameUi
 
         private void RefreshResourcePoints(int p_points, bool p_makeIcons)
         {
-            ResourcePoints.text = $"{_buildingManager.CurrentResourcePoints.ToString()} / " +
-                                  $"{_worldManager.RequiredResourcePoints}";
+            if (_buildingManager.CurrentResourcePoints >= _worldManager.RequiredResourcePoints)
+            {
+                ResourcePoints.text = $"{_buildingManager.CurrentResourcePoints} / " +
+                                      $"<color=green>{_worldManager.RequiredResourcePoints}</color>";
+            }
+            else
+            {
+                ResourcePoints.text = $"{_buildingManager.CurrentResourcePoints} / " +
+                                      $"<color=red>{_worldManager.RequiredResourcePoints}</color>";
+            }
+           
             if (p_makeIcons)
             {
                 TryToCreatePoints(p_points, PointsType.Resource);
