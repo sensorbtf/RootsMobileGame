@@ -1,0 +1,47 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f38f0a61f49b7c44985d84ad863744a, type: 3}
+  m_Name: Ritual_Circle
+  m_EditorClassIdentifier: 
+  Type: 5
+  MainPrefab: {fileID: 1328426712780355558, guid: 80bf6bce43a655d4aa423b1bf6d56a62, type: 3}
+  BaseCottageLevelNeeded: 1
+  PerLevelData:
+  - Icon: {fileID: 21300000, guid: 41482bc6d2cb5be4ea997537570e0cdc, type: 3}
+    InGameSprite: {fileID: 21300000, guid: 45f08da01b47b114b800eec5c551bb74, type: 3}
+    Requirements:
+      ResourcePoints: 20
+      DaysToComplete: 1
+    ProductionType: 3
+    ProductionAmountPerDay: 10
+  - Icon: {fileID: 21300000, guid: 41482bc6d2cb5be4ea997537570e0cdc, type: 3}
+    InGameSprite: {fileID: 21300000, guid: 41482bc6d2cb5be4ea997537570e0cdc, type: 3}
+    Requirements:
+      ResourcePoints: 30
+      DaysToComplete: 2
+    ProductionType: 3
+    ProductionAmountPerDay: 15
+  - Icon: {fileID: 21300000, guid: 41482bc6d2cb5be4ea997537570e0cdc, type: 3}
+    InGameSprite: {fileID: 21300000, guid: 41482bc6d2cb5be4ea997537570e0cdc, type: 3}
+    Requirements:
+      ResourcePoints: 50
+      DaysToComplete: 3
+    ProductionType: 3
+    ProductionAmountPerDay: 20
+  - Icon: {fileID: 21300000, guid: 41482bc6d2cb5be4ea997537570e0cdc, type: 3}
+    InGameSprite: {fileID: 21300000, guid: 41482bc6d2cb5be4ea997537570e0cdc, type: 3}
+    Requirements:
+      ResourcePoints: 100
+      DaysToComplete: 4
+    ProductionType: 3
+    ProductionAmountPerDay: 25
+  Technology: {fileID: 11400000, guid: 60df8f1c2368c674faf18d34c26b7773, type: 2}
