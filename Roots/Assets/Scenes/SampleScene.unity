@@ -7005,8 +7005,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7abd704c1a3ec249b50f0a36861a542, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zoomOutMin: 30
-  zoomOutMax: 40
+  zoomOutMin: 40
+  zoomOutMax: 50
   leftBoundaryObject: {fileID: 637016238}
   rightBoundaryObject: {fileID: 1515983966}
   topBoundaryObject: {fileID: 647710885}

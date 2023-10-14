@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f38f0a61f49b7c44985d84ad863744a, type: 3}
   m_Name: Ritual_Circle
   m_EditorClassIdentifier: 
-  Type: 5
+  Type: 6
   MainPrefab: {fileID: 1328426712780355558, guid: 80bf6bce43a655d4aa423b1bf6d56a62, type: 3}
   BaseCottageLevelNeeded: 1
   PerLevelData:

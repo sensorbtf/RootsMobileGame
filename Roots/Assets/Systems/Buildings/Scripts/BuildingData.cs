@@ -47,7 +47,7 @@ namespace Buildings
         Woodcutter = 3,
         Alchemical_Hut = 4,
         Mining_Shaft = 5,
-        Ritual_Circle = 5,
+        Ritual_Circle = 6,
     }
     
     public enum PointsType
