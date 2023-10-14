@@ -46,7 +46,7 @@ namespace World
             _buildingManager.StartOnWorld();
             StartMission(true);
 
-            _buildingManager.OnResourcePointsGather += CheckResourcePoints;
+            _buildingManager.OnPointsGathered += HandleOverallResourcesQuests;
             _buildingManager.OnBuildingStateChanged += CheckBuildingMissions;
             _buildingManager.OnBuildingTechnologyLvlUp += CheckTechnologyBuildingMissions;
 
@@ -76,17 +76,13 @@ namespace World
             _currentDay++;
 
             if (_currentDay == _finalHiddenStormDay)
-            {
                 EndMission(false, false);
-            }
             else
             {   
                 HandleNewDayStarted();
 
                 if (!_buildingManager.IsAnyBuildingNonGathered())
-                {
                     CheckResourcePoints();
-                }
             }
 
             // if not: new day has started tooltip: info about last one + panel for worker displacement
@@ -169,9 +165,7 @@ namespace World
         public void StartMission(bool p_progressInMissions) // if !progress == lower points in ranking
         {
             if (_currentMission == 0)
-            {
                 _buildingManager.HandlePointsManipulation(PointsType.Resource, _startingWorldResources, true);
-            }
 
             if (p_progressInMissions)
             {
@@ -253,6 +247,12 @@ namespace World
                 case QuestType.MinigameDefensePoints:
                     textToReturn = $"Get {CurrentQuests[p_index].SpecificQuest.TargetAmount} defense points from minigame";
                     break;
+                case QuestType.ResourcePoints:
+                    textToReturn = $"Get {CurrentQuests[p_index].SpecificQuest.TargetAmount} resource points";
+                    break;
+                case QuestType.DefensePoints:
+                    textToReturn = $"Get {CurrentQuests[p_index].SpecificQuest.TargetAmount} defense points";
+                    break;
             }
 
             return textToReturn;
@@ -262,8 +262,8 @@ namespace World
         {
             string textToReturn = null;
             var level = 0;
-            Building building = null;
-            
+            Building building;
+
             switch (CurrentQuests[p_index].SpecificQuest.QuestKind)
             {
                 case QuestType.AchieveBuildingLvl:
@@ -297,9 +297,7 @@ namespace World
                     continue;
 
                 if (quest.SpecificQuest.TargetAmount >= p_building.CurrentLevel)
-                {
                     quest.IsCompleted = true;
-                }
             }
         }        
         
@@ -311,30 +309,44 @@ namespace World
                     continue;
 
                 if (quest.SpecificQuest.TargetAmount >= p_building.CurrentTechnologyLvl)
-                {
                     quest.IsCompleted = true;
-                }
             }
         }
         
-        public void HandleResourcesQuests(PointsType p_pointsType, int p_pointsNumber)
+        public void HandleMinigamesResourcesQuests(PointsType p_pointsType, int p_pointsNumber)
         {
             foreach (var quest in CurrentQuests)
             {
-                if (quest.SpecificQuest.QuestKind == QuestType.MinigameResourcePoints)
+                if (quest.SpecificQuest.QuestKind == QuestType.MinigameResourcePoints ||
+                    quest.SpecificQuest.QuestKind == QuestType.ResourcePoints)
                 {
                     if (p_pointsType is PointsType.Resource or PointsType.ResourcesAndDefense)
-                    {
                         quest.AchievedTargetAmount += p_pointsNumber;
-                    }
                 }
 
-                if (quest.SpecificQuest.QuestKind == QuestType.MinigameDefensePoints)
+                if (quest.SpecificQuest.QuestKind == QuestType.MinigameDefensePoints ||
+                    quest.SpecificQuest.QuestKind == QuestType.DefensePoints)
                 {
                     if (p_pointsType is PointsType.Defense or PointsType.ResourcesAndDefense)
-                    {
                         quest.AchievedTargetAmount += p_pointsNumber;
-                    }
+                }
+            }
+        }
+
+        public void HandleOverallResourcesQuests(PointsType p_pointsType, int p_pointsNumber)
+        {
+            foreach (var quest in CurrentQuests)
+            {
+                if (quest.SpecificQuest.QuestKind == QuestType.ResourcePoints)
+                {
+                    if (p_pointsType is PointsType.Resource or PointsType.ResourcesAndDefense)
+                        quest.AchievedTargetAmount += p_pointsNumber;
+                }
+
+                if (quest.SpecificQuest.QuestKind == QuestType.DefensePoints)
+                {
+                    if (p_pointsType is PointsType.Defense or PointsType.ResourcesAndDefense)
+                        quest.AchievedTargetAmount += p_pointsNumber;
                 }
             }
         }

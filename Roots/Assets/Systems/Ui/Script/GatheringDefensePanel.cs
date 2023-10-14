@@ -20,8 +20,6 @@ namespace InGameUi
         [SerializeField] private GameObject _endWhileDisplacingWorkers;
         [SerializeField] private Transform contentTransform;
 
-        private BuildingData _currentBuildingData;
-        private int _currentBuildingLevel;
         [HideInInspector] public List<Building> BuildingsOnQueue; 
         
         private Dictionary<Building, SingleBuildingRefs> _createdUiElements;
@@ -52,7 +50,6 @@ namespace InGameUi
 
             CameraController.IsUiOpen = false;
 
-            _currentBuildingData = null;
             _runtimeBuildingsUiToDestroy.Clear();
             _createdUiElements.Clear();
 

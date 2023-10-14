@@ -20,5 +20,7 @@ namespace World
         AchieveTechnologyLvl,
         MinigameResourcePoints,
         MinigameDefensePoints,
+        ResourcePoints,
+        DefensePoints,
     }
 }

@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using Buildings;
 using GeneralSystems;
 using TMPro;
@@ -604,9 +603,7 @@ namespace InGameUi
         public bool WillBuildingBeUpgraded(Building p_building)
         {
             if (_buildingsOnInPanelQueue.Contains(p_building.BuildingMainData))
-            {
                 return true;
-            }
 
             return false;
         }

@@ -1,11 +1,7 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 using Buildings;
 using InGameUi;
 using UnityEngine;
-using UnityEngine.UI;
 using World;
 
 namespace Minigames
@@ -63,7 +59,7 @@ namespace Minigames
             gameObject.SetActive(false);
             _specificBuildingPanel.ActivateOnClick(_currentBuilding);
             _buildingsManager.HandlePointsManipulation(p_pointsType, p_pointsNumber, true, true);
-            _worldManager.HandleResourcesQuests(p_pointsType, p_pointsNumber);
+            _worldManager.HandleMinigamesResourcesQuests(p_pointsType, p_pointsNumber);
             Destroy(_currentMinigame);
         }
 

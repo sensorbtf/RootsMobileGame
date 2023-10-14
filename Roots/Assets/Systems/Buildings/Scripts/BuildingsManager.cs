@@ -28,7 +28,7 @@ namespace Buildings
         public event Action<Building> OnBuildingStateChanged;
         public event Action<Building> OnBuildingTechnologyLvlUp;
         public event Action<Building> OnBuildingDestroyed;
-        public event Action OnResourcePointsGather;
+        public event Action<PointsType, int> OnPointsGathered;
 
         public event Action<int, bool> OnResourcePointsChange;
         public event Action<int, bool> OnDefensePointsChange;
@@ -271,6 +271,7 @@ namespace Buildings
         private void GatherPoints(PointsType p_type, int p_amount)
         {
             HandlePointsManipulation(p_type, p_amount, true, true);
+            OnPointsGathered?.Invoke(p_type, p_amount);
         }
 
         private void HandleBuildingClicked(Building p_building)
