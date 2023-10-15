@@ -12,6 +12,7 @@ namespace Minigames
         [HideInInspector] public float _timer;
         [HideInInspector] public float _efficiency;
         [HideInInspector] public bool _isGameActive;
+        [HideInInspector] public bool _givesResources;
         [HideInInspector] public float _score = 0;
         [HideInInspector] public PointsType _type;
 
@@ -19,10 +20,10 @@ namespace Minigames
         public TextMeshProUGUI _scoreText;
         public TextMeshProUGUI _coutdownText;
         public Button _collectPointsButton;
-        
+
         public event Action<PointsType, int> OnMiniGamePointsCollected;
 
-        public void StartTheGame(Building p_building)
+        public virtual void StartTheGame(Building p_building)
         {
             _score = 0;
 
@@ -33,12 +34,20 @@ namespace Minigames
             _collectPointsButton.onClick.AddListener(EndMinigame);
             _collectPointsButton.interactable = false;
 
+            if (p_building.BuildingMainData.Type == BuildingType.GuardTower)
+                _givesResources = false;
+            else
+                _givesResources = true;
+
             StartCoroutine(StartCountdown());
         }
 
         private void EndMinigame()
         {
-            OnMiniGamePointsCollected?.Invoke(_type, (int)_score);
+            if (_givesResources)
+            {
+                OnMiniGamePointsCollected?.Invoke(_type, (int)_score);
+            }
         }
 
         public virtual void Update()
@@ -67,8 +76,8 @@ namespace Minigames
             }
 
             _coutdownText.text = "Start!";
-            _isGameActive = true;
             StartInteractableMinigame();
+            _isGameActive = true;
             yield return new WaitForSeconds(0.5f);
             _coutdownText.enabled = false;
         }

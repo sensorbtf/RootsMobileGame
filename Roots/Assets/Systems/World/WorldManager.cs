@@ -20,7 +20,6 @@ namespace World
         private int _currentRank = 0;
         private int _finalHiddenStormDay = -1;
         private int _stormPower;
-        private Vector2Int _stormDaysRange;
 
         public Quest[] CurrentQuests => _questData[_currentRank].CurrentLevelQuests;
         public int RequiredResourcePoints => _missionData[_currentMission].NeededResourcePoints;
@@ -39,6 +38,8 @@ namespace World
         public event Action OnDefendingVillage;
         public event Action OnMissionProgress;
         public event Action OnNewMissionStart;
+
+        public event Action<int> OnStormCheck;
         public event Action<List<BuildingType>, bool> OnStormCame;
 
         private void Start()
@@ -49,11 +50,6 @@ namespace World
             _buildingManager.OnPointsGathered += HandleOverallResourcesQuests;
             _buildingManager.OnBuildingStateChanged += CheckBuildingMissions;
             _buildingManager.OnBuildingTechnologyLvlUp += CheckTechnologyBuildingMissions;
-
-            foreach (var building in _buildingManager.CurrentBuildings) // no need?
-            {
-                CheckBuildingMissions(building);
-            }
         }
 
         public void SkipDay(WayToSkip p_skipSource)
@@ -78,7 +74,7 @@ namespace World
             if (_currentDay == _finalHiddenStormDay)
                 EndMission(false, false);
             else
-            {   
+            {
                 HandleNewDayStarted();
 
                 if (!_buildingManager.IsAnyBuildingNonGathered())
@@ -94,9 +90,9 @@ namespace World
 
         private void CheckResourcePoints()
         {
-            if (_buildingManager.CurrentResourcePoints < RequiredResourcePoints) 
+            if (_buildingManager.CurrentResourcePoints < RequiredResourcePoints)
                 return;
-            
+
             OnResourcesRequirementsMeet?.Invoke();
         }
 
@@ -180,12 +176,12 @@ namespace World
             _finalHiddenStormDay = Random.Range(_missionData[_currentMission].DaysOfStormRange.x,
                 _missionData[_currentMission].DaysOfStormRange.y);
 
-            Debug.Log("Storm power" + _stormPower+ "_finalHiddenStormDay" + _finalHiddenStormDay 
+            Debug.Log("Storm power" + _stormPower + "_finalHiddenStormDay" + _finalHiddenStormDay
                       + " in " + _currentMission + " mission");
 
             _workersManager.BaseWorkersAmounts = _buildingManager.GetFarmProductionAmount;
             HandleResourceBasementTransition(false); //get resources from basement
-            
+
             OnNewMissionStart?.Invoke();
         }
 
@@ -232,9 +228,12 @@ namespace World
         public string GetSpecificQuestText(int p_index)
         {
             string textToReturn = null;
-            
+
             switch (CurrentQuests[p_index].SpecificQuest.QuestKind)
             {
+                case QuestType.Repair:
+                    textToReturn = $"Repair {CurrentQuests[p_index].SpecificQuest.TargetName}";
+                    break;
                 case QuestType.AchieveBuildingLvl:
                     textToReturn = $"Get {CurrentQuests[p_index].SpecificQuest.TargetName} to {CurrentQuests[p_index].SpecificQuest.TargetAmount} lvl";
                     break;
@@ -257,7 +256,7 @@ namespace World
 
             return textToReturn;
         }
-        
+
         public string GetSpecificQuestObjectiveText(int p_index)
         {
             string textToReturn = null;
@@ -268,40 +267,49 @@ namespace World
             {
                 case QuestType.AchieveBuildingLvl:
                     building = _buildingManager.GetSpecificBuilding(CurrentQuests[p_index].SpecificQuest.TargetName);
-                    
+
                     if (building != null)
                         level = building.CurrentLevel;
-                    
+
                     textToReturn = $"Current level: {level}";
                     break;
                 case QuestType.AchieveTechnologyLvl:
                     building = _buildingManager.GetSpecificBuilding(CurrentQuests[p_index].SpecificQuest.TargetName);
-                    
+
                     if (building != null)
                         level = building.CurrentTechnologyLvl;
                     textToReturn = $"Current level: {level}";
                     break;
-                case QuestType.MinigameResourcePoints: case QuestType.MinigameDefensePoints:
+                case QuestType.MinigameResourcePoints:
+                case QuestType.MinigameDefensePoints:
                     textToReturn = $"{CurrentQuests[0].AchievedTargetAmount}/{CurrentQuests[p_index].SpecificQuest.TargetAmount}";
                     break;
             }
 
             return textToReturn;
         }
-        
-        private void CheckBuildingMissions(Building p_building) 
+
+        private void CheckBuildingMissions(Building p_building)
         {
             foreach (var quest in CurrentQuests)
             {
-                if (quest.SpecificQuest.QuestKind != QuestType.AchieveBuildingLvl || quest.SpecificQuest.TargetName != p_building.BuildingMainData.Type)
+                if (p_building.BuildingMainData.Type != quest.SpecificQuest.TargetName)
                     continue;
 
-                if (quest.SpecificQuest.TargetAmount >= p_building.CurrentLevel)
-                    quest.IsCompleted = true;
+                if (quest.SpecificQuest.QuestKind == QuestType.AchieveBuildingLvl)
+                {
+                    if (quest.SpecificQuest.TargetAmount >= p_building.CurrentLevel)
+                        quest.IsCompleted = true;
+                }
+                else if (quest.SpecificQuest.QuestKind == QuestType.Repair)
+                {
+                    if (quest.SpecificQuest.TargetAmount >= p_building.CurrentLevel)
+                        quest.IsCompleted = true;
+                }
             }
-        }        
-        
-        private void CheckTechnologyBuildingMissions(Building p_building) 
+        }
+
+        private void CheckTechnologyBuildingMissions(Building p_building)
         {
             foreach (var quest in CurrentQuests)
             {
@@ -312,7 +320,7 @@ namespace World
                     quest.IsCompleted = true;
             }
         }
-        
+
         public void HandleMinigamesResourcesQuests(PointsType p_pointsType, int p_pointsNumber)
         {
             foreach (var quest in CurrentQuests)
@@ -355,6 +363,20 @@ namespace World
         {
             _currentRank++;
             _buildingManager.HandleUpgradeOfBuilding(BuildingType.Cottage, true);
+        }
+
+        public void CheckNewQuests()
+        {
+            foreach (var building in _buildingManager.CurrentBuildings)
+            {
+                CheckBuildingMissions(building);
+                CheckTechnologyBuildingMissions(building);
+            }
+        }
+
+        public void RevealStorm(int p_daysToSee)
+        {
+            OnStormCheck?.Invoke(p_daysToSee);
         }
     }
 

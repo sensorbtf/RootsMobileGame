@@ -16,28 +16,25 @@ MonoBehaviour:
   MainPrefab: {fileID: 1328426712780355558, guid: 59f36c8d0fc426744a6c8c2ab1efe6ab, type: 3}
   BaseCottageLevelNeeded: 1
   PerLevelData:
-  - Icon: {fileID: 21300000, guid: b8f4e7847ed9da64d87345a5833af86a, type: 3}
+  - Icon: {fileID: 21300000, guid: 647adac15764bfb4dbc97c28900a0c2d, type: 3}
     InGameSprite: {fileID: 21300000, guid: 45f08da01b47b114b800eec5c551bb74, type: 3}
     Requirements:
       ResourcePoints: 20
       DaysToComplete: 1
-      OtherBuildingRequirements: []
     ProductionType: 0
     ProductionAmountPerDay: 1
-  - Icon: {fileID: 21300000, guid: 43f89b70c91dccd4b8ad0954eeba0fb6, type: 3}
-    InGameSprite: {fileID: 21300000, guid: 43f89b70c91dccd4b8ad0954eeba0fb6, type: 3}
+  - Icon: {fileID: 21300000, guid: 647adac15764bfb4dbc97c28900a0c2d, type: 3}
+    InGameSprite: {fileID: 21300000, guid: 647adac15764bfb4dbc97c28900a0c2d, type: 3}
     Requirements:
       ResourcePoints: 40
       DaysToComplete: 2
-      OtherBuildingRequirements: []
     ProductionType: 0
     ProductionAmountPerDay: 1
-  - Icon: {fileID: 21300000, guid: b8f4e7847ed9da64d87345a5833af86a, type: 3}
-    InGameSprite: {fileID: 21300000, guid: b8f4e7847ed9da64d87345a5833af86a, type: 3}
+  - Icon: {fileID: 21300000, guid: 647adac15764bfb4dbc97c28900a0c2d, type: 3}
+    InGameSprite: {fileID: 21300000, guid: 647adac15764bfb4dbc97c28900a0c2d, type: 3}
     Requirements:
       ResourcePoints: 60
       DaysToComplete: 3
-      OtherBuildingRequirements: []
     ProductionType: 0
     ProductionAmountPerDay: 1
-  Technology: {fileID: 0}
+  Technology: {fileID: 11400000, guid: d875198f4cdd5cf4292f93152a9ba74d, type: 2}

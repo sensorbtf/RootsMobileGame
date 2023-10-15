@@ -44,6 +44,7 @@ namespace InGameUi
         [SerializeField] private GameObject StormHandle;
         
         [SerializeField] private Sprite StormImage;
+        [SerializeField] private Sprite SunImage;
 
         [SerializeField] private int _dayDurationInSeconds = 60;
         [SerializeField] private GameObject SkipDayGo;
@@ -134,6 +135,35 @@ namespace InGameUi
             _worldManager.OnMissionProgress += RefreshQuestsText;
             _worldManager.OnNewMissionStart += RefreshStormSlider;
             _worldManager.OnNewDayStarted += NewDayHandler;
+            _worldManager.OnStormCheck += CheckDayOnDemand;
+        }
+
+        private void CheckDayOnDemand(int p_daysFromCurrent)
+        {
+            var currentDay = Convert.ToInt32(StormSlider.value);
+            var nextDay = 1 + currentDay;
+            var nextDaysToCheck = currentDay + p_daysFromCurrent;
+
+            Debug.Log($"Checking days. Current Day {currentDay}. Next Day {nextDaysToCheck}. Checking: {nextDaysToCheck}");
+
+            for (int i = nextDay; i < nextDaysToCheck; i++)
+            {
+                if (_createdDaysStorm[i])
+                {
+                    if (i >= _worldManager.FinalHiddenStormDay)
+                    {
+                        _createdDaysStorm[i].GetComponentInChildren<Image>().sprite = StormImage;
+                        StormHandle.GetComponent<Image>().color = Color.red;
+                        StormSlider.fillRect.GetComponent<Image>().color = new Color(255, 0, 0, 0.5f);
+                    }
+                    else
+                    {
+                        _createdDaysStorm[i].GetComponentInChildren<Image>().sprite = SunImage;
+                        StormHandle.GetComponent<Image>().color = Color.white;
+                        StormSlider.fillRect.GetComponent<Image>().color = new Color(0, 0, 0, 0.5f);
+                    }
+                }
+            }
         }
 
         private void NewDayHandler()
@@ -512,6 +542,7 @@ namespace InGameUi
             _worldManager.CurrentQuests[1].OnCompletion += HandleSecondQuestCompletion;
 
             _currentRankText.GetComponent<Button>().interactable = false;
+            _worldManager.CheckNewQuests();
         }
 
         private void RefreshQuestsText()

@@ -22,12 +22,12 @@ namespace Buildings
         [HideInInspector] public int CurrentTechnologyLvl = 0;
 
         private BaseDataPerLevel _currentLevelData => BuildingMainData.PerLevelData[_currentLevel];
-        
+
         public int CurrentLevel
         {
             get => _currentLevel;
-        }        
-        
+        }
+
         public bool HaveWorker
         {
             get => _haveWorker;
@@ -52,6 +52,7 @@ namespace Buildings
                     CurrentDayOnQueue = 0;
                     OnWorkDone?.Invoke(this, false);
                 }
+
                 _isDamaged = value;
             }
         }
@@ -64,9 +65,9 @@ namespace Buildings
             set => _playedMinigame = value;
         }
 
-        public event Action<Building> OnBuildingClicked; 
-        public event Action<PointsType, int> OnPointsGathered; 
-        public event Action<Building, bool> OnWorkDone; 
+        public event Action<Building> OnBuildingClicked;
+        public event Action<PointsType, int> OnPointsGathered;
+        public event Action<Building, bool> OnWorkDone;
         public event Action<Building> OnBuildingDamaged;
         public event Action<Building> OnTechnologyUpgrade;
         public event Action<Building> OnBuildingDestroyed;
@@ -76,35 +77,35 @@ namespace Buildings
             if (HaveSomethingToCollect)
             {
                 OnPointsGathered?.Invoke(ProductionType, _currentLevelData.ProductionAmountPerDay);
-   
+
                 GatheringIcon.sprite = null;
                 HaveSomethingToCollect = false;
                 return;
             }
-            
+
             if (!CameraController.isDragging)
             {
                 OnBuildingClicked?.Invoke(this);
             }
         }
-        
+
         public void FinishBuildingSequence()
         {
             _currentLevel = 1;
             IsBeeingUpgradedOrBuilded = false;
             InGameIcon.sprite = _currentLevelData.InGameSprite;
             _haveWorker = false;
-            
+
             OnWorkDone?.Invoke(this, false);
         }
-        
+
         public void InitiateBuildingSequence()
         {
             _currentLevel = 0;
             CurrentDayOnQueue = 0;
             IsBeeingUpgradedOrBuilded = true;
         }
-        
+
         public void HandleLevelUp()
         {
             _currentLevel++;
@@ -112,7 +113,7 @@ namespace Buildings
             CurrentDayOnQueue = 0;
             InGameIcon.sprite = _currentLevelData.InGameSprite;
             _haveWorker = false;
-            
+
             OnWorkDone?.Invoke(this, false);
         }
 
@@ -121,7 +122,7 @@ namespace Buildings
             CurrentDayOnQueue = 0;
             IsBeeingUpgradedOrBuilded = true;
         }
-        
+
         public void SetCollectionIcon(Sprite p_gatheringIcon)
         {
             GatheringIcon.sprite = p_gatheringIcon;
@@ -133,20 +134,23 @@ namespace Buildings
         {
             CurrentTechnologyLvl++;
             CurrentTechnologyDayOnQueue = 0;
-            
+
             OnTechnologyUpgrade.Invoke(this);
         }
 
         public bool CanPlayMinigame()
         {
-            return _haveWorker && !PlayedMinigame && !_isDamaged && !IsBeeingUpgradedOrBuilded && CurrentTechnologyLvl > 0;
+            if (BuildingMainData.Type is BuildingType.Farm or BuildingType.Cottage or BuildingType.GuardTower)
+                return !PlayedMinigame && !_isDamaged && !IsBeeingUpgradedOrBuilded;
+            else
+                return _haveWorker && !PlayedMinigame && !_isDamaged && !IsBeeingUpgradedOrBuilded && CurrentTechnologyLvl > 0;
         }
 
         public void HandleNewDay()
         {
             PlayedMinigame = false;
             CurrentDayOnQueue++;
-            
+
             if (_isDamaged)
             {
                 if (CurrentDayOnQueue < 1)
@@ -154,12 +158,12 @@ namespace Buildings
 
                 IsDamaged = false;
             }
-            
+
             if (IsBeeingUpgradedOrBuilded)
             {
                 if (CurrentDayOnQueue < _currentLevelData.Requirements.DaysToComplete)
                     return;
-                    
+
                 if (CurrentLevel == 0)
                 {
                     FinishBuildingSequence();

@@ -15,6 +15,7 @@ namespace Minigames
         [SerializeField] private MinigamesPerBuildings[] _minigamesPerBuilding;
         private Building _currentBuilding;
         private GameObject _currentMinigame;
+        private Minigame _currentMinigameScript;
 
         private void Start()
         {
@@ -41,16 +42,29 @@ namespace Minigames
                     if (building == p_building.BuildingMainData.Type)
                     {
                         rightMinigame = minigame._minigame;
+                        _currentMinigame = Instantiate(rightMinigame, _minigamesPanelGo.transform);
+                        _currentMinigameScript = _currentMinigame.GetComponent<Minigame>();
+                        _currentMinigameScript.StartTheGame(p_building);
+                        _currentMinigameScript.OnMiniGamePointsCollected += GoBackToSpecificPanel;
+
+                        if (_currentMinigameScript is RightLeftClickingMinigame)
+                        {
+                            var watchTowerMinigame = _currentMinigameScript as RightLeftClickingMinigame;
+                            watchTowerMinigame.OnStormReveal += RevealStorm;
+                        }
+
                         break;
                     }
                 }
             }
+        }
 
-            _currentMinigame = Instantiate(rightMinigame, _minigamesPanelGo.transform);
-            var script = _currentMinigame.GetComponent<RightLeftClickerMinigame>();
+        private void RevealStorm(int p_daysToSee)
+        {
+            _worldManager.RevealStorm(p_daysToSee);
 
-            script.StartTheGame(p_building);
-            script.OnMiniGamePointsCollected += GoBackToSpecificPanel;
+            var watchTowerMinigame = _currentMinigameScript as RightLeftClickingMinigame;
+            watchTowerMinigame.OnStormReveal -= RevealStorm;
         }
 
         private void GoBackToSpecificPanel(PointsType p_pointsType, int p_pointsNumber)
@@ -60,6 +74,8 @@ namespace Minigames
             _specificBuildingPanel.ActivateOnClick(_currentBuilding);
             _buildingsManager.HandlePointsManipulation(p_pointsType, p_pointsNumber, true, true);
             _worldManager.HandleMinigamesResourcesQuests(p_pointsType, p_pointsNumber);
+
+
             Destroy(_currentMinigame);
         }
 
