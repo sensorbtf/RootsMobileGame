@@ -41,6 +41,9 @@ namespace Buildings
             get
             {
                 var building = _currentlyBuildBuildings.Find(x => x.BuildingMainData.Type == BuildingType.Farm);
+                if (building == null)
+                    return 1;
+
                 return building.BuildingMainData.PerLevelData[building.CurrentLevel].ProductionAmountPerDay;
             }
         }
@@ -75,11 +78,13 @@ namespace Buildings
 
             foreach (var buildingToBuild in _buildingsDatabase.allBuildings)
             {
-                if (buildingToBuild.Type is BuildingType.Cottage or BuildingType.Farm or BuildingType.Woodcutter)
+                if (buildingToBuild.Type is BuildingType.Cottage)
                 {
                     HandleBuiltOfBuilding(buildingToBuild, true);
                 }
             }
+
+            _currentlyBuildBuildings.Find(x => x.BuildingMainData.Type == BuildingType.Cottage).IsDamaged = true;
         }
 
         public Building GetSpecificBuilding(BuildingType p_data)

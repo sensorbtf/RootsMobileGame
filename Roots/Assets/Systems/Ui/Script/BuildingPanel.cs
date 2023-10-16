@@ -88,9 +88,9 @@ namespace InGameUi
 
             foreach (var building in _buildingManager.CurrentBuildings)
             {
-                if (building.BuildingMainData.Type == BuildingType.Cottage)
+                if (building.BuildingMainData.Type == BuildingType.Cottage && !building.IsDamaged)
                     continue;
-                
+
                 if (!building.IsBeeingUpgradedOrBuilded)
                 {
                     if (_builtOrDamagedBuildings.ContainsKey(building) && !building.IsDamaged)
@@ -108,6 +108,9 @@ namespace InGameUi
                 {
                     _builtOrDamagedBuildings.TryAdd(building, building.HaveWorker);
                 }
+
+                if (building.BuildingMainData.Type == BuildingType.Cottage)
+                    break;
             }
 
             CreateBuildings();
@@ -120,14 +123,20 @@ namespace InGameUi
             foreach (BuildingData building in _buildingManager.AllBuildingsDatabase.allBuildings)
             {
                 if (building.Type == BuildingType.Cottage)
-                    continue;
-                
+                {
+                    if (!_buildingManager.CurrentBuildings.Find(x => x.BuildingMainData.Type == BuildingType.Cottage).IsDamaged)
+                        continue;
+                }
+
                 if (!buildingsByTier.ContainsKey(building.BaseCottageLevelNeeded))
                 {
                     buildingsByTier[building.BaseCottageLevelNeeded] = new List<BuildingData>();
                 }
 
                 buildingsByTier[building.BaseCottageLevelNeeded].Add(building);
+
+                if (building.Type == BuildingType.Cottage)
+                    break;
             }
 
             HandleBuildingsCreation(buildingsByTier);
@@ -157,7 +166,7 @@ namespace InGameUi
                     if (builtBuilding != null) // is builded or building is in progress
                     {
                         CreateOutcomeIcon(script, buildingData, builtBuilding.CurrentLevel);
-                        
+
                         if (builtBuilding.IsDamaged)
                         {
                             script.BuildingIcon.color = Color.red;
@@ -198,7 +207,7 @@ namespace InGameUi
                     else // is completly not builded - even in building stage
                     {
                         CreateOutcomeIcon(script, buildingData, 0);
-                            
+
                         if (_buildingsOnInPanelQueue.Contains(buildingData))
                         {
                             HandleInProgressBuildingCreation(script, buildingData, 0);
@@ -228,9 +237,9 @@ namespace InGameUi
             }
             else
             {
-                p_refsScript.TypeOfOutcome.color = new Color(0,0,0,0);
+                p_refsScript.TypeOfOutcome.color = new Color(0, 0, 0, 0);
             }
-                        
+
             p_refsScript.BuildingIcon.GetComponent<Image>().sprite = p_buildingData.PerLevelData[p_currentLevel].Icon;
         }
 

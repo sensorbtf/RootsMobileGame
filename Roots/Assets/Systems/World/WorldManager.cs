@@ -231,7 +231,7 @@ namespace World
 
             switch (CurrentQuests[p_index].SpecificQuest.QuestKind)
             {
-                case QuestType.Repair:
+                case QuestType.RepairBuilding:
                     textToReturn = $"Repair {CurrentQuests[p_index].SpecificQuest.TargetName}";
                     break;
                 case QuestType.AchieveBuildingLvl:
@@ -301,9 +301,8 @@ namespace World
                     if (quest.SpecificQuest.TargetAmount >= p_building.CurrentLevel)
                         quest.IsCompleted = true;
                 }
-                else if (quest.SpecificQuest.QuestKind == QuestType.Repair)
+                else if (quest.SpecificQuest.QuestKind == QuestType.RepairBuilding)
                 {
-                    if (quest.SpecificQuest.TargetAmount >= p_building.CurrentLevel)
                         quest.IsCompleted = true;
                 }
             }
