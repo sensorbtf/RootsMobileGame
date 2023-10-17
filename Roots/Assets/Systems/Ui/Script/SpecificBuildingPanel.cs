@@ -89,6 +89,12 @@ namespace InGameUi
             _building = p_building;
             _buildingData = p_building.BuildingMainData;
 
+            _buildingIconPrefab.SetActive(true);
+            _goBackGo.SetActive(true);
+            _lvlUpGo.SetActive(true);
+            _getIntoWorkGo.SetActive(true);
+            _scrollBarGo.SetActive(true);
+            
             _buildingName.text = $"{_buildingData.Type} ({_building.CurrentLevel})";
             _buildingIcon.sprite = _buildingData.PerLevelData[_building.CurrentLevel].Icon;
 

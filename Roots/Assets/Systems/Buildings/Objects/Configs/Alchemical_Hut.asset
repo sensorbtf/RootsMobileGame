@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Type: 4
   MainPrefab: {fileID: 1328426712780355558, guid: 519c542da69cb7c4a9662fd3128ba8d3, type: 3}
-  BaseCottageLevelNeeded: 1
+  BaseCottageLevelNeeded: 2
   PerLevelData:
   - Icon: {fileID: 21300000, guid: 2031108354133e443b42e7278b7e76ab, type: 3}
     InGameSprite: {fileID: 21300000, guid: 45f08da01b47b114b800eec5c551bb74, type: 3}

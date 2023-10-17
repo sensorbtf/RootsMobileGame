@@ -315,7 +315,7 @@ namespace World
                 if (quest.SpecificQuest.QuestKind != QuestType.AchieveTechnologyLvl || quest.SpecificQuest.TargetName != p_building.BuildingMainData.Type)
                     continue;
 
-                if (quest.SpecificQuest.TargetAmount >= p_building.CurrentTechnologyLvl)
+                if (p_building.CurrentTechnologyLvl >= quest.SpecificQuest.TargetAmount)
                     quest.IsCompleted = true;
             }
         }

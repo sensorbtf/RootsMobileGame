@@ -118,9 +118,11 @@ namespace InGameUi
 
         private void CreateBuildings()
         {
-            Dictionary<int, List<BuildingData>> buildingsByTier = new Dictionary<int, List<BuildingData>>();
-
-            foreach (BuildingData building in _buildingManager.AllBuildingsDatabase.allBuildings)
+            var buildingsByTier = new Dictionary<int, List<BuildingData>>();
+            var tier = 1;
+            var currentCottageLevel = _buildingManager.CurrentBuildings.Find(x => x.BuildingMainData.Type == BuildingType.Cottage).CurrentLevel;
+            
+            foreach (var building in _buildingManager.AllBuildingsDatabase.allBuildings)
             {
                 if (building.Type == BuildingType.Cottage)
                 {
@@ -128,12 +130,18 @@ namespace InGameUi
                         continue;
                 }
 
-                if (!buildingsByTier.ContainsKey(building.BaseCottageLevelNeeded))
-                {
-                    buildingsByTier[building.BaseCottageLevelNeeded] = new List<BuildingData>();
-                }
+                if (building.BaseCottageLevelNeeded > currentCottageLevel)
+                    continue;
+                
+                if (building.BaseCottageLevelNeeded is >= 10 and < 20)
+                    tier = 3;
+                else if (building.BaseCottageLevelNeeded >= 20)
+                    tier = 3;
 
-                buildingsByTier[building.BaseCottageLevelNeeded].Add(building);
+                if (!buildingsByTier.ContainsKey(tier))
+                    buildingsByTier[tier] = new List<BuildingData>();
+
+                buildingsByTier[tier].Add(building);
 
                 if (building.Type == BuildingType.Cottage)
                     break;

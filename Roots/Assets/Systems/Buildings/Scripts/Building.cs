@@ -135,15 +135,12 @@ namespace Buildings
             CurrentTechnologyLvl++;
             CurrentTechnologyDayOnQueue = 0;
 
-            OnTechnologyUpgrade.Invoke(this);
+            OnTechnologyUpgrade?.Invoke(this);
         }
 
         public bool CanPlayMinigame()
         {
-            if (BuildingMainData.Type is BuildingType.Farm or BuildingType.Cottage or BuildingType.GuardTower)
-                return !PlayedMinigame && !_isDamaged && !IsBeeingUpgradedOrBuilded;
-            else
-                return _haveWorker && !PlayedMinigame && !_isDamaged && !IsBeeingUpgradedOrBuilded && CurrentTechnologyLvl > 0;
+            return _haveWorker && !PlayedMinigame && !_isDamaged && !IsBeeingUpgradedOrBuilded && CurrentTechnologyLvl > 0;
         }
 
         public void HandleNewDay()

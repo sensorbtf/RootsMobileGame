@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   QuestKind: 2
   TargetName: 4
-  TargetAmount: 20
+  TargetAmount: 10
   ShardsOfDestinyReward: 10

@@ -36,6 +36,7 @@ namespace Minigames
 
             if (_timer <= 0)
             {
+                _currentPrefab.GetComponent<PullableObject>().EndMinigame();
                 _timer = 0;
                 _isGameActive = false;
                 _collectPointsButton.interactable = true;

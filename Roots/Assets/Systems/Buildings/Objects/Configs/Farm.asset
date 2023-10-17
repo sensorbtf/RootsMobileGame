@@ -19,22 +19,22 @@ MonoBehaviour:
   - Icon: {fileID: 21300000, guid: 647adac15764bfb4dbc97c28900a0c2d, type: 3}
     InGameSprite: {fileID: 21300000, guid: 45f08da01b47b114b800eec5c551bb74, type: 3}
     Requirements:
-      ResourcePoints: 20
+      ResourcePoints: 10
       DaysToComplete: 1
-    ProductionType: 0
+    ProductionType: 1
     ProductionAmountPerDay: 1
   - Icon: {fileID: 21300000, guid: 647adac15764bfb4dbc97c28900a0c2d, type: 3}
     InGameSprite: {fileID: 21300000, guid: 647adac15764bfb4dbc97c28900a0c2d, type: 3}
     Requirements:
-      ResourcePoints: 40
+      ResourcePoints: 20
       DaysToComplete: 2
-    ProductionType: 0
+    ProductionType: 1
     ProductionAmountPerDay: 1
-  - Icon: {fileID: 21300000, guid: 647adac15764bfb4dbc97c28900a0c2d, type: 3}
-    InGameSprite: {fileID: 21300000, guid: 647adac15764bfb4dbc97c28900a0c2d, type: 3}
+  - Icon: {fileID: -4057977143843180069, guid: 0f4fbc4f152f2504a8f557c76f55cf88, type: 3}
+    InGameSprite: {fileID: -4057977143843180069, guid: 0f4fbc4f152f2504a8f557c76f55cf88, type: 3}
     Requirements:
-      ResourcePoints: 60
+      ResourcePoints: 30
       DaysToComplete: 3
-    ProductionType: 0
+    ProductionType: 1
     ProductionAmountPerDay: 1
   Technology: {fileID: 11400000, guid: d875198f4cdd5cf4292f93152a9ba74d, type: 2}

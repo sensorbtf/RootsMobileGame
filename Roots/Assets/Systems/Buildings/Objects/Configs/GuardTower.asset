@@ -14,14 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Type: 2
   MainPrefab: {fileID: 1328426712780355558, guid: 15e1ee510388ceb44bda51c47dadd178, type: 3}
-  BaseCottageLevelNeeded: 1
+  BaseCottageLevelNeeded: 2
   PerLevelData:
   - Icon: {fileID: 21300000, guid: d0a291ae06554044d8ae09a202a9e6b5, type: 3}
     InGameSprite: {fileID: 21300000, guid: 45f08da01b47b114b800eec5c551bb74, type: 3}
     Requirements:
       ResourcePoints: 20
       DaysToComplete: 1
-      OtherBuildingRequirements: []
     ProductionType: 2
     ProductionAmountPerDay: 5
   - Icon: {fileID: 21300000, guid: d0a291ae06554044d8ae09a202a9e6b5, type: 3}
@@ -29,7 +28,6 @@ MonoBehaviour:
     Requirements:
       ResourcePoints: 30
       DaysToComplete: 2
-      OtherBuildingRequirements: []
     ProductionType: 2
     ProductionAmountPerDay: 10
   - Icon: {fileID: 21300000, guid: d0a291ae06554044d8ae09a202a9e6b5, type: 3}
@@ -37,7 +35,6 @@ MonoBehaviour:
     Requirements:
       ResourcePoints: 40
       DaysToComplete: 3
-      OtherBuildingRequirements: []
     ProductionType: 2
     ProductionAmountPerDay: 15
   Technology: {fileID: 11400000, guid: 60df8f1c2368c674faf18d34c26b7773, type: 2}
