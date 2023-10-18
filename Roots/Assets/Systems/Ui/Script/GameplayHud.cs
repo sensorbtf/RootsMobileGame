@@ -508,7 +508,7 @@ namespace InGameUi
                 !_worldManager.CurrentQuests[1].IsRedeemed)
                 return;
 
-            if (_worldManager.CurrentRank < _worldManager.NeededMissionToRankUp)
+            if (_worldManager.CurrentMission >= _worldManager.NeededMissionToRankUp)
             {
                 var button = _currentRankText.GetComponent<Button>();
                 _currentRankText.text = "Click To Rank Up";
