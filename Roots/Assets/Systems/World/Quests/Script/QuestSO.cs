@@ -23,5 +23,6 @@ namespace World
         ResourcePoints,
         DefensePoints,
         RepairBuilding,
+        DoMinigame,
     }
 }

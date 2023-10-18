@@ -7,6 +7,8 @@ namespace World
     public class CurrentQuests
     {
         [SerializeField] public Quest[] CurrentLevelQuests;
+        [SerializeField] public int NeededMissionToRankUp;
+
     }
 
     [Serializable]
@@ -43,7 +45,15 @@ namespace World
         public int AchievedTargetAmount
         {
             get => _achievedTargetAmount;
-            set => _achievedTargetAmount = value;
+            set
+            { 
+                _achievedTargetAmount = value;
+
+                if (_achievedTargetAmount >= SpecificQuest.TargetAmount)
+                {
+                    IsCompleted = true;
+                }
+            }
         }
     }
 }

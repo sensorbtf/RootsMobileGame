@@ -22,6 +22,7 @@ namespace World
         private int _stormPower;
 
         public Quest[] CurrentQuests => _questData[_currentRank].CurrentLevelQuests;
+        public int NeededMissionToRankUp => _questData[_currentRank].NeededMissionToRankUp;
         public int RequiredResourcePoints => _missionData[_currentMission].NeededResourcePoints;
         public int CurrentDay => _currentDay;
         public int CurrentRank => _currentRank;
@@ -231,6 +232,9 @@ namespace World
 
             switch (CurrentQuests[p_index].SpecificQuest.QuestKind)
             {
+                case QuestType.DoMinigame:
+                    textToReturn = $"Help workers in {CurrentQuests[p_index].SpecificQuest.TargetName}";
+                    break;
                 case QuestType.RepairBuilding:
                     textToReturn = $"Repair {CurrentQuests[p_index].SpecificQuest.TargetName}";
                     break;
@@ -320,22 +324,25 @@ namespace World
             }
         }
 
-        public void HandleMinigamesResourcesQuests(PointsType p_pointsType, int p_pointsNumber)
+        public void HandleMinigamesQuests(PointsType p_pointsType, int p_pointsNumber, BuildingType p_building)
         {
             foreach (var quest in CurrentQuests)
             {
-                if (quest.SpecificQuest.QuestKind == QuestType.MinigameResourcePoints ||
-                    quest.SpecificQuest.QuestKind == QuestType.ResourcePoints)
+                if (quest.SpecificQuest.QuestKind is QuestType.MinigameResourcePoints or QuestType.ResourcePoints)
                 {
                     if (p_pointsType is PointsType.Resource or PointsType.ResourcesAndDefense)
                         quest.AchievedTargetAmount += p_pointsNumber;
                 }
 
-                if (quest.SpecificQuest.QuestKind == QuestType.MinigameDefensePoints ||
-                    quest.SpecificQuest.QuestKind == QuestType.DefensePoints)
+                if (quest.SpecificQuest.QuestKind is QuestType.MinigameDefensePoints or QuestType.DefensePoints)
                 {
                     if (p_pointsType is PointsType.Defense or PointsType.ResourcesAndDefense)
                         quest.AchievedTargetAmount += p_pointsNumber;
+                }
+
+                if (quest.SpecificQuest.QuestKind == QuestType.DoMinigame && quest.SpecificQuest.TargetName == p_building)
+                {
+                    quest.IsCompleted = true;
                 }
             }
         }

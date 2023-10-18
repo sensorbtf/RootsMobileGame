@@ -8117,12 +8117,27 @@ MonoBehaviour:
   - CurrentLevelQuests:
     - SpecificQuest: {fileID: 11400000, guid: 13fb62143c8192f40b80153458482784, type: 2}
     - SpecificQuest: {fileID: 11400000, guid: 7dbad6cb0b7bf3e4897b61c0cc3f15c0, type: 2}
+    NeededMissionToRankUp: 1
   - CurrentLevelQuests:
     - SpecificQuest: {fileID: 11400000, guid: c260e513843b5f348ac4fb5fe398df08, type: 2}
     - SpecificQuest: {fileID: 11400000, guid: 3560f0d418c6f804fb6ae401e847e4ef, type: 2}
+    NeededMissionToRankUp: 1
   - CurrentLevelQuests:
     - SpecificQuest: {fileID: 11400000, guid: 648ec112f2beee84e98bde943cdbdee2, type: 2}
     - SpecificQuest: {fileID: 11400000, guid: 0f3e3b94be50c1244bad178efadbfaf5, type: 2}
+    NeededMissionToRankUp: 1
+  - CurrentLevelQuests:
+    - SpecificQuest: {fileID: 11400000, guid: 0785e616d4d66ac46ad3c619c9d8c455, type: 2}
+    - SpecificQuest: {fileID: 11400000, guid: 30adf459d196c704e8d205e374ce971f, type: 2}
+    NeededMissionToRankUp: 1
+  - CurrentLevelQuests:
+    - SpecificQuest: {fileID: 11400000, guid: d5e1305aac05e48439495405f4634a7a, type: 2}
+    - SpecificQuest: {fileID: 11400000, guid: b9b82a272bff72e429026e28a1e2ded7, type: 2}
+    NeededMissionToRankUp: 1
+  - CurrentLevelQuests:
+    - SpecificQuest: {fileID: 11400000, guid: a57db582bd5673a45a178f9fff3f85af, type: 2}
+    - SpecificQuest: {fileID: 11400000, guid: 94dfab6471c26d14882bfaf56dbc6dc8, type: 2}
+    NeededMissionToRankUp: 2
   _startingWorldResources: 50
   _freeDaysSkipAmount: 3
   DestinyShardsSkipPrice: 10

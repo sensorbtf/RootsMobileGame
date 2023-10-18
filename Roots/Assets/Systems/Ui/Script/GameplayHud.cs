@@ -378,7 +378,7 @@ namespace InGameUi
                     break;
 
                 case DuringDayState.Working:
-                    _endDayButtonText.text = "Working...";
+                    _endDayButtonText.text = "Day is passing...";
                     _endDayButton.interactable = false;
 
                     if (_canUseSkipByTime)
@@ -508,7 +508,7 @@ namespace InGameUi
                 !_worldManager.CurrentQuests[1].IsRedeemed)
                 return;
 
-            if (_worldManager.CurrentRank < _worldManager.CurrentMission)
+            if (_worldManager.CurrentRank < _worldManager.NeededMissionToRankUp)
             {
                 var button = _currentRankText.GetComponent<Button>();
                 _currentRankText.text = "Click To Rank Up";
@@ -522,7 +522,7 @@ namespace InGameUi
             {
                 QuestsCompletedGo.SetActive(true);
                 QuestsCompletedGo.GetComponentInChildren<TextMeshProUGUI>().text =
-                    $"Complete mission {_worldManager.CurrentRank} to rank up";
+                    $"Complete mission {_worldManager.NeededMissionToRankUp} to rank up";
             }
         }
 

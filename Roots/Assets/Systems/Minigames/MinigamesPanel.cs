@@ -73,8 +73,7 @@ namespace Minigames
             gameObject.SetActive(false);
             _specificBuildingPanel.ActivateOnClick(_currentBuilding);
             _buildingsManager.HandlePointsManipulation(p_pointsType, p_pointsNumber, true, true);
-            _worldManager.HandleMinigamesResourcesQuests(p_pointsType, p_pointsNumber);
-
+            _worldManager.HandleMinigamesQuests(p_pointsType, p_pointsNumber, _currentBuilding.BuildingMainData.Type);
 
             Destroy(_currentMinigame);
         }
