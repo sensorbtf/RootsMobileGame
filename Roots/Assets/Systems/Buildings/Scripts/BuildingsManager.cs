@@ -44,7 +44,7 @@ namespace Buildings
                 if (building == null)
                     return 1;
 
-                return building.BuildingMainData.PerLevelData[building.CurrentLevel].ProductionAmountPerDay;
+                return building.CurrentLevel;
             }
         }
 
@@ -154,6 +154,8 @@ namespace Buildings
 
             foreach (var building in _currentlyBuildBuildings)
             {
+                building.PlayedMinigame = false;
+
                 if (!building.HaveWorker)
                     continue;
 
@@ -314,6 +316,19 @@ namespace Buildings
             foreach (var building in _currentlyBuildBuildings)
             {
                 if (building.HaveSomethingToCollect)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public bool IsAnyBuildingNonBuilded()
+        {
+            foreach (var building in _currentlyBuildBuildings)
+            {
+                if (building.CanEndBuildingSequence)
                 {
                     return true;
                 }

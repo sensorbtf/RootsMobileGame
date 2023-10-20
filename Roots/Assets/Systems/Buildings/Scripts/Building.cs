@@ -17,6 +17,7 @@ namespace Buildings
         [HideInInspector] public int CurrentDayOnQueue;
         [HideInInspector] public int CurrentTechnologyDayOnQueue;
         [HideInInspector] public bool HaveSomethingToCollect = false;
+        [HideInInspector] public bool CanEndBuildingSequence = false;
         [HideInInspector] public bool IsBeeingUpgradedOrBuilded = false;
         [HideInInspector] public bool IsProtected = false;
         [HideInInspector] public int CurrentTechnologyLvl = 0;
@@ -74,6 +75,24 @@ namespace Buildings
 
         public void OnPointerClick(PointerEventData p_eventData)
         {
+            if (CameraController.isDragging)
+                return;
+
+            if (CanEndBuildingSequence)
+            {
+                if (CurrentLevel == 0)
+                {
+                    FinishBuildingSequence();
+                }
+                else
+                {
+                    HandleLevelUp();
+                }
+
+                CanEndBuildingSequence = false;
+                return;
+            }
+
             if (HaveSomethingToCollect)
             {
                 OnPointsGathered?.Invoke(ProductionType, _currentLevelData.ProductionAmountPerDay);
@@ -83,10 +102,8 @@ namespace Buildings
                 return;
             }
 
-            if (!CameraController.isDragging)
-            {
+            if (!IsBeeingUpgradedOrBuilded)
                 OnBuildingClicked?.Invoke(this);
-            }
         }
 
         public void FinishBuildingSequence()
@@ -145,7 +162,6 @@ namespace Buildings
 
         public void HandleNewDay()
         {
-            PlayedMinigame = false;
             CurrentDayOnQueue++;
 
             if (_isDamaged)
@@ -161,14 +177,7 @@ namespace Buildings
                 if (CurrentDayOnQueue < _currentLevelData.Requirements.DaysToComplete)
                     return;
 
-                if (CurrentLevel == 0)
-                {
-                    FinishBuildingSequence();
-                }
-                else
-                {
-                    HandleLevelUp();
-                }
+                CanEndBuildingSequence = true;
             }
         }
     }

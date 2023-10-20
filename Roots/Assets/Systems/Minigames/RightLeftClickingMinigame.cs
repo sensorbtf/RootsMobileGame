@@ -45,7 +45,7 @@ namespace Minigames
         {
             _score += _efficiency;
             StartInteractableMinigame();
-            _scoreText.text = $"Score: {_score}";
+            _scoreText.text = $"Score: {_score:F2}";
         }
 
         public override void StartInteractableMinigame()

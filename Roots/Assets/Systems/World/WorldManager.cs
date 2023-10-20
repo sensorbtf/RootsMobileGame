@@ -284,9 +284,15 @@ namespace World
                         level = building.CurrentTechnologyLvl;
                     textToReturn = $"Current level: {level}";
                     break;
-                case QuestType.MinigameResourcePoints:
-                case QuestType.MinigameDefensePoints:
-                    textToReturn = $"{CurrentQuests[0].AchievedTargetAmount}/{CurrentQuests[p_index].SpecificQuest.TargetAmount}";
+                case QuestType.MinigameResourcePoints: case QuestType.MinigameDefensePoints:
+                case QuestType.DefensePoints: case QuestType.ResourcePoints:
+                    textToReturn = $"{CurrentQuests[p_index].AchievedTargetAmount}/{CurrentQuests[p_index].SpecificQuest.TargetAmount}";
+                    break;
+                case QuestType.RepairBuilding:
+                    textToReturn = $"Repair Building 0/1";
+                    break;
+                case QuestType.DoMinigame:
+                    textToReturn = $"Do Minigame in {CurrentQuests[p_index].SpecificQuest.TargetName}";
                     break;
             }
 
@@ -310,6 +316,8 @@ namespace World
                         quest.IsCompleted = true;
                 }
             }
+
+            OnMissionProgress?.Invoke();
         }
 
         private void CheckTechnologyBuildingMissions(Building p_building)
@@ -322,6 +330,8 @@ namespace World
                 if (p_building.CurrentTechnologyLvl >= quest.SpecificQuest.TargetAmount)
                     quest.IsCompleted = true;
             }
+
+            OnMissionProgress?.Invoke();
         }
 
         public void HandleMinigamesQuests(PointsType p_pointsType, int p_pointsNumber, BuildingType p_building)
@@ -345,9 +355,10 @@ namespace World
                     quest.IsCompleted = true;
                 }
             }
+            OnMissionProgress?.Invoke();
         }
 
-        public void HandleOverallResourcesQuests(PointsType p_pointsType, int p_pointsNumber)
+        public void HandleOverallResourcesQuests(PointsType p_pointsType, int p_pointsNumber) // get points only from gathering or minigame
         {
             foreach (var quest in CurrentQuests)
             {
@@ -363,6 +374,8 @@ namespace World
                         quest.AchievedTargetAmount += p_pointsNumber;
                 }
             }
+
+            OnMissionProgress?.Invoke();
         }
 
         public void HandleRankUp()

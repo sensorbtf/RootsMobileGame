@@ -45,7 +45,8 @@ namespace Minigames
                         _currentMinigame = Instantiate(rightMinigame, _minigamesPanelGo.transform);
                         _currentMinigameScript = _currentMinigame.GetComponent<Minigame>();
                         _currentMinigameScript.StartTheGame(p_building);
-                        _currentMinigameScript.OnMiniGamePointsCollected += GoBackToSpecificPanel;
+                        _currentMinigameScript.OnMiniGamePointsCollected += CollectPointsFromMinigame;
+                        _currentMinigameScript.OnMinigameEnded += GoBackToSpecificPanel;
 
                         if (_currentMinigameScript is RightLeftClickingMinigame)
                         {
@@ -67,14 +68,18 @@ namespace Minigames
             watchTowerMinigame.OnStormReveal -= RevealStorm;
         }
 
-        private void GoBackToSpecificPanel(PointsType p_pointsType, int p_pointsNumber)
+        private void CollectPointsFromMinigame(PointsType p_pointsType, int p_pointsNumber)
+        {
+            _buildingsManager.HandlePointsManipulation(p_pointsType, p_pointsNumber, true, true);
+            _worldManager.HandleMinigamesQuests(p_pointsType, p_pointsNumber, _currentBuilding.BuildingMainData.Type);
+        }
+
+        private void GoBackToSpecificPanel()
         {
             _minigamesPanelGo.SetActive(false);
             gameObject.SetActive(false);
             _specificBuildingPanel.ActivateOnClick(_currentBuilding);
-            _buildingsManager.HandlePointsManipulation(p_pointsType, p_pointsNumber, true, true);
-            _worldManager.HandleMinigamesQuests(p_pointsType, p_pointsNumber, _currentBuilding.BuildingMainData.Type);
-
+            
             Destroy(_currentMinigame);
         }
 

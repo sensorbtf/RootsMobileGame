@@ -40,7 +40,7 @@ namespace Minigames
                 _timer = 0;
                 _isGameActive = false;
                 _collectPointsButton.interactable = true;
-                _timeText.text = $"Click to collect: {_score} resource points";
+                _timeText.text = $"Click to collect: {_score:F2} resource points";
             }
         }
 
@@ -61,7 +61,7 @@ namespace Minigames
         public override void AddScore()
         {
             _score += _efficiency; 
-            _scoreText.text = $"Score: {_score}";
+            _scoreText.text = $"Score: {_score:F2}";
         }
 
         public override void StartInteractableMinigame()

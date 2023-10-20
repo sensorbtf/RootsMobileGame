@@ -13,7 +13,6 @@ namespace InGameUi
     {
         OnCollecting,
         SettingWorkers,
-        AfterWorkersSet,
         Working
     }
 
@@ -106,24 +105,24 @@ namespace InGameUi
             _secondMissionButtonText = SecondMissionObjectiveGo.GetComponentInChildren<TextMeshProUGUI>();
             _firstMissionButton = FirstMissionObjectiveGo.GetComponentInChildren<Button>();
             _secondMissionButton = SecondMissionObjectiveGo.GetComponentInChildren<Button>();
-            FirstMissionObjectiveGo.SetActive(false);
-            SecondMissionObjectiveGo.SetActive(false);
+            FirstMissionObjectiveGo.SetActive(true);
+            SecondMissionObjectiveGo.SetActive(true);
             QuestsCompletedGo.SetActive(false);
 
             SkipDayGo.SetActive(false);
             EndMissionGo.SetActive(false);
             BlockHud = false;
 
-            _workersPanel.OnBackToMap += SetWorkers;
+            _workersPanel.OnBackToMap += OnWorkDayStarted;
             _buildingManager.OnResourcePointsChange += RefreshResourcePoints;
             _buildingManager.OnDefensePointsChange += RefreshDefensePoints;
             _buildingManager.OnDestinyShardsPointsChange += RefreshShardsPoints;
 
             _worldManager.OnResourcesRequirementsMeet += ActivateEndMissionButton;
 
-            ShardsOfDestiny.text = $"{_buildingManager.ShardsOfDestinyAmount.ToString()}";
-            DefensePoints.text = $"{_buildingManager.CurrentDefensePoints.ToString()}";
-            ResourcePoints.text = $"{_buildingManager.CurrentResourcePoints.ToString()} / " +
+            ShardsOfDestiny.text = $"{_buildingManager.ShardsOfDestinyAmount}";
+            DefensePoints.text = $"{_buildingManager.CurrentDefensePoints}";
+            ResourcePoints.text = $"{_buildingManager.CurrentResourcePoints} / " +
                                   $"{_worldManager.RequiredResourcePoints}";
 
             _worldManager.CurrentQuests[0].OnCompletion += HandleFirstQuestCompletion;
@@ -131,10 +130,10 @@ namespace InGameUi
             _worldManager.OnMissionProgress += RefreshQuestsText;
             _worldManager.OnNewMissionStart += RefreshStormSlider;
             _worldManager.OnNewDayStarted += NewDayHandler;
-            _worldManager.OnStormCheck += CheckDayOnDemand;
+            _worldManager.OnStormCheck += CheckNextDaysOnDemand;
         }
 
-        private void CheckDayOnDemand(int p_daysFromCurrent)
+        private void CheckNextDaysOnDemand(int p_daysFromCurrent)
         {
             var currentDay = Convert.ToInt32(StormSlider.value);
             var nextDay = 1 + currentDay;
@@ -170,7 +169,11 @@ namespace InGameUi
             if (roundedInt >= _worldManager.StormDaysRange.x)
             {
                 StormHandle.GetComponent<Image>().color = Color.red;
-                StormSlider.fillRect.GetComponent<Image>().color = new Color(255,0,0,0.5f);
+                StormSlider.fillRect.GetComponent<Image>().color = new Color(255, 0, 0, 0.5f);
+            }
+            else
+            {
+                StormHandle.GetComponent<Image>().color = Color.white;
             }
 
             if (roundedInt != 1)
@@ -184,6 +187,12 @@ namespace InGameUi
 
         private void RefreshStormSlider()
         {
+            foreach (var daysOnUi in _createdDaysStorm)
+               Destroy(daysOnUi);
+
+            _createdDaysStorm.Clear();
+            StormSlider.value = 0;
+
             StormSlider.maxValue = _worldManager.StormDaysRange.y;
             
             for (int i = 0; i < _worldManager.StormDaysRange.y; i++)
@@ -250,6 +259,9 @@ namespace InGameUi
 
             int dividedPoints = p_points / 4;
 
+            if (dividedPoints == 0)
+                dividedPoints = 0;
+
             for (int i = 0; i < dividedPoints; i++)
             {
                 GameObject imageObject = new GameObject("Points" + i);
@@ -307,9 +319,6 @@ namespace InGameUi
 
         private void Update() // Better way to do it?
         {
-            //CurrentDay.text = $"Current day: {_worldManager.CurrentDay.ToString()}";
-            //DayToStorm.text = $"Storm in: {_worldManager.StormDaysRange.ToString()}";
-
             double elapsedSeconds = (DateTime.UtcNow - _startTime).TotalSeconds;
             _timeLeftInSeconds = _dayDurationInSeconds - (float)elapsedSeconds;
 
@@ -336,6 +345,11 @@ namespace InGameUi
             switch (CurrentPlayerState)
             {
                 case DuringDayState.OnCollecting:
+                    if (_buildingManager.IsAnyBuildingNonBuilded())
+                    {
+                        _endDayButtonText.text = "Finalize building";
+                        return;
+                    }
 
                     if (_buildingManager.IsAnyBuildingNonGathered())
                     {
@@ -356,25 +370,6 @@ namespace InGameUi
 
                 case DuringDayState.SettingWorkers:
                     _endDayButtonText.text = "Setting Workers...";
-                    break;
-
-                case DuringDayState.AfterWorkersSet:
-                    _endDayButtonText.text = "Start the day";
-
-                    if (_worldManager.CanStartDay())
-                    {
-                        _endDayButton.interactable = true;
-                        if (_wasMainButtonRefreshed)
-                        {
-                            _endDayButton.onClick.AddListener(OnWorkDayStarted);
-                            _wasMainButtonRefreshed = false;
-                        }
-                    }
-                    else
-                    {
-                        _endDayButton.interactable = false;
-                    }
-
                     break;
 
                 case DuringDayState.Working:
@@ -432,17 +427,10 @@ namespace InGameUi
             _workersPanel.ActivatePanel();
         }
 
-        private void SetWorkers()
-        {
-            CurrentPlayerState = DuringDayState.AfterWorkersSet;
-            _wasMainButtonRefreshed = true;
-        }
-
         private void OnWorkDayStarted()
         {
             CurrentPlayerState = DuringDayState.Working;
             SkipDayGo.SetActive(true);
-            _endDayButton.onClick.RemoveListener(OnWorkDayStarted);
             _startTime = DateTime.UtcNow;
 
             _wasMainButtonRefreshed = true;
@@ -464,8 +452,6 @@ namespace InGameUi
 
         private void HandleFirstQuestCompletion(Quest p_completedQuest)
         {
-            FirstMissionObjectiveGo.SetActive(true);
-
             _firstMissionButton.interactable = true;
             _firstMissionButton.onClick.RemoveAllListeners();
             _firstMissionButton.onClick.AddListener(() => GatherPointsFromQuest(0, p_completedQuest));
@@ -474,8 +460,6 @@ namespace InGameUi
 
         private void HandleSecondQuestCompletion(Quest p_completedQuest)
         {
-            SecondMissionObjectiveGo.SetActive(true);
-
             _secondMissionButton.interactable = true;
             _secondMissionButton.onClick.RemoveAllListeners();
             _secondMissionButton.onClick.AddListener(() => GatherPointsFromQuest(1, p_completedQuest));
@@ -532,13 +516,13 @@ namespace InGameUi
             _worldManager.CurrentQuests[1].OnCompletion -= HandleSecondQuestCompletion;
 
             _worldManager.HandleRankUp();
-            RefreshQuestsText();
 
             _worldManager.CurrentQuests[0].OnCompletion += HandleFirstQuestCompletion;
             _worldManager.CurrentQuests[1].OnCompletion += HandleSecondQuestCompletion;
 
             _currentRankText.GetComponent<Button>().interactable = false;
             _worldManager.CheckNewQuests();
+            RefreshQuestsText();
         }
 
         private void RefreshQuestsText()

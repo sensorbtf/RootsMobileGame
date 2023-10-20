@@ -3012,7 +3012,7 @@ GameObject:
   m_Icon: {fileID: 4162164826716764455, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &403002964
 Transform:
   m_ObjectHideFlags: 0
@@ -3022,7 +3022,7 @@ Transform:
   m_GameObject: {fileID: 403002963}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 53.03, y: -15.52, z: 50}
+  m_LocalPosition: {x: 53.9, y: -19.13, z: 50}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -3146,7 +3146,7 @@ GameObject:
   m_Icon: {fileID: 4162164826716764455, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &405837966
 Transform:
   m_ObjectHideFlags: 0
@@ -4809,7 +4809,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &636867709
 Transform:
   m_ObjectHideFlags: 0
@@ -7639,7 +7639,7 @@ GameObject:
   m_Icon: {fileID: 4162164826716764455, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1100190143
 Transform:
   m_ObjectHideFlags: 0
@@ -7998,7 +7998,7 @@ GameObject:
   m_Icon: {fileID: 4162164826716764455, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1185689986
 Transform:
   m_ObjectHideFlags: 0
@@ -8137,6 +8137,22 @@ MonoBehaviour:
   - CurrentLevelQuests:
     - SpecificQuest: {fileID: 11400000, guid: a57db582bd5673a45a178f9fff3f85af, type: 2}
     - SpecificQuest: {fileID: 11400000, guid: 94dfab6471c26d14882bfaf56dbc6dc8, type: 2}
+    NeededMissionToRankUp: 2
+  - CurrentLevelQuests:
+    - SpecificQuest: {fileID: 11400000, guid: dace56705a818194fabdf4c206931069, type: 2}
+    - SpecificQuest: {fileID: 11400000, guid: 72fdc4ac6e8cc7d4485655633f27518d, type: 2}
+    NeededMissionToRankUp: 2
+  - CurrentLevelQuests:
+    - SpecificQuest: {fileID: 11400000, guid: cd48a48068726104ca857400176eea83, type: 2}
+    - SpecificQuest: {fileID: 11400000, guid: eece7ce9710cc1d4b82de01e7c858b68, type: 2}
+    NeededMissionToRankUp: 2
+  - CurrentLevelQuests:
+    - SpecificQuest: {fileID: 11400000, guid: 0a30dfd49a937e84fb5945daef265a75, type: 2}
+    - SpecificQuest: {fileID: 11400000, guid: 6ba65e7d27eddc74886fac62472e22d1, type: 2}
+    NeededMissionToRankUp: 2
+  - CurrentLevelQuests:
+    - SpecificQuest: {fileID: 11400000, guid: 2fa35a08d538c0c4a939a737fec694f2, type: 2}
+    - SpecificQuest: {fileID: 11400000, guid: 4e0b14c26ec9fbc4fb224e0e4af9e3de, type: 2}
     NeededMissionToRankUp: 2
   _startingWorldResources: 50
   _freeDaysSkipAmount: 3
@@ -9247,7 +9263,7 @@ GameObject:
   m_Icon: {fileID: 4162164826716764455, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1344293028
 Transform:
   m_ObjectHideFlags: 0
@@ -10299,7 +10315,7 @@ GameObject:
   m_Icon: {fileID: 4162164826716764455, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1580174690
 Transform:
   m_ObjectHideFlags: 0
@@ -48300,7 +48316,7 @@ GameObject:
   m_Icon: {fileID: 4162164826716764455, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1961597407
 Transform:
   m_ObjectHideFlags: 0

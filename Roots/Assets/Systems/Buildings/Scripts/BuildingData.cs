@@ -48,6 +48,7 @@ namespace Buildings
         Alchemical_Hut = 4,
         Mining_Shaft = 5,
         Ritual_Circle = 6,
+        Peat_Excavation = 7,
     }
     
     public enum PointsType

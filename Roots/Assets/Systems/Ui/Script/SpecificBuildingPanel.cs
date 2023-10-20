@@ -125,7 +125,7 @@ namespace InGameUi
                 _levelUpProgression.value = _buildingManager.CurrentResourcePoints;
             }
 
-            _sliderValue.text = $"{_levelUpProgression.value}/{_levelUpProgression.maxValue}";
+            _sliderValue.text = $"Resources stored in basement: {_levelUpProgression.value}/{_levelUpProgression.maxValue}";
             _getIntoWorkGo.SetActive(false);
             _lvlUpGo.SetActive(false);
             _getIntoWorkGo.SetActive(false);
