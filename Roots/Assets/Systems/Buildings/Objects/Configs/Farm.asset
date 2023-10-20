@@ -30,8 +30,8 @@ MonoBehaviour:
       DaysToComplete: 2
     ProductionType: 1
     ProductionAmountPerDay: 1
-  - Icon: {fileID: -4057977143843180069, guid: 0f4fbc4f152f2504a8f557c76f55cf88, type: 3}
-    InGameSprite: {fileID: -4057977143843180069, guid: 0f4fbc4f152f2504a8f557c76f55cf88, type: 3}
+  - Icon: {fileID: 21300000, guid: 0f4fbc4f152f2504a8f557c76f55cf88, type: 3}
+    InGameSprite: {fileID: 21300000, guid: 0f4fbc4f152f2504a8f557c76f55cf88, type: 3}
     Requirements:
       ResourcePoints: 30
       DaysToComplete: 3
