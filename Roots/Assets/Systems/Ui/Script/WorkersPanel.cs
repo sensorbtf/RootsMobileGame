@@ -199,7 +199,6 @@ namespace InGameUi
             _runtimeBuildingsUiToDestroy.Clear();
             CameraController.IsUiOpen = false;
             GameplayHud.BlockHud = false;
-            OnBackToMap?.Invoke();
             gameObject.SetActive(false);
         }
 
@@ -215,6 +214,7 @@ namespace InGameUi
             }
 
             ClosePanel();
+            OnBackToMap?.Invoke();
         }
 
         private void OnBuildOrUpgradeButtonClicked()
