@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 namespace Buildings
 {
@@ -9,7 +8,9 @@ namespace Buildings
     {
         public BuildingType Type;
         public GameObject MainPrefab;
+        public string Description;
         public int BaseCottageLevelNeeded;
+        public int LevelToEnableMinigame;
         [SerializeField] public BaseDataPerLevel[] PerLevelData;
         [SerializeField] public TechnologyData Technology;
     }

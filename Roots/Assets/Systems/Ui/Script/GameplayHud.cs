@@ -361,7 +361,7 @@ namespace InGameUi
 
                     if (_wasMainButtonRefreshed)
                     {
-                        _endDayButtonText.text = "Set Workers";
+                        _endDayButtonText.text = "Plan next day";
                         _endDayButton.onClick.AddListener(OpenWorkersDisplacementPanel);
                         _wasMainButtonRefreshed = false;
                     }
@@ -369,7 +369,7 @@ namespace InGameUi
                     break;
 
                 case DuringDayState.SettingWorkers:
-                    _endDayButtonText.text = "Setting Workers...";
+                    _endDayButtonText.text = "Setting workers";
                     break;
 
                 case DuringDayState.Working:

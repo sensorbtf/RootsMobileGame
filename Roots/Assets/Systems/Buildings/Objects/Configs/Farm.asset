@@ -14,6 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Type: 1
   MainPrefab: {fileID: 1328426712780355558, guid: 59f36c8d0fc426744a6c8c2ab1efe6ab, type: 3}
+  Description: Main source of food for all workers. Every level up unlocks additional
+    worker.
   BaseCottageLevelNeeded: 1
   PerLevelData:
   - Icon: {fileID: 21300000, guid: 647adac15764bfb4dbc97c28900a0c2d, type: 3}

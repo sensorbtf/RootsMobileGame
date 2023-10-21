@@ -26,6 +26,7 @@ namespace InGameUi
         [SerializeField] private TextMeshProUGUI _sliderValue;
         [SerializeField] private Transform _contentTransform;
 
+        private TextMeshProUGUI _lvlUpButtonText;
         private Button _goBackButton;
         private Button _lvlUpButton;
         private Button _startMiniGameButton;
@@ -49,6 +50,7 @@ namespace InGameUi
 
             _goBackButton = _goBackGo.GetComponent<Button>();
             _lvlUpButton = _lvlUpGo.GetComponent<Button>();
+            _lvlUpButtonText = _lvlUpGo.GetComponentInChildren<TextMeshProUGUI>();
             _startMiniGameButton = _getIntoWorkGo.GetComponent<Button>();
 
             gameObject.SetActive(false);
@@ -114,7 +116,7 @@ namespace InGameUi
             _levelUpProgression.minValue = 0;
             _levelUpProgression.maxValue = amountOfStorageInBasement;
 
-            _description.text = $"Residence's basement is a safe place to store excess resources on mission completion and recover them on the next one";
+            _description.text = _buildingData.Description;
 
             if (amountOfStorageInBasement >= _buildingManager.CurrentResourcePoints)
             {
@@ -134,6 +136,7 @@ namespace InGameUi
 
         private void HandleView()
         {
+            _description.text = _buildingData.Description;
             _levelUpProgression.minValue = 0;
             _levelUpProgression.maxValue = _technology[_building.CurrentTechnologyLvl].WorksDayToAchieve;
             _levelUpProgression.value = _building.CurrentTechnologyDayOnQueue;
@@ -199,19 +202,19 @@ namespace InGameUi
 
             if (_areRequirementsMet)
             {
-                _description.text = $"Assign workers here to develop technologies";
+                _lvlUpButtonText.text = $"Assign workers here to develop technologies";
                 _lvlUpGo.GetComponentInChildren<TextMeshProUGUI>().text = $"Technology Level:  {_building.CurrentTechnologyLvl}";
             }
             else if (!_areRequirementsMet)
             {
-                _description.text = $"Meet Requirements to Develop Technologies";
+                _lvlUpButtonText.text = $"Meet Requirements to Develop Technologies";
                 _lvlUpGo.GetComponentInChildren<TextMeshProUGUI>().text = $"Technology Level:  {_building.CurrentTechnologyLvl}";
             }
 
             if (_canDevelopTechnology)
             {
                 _lvlUpGo.GetComponentInChildren<TextMeshProUGUI>().text = $"{_building.CurrentTechnologyLvl} >> {nextLevel}";
-                _description.text = "Develop technology to get better in mini game: \n" + techInfo;
+                _lvlUpButtonText.text = "Develop technology to get better in mini game: \n" + techInfo; 
                 _lvlUpButton.interactable = true;
                 _lvlUpButton.onClick.AddListener(() => UpgradeTechnology(_building));
             }

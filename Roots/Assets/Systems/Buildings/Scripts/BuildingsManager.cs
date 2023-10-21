@@ -24,6 +24,13 @@ namespace Buildings
         public Sprite DefensePointsIcon;
         public Sprite ShardsOfDestinyIcon;
 
+        [HideInInspector] public List<Building> UnlockedBuildings;
+        [HideInInspector] public List<Building> CompletlyNewBuildings;
+        [HideInInspector] public List<Building> UpgradedBuildings;
+        [HideInInspector] public List<Building> BuildingWithEnabledMinigame;
+        [HideInInspector] public List<Building> BuildingsToGatherFrom;
+        [HideInInspector] public List<Building> BuildingsWithTechnologyUnlocked;
+
         public event Action<Building> OnBuildingClicked;
         public event Action<Building> OnBuildingStateChanged;
         public event Action<Building> OnBuildingTechnologyLvlUp;
@@ -74,6 +81,12 @@ namespace Buildings
         {
             HandlePointsManipulation(PointsType.ShardsOfDestiny, 250, true);
 
+            UnlockedBuildings = new List<Building>();
+            CompletlyNewBuildings = new List<Building>();
+            UpgradedBuildings = new List<Building>();
+            BuildingWithEnabledMinigame = new List<Building>();
+            BuildingsWithTechnologyUnlocked = new List<Building>();
+            BuildingsToGatherFrom = new List<Building>();
             _currentlyBuildBuildings = new List<Building>();
 
             foreach (var buildingToBuild in _buildingsDatabase.allBuildings)
@@ -130,18 +143,26 @@ namespace Buildings
 
                 building.CurrentTechnologyDayOnQueue++;
 
+                if (building.CurrentTechnologyDayOnQueue == building.BuildingMainData.Technology.DataPerTechnologyLevel[building.CurrentTechnologyLvl].WorksDayToAchieve)
+                {
+                    BuildingsWithTechnologyUnlocked.Add(building);
+                }
+
                 switch (building.BuildingMainData.PerLevelData[building.CurrentLevel].ProductionType)
                 {
                     case PointsType.Nothing:
                         break;
                     case PointsType.Resource:
                         building.SetCollectionIcon(ResourcesPointsIcon);
+                        BuildingsToGatherFrom.Add(building);
                         break;
                     case PointsType.Defense:
                         building.SetCollectionIcon(DefensePointsIcon);
+                        BuildingsToGatherFrom.Add(building);
                         break;
                     case PointsType.ResourcesAndDefense:
                         building.SetCollectionIcon(DefenseAndResourcesPointsIcon);
+                        BuildingsToGatherFrom.Add(building);
                         break;
                     case PointsType.ShardsOfDestiny:
                         break;
@@ -247,6 +268,31 @@ namespace Buildings
         
         private void PublishBuildingBuiltEvent(Building p_building, bool p_unassignWorkers)
         {
+            if (p_building.CurrentLevel == 1)
+            {
+                CompletlyNewBuildings.Add(p_building);
+            }
+            else if (p_building.CurrentLevel > 1)
+            {
+                UpgradedBuildings.Add(p_building);
+            }
+            
+            if (p_building.BuildingMainData.LevelToEnableMinigame == p_building.CurrentLevel)
+            {
+                BuildingWithEnabledMinigame.Add(p_building);
+            }
+
+            if (p_building.BuildingMainData.Type == BuildingType.Cottage)
+            {
+                foreach (var building in AllBuildingsDatabase.allBuildings)
+                {
+                    if (building.BaseCottageLevelNeeded == p_building.CurrentLevel)
+                    {
+                        UnlockedBuildings.Add(p_building);
+                    }
+                }
+            }
+
             AssignWorker(p_building, p_unassignWorkers);
             OnBuildingStateChanged?.Invoke(p_building);
         }
