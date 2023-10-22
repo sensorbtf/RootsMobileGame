@@ -51,7 +51,7 @@ namespace Buildings
                 {
                     InGameIcon.color = Color.white;
                     CurrentDayOnQueue = 0;
-                    OnWorkDone?.Invoke(this, false);
+                    OnRepaired?.Invoke(this);
                 }
 
                 _isDamaged = value;
@@ -69,6 +69,7 @@ namespace Buildings
         public event Action<Building> OnBuildingClicked;
         public event Action<PointsType, int> OnPointsGathered;
         public event Action<Building, bool> OnWorkDone;
+        public event Action<Building> OnRepaired;
         public event Action<Building> OnBuildingDamaged;
         public event Action<Building> OnTechnologyUpgrade;
         public event Action<Building> OnBuildingDestroyed;
@@ -160,14 +161,14 @@ namespace Buildings
             return _haveWorker && !PlayedMinigame && !_isDamaged && !IsBeeingUpgradedOrBuilded && CurrentTechnologyLvl > 0;
         }
 
-        public void HandleNewDay()
+        public bool HandleNewDay()
         {
             CurrentDayOnQueue++;
 
             if (_isDamaged)
             {
                 if (CurrentDayOnQueue < 1)
-                    return;
+                    return false;
 
                 IsDamaged = false;
             }
@@ -175,10 +176,13 @@ namespace Buildings
             if (IsBeeingUpgradedOrBuilded)
             {
                 if (CurrentDayOnQueue < _currentLevelData.Requirements.DaysToComplete)
-                    return;
+                    return false;
 
                 CanEndBuildingSequence = true;
+                return true;
             }
+
+            return false;
         }
     }
 }

@@ -16,7 +16,6 @@ namespace InGameUi
 
         [SerializeField] private TextMeshProUGUI _buildingName;
         [SerializeField] private TextMeshProUGUI _description;
-        [SerializeField] private Image _buildingIcon;
         [SerializeField] private GameObject _buildingIconPrefab;
         [SerializeField] private GameObject _goBackGo;
         [SerializeField] private GameObject _lvlUpGo;
@@ -98,7 +97,6 @@ namespace InGameUi
             _scrollBarGo.SetActive(true);
             
             _buildingName.text = $"{_buildingData.Type} ({_building.CurrentLevel})";
-            _buildingIcon.sprite = _buildingData.PerLevelData[_building.CurrentLevel].Icon;
 
             if (_buildingData.Type == BuildingType.Cottage)
             {

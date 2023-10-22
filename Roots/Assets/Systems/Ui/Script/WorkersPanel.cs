@@ -58,7 +58,7 @@ namespace InGameUi
                 var newBar = Instantiate(_barPrefab, contentTransform);
                 _runtimeBuildingsUiToDestroy.Add(newBar);
                 var scriptOfBar = newBar.GetComponent<WorkersDisplacementBarRefs>();
-                // scriptOfBar.BarSprite add when needed
+                int points = 0;
                 GameObject newEntry = null;
 
                 switch (i)
@@ -78,7 +78,6 @@ namespace InGameUi
                             if (data.Value)
                             {
                                 references.NewInfo.text = "Will be build";
-                                references.NewInfo.color = Color.yellow;
                             }
 
                             var building = _buildingManager.CurrentBuildings.Find(x => x.BuildingMainData == data.Key);
@@ -92,40 +91,33 @@ namespace InGameUi
                                         .DaysToComplete - building.CurrentDayOnQueue;
                                 
                                 references.Informations.text = $"End in: {daysToComplete} day(s)";
-                                references.Informations.color = Color.magenta;
 
                                 if (data.Value) 
                                     continue;
                                 
                                 references.NewInfo.text = "Paused";
-                                references.NewInfo.color = Color.blue;
                                 var willBeCancelled =
                                     _buildingPanel.WillBuildingBeCancelled(building, out bool wasOnList);
 
                                 if (building.HaveWorker && willBeCancelled)
                                 {
                                     references.NewInfo.text = "Will Be Paused";
-                                    references.NewInfo.color = Color.blue;
                                 }
                                 else if (building.IsDamaged && !building.HaveWorker && !willBeCancelled && wasOnList)
                                 {
                                     references.NewInfo.text = "Will be repaired";
-                                    references.NewInfo.color = Color.green; 
                                 }
                                 else if (building.IsDamaged && !building.HaveWorker && willBeCancelled && wasOnList)
                                 {
                                     references.NewInfo.text = "Will be Paused";
-                                    references.NewInfo.color = Color.green; 
                                 }
                                 else if (!building.HaveWorker && !willBeCancelled && wasOnList)
                                 {
                                     references.NewInfo.text = "Will be resumed";
-                                    references.NewInfo.color = Color.yellow; 
                                 }
                                 else if (building.HaveWorker)
                                 {   
                                     references.NewInfo.text = "In Progress";
-                                    references.NewInfo.color = Color.green;
                                 }
                             }
                             else
@@ -137,13 +129,13 @@ namespace InGameUi
                         scriptOfBar.BarButton.onClick.AddListener(OnBuildOrUpgradeButtonClicked);
                         break;
                     case 1:
-                        scriptOfBar.BarText.text = "Resources";
-
                         foreach (var building in _gatheringDefensePanel.BuildingsOnQueue)
                         {
                             if (building.BuildingMainData.PerLevelData[building.CurrentLevel].ProductionType != PointsType.ResourcesAndDefense &&
                                 building.BuildingMainData.PerLevelData[building.CurrentLevel].ProductionType != PointsType.Resource)
                                 continue;
+
+                            points += building.BuildingMainData.PerLevelData[building.CurrentLevel].ProductionAmountPerDay;
 
                             newEntry = Instantiate(_iconPrefab, scriptOfBar.ScrollContext);
                             newEntry.GetComponent<Image>().sprite =
@@ -155,13 +147,12 @@ namespace InGameUi
                             references.InfoGo.SetActive(true);
                             
                             references.Informations.text = "Worker Assigned";
-                            references.Informations.color = Color.magenta;
                         }
 
+                        scriptOfBar.BarText.text = $"Resource Points: {points}";
                         scriptOfBar.BarButton.onClick.AddListener(() => OnGatheringOrDefenseButtonClicked(true));
                         break;
                     case 2:
-                        scriptOfBar.BarText.text = "Defense Points";
 
                         foreach (var building in _gatheringDefensePanel.BuildingsOnQueue)
                         {
@@ -169,6 +160,8 @@ namespace InGameUi
                                 building.BuildingMainData.PerLevelData[building.CurrentLevel].ProductionType != PointsType.Defense)
                                 continue;
 
+                            points += building.BuildingMainData.PerLevelData[building.CurrentLevel].ProductionAmountPerDay;
+
                             newEntry = Instantiate(_iconPrefab, scriptOfBar.ScrollContext);
                             newEntry.GetComponent<Image>().sprite =
                                 building.BuildingMainData.PerLevelData[building.CurrentLevel].Icon;
@@ -179,8 +172,9 @@ namespace InGameUi
                             references.InfoGo.SetActive(true);
                             
                             references.Informations.text = "Worker Assigned";
-                            references.Informations.color = Color.magenta;
                         }
+
+                        scriptOfBar.BarText.text = $"Defense Points: {points}";
 
                         scriptOfBar.BarButton.onClick.AddListener(() => OnGatheringOrDefenseButtonClicked(false));
                         break;

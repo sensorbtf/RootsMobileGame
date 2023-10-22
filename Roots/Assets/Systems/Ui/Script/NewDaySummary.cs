@@ -30,7 +30,7 @@ namespace InGameUi
 
         private void Start()
         {
-            worldManager.OnNewDayStarted += ActivateOnClick; // activate on day skip/end
+            worldManager.OnNewDayStarted += ActivateOnNewDay; // activate on day skip/end
             _runtimeBuildingsUiToDestroy = new List<GameObject>();
 
             _goBackButton = _goBackGo.GetComponent<Button>();
@@ -53,7 +53,7 @@ namespace InGameUi
             gameObject.SetActive(false);
         }
 
-        public void ActivateOnClick()
+        public void ActivateOnNewDay()
         {
             ClosePanel();
             gameObject.SetActive(true);
@@ -67,7 +67,7 @@ namespace InGameUi
             HandleView();
         }
 
-        private void HandleView()  // can upgrade minigame??
+        private void HandleView()
         {
             foreach (var building in _buildingManager.UnlockedBuildings)
             {
@@ -84,6 +84,11 @@ namespace InGameUi
                 CreateUiElement(building.BuildingMainData.PerLevelData[building.CurrentLevel].Icon, "Building upgraded");
             }
 
+            foreach (var building in _buildingManager.RepairedBuildings)
+            {
+                CreateUiElement(building.BuildingMainData.PerLevelData[building.CurrentLevel].Icon, "Building repaired");
+            }
+
             foreach (var building in _buildingManager.BuildingWithEnabledMinigame)
             {
                 CreateUiElement(building.BuildingMainData.PerLevelData[building.CurrentLevel].Icon, "Minigame unlocked");
@@ -94,7 +99,7 @@ namespace InGameUi
                 CreateUiElement(building.BuildingMainData.PerLevelData[building.CurrentLevel].Icon, "Points can be gathered");
             }
 
-            foreach (var building in _buildingManager.BuildingsWithTechnologyUnlocked)
+            foreach (var building in _buildingManager.BuildingsWithTechnologyUpgrade)
             {
                 CreateUiElement(building.BuildingMainData.PerLevelData[building.CurrentLevel].Icon, "Technology can be upgraded");
             }
@@ -104,16 +109,18 @@ namespace InGameUi
             _buildingManager.BuildingWithEnabledMinigame.Clear();
             _buildingManager.CompletlyNewBuildings.Clear();
             _buildingManager.UnlockedBuildings.Clear();
-            _buildingManager.BuildingsWithTechnologyUnlocked.Clear();
+            _buildingManager.BuildingsWithTechnologyUpgrade.Clear();
+            _buildingManager.RepairedBuildings.Clear();
         }
 
         private void CreateUiElement(Sprite p_icon, string p_text)
         {
             GameObject newIcon = Instantiate(_buildingInfoPrefab, _contentTransform);
             _runtimeBuildingsUiToDestroy.Add(newIcon);
+            var references = newIcon.GetComponent<DaySummaryUiElement>();
 
-            newIcon.GetComponentInChildren<Image>().sprite = p_icon;
-            newIcon.GetComponentInChildren<TextMeshProUGUI>().text = p_text;
+            references.BuildingSprite.sprite = p_icon;
+            references.BuildingDesc.text = p_text;
         }
     }
 }

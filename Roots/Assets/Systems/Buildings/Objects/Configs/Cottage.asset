@@ -16,7 +16,8 @@ MonoBehaviour:
   MainPrefab: {fileID: 1328426712780355558, guid: 87828ae970e7daa458c1959de94084c4, type: 3}
   Description: Residence's basement is a safe place to store excess resources on
     mission completion and recover them on the next one
-  BaseCottageLevelNeeded: 1
+  BaseCottageLevelNeeded: 0
+  LevelToEnableMinigame: 0
   PerLevelData:
   - Icon: {fileID: 21300000, guid: 4e69dfbbdc1157d44aee0225c3291d03, type: 3}
     InGameSprite: {fileID: 21300000, guid: 45f08da01b47b114b800eec5c551bb74, type: 3}

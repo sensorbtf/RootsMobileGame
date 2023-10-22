@@ -20,9 +20,6 @@ namespace InGameUi
         [SerializeField] private GameObject _endBuildingButton;
         [SerializeField] private Transform contentTransform;
 
-        private BuildingData _currentBuildingData;
-        private int _currentBuildingLevel;
-
         private List<GameObject> _runtimeBuildingsUiToDestroy;
         private List<BuildingData> _buildingsOnInPanelQueue;
         private Dictionary<BuildingData, SingleBuildingRefs> _createdUiElements;

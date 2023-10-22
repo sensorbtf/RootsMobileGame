@@ -27,9 +27,10 @@ namespace Buildings
         [HideInInspector] public List<Building> UnlockedBuildings;
         [HideInInspector] public List<Building> CompletlyNewBuildings;
         [HideInInspector] public List<Building> UpgradedBuildings;
+        [HideInInspector] public List<Building> RepairedBuildings;
         [HideInInspector] public List<Building> BuildingWithEnabledMinigame;
         [HideInInspector] public List<Building> BuildingsToGatherFrom;
-        [HideInInspector] public List<Building> BuildingsWithTechnologyUnlocked;
+        [HideInInspector] public List<Building> BuildingsWithTechnologyUpgrade;
 
         public event Action<Building> OnBuildingClicked;
         public event Action<Building> OnBuildingStateChanged;
@@ -85,8 +86,9 @@ namespace Buildings
             CompletlyNewBuildings = new List<Building>();
             UpgradedBuildings = new List<Building>();
             BuildingWithEnabledMinigame = new List<Building>();
-            BuildingsWithTechnologyUnlocked = new List<Building>();
             BuildingsToGatherFrom = new List<Building>();
+            BuildingsWithTechnologyUpgrade = new List<Building>();
+            RepairedBuildings = new List<Building>();
             _currentlyBuildBuildings = new List<Building>();
 
             foreach (var buildingToBuild in _buildingsDatabase.allBuildings)
@@ -145,7 +147,7 @@ namespace Buildings
 
                 if (building.CurrentTechnologyDayOnQueue == building.BuildingMainData.Technology.DataPerTechnologyLevel[building.CurrentTechnologyLvl].WorksDayToAchieve)
                 {
-                    BuildingsWithTechnologyUnlocked.Add(building);
+                    BuildingsWithTechnologyUpgrade.Add(building);
                 }
 
                 switch (building.BuildingMainData.PerLevelData[building.CurrentLevel].ProductionType)
@@ -180,7 +182,17 @@ namespace Buildings
                 if (!building.HaveWorker)
                     continue;
 
-                building.HandleNewDay();
+                if (building.HandleNewDay())
+                {
+                    if (building.CurrentLevel == 0)
+                    {
+                        CompletlyNewBuildings.Add(building);
+                    }
+                    else if (building.CurrentLevel > 1)
+                    {
+                        UpgradedBuildings.Add(building);
+                    }
+                }
             }
         }
 
@@ -255,6 +267,7 @@ namespace Buildings
                 _currentlyBuildBuildings.Add(newBuilding);
                 newBuilding.OnPointsGathered += GatherPoints;
                 newBuilding.OnWorkDone += PublishBuildingBuiltEvent;
+                newBuilding.OnRepaired += PublishBuildingRepaired;
                 newBuilding.OnTechnologyUpgrade += PublishBuildingTechnologyEvent;
                 newBuilding.OnBuildingClicked += HandleBuildingClicked;
                 newBuilding.OnBuildingDamaged += HandleBuildingDamaged;
@@ -266,17 +279,16 @@ namespace Buildings
             OnBuildingTechnologyLvlUp?.Invoke(p_building);
         }
         
-        private void PublishBuildingBuiltEvent(Building p_building, bool p_unassignWorkers)
+        private void PublishBuildingRepaired(Building p_building)
         {
-            if (p_building.CurrentLevel == 1)
-            {
-                CompletlyNewBuildings.Add(p_building);
-            }
-            else if (p_building.CurrentLevel > 1)
-            {
-                UpgradedBuildings.Add(p_building);
-            }
-            
+            RepairedBuildings.Add(p_building);
+
+            AssignWorker(p_building, false);
+            OnBuildingStateChanged?.Invoke(p_building);
+        }
+
+        private void PublishBuildingBuiltEvent(Building p_building, bool p_unassignWorkers)
+        {   
             if (p_building.BuildingMainData.LevelToEnableMinigame == p_building.CurrentLevel)
             {
                 BuildingWithEnabledMinigame.Add(p_building);
