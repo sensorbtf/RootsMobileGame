@@ -14,34 +14,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Type: 6
   MainPrefab: {fileID: 1328426712780355558, guid: 80bf6bce43a655d4aa423b1bf6d56a62, type: 3}
+  Icon: {fileID: 21300000, guid: 41482bc6d2cb5be4ea997537570e0cdc, type: 3}
+  InGameSprite: {fileID: 21300000, guid: 41482bc6d2cb5be4ea997537570e0cdc, type: 3}
+  FirstStageBuilding: {fileID: 21300000, guid: 8995303cd28cbc54da32d93b466882d8, type: 3}
+  UpgradeStage: {fileID: 21300000, guid: 8995303cd28cbc54da32d93b466882d8, type: 3}
   Description: Noone knows what exactly comes with storm but runes created in Ritual
     Circle always helps to keep danger away.
   BaseCottageLevelNeeded: 2
+  LevelToEnableMinigame: 0
   PerLevelData:
-  - Icon: {fileID: 21300000, guid: 41482bc6d2cb5be4ea997537570e0cdc, type: 3}
-    InGameSprite: {fileID: 21300000, guid: 45f08da01b47b114b800eec5c551bb74, type: 3}
-    Requirements:
+  - Requirements:
       ResourcePoints: 20
       DaysToComplete: 1
     ProductionType: 2
     ProductionAmountPerDay: 10
-  - Icon: {fileID: 21300000, guid: 41482bc6d2cb5be4ea997537570e0cdc, type: 3}
-    InGameSprite: {fileID: 21300000, guid: 41482bc6d2cb5be4ea997537570e0cdc, type: 3}
-    Requirements:
+  - Requirements:
       ResourcePoints: 30
       DaysToComplete: 2
     ProductionType: 3
     ProductionAmountPerDay: 15
-  - Icon: {fileID: 21300000, guid: 41482bc6d2cb5be4ea997537570e0cdc, type: 3}
-    InGameSprite: {fileID: 21300000, guid: 41482bc6d2cb5be4ea997537570e0cdc, type: 3}
-    Requirements:
+  - Requirements:
       ResourcePoints: 50
       DaysToComplete: 3
     ProductionType: 3
     ProductionAmountPerDay: 20
-  - Icon: {fileID: 21300000, guid: 41482bc6d2cb5be4ea997537570e0cdc, type: 3}
-    InGameSprite: {fileID: 21300000, guid: 41482bc6d2cb5be4ea997537570e0cdc, type: 3}
-    Requirements:
+  - Requirements:
       ResourcePoints: 100
       DaysToComplete: 4
     ProductionType: 3

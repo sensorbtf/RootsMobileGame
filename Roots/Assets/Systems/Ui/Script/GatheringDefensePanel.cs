@@ -102,7 +102,7 @@ namespace InGameUi
                 SingleBuildingRefs script = newGathering.GetComponent<SingleBuildingRefs>();
                 _createdUiElements.Add(building, script);
                 script.BuildingName.GetComponent<TextMeshProUGUI>().text = building.BuildingMainData.Type.ToString();
-                script.BuildingIcon.GetComponent<Image>().sprite = building.BuildingMainData.PerLevelData[building.CurrentLevel].Icon;
+                script.BuildingIcon.GetComponent<Image>().sprite = building.BuildingMainData.Icon;
 
                 script.BuildingInfo.GetComponent<TextMeshProUGUI>().text = p_gathering
                     ? $"Production Points Per Day: {_buildingManager.GetProductionDataOfBuilding(building)}"

@@ -111,7 +111,7 @@ namespace Buildings
         {
             _currentLevel = 1;
             IsBeeingUpgradedOrBuilded = false;
-            InGameIcon.sprite = _currentLevelData.InGameSprite;
+            InGameIcon.sprite = BuildingMainData.InGameSprite;
             _haveWorker = false;
 
             OnWorkDone?.Invoke(this, false);
@@ -129,7 +129,7 @@ namespace Buildings
             _currentLevel++;
             IsBeeingUpgradedOrBuilded = false;
             CurrentDayOnQueue = 0;
-            InGameIcon.sprite = _currentLevelData.InGameSprite;
+            InGameIcon.sprite = BuildingMainData.InGameSprite;
             _haveWorker = false;
 
             OnWorkDone?.Invoke(this, false);

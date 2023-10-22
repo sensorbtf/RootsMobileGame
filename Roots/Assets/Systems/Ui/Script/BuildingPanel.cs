@@ -245,7 +245,7 @@ namespace InGameUi
                 p_refsScript.TypeOfOutcome.color = new Color(0, 0, 0, 0);
             }
 
-            p_refsScript.BuildingIcon.GetComponent<Image>().sprite = p_buildingData.PerLevelData[p_currentLevel].Icon;
+            p_refsScript.BuildingIcon.GetComponent<Image>().sprite = p_buildingData.Icon;
         }
 
         private void HandleCurrentBuildingCreation(SingleBuildingRefs p_refsScript, Building p_building)
@@ -475,7 +475,7 @@ namespace InGameUi
                 else
                 {
                     element.Value.BuildingIcon.GetComponent<Image>().sprite =
-                        element.Key.PerLevelData[building.CurrentLevel].Icon;
+                        element.Key.Icon;
 
                     if (building.IsDamaged)
                     {

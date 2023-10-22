@@ -84,8 +84,7 @@ namespace InGameUi
 
                             if (building != null)
                             {
-                                references.BuildingIcon.image.sprite =
-                                    data.Key.PerLevelData[building.CurrentLevel].Icon;
+                                references.BuildingIcon.image.sprite = data.Key.Icon;
                                 var daysToComplete = 
                                     building.BuildingMainData.PerLevelData[building.CurrentLevel].Requirements
                                         .DaysToComplete - building.CurrentDayOnQueue;
@@ -122,7 +121,7 @@ namespace InGameUi
                             }
                             else
                             {
-                                references.BuildingIcon.image.sprite = data.Key.PerLevelData[0].Icon;
+                                references.BuildingIcon.image.sprite = data.Key.Icon;
                             }
                         }
 
@@ -139,7 +138,7 @@ namespace InGameUi
 
                             newEntry = Instantiate(_iconPrefab, scriptOfBar.ScrollContext);
                             newEntry.GetComponent<Image>().sprite =
-                                building.BuildingMainData.PerLevelData[building.CurrentLevel].Icon;
+                                building.BuildingMainData.Icon;
                             
                             ButtonIconPrefabRefs references = newEntry.GetComponent<ButtonIconPrefabRefs>();
 
@@ -163,8 +162,7 @@ namespace InGameUi
                             points += building.BuildingMainData.PerLevelData[building.CurrentLevel].ProductionAmountPerDay;
 
                             newEntry = Instantiate(_iconPrefab, scriptOfBar.ScrollContext);
-                            newEntry.GetComponent<Image>().sprite =
-                                building.BuildingMainData.PerLevelData[building.CurrentLevel].Icon;
+                            newEntry.GetComponent<Image>().sprite = building.BuildingMainData.Icon;
                             
                             ButtonIconPrefabRefs references = newEntry.GetComponent<ButtonIconPrefabRefs>();
 

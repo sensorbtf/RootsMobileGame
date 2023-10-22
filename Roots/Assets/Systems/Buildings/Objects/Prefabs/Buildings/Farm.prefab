@@ -29,7 +29,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2.5, y: 2.5, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8439736024323659261}
@@ -129,6 +129,7 @@ MonoBehaviour:
   CurrentDayOnQueue: 0
   CurrentTechnologyDayOnQueue: 0
   HaveSomethingToCollect: 0
+  CanEndBuildingSequence: 0
   IsBeeingUpgradedOrBuilded: 0
   IsProtected: 0
   CurrentTechnologyLvl: 0
@@ -357,7 +358,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7782280717702744981, guid: f89c2262d3f414c41ba14e629414b622, type: 3}
       propertyPath: m_Size.x
-      value: 10.8
+      value: 19.2
       objectReference: {fileID: 0}
     - target: {fileID: 7782280717702744981, guid: f89c2262d3f414c41ba14e629414b622, type: 3}
       propertyPath: m_Size.y
@@ -366,7 +367,7 @@ PrefabInstance:
     - target: {fileID: 7782280717702744981, guid: f89c2262d3f414c41ba14e629414b622, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 647adac15764bfb4dbc97c28900a0c2d, type: 3}
+      objectReference: {fileID: 21300000, guid: 0f4fbc4f152f2504a8f557c76f55cf88, type: 3}
     - target: {fileID: 7782280717702744981, guid: f89c2262d3f414c41ba14e629414b622, type: 3}
       propertyPath: m_WasSpriteAssigned
       value: 1

@@ -11,7 +11,6 @@ namespace Buildings
         [SerializeField] private WorkersManager _workersManager; // need to extend
         [SerializeField] private BuildingTransforms[] _placesForBuildings; // need to extend
         [SerializeField] private BuildingDatabase _buildingsDatabase;
-        [SerializeField] private Sprite _buildingInBuildStage;
 
         private List<Building> _currentlyBuildBuildings;
         private int _resourcesStoredInBasement = 0;
@@ -259,7 +258,7 @@ namespace Buildings
                     newBuildingGo = Instantiate(p_buildingData.MainPrefab,
                         building.SiteForBuilding.position, Quaternion.identity);
                     newBuilding = newBuildingGo.GetComponent<Building>();
-                    newBuilding.InGameIcon.sprite = _buildingInBuildStage;
+                    newBuilding.InGameIcon.sprite = newBuilding.BuildingMainData.FirstStageBuilding;
 
                     newBuilding.InitiateBuildingSequence();
                 }
@@ -271,6 +270,25 @@ namespace Buildings
                 newBuilding.OnTechnologyUpgrade += PublishBuildingTechnologyEvent;
                 newBuilding.OnBuildingClicked += HandleBuildingClicked;
                 newBuilding.OnBuildingDamaged += HandleBuildingDamaged;
+            }
+        }
+
+        public void HandleUpgradeOfBuilding(BuildingType p_buildingType, bool p_instant)
+        {
+            for (int i = 0; i < _currentlyBuildBuildings.Count; i++)
+            {
+                if (_currentlyBuildBuildings[i].BuildingMainData.Type != p_buildingType)
+                    continue;
+
+                if (p_instant)
+                {
+                    _currentlyBuildBuildings[i].HandleLevelUp();
+                }
+                else
+                {
+                    _currentlyBuildBuildings[i].InGameIcon.sprite = GetSpecificBuilding(p_buildingType).BuildingMainData.UpgradeStage;
+                    _currentlyBuildBuildings[i].InitiateUpgradeSequence();
+                }
             }
         }
 
@@ -312,25 +330,6 @@ namespace Buildings
         private void HandleBuildingDamaged(Building p_building)
         {
             OnBuildingDestroyed?.Invoke(p_building);
-        }
-
-        public void HandleUpgradeOfBuilding(BuildingType p_buildingType, bool p_instant)
-        {
-            for (int i = 0; i < _currentlyBuildBuildings.Count; i++)
-            {
-                if (_currentlyBuildBuildings[i].BuildingMainData.Type != p_buildingType)
-                    continue;
-
-                if (p_instant)
-                {
-                    _currentlyBuildBuildings[i].HandleLevelUp();
-                }
-                else
-                {
-                    _currentlyBuildBuildings[i].InGameIcon.sprite = _buildingInBuildStage;
-                    _currentlyBuildBuildings[i].InitiateUpgradeSequence();
-                }
-            }
         }
 
         private void GatherPoints(PointsType p_type, int p_amount)

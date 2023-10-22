@@ -71,37 +71,37 @@ namespace InGameUi
         {
             foreach (var building in _buildingManager.UnlockedBuildings)
             {
-                CreateUiElement(building.BuildingMainData.PerLevelData[0].Icon, $"New building unlocked: {building.BuildingMainData.Type}");
+                CreateUiElement(building.BuildingMainData.Icon, $"New building unlocked: {building.BuildingMainData.Type}");
             }
 
             foreach (var building in _buildingManager.CompletlyNewBuildings)
             {
-                CreateUiElement(building.BuildingMainData.PerLevelData[building.CurrentLevel].Icon, "Just built");
+                CreateUiElement(building.BuildingMainData.Icon, "Just built");
             }
 
             foreach (var building in _buildingManager.UpgradedBuildings)
             {
-                CreateUiElement(building.BuildingMainData.PerLevelData[building.CurrentLevel].Icon, "Building upgraded");
+                CreateUiElement(building.BuildingMainData.Icon, "Building upgraded");
             }
 
             foreach (var building in _buildingManager.RepairedBuildings)
             {
-                CreateUiElement(building.BuildingMainData.PerLevelData[building.CurrentLevel].Icon, "Building repaired");
+                CreateUiElement(building.BuildingMainData.Icon, "Building repaired");
             }
 
             foreach (var building in _buildingManager.BuildingWithEnabledMinigame)
             {
-                CreateUiElement(building.BuildingMainData.PerLevelData[building.CurrentLevel].Icon, "Minigame unlocked");
+                CreateUiElement(building.BuildingMainData.Icon, "Minigame unlocked");
             }
 
             foreach (var building in _buildingManager.BuildingsToGatherFrom)
             {
-                CreateUiElement(building.BuildingMainData.PerLevelData[building.CurrentLevel].Icon, "Points can be gathered");
+                CreateUiElement(building.BuildingMainData.Icon, "Points can be gathered");
             }
 
             foreach (var building in _buildingManager.BuildingsWithTechnologyUpgrade)
             {
-                CreateUiElement(building.BuildingMainData.PerLevelData[building.CurrentLevel].Icon, "Technology can be upgraded");
+                CreateUiElement(building.BuildingMainData.Icon, "Technology can be upgraded");
             }
 
             _buildingManager.BuildingsToGatherFrom.Clear();

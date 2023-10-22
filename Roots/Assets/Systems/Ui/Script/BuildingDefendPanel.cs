@@ -74,7 +74,7 @@ namespace InGameUi
                 _runtimeBuildingsUiToDestroy.Add(newBuilding);
 
                 BuildingWorkerRefs script = newBuilding.GetComponent<BuildingWorkerRefs>();
-                script.BuildingImage.sprite = building.BuildingMainData.PerLevelData[building.CurrentLevel].Icon;
+                script.BuildingImage.sprite = building.BuildingMainData.Icon;
                 script.BuildingName.text = building.BuildingMainData.Type.ToString();
                 script.DefendToggle.interactable = true;
 

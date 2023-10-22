@@ -8,6 +8,10 @@ namespace Buildings
     {
         public BuildingType Type;
         public GameObject MainPrefab;
+        public Sprite Icon;
+        public Sprite InGameSprite;
+        public Sprite FirstStageBuilding;
+        public Sprite UpgradeStage;
         public string Description;
         public int BaseCottageLevelNeeded;
         public int LevelToEnableMinigame;
@@ -18,8 +22,6 @@ namespace Buildings
     [Serializable]
     public class BaseDataPerLevel
     {
-        public Sprite Icon;
-        public Sprite InGameSprite;
         public Requirements Requirements;
         public PointsType ProductionType;
         public int ProductionAmountPerDay;

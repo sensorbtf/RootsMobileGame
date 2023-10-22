@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e6f3fbb560bd6041a202ea918fa4f23, type: 3}
   m_Name: MudStone
   m_EditorClassIdentifier: 
-  m_DefaultSprite: {fileID: 21300000, guid: e2de204c1b52258448f1d397623a4baf, type: 3}
+  m_DefaultSprite: {fileID: 21300000, guid: 0811aac70274a6a4e8a21185a9b3785d, type: 3}
   m_DefaultGameObject: {fileID: 0}
   m_DefaultColliderType: 1
   m_TilingRules: []

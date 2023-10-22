@@ -14,49 +14,41 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Type: 0
   MainPrefab: {fileID: 1328426712780355558, guid: 87828ae970e7daa458c1959de94084c4, type: 3}
+  Icon: {fileID: 21300000, guid: 4e69dfbbdc1157d44aee0225c3291d03, type: 3}
+  InGameSprite: {fileID: 21300000, guid: 4e69dfbbdc1157d44aee0225c3291d03, type: 3}
+  FirstStageBuilding: {fileID: 21300000, guid: 56e1d9c95e01c694f92e785d034179a5, type: 3}
+  UpgradeStage: {fileID: 21300000, guid: 56e1d9c95e01c694f92e785d034179a5, type: 3}
   Description: Residence's basement is a safe place to store excess resources on
     mission completion and recover them on the next one
   BaseCottageLevelNeeded: 0
   LevelToEnableMinigame: 0
   PerLevelData:
-  - Icon: {fileID: 21300000, guid: 4e69dfbbdc1157d44aee0225c3291d03, type: 3}
-    InGameSprite: {fileID: 21300000, guid: 45f08da01b47b114b800eec5c551bb74, type: 3}
-    Requirements:
+  - Requirements:
       ResourcePoints: 0
       DaysToComplete: 0
     ProductionType: 0
     ProductionAmountPerDay: 0
-  - Icon: {fileID: 21300000, guid: 4e69dfbbdc1157d44aee0225c3291d03, type: 3}
-    InGameSprite: {fileID: 21300000, guid: 4e69dfbbdc1157d44aee0225c3291d03, type: 3}
-    Requirements:
+  - Requirements:
       ResourcePoints: 30
       DaysToComplete: 3
     ProductionType: 0
     ProductionAmountPerDay: 5
-  - Icon: {fileID: 21300000, guid: 4e69dfbbdc1157d44aee0225c3291d03, type: 3}
-    InGameSprite: {fileID: 21300000, guid: 4e69dfbbdc1157d44aee0225c3291d03, type: 3}
-    Requirements:
+  - Requirements:
       ResourcePoints: 50
       DaysToComplete: 3
     ProductionType: 0
     ProductionAmountPerDay: 10
-  - Icon: {fileID: 21300000, guid: 4e69dfbbdc1157d44aee0225c3291d03, type: 3}
-    InGameSprite: {fileID: 21300000, guid: 4e69dfbbdc1157d44aee0225c3291d03, type: 3}
-    Requirements:
+  - Requirements:
       ResourcePoints: 50
       DaysToComplete: 3
     ProductionType: 0
     ProductionAmountPerDay: 15
-  - Icon: {fileID: 21300000, guid: 4e69dfbbdc1157d44aee0225c3291d03, type: 3}
-    InGameSprite: {fileID: 21300000, guid: 4e69dfbbdc1157d44aee0225c3291d03, type: 3}
-    Requirements:
+  - Requirements:
       ResourcePoints: 50
       DaysToComplete: 3
     ProductionType: 0
     ProductionAmountPerDay: 20
-  - Icon: {fileID: 21300000, guid: 4e69dfbbdc1157d44aee0225c3291d03, type: 3}
-    InGameSprite: {fileID: 21300000, guid: 4e69dfbbdc1157d44aee0225c3291d03, type: 3}
-    Requirements:
+  - Requirements:
       ResourcePoints: 50
       DaysToComplete: 3
     ProductionType: 0

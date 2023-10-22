@@ -14,27 +14,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Type: 1
   MainPrefab: {fileID: 1328426712780355558, guid: 59f36c8d0fc426744a6c8c2ab1efe6ab, type: 3}
+  Icon: {fileID: 21300000, guid: 0f4fbc4f152f2504a8f557c76f55cf88, type: 3}
+  InGameSprite: {fileID: 21300000, guid: 0f4fbc4f152f2504a8f557c76f55cf88, type: 3}
+  FirstStageBuilding: {fileID: 21300000, guid: 1a7d1a34ba108db418956b802ad5eba9, type: 3}
+  UpgradeStage: {fileID: 21300000, guid: 6f327b8b7a3f6334fbc1f7f7822c06f1, type: 3}
   Description: Main source of food for all workers. Every level up unlocks additional
     worker.
   BaseCottageLevelNeeded: 1
+  LevelToEnableMinigame: 0
   PerLevelData:
-  - Icon: {fileID: 21300000, guid: 647adac15764bfb4dbc97c28900a0c2d, type: 3}
-    InGameSprite: {fileID: 21300000, guid: 45f08da01b47b114b800eec5c551bb74, type: 3}
-    Requirements:
+  - Requirements:
       ResourcePoints: 10
       DaysToComplete: 1
     ProductionType: 1
     ProductionAmountPerDay: 5
-  - Icon: {fileID: 21300000, guid: 647adac15764bfb4dbc97c28900a0c2d, type: 3}
-    InGameSprite: {fileID: 21300000, guid: 647adac15764bfb4dbc97c28900a0c2d, type: 3}
-    Requirements:
+  - Requirements:
       ResourcePoints: 20
       DaysToComplete: 2
     ProductionType: 1
     ProductionAmountPerDay: 1
-  - Icon: {fileID: 21300000, guid: 0f4fbc4f152f2504a8f557c76f55cf88, type: 3}
-    InGameSprite: {fileID: 21300000, guid: 0f4fbc4f152f2504a8f557c76f55cf88, type: 3}
-    Requirements:
+  - Requirements:
       ResourcePoints: 30
       DaysToComplete: 3
     ProductionType: 1

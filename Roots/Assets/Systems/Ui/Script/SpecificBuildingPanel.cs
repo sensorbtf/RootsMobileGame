@@ -169,7 +169,7 @@ namespace InGameUi
                     var currentBuildingData = _buildingManager.AllBuildingsDatabase.allBuildings.First(x =>
                         x.Type == building.Building);
 
-                    uiReferences.BuildingIcon.image.sprite = currentBuildingData.PerLevelData[0].Icon;
+                    uiReferences.BuildingIcon.image.sprite = currentBuildingData.Icon;
                     uiReferences.NewGo.SetActive(true);
                     uiReferences.InfoGo.SetActive(true);
                     uiReferences.NewInfo.text = "Not built";
@@ -179,8 +179,7 @@ namespace InGameUi
                 }
                 else
                 {
-                    uiReferences.BuildingIcon.image.sprite = currentBuilding.BuildingMainData
-                        .PerLevelData[currentBuilding.CurrentLevel].Icon;
+                    uiReferences.BuildingIcon.image.sprite = currentBuilding.BuildingMainData.Icon;
                     uiReferences.NewGo.SetActive(false);
                     uiReferences.InfoGo.SetActive(true);
                     uiReferences.Informations.text = $"Need lvl: {building.Level}";

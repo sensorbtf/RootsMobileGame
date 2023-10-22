@@ -14,35 +14,31 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Type: 4
   MainPrefab: {fileID: 1328426712780355558, guid: 519c542da69cb7c4a9662fd3128ba8d3, type: 3}
+  Icon: {fileID: 21300000, guid: 2031108354133e443b42e7278b7e76ab, type: 3}
+  InGameSprite: {fileID: 21300000, guid: 2031108354133e443b42e7278b7e76ab, type: 3}
+  FirstStageBuilding: {fileID: 21300000, guid: 29c6e68dab3019a479ae74cacf4d5026, type: 3}
+  UpgradeStage: {fileID: 21300000, guid: 29c6e68dab3019a479ae74cacf4d5026, type: 3}
   Description: 'Place where magic and science meets, to provide you with resources
     and defence items. '
   BaseCottageLevelNeeded: 2
   LevelToEnableMinigame: 0
   PerLevelData:
-  - Icon: {fileID: 21300000, guid: 2031108354133e443b42e7278b7e76ab, type: 3}
-    InGameSprite: {fileID: 21300000, guid: 45f08da01b47b114b800eec5c551bb74, type: 3}
-    Requirements:
+  - Requirements:
       ResourcePoints: 20
       DaysToComplete: 1
     ProductionType: 3
     ProductionAmountPerDay: 10
-  - Icon: {fileID: 21300000, guid: 2031108354133e443b42e7278b7e76ab, type: 3}
-    InGameSprite: {fileID: 21300000, guid: 2031108354133e443b42e7278b7e76ab, type: 3}
-    Requirements:
+  - Requirements:
       ResourcePoints: 30
       DaysToComplete: 2
     ProductionType: 3
     ProductionAmountPerDay: 15
-  - Icon: {fileID: 21300000, guid: 2031108354133e443b42e7278b7e76ab, type: 3}
-    InGameSprite: {fileID: 21300000, guid: 2031108354133e443b42e7278b7e76ab, type: 3}
-    Requirements:
+  - Requirements:
       ResourcePoints: 50
       DaysToComplete: 3
     ProductionType: 3
     ProductionAmountPerDay: 20
-  - Icon: {fileID: 21300000, guid: 2031108354133e443b42e7278b7e76ab, type: 3}
-    InGameSprite: {fileID: 21300000, guid: 2031108354133e443b42e7278b7e76ab, type: 3}
-    Requirements:
+  - Requirements:
       ResourcePoints: 100
       DaysToComplete: 4
     ProductionType: 3
