@@ -224,7 +224,7 @@ namespace InGameUi
         private void UpdateWorkersText()
         {
             _buildingPanel.RefreshWorkersAmount();
-            _numberOfWorkers.text = $"Workers: {_workersManager.BaseWorkersAmounts.ToString()}/{_workersManager.OverallAssignedWorkers}";
+            _numberOfWorkers.text = $"Workers: {_workersManager.BaseWorkersAmounts}/{_workersManager.OverallAssignedWorkers}";
         }
         
         private void UpdateButtonText()
@@ -240,7 +240,7 @@ namespace InGameUi
             }
             else
             {
-                _buttonText.text = "Set workers to work before starting the day";
+                _buttonText.text = "Set workers to work";
                 _button.interactable = false;
             }
         }
