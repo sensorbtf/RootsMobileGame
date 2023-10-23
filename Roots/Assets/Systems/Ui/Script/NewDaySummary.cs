@@ -14,6 +14,7 @@ namespace InGameUi
     {
         [SerializeField] private BuildingManager _buildingManager;
         [SerializeField] private WorldManager worldManager;
+        [SerializeField] private TextMeshProUGUI _panelTitle;
 
         [SerializeField] private GameObject _buildingInfoPrefab;
         [SerializeField] private GameObject _goBackGo;
@@ -22,15 +23,15 @@ namespace InGameUi
         private Button _goBackButton;
         private List<GameObject> _runtimeBuildingsUiToDestroy;
         private Building _building;
+        private bool _isCottage;
         
         private TechnologyDataPerLevel[] _technology;
 
-        public TechnologyDataPerLevel TechnologyData => _technology[_building.CurrentTechnologyLvl];
-        public event Action<Building> OpenMiniGameOfType;
-
         private void Start()
         {
-            worldManager.OnNewDayStarted += ActivateOnNewDay; // activate on day skip/end
+            worldManager.OnNewDayStarted += ActivateOnNewDay;
+            _buildingManager.OnBuildingStateChanged += AfterRankUp;
+
             _runtimeBuildingsUiToDestroy = new List<GameObject>();
 
             _goBackButton = _goBackGo.GetComponent<Button>();
@@ -38,6 +39,49 @@ namespace InGameUi
             gameObject.SetActive(false);
         }
 
+        private void AfterRankUp(Building p_cottage)
+        {
+            if (p_cottage.BuildingMainData.Type != BuildingType.Cottage)
+                return;
+            
+            _isCottage = true;
+            ActivateOnNewDay(_isCottage);
+            _isCottage = false;
+            
+            _panelTitle.text = "Rank up summary";
+            
+            foreach (var building in _buildingManager.UnlockedBuildings)
+            {
+                CreateUiElement(building.Icon, $"New building unlocked: {building.Type}");
+            }
+
+            _buildingManager.UnlockedBuildings.Clear();
+        }
+
+
+        private void ActivateOnNewDay()
+        {
+            _isCottage = false;
+            ActivateOnNewDay(_isCottage);
+        }
+
+        private void ActivateOnNewDay(bool p_isCottage)
+        {
+            ClosePanel();
+            gameObject.SetActive(true);
+            CameraController.IsUiOpen = true;
+            GameplayHud.BlockHud = true;
+
+            _goBackGo.SetActive(true);
+            _goBackButton.interactable = true;
+            _goBackButton.onClick.AddListener(ClosePanel);
+
+            if (!p_isCottage)
+            {
+                HandleViewOfSummary();
+            }
+        }
+        
         private void ClosePanel()
         {
             foreach (var createdUiElement in _runtimeBuildingsUiToDestroy)
@@ -53,25 +97,13 @@ namespace InGameUi
             gameObject.SetActive(false);
         }
 
-        public void ActivateOnNewDay()
+        private void HandleViewOfSummary()
         {
-            ClosePanel();
-            gameObject.SetActive(true);
-            CameraController.IsUiOpen = true;
-            GameplayHud.BlockHud = true;
-
-            _goBackGo.SetActive(true);
-            _goBackButton.interactable = true;
-            _goBackButton.onClick.AddListener(ClosePanel);
-
-            HandleView();
-        }
-
-        private void HandleView()
-        {
+            _panelTitle.text = "End of the day summary";
+            
             foreach (var building in _buildingManager.UnlockedBuildings)
             {
-                CreateUiElement(building.BuildingMainData.Icon, $"New building unlocked: {building.BuildingMainData.Type}");
+                CreateUiElement(building.Icon, $"New building unlocked: {building.Type}");
             }
 
             foreach (var building in _buildingManager.CompletlyNewBuildings)

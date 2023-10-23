@@ -17,7 +17,7 @@ MonoBehaviour:
   Icon: {fileID: 21300000, guid: 2031108354133e443b42e7278b7e76ab, type: 3}
   InGameSprite: {fileID: 21300000, guid: 2031108354133e443b42e7278b7e76ab, type: 3}
   FirstStageBuilding: {fileID: 21300000, guid: 29c6e68dab3019a479ae74cacf4d5026, type: 3}
-  UpgradeStage: {fileID: 21300000, guid: 29c6e68dab3019a479ae74cacf4d5026, type: 3}
+  UpgradeStage: {fileID: -6937297848662123041, guid: 3713d32ddac90304f9059915af8f84b0, type: 3}
   Description: 'Place where magic and science meets, to provide you with resources
     and defence items. '
   BaseCottageLevelNeeded: 2

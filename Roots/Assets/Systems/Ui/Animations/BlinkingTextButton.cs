@@ -8,13 +8,13 @@ public class BlinkingTextButton : MonoBehaviour
     public TextMeshProUGUI textMesh; 
     public Button buttonToWatch; 
 
-    private float _blinkInterval = .4f; 
-    private bool isBlinking = false;
-    private Coroutine blinkCoroutine;
+    private readonly float _blinkInterval = .55f; 
+    private bool _isBlinking;
+    private Coroutine _blinkCoroutine;
 
     private void Update()
     {
-        if (isBlinking)
+        if (_isBlinking)
         {
             if (!buttonToWatch.interactable)
             {
@@ -25,8 +25,8 @@ public class BlinkingTextButton : MonoBehaviour
         {
             if (buttonToWatch.interactable)
             {
-                blinkCoroutine = StartCoroutine(BlinkText());
-                isBlinking = true;
+                _blinkCoroutine = StartCoroutine(BlinkText());
+                _isBlinking = true;
             }
         }
     }
@@ -43,10 +43,11 @@ public class BlinkingTextButton : MonoBehaviour
 
     private void StopBlinking()
     {
-        if (blinkCoroutine != null)
+        if (_blinkCoroutine != null)
         {
-            StopCoroutine(blinkCoroutine);
-            isBlinking = false;
+            StopCoroutine(_blinkCoroutine);
+            _isBlinking = false;
+            textMesh.enabled = true;
         }
     }
 }

@@ -268,9 +268,7 @@ namespace World
             Building building;
 
             if (CurrentQuests[p_index].IsCompleted)
-            {
                 return "Completed";
-            }
 
             switch (CurrentQuests[p_index].SpecificQuest.QuestKind)
             {

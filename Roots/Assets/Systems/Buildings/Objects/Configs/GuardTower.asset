@@ -17,7 +17,7 @@ MonoBehaviour:
   Icon: {fileID: 21300000, guid: d0a291ae06554044d8ae09a202a9e6b5, type: 3}
   InGameSprite: {fileID: 21300000, guid: d0a291ae06554044d8ae09a202a9e6b5, type: 3}
   FirstStageBuilding: {fileID: 21300000, guid: f337417ab8e612e42b1b21e435e966f1, type: 3}
-  UpgradeStage: {fileID: 21300000, guid: f337417ab8e612e42b1b21e435e966f1, type: 3}
+  UpgradeStage: {fileID: 320343563894617858, guid: 4bb8222fe7b525c40aef1e4fd13ee205, type: 3}
   Description: First defense structure in village. Gives small portion of defense
     points and check next days in case of storm.
   BaseCottageLevelNeeded: 2

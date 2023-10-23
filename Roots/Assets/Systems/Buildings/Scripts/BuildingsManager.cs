@@ -23,7 +23,7 @@ namespace Buildings
         public Sprite DefensePointsIcon;
         public Sprite ShardsOfDestinyIcon;
 
-        [HideInInspector] public List<Building> UnlockedBuildings;
+        [HideInInspector] public List<BuildingData> UnlockedBuildings;
         [HideInInspector] public List<Building> CompletlyNewBuildings;
         [HideInInspector] public List<Building> UpgradedBuildings;
         [HideInInspector] public List<Building> RepairedBuildings;
@@ -81,7 +81,7 @@ namespace Buildings
         {
             HandlePointsManipulation(PointsType.ShardsOfDestiny, 250, true);
 
-            UnlockedBuildings = new List<Building>();
+            UnlockedBuildings = new List<BuildingData>();
             CompletlyNewBuildings = new List<Building>();
             UpgradedBuildings = new List<Building>();
             BuildingWithEnabledMinigame = new List<Building>();
@@ -318,7 +318,7 @@ namespace Buildings
                 {
                     if (building.BaseCottageLevelNeeded == p_building.CurrentLevel)
                     {
-                        UnlockedBuildings.Add(p_building);
+                        UnlockedBuildings.Add(building);
                     }
                 }
             }
