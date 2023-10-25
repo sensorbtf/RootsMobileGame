@@ -1,0 +1,4 @@
+﻿{
+  "name": "SavingManager",
+  "references":[ "GUID:0d2fdfb670512784b99df29ee93927fc", "GUID:d24ae5f4135c15b478887a8fab11029b" ]
+}

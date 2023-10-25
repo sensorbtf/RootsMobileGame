@@ -13,7 +13,7 @@ namespace InGameUi
 {
     public class BuildingDefendPanel : MonoBehaviour
     {
-        [SerializeField] private BuildingManager _buildingManager;
+        [FormerlySerializedAs("_buildingManager")] [SerializeField] private BuildingsManager buildingsManager;
         [SerializeField] private WorkersManager _workersManager;
         [SerializeField] private WorldManager _worldManager;
 
@@ -68,7 +68,7 @@ namespace InGameUi
 
         private void HandleBuildingsCreation()
         {
-            foreach (var building in _buildingManager.CurrentBuildings)
+            foreach (var building in buildingsManager.CurrentBuildings)
             {
                 var newBuilding = Instantiate(_buildingEntryPrefab, contentTransform);
                 _runtimeBuildingsUiToDestroy.Add(newBuilding);

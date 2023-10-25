@@ -5,14 +5,14 @@ using Buildings;
 using GeneralSystems;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace InGameUi
 {
     public class SpecificBuildingPanel : MonoBehaviour
     {
-        [SerializeField] private BuildingManager _buildingManager;
-        [SerializeField] private WorkersManager _workersManager;
+        [SerializeField] private BuildingsManager buildingsManager;
 
         [SerializeField] private TextMeshProUGUI _buildingName;
         [SerializeField] private TextMeshProUGUI _description;
@@ -38,12 +38,11 @@ namespace InGameUi
         private bool _canDevelopTechnology;
         private TechnologyDataPerLevel[] _technology;
 
-        public TechnologyDataPerLevel TechnologyData => _technology[_building.CurrentTechnologyLvl];
         public event Action<Building> OpenMiniGameOfType;
 
         private void Start()
         {
-            _buildingManager.OnBuildingClicked += ActivateOnClick;
+            buildingsManager.OnBuildingClicked += ActivateOnClick;
 
             _runtimeBuildingsUiToDestroy = new List<GameObject>();
 
@@ -116,13 +115,13 @@ namespace InGameUi
 
             _description.text = _buildingData.Description;
 
-            if (amountOfStorageInBasement >= _buildingManager.CurrentResourcePoints)
+            if (amountOfStorageInBasement >= buildingsManager.CurrentResourcePoints)
             {
                 _levelUpProgression.value = _levelUpProgression.maxValue;
             }
             else
             {
-                _levelUpProgression.value = _buildingManager.CurrentResourcePoints;
+                _levelUpProgression.value = buildingsManager.CurrentResourcePoints;
             }
 
             _sliderValue.text = $"Resources stored in basement: {_levelUpProgression.value}/{_levelUpProgression.maxValue}";
@@ -153,7 +152,7 @@ namespace InGameUi
             foreach (var building in _technology[_building.CurrentTechnologyLvl].OtherBuildingsRequirements)
             {
                 var currentBuilding =
-                    _buildingManager.CurrentBuildings.Find(x => x.BuildingMainData.Type == building.Building);
+                    buildingsManager.CurrentBuildings.Find(x => x.BuildingMainData.Type == building.Building);
 
                 GameObject newIcon = Instantiate(_buildingIconPrefab, _contentTransform);
                 _runtimeBuildingsUiToDestroy.Add(newIcon);
@@ -166,7 +165,7 @@ namespace InGameUi
 
                 if (currentBuilding == null)
                 {
-                    var currentBuildingData = _buildingManager.AllBuildingsDatabase.allBuildings.First(x =>
+                    var currentBuildingData = buildingsManager.AllBuildingsDatabase.allBuildings.First(x =>
                         x.Type == building.Building);
 
                     uiReferences.BuildingIcon.image.sprite = currentBuildingData.Icon;

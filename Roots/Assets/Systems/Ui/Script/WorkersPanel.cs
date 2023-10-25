@@ -5,6 +5,7 @@ using Buildings;
 using GeneralSystems;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 using World;
 
@@ -14,7 +15,7 @@ namespace InGameUi
 {
     public class WorkersPanel : MonoBehaviour
     {
-        [SerializeField] private BuildingManager _buildingManager;
+        [FormerlySerializedAs("_buildingManager")] [SerializeField] private BuildingsManager buildingsManager;
         [SerializeField] private WorkersManager _workersManager;
 
         [SerializeField] private BuildingPanel _buildingPanel;
@@ -80,7 +81,7 @@ namespace InGameUi
                                 references.NewInfo.text = "Will be build";
                             }
 
-                            var building = _buildingManager.CurrentBuildings.Find(x => x.BuildingMainData == data.Key);
+                            var building = buildingsManager.CurrentBuildings.Find(x => x.BuildingMainData == data.Key);
 
                             if (building != null)
                             {

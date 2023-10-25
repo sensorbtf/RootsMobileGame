@@ -4,13 +4,14 @@ using Buildings;
 using GeneralSystems;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace InGameUi
 {
     public class BuildingPanel : MonoBehaviour
     {
-        [SerializeField] private BuildingManager _buildingManager;
+        [SerializeField] private BuildingsManager buildingsManager;
         [SerializeField] private WorkersManager _workersManager;
 
         [SerializeField] private TextMeshProUGUI _buildingName;
@@ -31,8 +32,8 @@ namespace InGameUi
 
         private void Start()
         {
-            _buildingManager.OnBuildingStateChanged += HandleBuildEnded;
-            _buildingManager.OnBuildingDestroyed += HandleBuildEnded;
+            buildingsManager.OnBuildingStateChanged += HandleBuildEnded;
+            buildingsManager.OnBuildingDestroyed += HandleBuildEnded;
             _runtimeBuildingsUiToDestroy = new List<GameObject>();
             _buildingsOnInPanelQueue = new List<BuildingData>();
             _builtOrDamagedBuildings = new Dictionary<Building, bool>();
@@ -83,7 +84,7 @@ namespace InGameUi
 
             _endBuildingButton.SetActive(p_fromWorkerPanel);
 
-            foreach (var building in _buildingManager.CurrentBuildings)
+            foreach (var building in buildingsManager.CurrentBuildings)
             {
                 if (building.BuildingMainData.Type == BuildingType.Cottage && !building.IsDamaged)
                     continue;
@@ -117,13 +118,13 @@ namespace InGameUi
         {
             var buildingsByTier = new Dictionary<int, List<BuildingData>>();
             var tier = 1;
-            var currentCottageLevel = _buildingManager.CurrentBuildings.Find(x => x.BuildingMainData.Type == BuildingType.Cottage).CurrentLevel;
+            var currentCottageLevel = buildingsManager.CurrentBuildings.Find(x => x.BuildingMainData.Type == BuildingType.Cottage).CurrentLevel;
             
-            foreach (var building in _buildingManager.AllBuildingsDatabase.allBuildings)
+            foreach (var building in buildingsManager.AllBuildingsDatabase.allBuildings)
             {
                 if (building.Type == BuildingType.Cottage)
                 {
-                    if (!_buildingManager.CurrentBuildings.Find(x => x.BuildingMainData.Type == BuildingType.Cottage).IsDamaged)
+                    if (!buildingsManager.CurrentBuildings.Find(x => x.BuildingMainData.Type == BuildingType.Cottage).IsDamaged)
                         continue;
                 }
 
@@ -166,7 +167,7 @@ namespace InGameUi
                     script.BuildingName.GetComponent<TextMeshProUGUI>().text = buildingData.Type.ToString();
                     script.BuildingInfo.GetComponent<TextMeshProUGUI>().text = "";
 
-                    var builtBuilding = _buildingManager.GetSpecificBuilding(buildingData.Type);
+                    var builtBuilding = buildingsManager.GetSpecificBuilding(buildingData.Type);
 
                     if (builtBuilding != null) // is builded or building is in progress
                     {
@@ -230,15 +231,15 @@ namespace InGameUi
         {
             if (p_buildingData.PerLevelData[p_currentLevel].ProductionType == PointsType.ResourcesAndDefense)
             {
-                p_refsScript.TypeOfOutcome.sprite = _buildingManager.DefenseAndResourcesPointsIcon;
+                p_refsScript.TypeOfOutcome.sprite = buildingsManager.DefenseAndResourcesPointsIcon;
             }
             else if (p_buildingData.PerLevelData[p_currentLevel].ProductionType == PointsType.Defense)
             {
-                p_refsScript.TypeOfOutcome.sprite = _buildingManager.DefensePointsIcon;
+                p_refsScript.TypeOfOutcome.sprite = buildingsManager.DefensePointsIcon;
             }
             else if (p_buildingData.PerLevelData[p_currentLevel].ProductionType == PointsType.Resource)
             {
-                p_refsScript.TypeOfOutcome.sprite = _buildingManager.ResourcesPointsIcon;
+                p_refsScript.TypeOfOutcome.sprite = buildingsManager.ResourcesPointsIcon;
             }
             else
             {
@@ -256,7 +257,7 @@ namespace InGameUi
             p_refsScript.LevelInfo.GetComponent<TextMeshProUGUI>().text =
                 $"{p_building.CurrentLevel} >> {nextLevel}";
 
-            if (_buildingManager.CanUpgradeBuilding(p_building))
+            if (buildingsManager.CanUpgradeBuilding(p_building))
             {
                 p_refsScript.CreateOrUpgradeBuilding.interactable = true;
                 p_refsScript.CreateOrUpgradeBuilding.image.color = Color.green;
@@ -317,7 +318,7 @@ namespace InGameUi
             p_refsScript.LevelInfo.GetComponent<TextMeshProUGUI>().text = "Build";
             UpdateRequirementsText(p_refsScript, p_buildingData.PerLevelData[0].Requirements);
 
-            if (_buildingManager.CanBuildBuilding(p_buildingData))
+            if (buildingsManager.CanBuildBuilding(p_buildingData))
             {
                 p_refsScript.CreateOrUpgradeBuilding.image.color = Color.green;
                 p_refsScript.CreateOrUpgradeBuilding.interactable = true;
@@ -373,7 +374,7 @@ namespace InGameUi
                 p_refsScript.CreateOrUpgradeBuilding.image.color = Color.green;
                 p_refsScript.CreateOrUpgradeBuilding.interactable = _workersManager.IsAnyWorkerFree();
 
-                var building = _buildingManager.GetSpecificBuilding(p_buildingData.Type);
+                var building = buildingsManager.GetSpecificBuilding(p_buildingData.Type);
 
                 if (building == null)
                 {
@@ -416,7 +417,7 @@ namespace InGameUi
         {
             if (p_wasBuilt)
             {
-                var building = _buildingManager.GetSpecificBuilding(p_buildingData.Type);
+                var building = buildingsManager.GetSpecificBuilding(p_buildingData.Type);
 
                 _influencedBuildings.TryAdd(building, _builtOrDamagedBuildings[building]);
                 _builtOrDamagedBuildings[building] = !_builtOrDamagedBuildings[building];
@@ -427,13 +428,13 @@ namespace InGameUi
                 {
                     _workersManager.WorkersInBuilding++;
                     _buildingsOnInPanelQueue.Add(p_buildingData);
-                    _buildingManager.HandlePointsManipulation(PointsType.Resource, p_buildingData.PerLevelData[p_buildingLevel].Requirements.ResourcePoints, false);
+                    buildingsManager.HandlePointsManipulation(PointsType.Resource, p_buildingData.PerLevelData[p_buildingLevel].Requirements.ResourcePoints, false);
                 }
                 else
                 {
                     _workersManager.WorkersInBuilding--;
                     _buildingsOnInPanelQueue.Remove(p_buildingData);
-                    _buildingManager.HandlePointsManipulation(PointsType.Resource, p_buildingData.PerLevelData[p_buildingLevel].Requirements.ResourcePoints, true);
+                    buildingsManager.HandlePointsManipulation(PointsType.Resource, p_buildingData.PerLevelData[p_buildingLevel].Requirements.ResourcePoints, true);
                 }
             }
 
@@ -446,7 +447,7 @@ namespace InGameUi
         {
             foreach (var element in _createdUiElements)
             {
-                var building = _buildingManager.GetSpecificBuilding(element.Key.Type);
+                var building = buildingsManager.GetSpecificBuilding(element.Key.Type);
 
                 if (building == null)
                 {
@@ -460,7 +461,7 @@ namespace InGameUi
                     }
                     else
                     {
-                        if (_buildingManager.CanBuildBuilding(element.Key))
+                        if (buildingsManager.CanBuildBuilding(element.Key))
                         {
                             element.Value.CreateOrUpgradeBuilding.image.color = Color.green;
                             element.Value.CreateOrUpgradeBuilding.interactable = true;
@@ -507,7 +508,7 @@ namespace InGameUi
 
                     if (!_buildingsOnInPanelQueue.Contains(building.BuildingMainData)) // open way to upgrade
                     {
-                        if (_buildingManager.CanUpgradeBuilding(building))
+                        if (buildingsManager.CanUpgradeBuilding(building))
                         {
                             element.Value.CreateOrUpgradeBuilding.interactable = true;
                             element.Value.CreateOrUpgradeBuilding.image.color = Color.green;
@@ -531,7 +532,7 @@ namespace InGameUi
         {
             foreach (var buildingData in _buildingsOnInPanelQueue)
             {
-                _buildingManager.PutBuildingOnQueue(buildingData);
+                buildingsManager.PutBuildingOnQueue(buildingData);
             }
 
             foreach (var building in _builtOrDamagedBuildings)
@@ -541,7 +542,7 @@ namespace InGameUi
 
                 if (_influencedBuildings[building.Key] != _builtOrDamagedBuildings[building.Key])
                 {
-                    _buildingManager.HandleBuildingsModifications(building.Key);
+                    buildingsManager.HandleBuildingsModifications(building.Key);
                 }
             }
 
@@ -569,7 +570,7 @@ namespace InGameUi
             _workersManager.WorkersInBuilding = 0;
             List<BuildingData> addedBuildings = new List<BuildingData>();
 
-            foreach (var building in _buildingManager.CurrentBuildings)
+            foreach (var building in buildingsManager.CurrentBuildings)
             {
                 if (!building.IsBeeingUpgradedOrBuilded && !building.IsDamaged)
                     continue;

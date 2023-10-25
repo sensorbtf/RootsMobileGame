@@ -27,6 +27,7 @@ namespace Buildings
         public int CurrentLevel
         {
             get => _currentLevel;
+            set => _currentLevel = value;
         }
 
         public bool HaveWorker

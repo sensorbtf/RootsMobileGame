@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Buildings;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using World;
 using UnityEngine.UI;
 using Random = UnityEngine.Random;
@@ -22,7 +23,7 @@ namespace InGameUi
         [SerializeField] private Canvas _mainCanvas;
 
         [SerializeField] private WorldManager _worldManager;
-        [SerializeField] private BuildingManager _buildingManager;
+        [SerializeField] private BuildingsManager buildingsManager;
         [SerializeField] private WorkersPanel _workersPanel;
 
         [SerializeField] private Image ResourcePointsImage;
@@ -114,15 +115,15 @@ namespace InGameUi
             BlockHud = false;
 
             _workersPanel.OnBackToMap += OnWorkDayStarted;
-            _buildingManager.OnResourcePointsChange += RefreshResourcePoints;
-            _buildingManager.OnDefensePointsChange += RefreshDefensePoints;
-            _buildingManager.OnDestinyShardsPointsChange += RefreshShardsPoints;
+            buildingsManager.OnResourcePointsChange += RefreshResourcePoints;
+            buildingsManager.OnDefensePointsChange += RefreshDefensePoints;
+            buildingsManager.OnDestinyShardsPointsChange += RefreshShardsPoints;
 
             _worldManager.OnResourcesRequirementsMeet += ActivateEndMissionButton;
 
-            ShardsOfDestiny.text = $"{_buildingManager.ShardsOfDestinyAmount}";
-            DefensePoints.text = $"{_buildingManager.CurrentDefensePoints}";
-            ResourcePoints.text = $"{_buildingManager.CurrentResourcePoints} / " +
+            ShardsOfDestiny.text = $"{buildingsManager.ShardsOfDestinyAmount}";
+            DefensePoints.text = $"{buildingsManager.CurrentDefensePoints}";
+            ResourcePoints.text = $"{buildingsManager.CurrentResourcePoints} / " +
                                   $"{_worldManager.RequiredResourcePoints}";
 
             _worldManager.CurrentQuests[0].OnCompletion += HandleFirstQuestCompletion;
@@ -215,7 +216,7 @@ namespace InGameUi
 
         private void RefreshShardsPoints(int p_points, bool p_makeIcons)
         {
-            ShardsOfDestiny.text = $"{_buildingManager.ShardsOfDestinyAmount.ToString()}";
+            ShardsOfDestiny.text = $"{buildingsManager.ShardsOfDestinyAmount.ToString()}";
 
             if (p_makeIcons)
             {
@@ -225,7 +226,7 @@ namespace InGameUi
 
         private void RefreshDefensePoints(int p_points, bool p_makeIcons)
         {
-            DefensePoints.text = $"{_buildingManager.CurrentDefensePoints.ToString()}";
+            DefensePoints.text = $"{buildingsManager.CurrentDefensePoints.ToString()}";
 
             if (p_makeIcons)
             {
@@ -235,14 +236,14 @@ namespace InGameUi
 
         private void RefreshResourcePoints(int p_points, bool p_makeIcons)
         {
-            if (_buildingManager.CurrentResourcePoints >= _worldManager.RequiredResourcePoints)
+            if (buildingsManager.CurrentResourcePoints >= _worldManager.RequiredResourcePoints)
             {
-                ResourcePoints.text = $"{_buildingManager.CurrentResourcePoints} / " +
+                ResourcePoints.text = $"{buildingsManager.CurrentResourcePoints} / " +
                                       $"<color=green>{_worldManager.RequiredResourcePoints}</color>";
             }
             else
             {
-                ResourcePoints.text = $"{_buildingManager.CurrentResourcePoints} / " +
+                ResourcePoints.text = $"{buildingsManager.CurrentResourcePoints} / " +
                                       $"<color=red>{_worldManager.RequiredResourcePoints}</color>";
             }
            
@@ -282,15 +283,15 @@ namespace InGameUi
                 switch (p_pointsType)
                 {
                     case PointsType.Resource:
-                        image.sprite = _buildingManager.ResourcesPointsIcon;
+                        image.sprite = buildingsManager.ResourcesPointsIcon;
                         _createdImages[ResourcePointsImage.rectTransform].Add(imageObject);
                         break;
                     case PointsType.Defense:
-                        image.sprite = _buildingManager.DefensePointsIcon;
+                        image.sprite = buildingsManager.DefensePointsIcon;
                         _createdImages[DefensePointsImage.rectTransform].Add(imageObject);
                         break;
                     case PointsType.ShardsOfDestiny:
-                        image.sprite = _buildingManager.ShardsOfDestinyIcon;
+                        image.sprite = buildingsManager.ShardsOfDestinyIcon;
                         _createdImages[ShardsOfDestinyImage.rectTransform].Add(imageObject);
                         break;
                 }
@@ -345,13 +346,13 @@ namespace InGameUi
             switch (CurrentPlayerState)
             {
                 case DuringDayState.OnCollecting:
-                    if (_buildingManager.IsAnyBuildingNonBuilded())
+                    if (buildingsManager.IsAnyBuildingNonBuilded())
                     {
                         _endDayButtonText.text = "Finalize building";
                         return;
                     }
 
-                    if (_buildingManager.IsAnyBuildingNonGathered())
+                    if (buildingsManager.IsAnyBuildingNonGathered())
                     {
                         _endDayButtonText.text = "Collect Points";
                         return;
@@ -481,7 +482,7 @@ namespace InGameUi
                 _secondMissionButtonText.text = "Completed";
             }
 
-            _buildingManager.HandlePointsManipulation(PointsType.ShardsOfDestiny, p_quest.SpecificQuest.ShardsOfDestinyReward, true, true);
+            buildingsManager.HandlePointsManipulation(PointsType.ShardsOfDestiny, p_quest.SpecificQuest.ShardsOfDestinyReward, true, true);
             
             CheckQuestsCompletion();
         }

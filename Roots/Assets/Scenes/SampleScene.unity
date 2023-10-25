@@ -748,7 +748,7 @@ MonoBehaviour:
     m_HighlightedSprite: {fileID: 0}
     m_PressedSprite: {fileID: 21300000, guid: 047b929beb10565479851d39b452dfb6, type: 3}
     m_SelectedSprite: {fileID: 0}
-    m_DisabledSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 21300000, guid: 047b929beb10565479851d39b452dfb6, type: 3}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
     m_HighlightedTrigger: Highlighted
@@ -1262,7 +1262,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb4cb1e32406eb346844cd90d801973e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _buildingManager: {fileID: 1903800807}
+  buildingsManager: {fileID: 1903800807}
   _workersManager: {fileID: 1823812590}
   _worldManager: {fileID: 1218957329}
   _panelTitle: {fileID: 819807018}
@@ -2353,7 +2353,7 @@ MonoBehaviour:
     m_HighlightedSprite: {fileID: 0}
     m_PressedSprite: {fileID: 21300000, guid: 047b929beb10565479851d39b452dfb6, type: 3}
     m_SelectedSprite: {fileID: 0}
-    m_DisabledSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 21300000, guid: 047b929beb10565479851d39b452dfb6, type: 3}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
     m_HighlightedTrigger: Highlighted
@@ -2893,7 +2893,7 @@ MonoBehaviour:
     m_HighlightedSprite: {fileID: 0}
     m_PressedSprite: {fileID: 21300000, guid: 047b929beb10565479851d39b452dfb6, type: 3}
     m_SelectedSprite: {fileID: 0}
-    m_DisabledSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 21300000, guid: 047b929beb10565479851d39b452dfb6, type: 3}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
     m_HighlightedTrigger: Highlighted
@@ -3517,7 +3517,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b03c7ca8a5706a4aa54db05c99a7018, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _buildingManager: {fileID: 1903800807}
+  buildingsManager: {fileID: 1903800807}
   _workersManager: {fileID: 1823812590}
   _buildingName: {fileID: 1944436590}
   _numberOfWorkers: {fileID: 6727641353451183484}
@@ -3824,7 +3824,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _mainCanvas: {fileID: 13890665}
   _worldManager: {fileID: 1218957329}
-  _buildingManager: {fileID: 1903800807}
+  buildingsManager: {fileID: 1903800807}
   _workersPanel: {fileID: 494535956}
   ResourcePointsImage: {fileID: 1563435566}
   DefensePointsImage: {fileID: 1826050645}
@@ -3905,7 +3905,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c4aa9e64ebff644ca32fbb36c9a1cfc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _buildingManager: {fileID: 1903800807}
+  buildingsManager: {fileID: 1903800807}
   _workersManager: {fileID: 1823812590}
   _buildingPanel: {fileID: 455143713}
   _gatheringDefensePanel: {fileID: 2061975645}
@@ -3947,10 +3947,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 2003420337}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMin: {x: 0.23725756, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 277.8914, y: 0}
+  m_SizeDelta: {x: -6, y: 0}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!114 &505369040
 MonoBehaviour:
@@ -5350,10 +5350,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 2121057380}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMin: {x: 0.23677264, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 279.0438, y: 0}
+  m_SizeDelta: {x: -6, y: 0}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!114 &698091135
 MonoBehaviour:
@@ -5649,7 +5649,7 @@ MonoBehaviour:
     m_HighlightedSprite: {fileID: 0}
     m_PressedSprite: {fileID: 21300000, guid: 047b929beb10565479851d39b452dfb6, type: 3}
     m_SelectedSprite: {fileID: 0}
-    m_DisabledSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 21300000, guid: 047b929beb10565479851d39b452dfb6, type: 3}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
     m_HighlightedTrigger: Highlighted
@@ -6953,7 +6953,7 @@ MonoBehaviour:
     m_HighlightedSprite: {fileID: 0}
     m_PressedSprite: {fileID: 21300000, guid: 047b929beb10565479851d39b452dfb6, type: 3}
     m_SelectedSprite: {fileID: 0}
-    m_DisabledSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 21300000, guid: 047b929beb10565479851d39b452dfb6, type: 3}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
     m_HighlightedTrigger: Highlighted
@@ -8946,7 +8946,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f6a8bf061039674e89844ee5bd53af8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _buildingManager: {fileID: 1903800807}
+  buildingsManager: {fileID: 1903800807}
   _workersManager: {fileID: 1823812590}
   _missionData:
   - NeededResourcePoints: 60
@@ -9037,10 +9037,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1391788380}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 0}
+  m_AnchorMin: {x: 0.23377265, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 277.8914, y: 0}
+  m_SizeDelta: {x: -6, y: 0}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!114 &1223427138
 MonoBehaviour:
@@ -10578,6 +10578,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1423804876}
+  - component: {fileID: 1423804877}
   m_Layer: 0
   m_Name: Core
   m_TagString: Untagged
@@ -10602,6 +10603,20 @@ Transform:
   - {fileID: 878255199}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1423804877
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1423804875}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d5e60eee8be4d888445ea1dde8cd36f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _worldManager: {fileID: 1218957329}
+  _buildingsManager: {fileID: 1903800807}
 --- !u!1 &1424250873
 GameObject:
   m_ObjectHideFlags: 0
@@ -10763,7 +10778,7 @@ MonoBehaviour:
     m_HighlightedSprite: {fileID: 0}
     m_PressedSprite: {fileID: 21300000, guid: 047b929beb10565479851d39b452dfb6, type: 3}
     m_SelectedSprite: {fileID: 0}
-    m_DisabledSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 21300000, guid: 047b929beb10565479851d39b452dfb6, type: 3}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
     m_HighlightedTrigger: Highlighted
@@ -10972,7 +10987,7 @@ MonoBehaviour:
     m_HighlightedSprite: {fileID: 0}
     m_PressedSprite: {fileID: 21300000, guid: 047b929beb10565479851d39b452dfb6, type: 3}
     m_SelectedSprite: {fileID: 0}
-    m_DisabledSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 21300000, guid: 047b929beb10565479851d39b452dfb6, type: 3}
   m_AnimationTriggers:
     m_NormalTrigger: Normal
     m_HighlightedTrigger: Highlighted
@@ -74785,7 +74800,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec6361931d01c734ca2838729d51a601, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _buildingManager: {fileID: 1903800807}
+  buildingsManager: {fileID: 1903800807}
   worldManager: {fileID: 1218957329}
   _panelTitle: {fileID: 1262833567}
   _buildingInfoPrefab: {fileID: 2813912988556052750, guid: 2ac87620efe9fbe45a6a4fe930f8c6db, type: 3}
@@ -74840,8 +74855,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6bb16e5c1eea4319b3ea1272af30e209, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _buildingManager: {fileID: 1903800807}
-  _workersManager: {fileID: 1823812590}
+  buildingsManager: {fileID: 1903800807}
   _buildingName: {fileID: 249749617}
   _description: {fileID: 971667214}
   _buildingIconPrefab: {fileID: 6617740715642735727, guid: 4e1c4ef5ae3b8dc40b225f356d41bce9, type: 3}
@@ -90984,7 +90998,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f1db13293411b3b4782012c6fe8cb79b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _buildingManager: {fileID: 1903800807}
+  buildingsManager: {fileID: 1903800807}
   _workersManager: {fileID: 1823812590}
   _buildingPanel: {fileID: 455143713}
   _panelName: {fileID: 1328725343}
@@ -91341,8 +91355,8 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 698091134}
   - {fileID: 1563435565}
+  - {fileID: 698091134}
   - {fileID: 1326116411}
   m_Father: {fileID: 1531968523}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -91843,7 +91857,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a3b1cb9b608648f490abfc7f5afea82c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _buildingsManager: {fileID: 1903800807}
+  buildingsesManager: {fileID: 1903800807}
   _worldManager: {fileID: 1218957329}
   _specificBuildingPanel: {fileID: 1850506696}
   _minigamesPanelGo: {fileID: 5873017475837463214}

@@ -4,13 +4,14 @@ using Buildings;
 using GeneralSystems;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace InGameUi
 {
     public class GatheringDefensePanel : MonoBehaviour
     {
-        [SerializeField] private BuildingManager _buildingManager;
+        [FormerlySerializedAs("_buildingManager")] [SerializeField] private BuildingsManager buildingsManager;
         [SerializeField] private WorkersManager _workersManager;
         [SerializeField] private BuildingPanel _buildingPanel;
 
@@ -62,7 +63,7 @@ namespace InGameUi
         {
             foreach (var building in BuildingsOnQueue)
             {
-                _buildingManager.AssignWorker(building, true);
+                buildingsManager.AssignWorker(building, true);
             }
 
             BuildingsOnQueue.Clear();
@@ -77,7 +78,7 @@ namespace InGameUi
             UpdateWorkersText(p_gathering);
 
             // Now create UI elements by tier
-            foreach (var building in _buildingManager.CurrentBuildings)
+            foreach (var building in buildingsManager.CurrentBuildings)
             {
                 if (p_gathering)
                 {
@@ -105,8 +106,8 @@ namespace InGameUi
                 script.BuildingIcon.GetComponent<Image>().sprite = building.BuildingMainData.Icon;
 
                 script.BuildingInfo.GetComponent<TextMeshProUGUI>().text = p_gathering
-                    ? $"Production Points Per Day: {_buildingManager.GetProductionDataOfBuilding(building)}"
-                    : $"Defense Points Per Day: {_buildingManager.GetProductionDataOfBuilding(building)}";
+                    ? $"Production Points Per Day: {buildingsManager.GetProductionDataOfBuilding(building)}"
+                    : $"Defense Points Per Day: {buildingsManager.GetProductionDataOfBuilding(building)}";
 
                 if (building.IsBeeingUpgradedOrBuilded || _buildingPanel.WillBuildingBeUpgraded(building))
                 {

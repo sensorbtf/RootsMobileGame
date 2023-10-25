@@ -2,13 +2,14 @@ using System;
 using Buildings;
 using InGameUi;
 using UnityEngine;
+using UnityEngine.Serialization;
 using World;
 
 namespace Minigames
 {
     public class MinigamesPanel : MonoBehaviour
     {
-        [SerializeField] private BuildingManager _buildingsManager;
+        [FormerlySerializedAs("_buildingsManager")] [SerializeField] private BuildingsManager buildingsesManager;
         [SerializeField] private WorldManager _worldManager;
         [SerializeField] private SpecificBuildingPanel _specificBuildingPanel;
         [SerializeField] private GameObject _minigamesPanelGo;
@@ -70,7 +71,7 @@ namespace Minigames
 
         private void CollectPointsFromMinigame(PointsType p_pointsType, int p_pointsNumber)
         {
-            _buildingsManager.HandlePointsManipulation(p_pointsType, p_pointsNumber, true, true);
+            buildingsesManager.HandlePointsManipulation(p_pointsType, p_pointsNumber, true, true);
             _worldManager.HandleMinigamesQuests(p_pointsType, p_pointsNumber, _currentBuilding.BuildingMainData.Type);
         }
 

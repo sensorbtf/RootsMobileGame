@@ -5,6 +5,7 @@ using Buildings;
 using GeneralSystems;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 using World;
 
@@ -12,7 +13,7 @@ namespace InGameUi
 {
     public class NewDaySummary : MonoBehaviour
     {
-        [SerializeField] private BuildingManager _buildingManager;
+        [SerializeField] private BuildingsManager buildingsManager;
         [SerializeField] private WorldManager worldManager;
         [SerializeField] private TextMeshProUGUI _panelTitle;
 
@@ -30,7 +31,7 @@ namespace InGameUi
         private void Start()
         {
             worldManager.OnNewDayStarted += ActivateOnNewDay;
-            _buildingManager.OnBuildingStateChanged += AfterRankUp;
+            buildingsManager.OnBuildingStateChanged += AfterRankUp;
 
             _runtimeBuildingsUiToDestroy = new List<GameObject>();
 
@@ -50,12 +51,12 @@ namespace InGameUi
             
             _panelTitle.text = "Rank up summary";
             
-            foreach (var building in _buildingManager.UnlockedBuildings)
+            foreach (var building in buildingsManager.UnlockedBuildings)
             {
                 CreateUiElement(building.Icon, $"New building unlocked: {building.Type}");
             }
 
-            _buildingManager.UnlockedBuildings.Clear();
+            buildingsManager.UnlockedBuildings.Clear();
         }
 
 
@@ -101,48 +102,48 @@ namespace InGameUi
         {
             _panelTitle.text = "End of the day summary";
             
-            foreach (var building in _buildingManager.UnlockedBuildings)
+            foreach (var building in buildingsManager.UnlockedBuildings)
             {
                 CreateUiElement(building.Icon, $"New building unlocked: {building.Type}");
             }
 
-            foreach (var building in _buildingManager.CompletlyNewBuildings)
+            foreach (var building in buildingsManager.CompletlyNewBuildings)
             {
                 CreateUiElement(building.BuildingMainData.Icon, "Just built");
             }
 
-            foreach (var building in _buildingManager.UpgradedBuildings)
+            foreach (var building in buildingsManager.UpgradedBuildings)
             {
                 CreateUiElement(building.BuildingMainData.Icon, "Building upgraded");
             }
 
-            foreach (var building in _buildingManager.RepairedBuildings)
+            foreach (var building in buildingsManager.RepairedBuildings)
             {
                 CreateUiElement(building.BuildingMainData.Icon, "Building repaired");
             }
 
-            foreach (var building in _buildingManager.BuildingWithEnabledMinigame)
+            foreach (var building in buildingsManager.BuildingWithEnabledMinigame)
             {
                 CreateUiElement(building.BuildingMainData.Icon, "Minigame unlocked");
             }
 
-            foreach (var building in _buildingManager.BuildingsToGatherFrom)
+            foreach (var building in buildingsManager.BuildingsToGatherFrom)
             {
                 CreateUiElement(building.BuildingMainData.Icon, "Points can be gathered");
             }
 
-            foreach (var building in _buildingManager.BuildingsWithTechnologyUpgrade)
+            foreach (var building in buildingsManager.BuildingsWithTechnologyUpgrade)
             {
                 CreateUiElement(building.BuildingMainData.Icon, "Technology can be upgraded");
             }
 
-            _buildingManager.BuildingsToGatherFrom.Clear();
-            _buildingManager.UpgradedBuildings.Clear();
-            _buildingManager.BuildingWithEnabledMinigame.Clear();
-            _buildingManager.CompletlyNewBuildings.Clear();
-            _buildingManager.UnlockedBuildings.Clear();
-            _buildingManager.BuildingsWithTechnologyUpgrade.Clear();
-            _buildingManager.RepairedBuildings.Clear();
+            buildingsManager.BuildingsToGatherFrom.Clear();
+            buildingsManager.UpgradedBuildings.Clear();
+            buildingsManager.BuildingWithEnabledMinigame.Clear();
+            buildingsManager.CompletlyNewBuildings.Clear();
+            buildingsManager.UnlockedBuildings.Clear();
+            buildingsManager.BuildingsWithTechnologyUpgrade.Clear();
+            buildingsManager.RepairedBuildings.Clear();
         }
 
         private void CreateUiElement(Sprite p_icon, string p_text)
