@@ -1,62 +1,87 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using Buildings;
 using UnityEngine;
 using UnityEngine.Serialization;
 using World;
 
-namespace SavingManager
+namespace Saving
 {
     public class SavingManager : MonoBehaviour
     {
-        public WorldManager _worldManager;
-        public BuildingsManager _buildingsManager;
-
+        [SerializeField] private WorldManager _worldManager;
+        [SerializeField] private BuildingsManager _buildingsManager;
+        
         private string _path;
+
+        public event Action<MainGameManagerSavedData> OnLoad;
 
         void Awake()
         {
-            // 0 for no sync, 1 for panel refresh rate, 2 for 1/2 panel rate
-            //QualitySettings.vSyncCount = 2;
-            Application.targetFrameRate = 30;
             _path = Application.persistentDataPath + "/gameData.json";
 
-            _worldManager.OnNewDayStarted += SaveGame;
-            _worldManager.OnGameStarted += LoadGame;
+            // _mainGameManager.OnSaveTrigger += SaveMainGame;
+            // _mainGameManager.OnLoadTrigger += LoadMainGame;
+            // _mainGameManager.OnResetProgress += ResetSave;
         }
 
-        public void SaveGame()
+        public void SaveMainGame(MainGameManagerSavedData p_data)
         {
             var path = Application.persistentDataPath + "/gameData.json";
+            
             GameData gameData = new GameData
             {
                 WorldManagerSavedData = _worldManager.GetSavedData(),
-                BuildingManagerSavedData = _buildingsManager.GetSavedData()
+                BuildingManagerSavedData = _buildingsManager.GetSavedData(),
+                MainSavedData = p_data,
             };
-
+            
             string json = JsonUtility.ToJson(gameData);
             File.WriteAllText(path, json);
+            
             Debug.Log($"Saved to: {path}");
         }
 
-        public void LoadGame()
+        public void LoadMainGame()
         {
             if (!File.Exists(_path))
                 return;
 
-            string json = File.ReadAllText(_path);
-            GameData gameData = JsonUtility.FromJson<GameData>(json);
+            var json = File.ReadAllText(_path);
+            var gameData = JsonUtility.FromJson<GameData>(json);
+            
             _worldManager.LoadSavedData(gameData.WorldManagerSavedData);
             _buildingsManager.LoadSavedData(gameData.BuildingManagerSavedData);
-            // You can also access other data from gameData if needed
+            
+            OnLoad?.Invoke(gameData.MainSavedData);
+        }
+        
+        public void ResetSave()
+        {
+            Debug.Log("Save Deleted");
+            File.Delete(_path);
+        }
+
+        public bool IsSaveAvaiable()
+        {
+            return File.Exists(_path);
         }
     }
-
-    [System.Serializable]
+    
+    [Serializable]
     public struct GameData
     {
+        public MainGameManagerSavedData MainSavedData;
         public WorldManagerSavedData WorldManagerSavedData;
-
         public BuildingManagerSavedData BuildingManagerSavedData;
-        // Add other relevant data
+    }
+    
+    [Serializable]
+    public struct MainGameManagerSavedData
+    {
+        public DateTime TimeOfWorkersSet;
+        public int FreeDaysSkipAmount;
+        public int CurrentPlayerState;
+        public float TimeLeftInSeconds;
     }
 }

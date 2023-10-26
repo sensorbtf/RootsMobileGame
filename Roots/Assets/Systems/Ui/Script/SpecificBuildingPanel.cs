@@ -5,7 +5,6 @@ using Buildings;
 using GeneralSystems;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace InGameUi
@@ -38,7 +37,7 @@ namespace InGameUi
         private bool _canDevelopTechnology;
         private TechnologyDataPerLevel[] _technology;
 
-        public event Action<Building> OpenMiniGameOfType;
+        public event Action<Building> OnOpenMiniGameOfType;
 
         private void Start()
         {
@@ -227,7 +226,7 @@ namespace InGameUi
         {
             gameObject.SetActive(false);
             p_building.PlayedMinigame = true;
-            OpenMiniGameOfType?.Invoke(p_building);
+            OnOpenMiniGameOfType?.Invoke(p_building);
         }
     }
 }

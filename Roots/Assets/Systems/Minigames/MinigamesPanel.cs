@@ -20,7 +20,7 @@ namespace Minigames
 
         private void Start()
         {
-            _specificBuildingPanel.OpenMiniGameOfType += OpenRightMinigame;
+            _specificBuildingPanel.OnOpenMiniGameOfType += OpenRightMinigame;
 
             _minigamesPanelGo.SetActive(false);
             gameObject.SetActive(false);

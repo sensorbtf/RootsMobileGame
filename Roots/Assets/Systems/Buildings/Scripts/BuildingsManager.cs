@@ -6,122 +6,8 @@ using UnityEngine.Serialization;
 
 namespace Buildings
 {
-    [System.Serializable]
-    public struct BuildingSavedData
-    {
-        public BuildingType TypeOfBuilding;
-        public int CurrentLevel;
-        public bool HaveWorker;
-        public bool IsDamaged;
-        public bool PlayedMinigame;
-        public int CurrentDayOnQueue;
-        public int CurrentTechnologyDayOnQueue;
-        public bool HaveSomethingToCollect;
-        public bool CanEndBuildingSequence;
-        public bool IsBeeingUpgradedOrBuilded;
-        public bool IsProtected;
-        public int CurrentTechnologyLvl;
-    }
-    [Serializable]
-    public struct BuildingManagerSavedData
-    {
-        public List<BuildingSavedData> Buildings;
-        public int ResourcesStoredInBasement;
-        public int CurrentResourcePoints; 
-        public int CurrentDefensePoints;
-        public int ShardsOfDestinyAmount; 
-    }
-    
     public class BuildingsManager : MonoBehaviour
     {
-        public BuildingManagerSavedData GetSavedData()
-        {
-            var savedBuildings = new List<BuildingSavedData>();
-            
-            foreach (Building building in _currentlyBuildBuildings)
-            {
-                BuildingSavedData buildingData = new BuildingSavedData
-                {
-                    TypeOfBuilding = building.BuildingMainData.Type,
-                    CurrentLevel = building.CurrentLevel,
-                    HaveWorker = building.HaveWorker,
-                    IsDamaged = building.IsDamaged,
-                    PlayedMinigame = building.PlayedMinigame,
-                    CurrentDayOnQueue = building.CurrentDayOnQueue,
-                    CurrentTechnologyDayOnQueue = building.CurrentTechnologyDayOnQueue,
-                    HaveSomethingToCollect = building.HaveSomethingToCollect,
-                    CanEndBuildingSequence = building.CanEndBuildingSequence,
-                    IsBeeingUpgradedOrBuilded = building.IsBeeingUpgradedOrBuilded,
-                    IsProtected = building.IsProtected,
-                    CurrentTechnologyLvl = building.CurrentTechnologyLvl
-                    // Add other fields here
-                };
-                
-                savedBuildings.Add(buildingData);
-            }
-            
-            return new BuildingManagerSavedData()
-            {
-                Buildings = savedBuildings,
-                ResourcesStoredInBasement = _resourcesStoredInBasement,
-                CurrentResourcePoints = _currentResourcePoints,
-                CurrentDefensePoints = _currentDefensePoints,
-                ShardsOfDestinyAmount = _shardsOfDestinyAmount
-            };
-        }
-
-        public void LoadSavedData(BuildingManagerSavedData p_data)
-        {
-            _resourcesStoredInBasement = p_data.ResourcesStoredInBasement;
-            _currentResourcePoints = p_data.CurrentResourcePoints;
-            _currentDefensePoints = p_data.CurrentDefensePoints;
-            _shardsOfDestinyAmount = p_data.ShardsOfDestinyAmount;
-
-            foreach (var savedBuilding in p_data.Buildings)
-            {
-                var probableBuilding = _currentlyBuildBuildings.Find(x => (int)
-                    x.BuildingMainData.Type == (int)savedBuilding.TypeOfBuilding);
-                
-                if (probableBuilding != null)
-                {
-                    probableBuilding.CurrentLevel = savedBuilding.CurrentLevel;
-                    probableBuilding.HaveWorker = savedBuilding.HaveWorker;
-                    probableBuilding.IsDamaged = savedBuilding.IsDamaged;
-                    probableBuilding.PlayedMinigame = savedBuilding.PlayedMinigame;
-                    probableBuilding.CurrentDayOnQueue = savedBuilding.CurrentDayOnQueue;
-                    probableBuilding.CurrentTechnologyDayOnQueue = savedBuilding.CurrentTechnologyDayOnQueue;
-                    probableBuilding.HaveSomethingToCollect = savedBuilding.HaveSomethingToCollect;
-                    probableBuilding.CanEndBuildingSequence = savedBuilding.CanEndBuildingSequence;
-                    probableBuilding.IsBeeingUpgradedOrBuilded = savedBuilding.IsBeeingUpgradedOrBuilded;
-                    probableBuilding.IsProtected = savedBuilding.IsProtected;
-                    probableBuilding.CurrentTechnologyLvl = savedBuilding.CurrentTechnologyLvl;
-                }
-                else
-                {
-                    HandleBuiltOfBuilding(_buildingsDatabase.allBuildings.Find(
-                        x => x.Type == savedBuilding.TypeOfBuilding), true);
-
-                    probableBuilding = _currentlyBuildBuildings.Find(x => 
-                        x.BuildingMainData.Type == savedBuilding.TypeOfBuilding);
-                    
-                    probableBuilding.CurrentLevel = savedBuilding.CurrentLevel;
-                    probableBuilding.HaveWorker = savedBuilding.HaveWorker;
-                    probableBuilding.IsDamaged = savedBuilding.IsDamaged;
-                    probableBuilding.PlayedMinigame = savedBuilding.PlayedMinigame;
-                    probableBuilding.CurrentDayOnQueue = savedBuilding.CurrentDayOnQueue;
-                    probableBuilding.CurrentTechnologyDayOnQueue = savedBuilding.CurrentTechnologyDayOnQueue;
-                    probableBuilding.HaveSomethingToCollect = savedBuilding.HaveSomethingToCollect;
-                    probableBuilding.CanEndBuildingSequence = savedBuilding.CanEndBuildingSequence;
-                    probableBuilding.IsBeeingUpgradedOrBuilded = savedBuilding.IsBeeingUpgradedOrBuilded;
-                    probableBuilding.IsProtected = savedBuilding.IsProtected;
-                    probableBuilding.CurrentTechnologyLvl = savedBuilding.CurrentTechnologyLvl;
-                }
-
-                // postawić jeśli nie istnieje, wczytać dane
-                // jeszcze trzeba zapisać questy
-            }
-        }
-        
         [SerializeField] private WorkersManager _workersManager; // need to extend
         [SerializeField] private BuildingTransforms[] _placesForBuildings; // need to extend
         [SerializeField] private BuildingDatabase _buildingsDatabase;
@@ -136,6 +22,7 @@ namespace Buildings
         public Sprite ResourcesPointsIcon;
         public Sprite DefensePointsIcon;
         public Sprite ShardsOfDestinyIcon;
+        public Sprite FinishBuildingIcon;
 
         [HideInInspector] public List<BuildingData> UnlockedBuildings;
         [HideInInspector] public List<Building> CompletlyNewBuildings;
@@ -191,10 +78,8 @@ namespace Buildings
 
         public int ShardsOfDestinyAmount => _shardsOfDestinyAmount;
         
-        public void StartOnWorld()
+        public void StartOnWorld(bool p_willBeLoaded)
         {
-            HandlePointsManipulation(PointsType.ShardsOfDestiny, 250, true);
-
             UnlockedBuildings = new List<BuildingData>();
             CompletlyNewBuildings = new List<Building>();
             UpgradedBuildings = new List<Building>();
@@ -204,6 +89,9 @@ namespace Buildings
             RepairedBuildings = new List<Building>();
             _currentlyBuildBuildings = new List<Building>();
 
+            if (p_willBeLoaded)
+                return;
+            
             foreach (var buildingToBuild in _buildingsDatabase.allBuildings)
             {
                 if (buildingToBuild.Type is BuildingType.Cottage)
@@ -212,6 +100,8 @@ namespace Buildings
                 }
             }
 
+
+            HandlePointsManipulation(PointsType.ShardsOfDestiny, 250, true);
             _currentlyBuildBuildings.Find(x => x.BuildingMainData.Type == BuildingType.Cottage).IsDamaged = true;
         }
 
@@ -495,17 +385,20 @@ namespace Buildings
             return false;
         }
 
-        public bool IsAnyBuildingNonBuilded()
+        public bool IsAnyBuildingNonBuilt()
         {
+            var anyBuildingNeedsBuilding = false;
+            
             foreach (var building in _currentlyBuildBuildings)
             {
-                if (building.CanEndBuildingSequence)
-                {
-                    return true;
-                }
+                if (!building.CanEndBuildingSequence) 
+                    continue;
+                
+                building.GatheringIcon.sprite = FinishBuildingIcon;
+                anyBuildingNeedsBuilding = true;
             }
 
-            return false;
+            return anyBuildingNeedsBuilding;
         }
 
         public void EndMissionHandler()
@@ -574,8 +467,126 @@ namespace Buildings
 
             OnDestinyShardsPointsChange?.Invoke(p_amountOfResources, p_createEffect);
         }
+
+        #region Saving
+
+                public BuildingManagerSavedData GetSavedData()
+        {
+            var savedBuildings = new List<BuildingSavedData>();
+            
+            foreach (Building building in _currentlyBuildBuildings)
+            {
+                BuildingSavedData buildingData = new BuildingSavedData
+                {
+                    TypeOfBuilding = building.BuildingMainData.Type,
+                    CurrentLevel = building.CurrentLevel,
+                    HaveWorker = building.HaveWorker,
+                    IsDamaged = building.IsDamaged,
+                    PlayedMinigame = building.PlayedMinigame,
+                    CurrentDayOnQueue = building.CurrentDayOnQueue,
+                    CurrentTechnologyDayOnQueue = building.CurrentTechnologyDayOnQueue,
+                    HaveSomethingToCollect = building.HaveSomethingToCollect,
+                    CanEndBuildingSequence = building.CanEndBuildingSequence,
+                    IsBeeingUpgradedOrBuilded = building.IsBeeingUpgradedOrBuilded,
+                    IsProtected = building.IsProtected,
+                    CurrentTechnologyLvl = building.CurrentTechnologyLvl
+                    // Add other fields here
+                };
+                
+                savedBuildings.Add(buildingData);
+            }
+            
+            return new BuildingManagerSavedData()
+            {
+                Buildings = savedBuildings,
+                ResourcesStoredInBasement = _resourcesStoredInBasement,
+                CurrentResourcePoints = _currentResourcePoints,
+                CurrentDefensePoints = _currentDefensePoints,
+                ShardsOfDestinyAmount = _shardsOfDestinyAmount
+            };
+        }
+
+        public void LoadSavedData(BuildingManagerSavedData p_data)
+        {
+            _resourcesStoredInBasement = p_data.ResourcesStoredInBasement;
+            _currentResourcePoints = p_data.CurrentResourcePoints;
+            _currentDefensePoints = p_data.CurrentDefensePoints;
+            _shardsOfDestinyAmount = p_data.ShardsOfDestinyAmount;
+
+            foreach (var savedBuilding in p_data.Buildings)
+            {
+                var probableBuilding = _currentlyBuildBuildings.Find(x => (int)
+                    x.BuildingMainData.Type == (int)savedBuilding.TypeOfBuilding);
+                
+                if (probableBuilding != null)
+                {
+                    probableBuilding.CurrentLevel = savedBuilding.CurrentLevel;
+                    probableBuilding.HaveWorker = savedBuilding.HaveWorker;
+                    probableBuilding.IsDamaged = savedBuilding.IsDamaged;
+                    probableBuilding.PlayedMinigame = savedBuilding.PlayedMinigame;
+                    probableBuilding.CurrentDayOnQueue = savedBuilding.CurrentDayOnQueue;
+                    probableBuilding.CurrentTechnologyDayOnQueue = savedBuilding.CurrentTechnologyDayOnQueue;
+                    probableBuilding.HaveSomethingToCollect = savedBuilding.HaveSomethingToCollect;
+                    probableBuilding.CanEndBuildingSequence = savedBuilding.CanEndBuildingSequence;
+                    probableBuilding.IsBeeingUpgradedOrBuilded = savedBuilding.IsBeeingUpgradedOrBuilded;
+                    probableBuilding.IsProtected = savedBuilding.IsProtected;
+                    probableBuilding.CurrentTechnologyLvl = savedBuilding.CurrentTechnologyLvl;
+                }
+                else
+                {
+                    HandleBuiltOfBuilding(_buildingsDatabase.allBuildings.Find(
+                        x => x.Type == savedBuilding.TypeOfBuilding), true);
+
+                    probableBuilding = _currentlyBuildBuildings.Find(x => 
+                        x.BuildingMainData.Type == savedBuilding.TypeOfBuilding);
+                    
+                    probableBuilding.CurrentLevel = savedBuilding.CurrentLevel;
+                    probableBuilding.HaveWorker = savedBuilding.HaveWorker;
+                    probableBuilding.IsDamaged = savedBuilding.IsDamaged;
+                    probableBuilding.PlayedMinigame = savedBuilding.PlayedMinigame;
+                    probableBuilding.CurrentDayOnQueue = savedBuilding.CurrentDayOnQueue;
+                    probableBuilding.CurrentTechnologyDayOnQueue = savedBuilding.CurrentTechnologyDayOnQueue;
+                    probableBuilding.HaveSomethingToCollect = savedBuilding.HaveSomethingToCollect;
+                    probableBuilding.CanEndBuildingSequence = savedBuilding.CanEndBuildingSequence;
+                    probableBuilding.IsBeeingUpgradedOrBuilded = savedBuilding.IsBeeingUpgradedOrBuilded;
+                    probableBuilding.IsProtected = savedBuilding.IsProtected;
+                    probableBuilding.CurrentTechnologyLvl = savedBuilding.CurrentTechnologyLvl;
+                }
+
+                // postawić jeśli nie istnieje, wczytać dane
+                // jeszcze trzeba zapisać questy
+            }
+        }
+
+        #endregion
     }
 
+    [Serializable]
+    public struct BuildingSavedData
+    {
+        public BuildingType TypeOfBuilding;
+        public int CurrentLevel;
+        public bool HaveWorker;
+        public bool IsDamaged;
+        public bool PlayedMinigame;
+        public int CurrentDayOnQueue;
+        public int CurrentTechnologyDayOnQueue;
+        public bool HaveSomethingToCollect;
+        public bool CanEndBuildingSequence;
+        public bool IsBeeingUpgradedOrBuilded;
+        public bool IsProtected;
+        public int CurrentTechnologyLvl;
+    }
+    [Serializable]
+    public struct BuildingManagerSavedData
+    {
+        public List<BuildingSavedData> Buildings;
+        public int ResourcesStoredInBasement;
+        public int CurrentResourcePoints; 
+        public int CurrentDefensePoints;
+        public int ShardsOfDestinyAmount; 
+    }
+    
     [Serializable]
     public class BuildingTransforms
     {

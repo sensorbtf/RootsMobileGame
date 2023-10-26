@@ -14,7 +14,6 @@ namespace World
         [SerializeField] private Mission[] _missionData;
         [SerializeField] private CurrentQuests[] _questData;
         [SerializeField] private int _startingWorldResources = 0;
-        [SerializeField] private int _freeDaysSkipAmount;
 
         private int _currentDay = 0;
         private int _currentMission = 0;
@@ -31,8 +30,6 @@ namespace World
         public int FinalHiddenStormDay => _finalHiddenStormDay;
         public int StormPower => _stormPower;
         public Vector2Int StormDaysRange => _missionData[_currentMission].DaysOfStormRange;
-        public int FreeSkipsLeft => _freeDaysSkipAmount;
-        public int DestinyShardsSkipPrice = 10;
 
         public event Action OnNewDayStarted;
         public event Action OnResourcesRequirementsMeet;
@@ -40,42 +37,27 @@ namespace World
         public event Action OnDefendingVillage;
         public event Action OnMissionProgress;
         public event Action OnNewMissionStart;
-        public event Action OnGameStarted;
 
         public event Action<int> OnStormCheck;
         public event Action<List<BuildingType>, bool> OnStormCame;
 
-        private void Start()
+        public void CustomStart(bool p_willBeLoaded)
         {
-            buildingsManager.StartOnWorld();
-            StartMission(true);
+            buildingsManager.StartOnWorld(p_willBeLoaded);
+            if (!p_willBeLoaded)
+            {
+                StartMission(true);
+            }
 
             buildingsManager.OnPointsGathered += HandleOverallResourcesQuests;
             buildingsManager.OnBuildingStateChanged += CheckBuildingsMissions;
             buildingsManager.OnBuildingTechnologyLvlUp += CheckTechnologyBuildingsMissions;
-            
-            OnGameStarted?.Invoke();
         }
 
-        public void SkipDay(WayToSkip p_skipSource)
-        {
-            switch (p_skipSource)
-            {
-                case WayToSkip.FreeSkip:
-                    _freeDaysSkipAmount--;
-                    break;
-                case WayToSkip.PaidSkip:
-                    buildingsManager.HandlePointsManipulation(PointsType.ShardsOfDestiny, DestinyShardsSkipPrice,
-                        false);
-                    break;
-            }
-
-            StartNewDay();
-        }
-
-        private void StartNewDay()
+        public void StartNewDay()
         {
             _currentDay++;
+            _workersManager.BaseWorkersAmounts = buildingsManager.GetFarmProductionAmount;
 
             if (_currentDay == _finalHiddenStormDay)
                 EndMission(false, false);
@@ -185,30 +167,10 @@ namespace World
             Debug.Log("Storm power" + _stormPower + "_finalHiddenStormDay" + _finalHiddenStormDay
                       + " in " + _currentMission + " mission");
 
-            _workersManager.BaseWorkersAmounts = buildingsManager.GetFarmProductionAmount;
             HandleResourceBasementTransition(false); //get resources from basement
+            _workersManager.BaseWorkersAmounts = buildingsManager.GetFarmProductionAmount;
 
             OnNewMissionStart?.Invoke();
-        }
-
-        public bool CanSkipDay(out WayToSkip p_reason)
-        {
-            if (_freeDaysSkipAmount > 0)
-            {
-                p_reason = WayToSkip.FreeSkip;
-                return true;
-            }
-
-            if (buildingsManager.ShardsOfDestinyAmount >= DestinyShardsSkipPrice)
-            {
-                p_reason = WayToSkip.PaidSkip;
-                return true;
-            }
-            else
-            {
-                p_reason = WayToSkip.CantSkip;
-                return false;
-            }
         }
 
         private void HandleResourceBasementTransition(bool p_putInto)
@@ -226,7 +188,7 @@ namespace World
             }
         }
 
-        public bool CanStartDay()
+        public bool CheckIfDayIsFinished()
         {
             // need manager of minigames. If minigame ended => true
             return true;

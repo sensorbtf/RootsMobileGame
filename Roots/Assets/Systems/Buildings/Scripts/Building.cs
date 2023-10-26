@@ -41,18 +41,24 @@ namespace Buildings
             get => _isDamaged;
             set
             {
-                if (value)
+                if (_isDamaged)
                 {
-                    IsBeeingUpgradedOrBuilded = false;
-                    InGameIcon.color = Color.red;
-                    CurrentDayOnQueue = 0;
-                    OnBuildingDamaged?.Invoke(this);
+                    if (!value)
+                    {
+                        InGameIcon.color = Color.white;
+                        CurrentDayOnQueue = 0;
+                        OnRepaired?.Invoke(this);
+                    }
                 }
                 else
                 {
-                    InGameIcon.color = Color.white;
-                    CurrentDayOnQueue = 0;
-                    OnRepaired?.Invoke(this);
+                    if (value)
+                    {
+                        IsBeeingUpgradedOrBuilded = false;
+                        InGameIcon.color = Color.red;
+                        CurrentDayOnQueue = 0;
+                        OnBuildingDamaged?.Invoke(this);
+                    }
                 }
 
                 _isDamaged = value;
@@ -159,7 +165,8 @@ namespace Buildings
 
         public bool CanPlayMinigame()
         {
-            return _haveWorker && !PlayedMinigame && !_isDamaged && !IsBeeingUpgradedOrBuilded && CurrentTechnologyLvl > 0;
+            return _haveWorker && !PlayedMinigame && !_isDamaged && !IsBeeingUpgradedOrBuilded &&
+                   CurrentTechnologyLvl > 0;
         }
 
         public bool HandleNewDay()

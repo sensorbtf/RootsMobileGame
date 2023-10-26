@@ -1,13 +1,11 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using Buildings;
+using GameManager;
 using GeneralSystems;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
-using World;
 
 // should have been "keep same displacement on new day"
 
@@ -15,8 +13,9 @@ namespace InGameUi
 {
     public class WorkersPanel : MonoBehaviour
     {
-        [FormerlySerializedAs("_buildingManager")] [SerializeField] private BuildingsManager buildingsManager;
+        [SerializeField] private BuildingsManager buildingsManager;
         [SerializeField] private WorkersManager _workersManager;
+        [SerializeField] private MainGameManager _gameManager;
 
         [SerializeField] private BuildingPanel _buildingPanel;
         [SerializeField] private GatheringDefensePanel _gatheringDefensePanel;
@@ -31,19 +30,27 @@ namespace InGameUi
         private List<GameObject> _runtimeBuildingsUiToDestroy;
         private Button _button;
         private TextMeshProUGUI _buttonText;
-        public event Action OnBackToMap;
 
         private void Start()
         {
             _buildingPanel.OnBackToWorkersPanel += ActivatePanel;
             _gatheringDefensePanel.OnBackToWorkersPanel += ActivatePanel;
+            _gameManager.OnPlayerStateChange += ActivatePanel;
+            
             _buttonText = _finishWorkersAssigningButton.GetComponentInChildren<TextMeshProUGUI>();
             _button = _finishWorkersAssigningButton.GetComponent<Button>();
             _runtimeBuildingsUiToDestroy = new List<GameObject>();
+            
             gameObject.SetActive(false);
         }
 
-        public void ActivatePanel()
+        private void ActivatePanel(DuringDayState p_currentState)
+        {
+            if (p_currentState == DuringDayState.SettingWorkers)
+                ActivatePanel();
+        }
+
+        private void ActivatePanel()
         {
             gameObject.SetActive(true);
             GameplayHud.BlockHud = true;
@@ -206,8 +213,8 @@ namespace InGameUi
                 _buildingPanel.BuildingsToShow[building.Key] = false;
             }
 
+            _gameManager.SetPlayerState(DuringDayState.DayPassing);
             ClosePanel();
-            OnBackToMap?.Invoke();
         }
 
         private void OnBuildOrUpgradeButtonClicked()

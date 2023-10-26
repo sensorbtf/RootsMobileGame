@@ -1,11 +1,8 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using Buildings;
 using GeneralSystems;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 using World;
 
@@ -23,7 +20,6 @@ namespace InGameUi
 
         private Button _goBackButton;
         private List<GameObject> _runtimeBuildingsUiToDestroy;
-        private Building _building;
         private bool _isCottage;
         
         private TechnologyDataPerLevel[] _technology;
@@ -93,7 +89,6 @@ namespace InGameUi
             CameraController.IsUiOpen = false;
             GameplayHud.BlockHud = false;
 
-            _building = null;
             _runtimeBuildingsUiToDestroy.Clear();
             gameObject.SetActive(false);
         }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Buildings;
+using GameManager;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -10,21 +11,15 @@ using Random = UnityEngine.Random;
 
 namespace InGameUi
 {
-    enum DuringDayState
-    {
-        OnCollecting,
-        SettingWorkers,
-        Working
-    }
-
     public class GameplayHud : MonoBehaviour
     {
         public static bool BlockHud;
         [SerializeField] private Canvas _mainCanvas;
 
+        [SerializeField] private MainGameManager _gameManager;
         [SerializeField] private WorldManager _worldManager;
-        [SerializeField] private BuildingsManager buildingsManager;
-        [SerializeField] private WorkersPanel _workersPanel;
+        [SerializeField] private BuildingsManager _buildingsManager;
+        [SerializeField] private SettingsPanel _settingsPanel;
 
         [SerializeField] private Image ResourcePointsImage;
         [SerializeField] private Image DefensePointsImage;
@@ -42,7 +37,6 @@ namespace InGameUi
         [SerializeField] private Sprite StormImage;
         [SerializeField] private Sprite SunImage;
 
-        [SerializeField] private int _dayDurationInSeconds = 60;
         [SerializeField] private GameObject SkipDayGo;
         [SerializeField] private GameObject EndMissionGo;
         [SerializeField] private GameObject EndDayGo;
@@ -53,6 +47,10 @@ namespace InGameUi
         [SerializeField] private TextMeshProUGUI _currentRankText;
         [SerializeField] private TextMeshProUGUI _currentMissionText;
 
+        //left side of screen
+        [SerializeField] private GameObject _settingsButtonGo;
+        //left side of screen
+        
         // Quests
         [SerializeField] private GameObject QuestsCompletedGo;
         [SerializeField] private GameObject FirstMissionGo;
@@ -68,22 +66,19 @@ namespace InGameUi
         private TextMeshProUGUI _secondMissionButtonText;
         // Quests
 
-        private DuringDayState CurrentPlayerState;
         private Button _skipDayButton;
         private Button _endMissionButton;
         private Button _endDayButton;
+        private Button _settingsButton;
 
         private TextMeshProUGUI _endDayButtonText;
-
+        private float _singleDayGoWidth; 
         private bool _wasMainButtonRefreshed = true;
-        private bool _canUseSkipByTime = false;
-        private float _timeLeftInSeconds; // 10 minutes * 60 seconds
-        private float _singleDayGoWidth; // 10 minutes * 60 seconds
-        private DateTime _startTime;
+
         private Dictionary<RectTransform, List<GameObject>> _createdImages;
         private List<GameObject> _createdDaysStorm;
         
-        private void Start()
+        private void Awake()
         {
             _createdDaysStorm = new List<GameObject>();
             
@@ -97,6 +92,7 @@ namespace InGameUi
             _skipDayButton = SkipDayGo.GetComponent<Button>();
             _endMissionButton = EndMissionGo.GetComponent<Button>();
             _endDayButton = EndDayGo.GetComponent<Button>();
+            _settingsButton = _settingsButtonGo.GetComponent<Button>();
 
             _endDayButtonText = _endDayButton.GetComponentInChildren<TextMeshProUGUI>();
             _firstQuestText = FirstMissionGo.GetComponentInChildren<TextMeshProUGUI>();
@@ -106,6 +102,7 @@ namespace InGameUi
             _secondMissionButtonText = SecondMissionObjectiveGo.GetComponentInChildren<TextMeshProUGUI>();
             _firstMissionButton = FirstMissionObjectiveGo.GetComponentInChildren<Button>();
             _secondMissionButton = SecondMissionObjectiveGo.GetComponentInChildren<Button>();
+            
             FirstMissionObjectiveGo.SetActive(true);
             SecondMissionObjectiveGo.SetActive(true);
             QuestsCompletedGo.SetActive(false);
@@ -114,17 +111,17 @@ namespace InGameUi
             EndMissionGo.SetActive(false);
             BlockHud = false;
 
-            _workersPanel.OnBackToMap += OnWorkDayStarted;
-            buildingsManager.OnResourcePointsChange += RefreshResourcePoints;
-            buildingsManager.OnDefensePointsChange += RefreshDefensePoints;
-            buildingsManager.OnDestinyShardsPointsChange += RefreshShardsPoints;
-
-            _worldManager.OnResourcesRequirementsMeet += ActivateEndMissionButton;
-
-            ShardsOfDestiny.text = $"{buildingsManager.ShardsOfDestinyAmount}";
-            DefensePoints.text = $"{buildingsManager.CurrentDefensePoints}";
-            ResourcePoints.text = $"{buildingsManager.CurrentResourcePoints} / " +
+            _settingsButton.onClick.AddListener(delegate { _settingsPanel.OpenPanel(); });
+            
+            ShardsOfDestiny.text = $"{_buildingsManager.ShardsOfDestinyAmount}";
+            DefensePoints.text = $"{_buildingsManager.CurrentDefensePoints}";
+            ResourcePoints.text = $"{_buildingsManager.CurrentResourcePoints} / " +
                                   $"{_worldManager.RequiredResourcePoints}";
+            
+            _buildingsManager.OnResourcePointsChange += RefreshResourcePoints;
+            _buildingsManager.OnDefensePointsChange += RefreshDefensePoints;
+            _buildingsManager.OnDestinyShardsPointsChange += RefreshShardsPoints;
+            _worldManager.OnResourcesRequirementsMeet += ActivateEndMissionButton;
 
             _worldManager.CurrentQuests[0].OnCompletion += HandleFirstQuestCompletion;
             _worldManager.CurrentQuests[1].OnCompletion += HandleSecondQuestCompletion;
@@ -132,8 +129,10 @@ namespace InGameUi
             _worldManager.OnNewMissionStart += RefreshStormSlider;
             _worldManager.OnNewDayStarted += NewDayHandler;
             _worldManager.OnStormCheck += CheckNextDaysOnDemand;
-        }
 
+            _gameManager.OnPlayerStateChange += MainButtonHandler;
+            _gameManager.OnDaySkipPossibility += CheckDaySkipPossibility;
+        }
         private void CheckNextDaysOnDemand(int p_daysFromCurrent)
         {
             var currentDay = Convert.ToInt32(StormSlider.value);
@@ -216,7 +215,7 @@ namespace InGameUi
 
         private void RefreshShardsPoints(int p_points, bool p_makeIcons)
         {
-            ShardsOfDestiny.text = $"{buildingsManager.ShardsOfDestinyAmount.ToString()}";
+            ShardsOfDestiny.text = $"{_buildingsManager.ShardsOfDestinyAmount.ToString()}";
 
             if (p_makeIcons)
             {
@@ -226,7 +225,7 @@ namespace InGameUi
 
         private void RefreshDefensePoints(int p_points, bool p_makeIcons)
         {
-            DefensePoints.text = $"{buildingsManager.CurrentDefensePoints.ToString()}";
+            DefensePoints.text = $"{_buildingsManager.CurrentDefensePoints.ToString()}";
 
             if (p_makeIcons)
             {
@@ -236,14 +235,14 @@ namespace InGameUi
 
         private void RefreshResourcePoints(int p_points, bool p_makeIcons)
         {
-            if (buildingsManager.CurrentResourcePoints >= _worldManager.RequiredResourcePoints)
+            if (_buildingsManager.CurrentResourcePoints >= _worldManager.RequiredResourcePoints)
             {
-                ResourcePoints.text = $"{buildingsManager.CurrentResourcePoints} / " +
+                ResourcePoints.text = $"{_buildingsManager.CurrentResourcePoints} / " +
                                       $"<color=green>{_worldManager.RequiredResourcePoints}</color>";
             }
             else
             {
-                ResourcePoints.text = $"{buildingsManager.CurrentResourcePoints} / " +
+                ResourcePoints.text = $"{_buildingsManager.CurrentResourcePoints} / " +
                                       $"<color=red>{_worldManager.RequiredResourcePoints}</color>";
             }
            
@@ -283,15 +282,15 @@ namespace InGameUi
                 switch (p_pointsType)
                 {
                     case PointsType.Resource:
-                        image.sprite = buildingsManager.ResourcesPointsIcon;
+                        image.sprite = _buildingsManager.ResourcesPointsIcon;
                         _createdImages[ResourcePointsImage.rectTransform].Add(imageObject);
                         break;
                     case PointsType.Defense:
-                        image.sprite = buildingsManager.DefensePointsIcon;
+                        image.sprite = _buildingsManager.DefensePointsIcon;
                         _createdImages[DefensePointsImage.rectTransform].Add(imageObject);
                         break;
                     case PointsType.ShardsOfDestiny:
-                        image.sprite = buildingsManager.ShardsOfDestinyIcon;
+                        image.sprite = _buildingsManager.ShardsOfDestinyIcon;
                         _createdImages[ShardsOfDestinyImage.rectTransform].Add(imageObject);
                         break;
                 }
@@ -320,44 +319,24 @@ namespace InGameUi
 
         private void Update() // Better way to do it?
         {
-            double elapsedSeconds = (DateTime.UtcNow - _startTime).TotalSeconds;
-            _timeLeftInSeconds = _dayDurationInSeconds - (float)elapsedSeconds;
-
-            int minutes = Mathf.FloorToInt(_timeLeftInSeconds / 60);
-            int seconds = Mathf.FloorToInt(_timeLeftInSeconds % 60);
-
-            if (_timeLeftInSeconds > 0)
-            {
-                _skipDayText.text = $"{minutes}:{seconds:00}";
-            }
-            else
-            {
-                _canUseSkipByTime = true;
-            }
+            _skipDayText.text = _gameManager.TimePassed;
 
             MovePoints();
-            MainButtonHandler(); // change that for events on click
 
             VinetePanel.SetActive(BlockHud);
         }
 
-        private void MainButtonHandler()
+        private void MainButtonHandler(DuringDayState p_newState)
         {
-            switch (CurrentPlayerState)
+            switch (p_newState)
             {
-                case DuringDayState.OnCollecting:
-                    if (buildingsManager.IsAnyBuildingNonBuilded())
-                    {
+                case DuringDayState.FinishingBuilding:
                         _endDayButtonText.text = "Finalize building";
-                        return;
-                    }
-
-                    if (buildingsManager.IsAnyBuildingNonGathered())
-                    {
+                    break;
+                case DuringDayState.CollectingResources:
                         _endDayButtonText.text = "Collect Points";
-                        return;
-                    }
-
+                    break;
+                case DuringDayState.WorkDayFinished:
                     _endDayButton.interactable = true;
 
                     if (_wasMainButtonRefreshed)
@@ -366,50 +345,58 @@ namespace InGameUi
                         _endDayButton.onClick.AddListener(OpenWorkersDisplacementPanel);
                         _wasMainButtonRefreshed = false;
                     }
-
                     break;
 
                 case DuringDayState.SettingWorkers:
                     _endDayButtonText.text = "Setting workers";
                     break;
 
-                case DuringDayState.Working:
+                case DuringDayState.DayPassing:
                     _endDayButtonText.text = "Day is passing...";
                     _endDayButton.interactable = false;
-
-                    if (_canUseSkipByTime)
-                    {
-                        _skipDayButton.interactable = true;
-
-                        _skipDayButton.onClick.RemoveAllListeners();
-                        _skipDayText.text = "Skip";
-                        _paidSkipDayText.text = "";
-                        _skipDayButton.onClick.AddListener(() => OnWorkDaySkipped(WayToSkip.NormalTimeSkip));
-                        _wasMainButtonRefreshed = false;
-                    }
-
-                    if (!_canUseSkipByTime && _worldManager.CanSkipDay(out var skipPossibility))
-                    {
-                        _skipDayButton.interactable = true;
-
-                        if (_wasMainButtonRefreshed)
-                        {
-                            if (skipPossibility == WayToSkip.FreeSkip)
-                            {
-                                _paidSkipDayText.text = $"Skip by: Free Skips ({_worldManager.FreeSkipsLeft})";
-                            }
-                            else if (skipPossibility == WayToSkip.PaidSkip)
-                            {
-                                _paidSkipDayText.text =
-                                    $"Skip for: {_worldManager.DestinyShardsSkipPrice} Destiny Shards";
-                            }
-
-                            _skipDayButton.onClick.AddListener(() => OnWorkDaySkipped(skipPossibility));
-                            _wasMainButtonRefreshed = false;
-                        }
-                    }
-
+                    SkipDayGo.SetActive(true);
+                    _wasMainButtonRefreshed = true;
+                    CheckDaySkipPossibility();
                     break;
+            }
+        }
+
+        private void CheckDaySkipPossibility()
+        {
+            if (_gameManager.CurrentPlayerState != DuringDayState.DayPassing)
+                return;
+
+            if (_gameManager.CanUseSkipByTime)
+            {
+                _skipDayButton.interactable = true;
+
+                _skipDayButton.onClick.RemoveAllListeners();
+                _skipDayText.text = "Skip";
+                _paidSkipDayText.text = "";
+                _skipDayButton.onClick.AddListener(() => OnWorkDaySkipped(WayToSkip.NormalTimeSkip));
+                _wasMainButtonRefreshed = false;
+            }
+
+            if (!_gameManager.CanUseSkipByTime && _gameManager.CanSkipDay(out var skipPossibility))
+            {
+                _skipDayButton.interactable = true;
+
+                if (_wasMainButtonRefreshed)
+                {
+                    if (skipPossibility == WayToSkip.FreeSkip)
+                    {
+                        _paidSkipDayText.text = $"Skip by: Free Skips ({_gameManager.FreeSkipsLeft})";
+                    }
+                    else if (skipPossibility == WayToSkip.PaidSkip)
+                    {
+                        _paidSkipDayText.text =
+                            $"Skip for: {_gameManager.DestinyShardsSkipPrice} Destiny Shards";
+                    }
+
+                    _skipDayButton.onClick.RemoveAllListeners();
+                    _skipDayButton.onClick.AddListener(() => OnWorkDaySkipped(skipPossibility));
+                    _wasMainButtonRefreshed = false;
+                }
             }
         }
 
@@ -421,32 +408,20 @@ namespace InGameUi
 
         private void OpenWorkersDisplacementPanel()
         {
-            CurrentPlayerState = DuringDayState.SettingWorkers;
+            _gameManager.SetPlayerState(DuringDayState.SettingWorkers);
             _endDayButton.onClick.RemoveListener(OpenWorkersDisplacementPanel);
             _wasMainButtonRefreshed = true;
-
-            _workersPanel.ActivatePanel();
-        }
-
-        private void OnWorkDayStarted()
-        {
-            CurrentPlayerState = DuringDayState.Working;
-            SkipDayGo.SetActive(true);
-            _startTime = DateTime.UtcNow;
-
-            _wasMainButtonRefreshed = true;
-            _canUseSkipByTime = false;
         }
 
         private void OnWorkDaySkipped(WayToSkip p_skipSource)
         {
-            CurrentPlayerState = DuringDayState.OnCollecting;
             _skipDayButton.onClick.RemoveAllListeners();
             SkipDayGo.SetActive(false);
             _skipDayButton.interactable = false;
             _wasMainButtonRefreshed = true;
-
-            _worldManager.SkipDay(p_skipSource);
+            
+            _gameManager.SetPlayerState(DuringDayState.FinishingBuilding);
+            _gameManager.SkipDay(p_skipSource);
         }
 
         #region Quests
@@ -482,7 +457,7 @@ namespace InGameUi
                 _secondMissionButtonText.text = "Completed";
             }
 
-            buildingsManager.HandlePointsManipulation(PointsType.ShardsOfDestiny, p_quest.SpecificQuest.ShardsOfDestinyReward, true, true);
+            _buildingsManager.HandlePointsManipulation(PointsType.ShardsOfDestiny, p_quest.SpecificQuest.ShardsOfDestinyReward, true, true);
             
             CheckQuestsCompletion();
         }
