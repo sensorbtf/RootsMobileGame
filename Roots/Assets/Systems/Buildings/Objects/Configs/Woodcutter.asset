@@ -17,7 +17,8 @@ MonoBehaviour:
   Icon: {fileID: 21300000, guid: 25f6559d4c860f24ca4b50da3e24a595, type: 3}
   InGameSprite: {fileID: 21300000, guid: 25f6559d4c860f24ca4b50da3e24a595, type: 3}
   FirstStageBuilding: {fileID: 21300000, guid: 5470f9ed5306c2a40b177035acfd547e, type: 3}
-  UpgradeStage: {fileID: -8532870349098515356, guid: 7641bf042c19a9f49bbcd1a54820e231, type: 3}
+  UpgradeStage: {fileID: 21300000, guid: 7641bf042c19a9f49bbcd1a54820e231, type: 3}
+  DestroyedStage: {fileID: 21300000, guid: 5470f9ed5306c2a40b177035acfd547e, type: 3}
   Description: Wood is essential for buildings and every day survival. Woodcutters
     that work here will also help you extend borders of village.
   BaseCottageLevelNeeded: 2

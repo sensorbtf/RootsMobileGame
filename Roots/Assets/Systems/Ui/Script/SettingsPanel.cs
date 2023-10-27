@@ -13,8 +13,6 @@ namespace InGameUi
         [SerializeField] private Button _resetGameButton;
         [SerializeField] private Button _backButton;
 
-        private TechnologyDataPerLevel[] _technology;
-
         private void Start()
         {
             gameObject.SetActive(false);

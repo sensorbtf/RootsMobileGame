@@ -17,7 +17,8 @@ MonoBehaviour:
   Icon: {fileID: 21300000, guid: 4e69dfbbdc1157d44aee0225c3291d03, type: 3}
   InGameSprite: {fileID: 21300000, guid: 4e69dfbbdc1157d44aee0225c3291d03, type: 3}
   FirstStageBuilding: {fileID: 21300000, guid: 56e1d9c95e01c694f92e785d034179a5, type: 3}
-  UpgradeStage: {fileID: 3978834401994218483, guid: fc1cccd5912bccf4dbe4509549fb56f5, type: 3}
+  UpgradeStage: {fileID: 21300000, guid: fc1cccd5912bccf4dbe4509549fb56f5, type: 3}
+  DestroyedStage: {fileID: 21300000, guid: 56e1d9c95e01c694f92e785d034179a5, type: 3}
   Description: Residence's basement is a safe place to store excess resources on
     mission completion and recover them on the next one
   BaseCottageLevelNeeded: 0

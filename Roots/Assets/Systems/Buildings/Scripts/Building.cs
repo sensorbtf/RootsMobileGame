@@ -45,7 +45,7 @@ namespace Buildings
                 {
                     if (!value)
                     {
-                        InGameIcon.color = Color.white;
+                        InGameIcon.sprite = BuildingMainData.InGameSprite;
                         CurrentDayOnQueue = 0;
                         OnRepaired?.Invoke(this);
                     }
@@ -55,7 +55,7 @@ namespace Buildings
                     if (value)
                     {
                         IsBeeingUpgradedOrBuilded = false;
-                        InGameIcon.color = Color.red;
+                        InGameIcon.sprite = BuildingMainData.DestroyedStage;
                         CurrentDayOnQueue = 0;
                         OnBuildingDamaged?.Invoke(this);
                     }
@@ -94,9 +94,13 @@ namespace Buildings
                 }
                 else
                 {
-                    HandleLevelUp();
+                    if (_isDamaged)
+                        IsDamaged = false;
+                    else
+                        HandleLevelUp();
                 }
-
+                
+                GatheringIcon.sprite = null;
                 CanEndBuildingSequence = false;
                 return;
             }
@@ -178,7 +182,8 @@ namespace Buildings
                 if (CurrentDayOnQueue < 1)
                     return false;
 
-                IsDamaged = false;
+                CanEndBuildingSequence = true;
+                return true;
             }
 
             if (IsBeeingUpgradedOrBuilded)

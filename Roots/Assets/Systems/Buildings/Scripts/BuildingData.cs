@@ -12,6 +12,7 @@ namespace Buildings
         public Sprite InGameSprite;
         public Sprite FirstStageBuilding;
         public Sprite UpgradeStage;
+        public Sprite DestroyedStage;
         public string Description;
         public int BaseCottageLevelNeeded;
         public int LevelToEnableMinigame;

@@ -27,7 +27,7 @@ namespace InGameUi
         private void Start()
         {
             worldManager.OnNewDayStarted += ActivateOnNewDay;
-            buildingsManager.OnBuildingStateChanged += AfterRankUp;
+            buildingsManager.OnCottageLevelUp += AfterRankUp;
 
             _runtimeBuildingsUiToDestroy = new List<GameObject>();
 
@@ -36,11 +36,8 @@ namespace InGameUi
             gameObject.SetActive(false);
         }
 
-        private void AfterRankUp(Building p_cottage)
+        private void AfterRankUp()
         {
-            if (p_cottage.BuildingMainData.Type != BuildingType.Cottage)
-                return;
-            
             _isCottage = true;
             ActivateOnNewDay(_isCottage);
             _isCottage = false;
@@ -54,7 +51,6 @@ namespace InGameUi
 
             buildingsManager.UnlockedBuildings.Clear();
         }
-
 
         private void ActivateOnNewDay()
         {

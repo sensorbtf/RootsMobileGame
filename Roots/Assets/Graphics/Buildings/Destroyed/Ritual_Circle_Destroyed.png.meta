@@ -1,0 +1,449 @@
+fileFormatVersion: 2
+guid: 9ddcd19eab034224eaf07a779363130e
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 5301630337659216941
+    second: Ritual_Circle_Destroyed_0
+  - first:
+      213: 733472614254227154
+    second: Ritual_Circle_Destroyed_1
+  - first:
+      213: -9179253590355196134
+    second: Ritual_Circle_Destroyed_2
+  - first:
+      213: -6590063173600133630
+    second: Ritual_Circle_Destroyed_3
+  - first:
+      213: -157057847073295846
+    second: Ritual_Circle_Destroyed_4
+  - first:
+      213: -2078527473483316997
+    second: Ritual_Circle_Destroyed_5
+  - first:
+      213: -7828540163848284469
+    second: Ritual_Circle_Destroyed_6
+  - first:
+      213: -1144364546820050324
+    second: Ritual_Circle_Destroyed_7
+  - first:
+      213: 7501987425160610214
+    second: Ritual_Circle_Destroyed_8
+  - first:
+      213: -1027709383583634907
+    second: Ritual_Circle_Destroyed_9
+  - first:
+      213: -8191198939271739770
+    second: Ritual_Circle_Destroyed_10
+  - first:
+      213: 1154431622906020090
+    second: Ritual_Circle_Destroyed_11
+  - first:
+      213: 1262396270915421019
+    second: Ritual_Circle_Destroyed_12
+  externalObjects: {}
+  serializedVersion: 12
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 1
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 7
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 0
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Ritual_Circle_Destroyed_0
+      rect:
+        serializedVersion: 2
+        x: 192
+        y: 502
+        width: 11
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d24ac9ee3bc239940800000000000000
+      internalID: 5301630337659216941
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ritual_Circle_Destroyed_1
+      rect:
+        serializedVersion: 2
+        x: 202
+        y: 508
+        width: 8
+        height: 7
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2dea911e471dd2a00800000000000000
+      internalID: 733472614254227154
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ritual_Circle_Destroyed_2
+      rect:
+        serializedVersion: 2
+        x: 203
+        y: 2
+        width: 1538
+        height: 1054
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a1746ab4e7dbc9080800000000000000
+      internalID: -9179253590355196134
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ritual_Circle_Destroyed_3
+      rect:
+        serializedVersion: 2
+        x: 179
+        y: 495
+        width: 10
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 20e3e2295746b84a0800000000000000
+      internalID: -6590063173600133630
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ritual_Circle_Destroyed_4
+      rect:
+        serializedVersion: 2
+        x: 187
+        y: 500
+        width: 6
+        height: 6
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a12320068b402ddf0800000000000000
+      internalID: -157057847073295846
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ritual_Circle_Destroyed_5
+      rect:
+        serializedVersion: 2
+        x: 167
+        y: 488
+        width: 14
+        height: 10
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bf0032f76469723e0800000000000000
+      internalID: -2078527473483316997
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ritual_Circle_Destroyed_6
+      rect:
+        serializedVersion: 2
+        x: 1823
+        y: 463
+        width: 14
+        height: 15
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bc6d1f7c2307b5390800000000000000
+      internalID: -7828540163848284469
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ritual_Circle_Destroyed_7
+      rect:
+        serializedVersion: 2
+        x: 152
+        y: 415
+        width: 12
+        height: 9
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c627d3df1866e10f0800000000000000
+      internalID: -1144364546820050324
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ritual_Circle_Destroyed_8
+      rect:
+        serializedVersion: 2
+        x: 1803
+        y: 263
+        width: 33
+        height: 20
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 6a14522e0d96c1860800000000000000
+      internalID: 7501987425160610214
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ritual_Circle_Destroyed_9
+      rect:
+        serializedVersion: 2
+        x: 1835
+        y: 279
+        width: 10
+        height: 8
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 52a692bb2c7dcb1f0800000000000000
+      internalID: -1027709383583634907
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ritual_Circle_Destroyed_10
+      rect:
+        serializedVersion: 2
+        x: 1793
+        y: 255
+        width: 15
+        height: 11
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 686c62ca6f3035e80800000000000000
+      internalID: -8191198939271739770
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ritual_Circle_Destroyed_11
+      rect:
+        serializedVersion: 2
+        x: 839
+        y: 0
+        width: 29
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: af08ac0d17d550010800000000000000
+      internalID: 1154431622906020090
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Ritual_Circle_Destroyed_12
+      rect:
+        serializedVersion: 2
+        x: 1043
+        y: 0
+        width: 42
+        height: 23
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b5301bd48bee48110800000000000000
+      internalID: 1262396270915421019
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      Ritual_Circle_Destroyed_0: 5301630337659216941
+      Ritual_Circle_Destroyed_1: 733472614254227154
+      Ritual_Circle_Destroyed_10: -8191198939271739770
+      Ritual_Circle_Destroyed_11: 1154431622906020090
+      Ritual_Circle_Destroyed_12: 1262396270915421019
+      Ritual_Circle_Destroyed_2: -9179253590355196134
+      Ritual_Circle_Destroyed_3: -6590063173600133630
+      Ritual_Circle_Destroyed_4: -157057847073295846
+      Ritual_Circle_Destroyed_5: -2078527473483316997
+      Ritual_Circle_Destroyed_6: -7828540163848284469
+      Ritual_Circle_Destroyed_7: -1144364546820050324
+      Ritual_Circle_Destroyed_8: 7501987425160610214
+      Ritual_Circle_Destroyed_9: -1027709383583634907
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

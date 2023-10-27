@@ -331,10 +331,10 @@ namespace InGameUi
             switch (p_newState)
             {
                 case DuringDayState.FinishingBuilding:
-                        _endDayButtonText.text = "Finalize building";
+                        _endDayButtonText.text = "Finalize building process";
                     break;
                 case DuringDayState.CollectingResources:
-                        _endDayButtonText.text = "Collect Points";
+                        _endDayButtonText.text = "Collect available points";
                     break;
                 case DuringDayState.WorkDayFinished:
                     _endDayButton.interactable = true;

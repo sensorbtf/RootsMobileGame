@@ -34,6 +34,7 @@ namespace Buildings
 
         public event Action<Building> OnBuildingClicked;
         public event Action<Building> OnBuildingStateChanged;
+        public event Action OnCottageLevelUp;
         public event Action<Building> OnBuildingTechnologyLvlUp;
         public event Action<Building> OnBuildingDestroyed;
         public event Action<PointsType, int> OnPointsGathered;
@@ -49,7 +50,7 @@ namespace Buildings
             get
             {
                 var building = _currentlyBuildBuildings.Find(x => x.BuildingMainData.Type == BuildingType.Farm);
-                if (building == null)
+                if (building == null || building.CurrentLevel == 0)
                     return 1;
 
                 return building.CurrentLevel;
@@ -77,7 +78,7 @@ namespace Buildings
         public int CurrentDefensePoints => _currentDefensePoints;
 
         public int ShardsOfDestinyAmount => _shardsOfDestinyAmount;
-        
+
         public void StartOnWorld(bool p_willBeLoaded)
         {
             UnlockedBuildings = new List<BuildingData>();
@@ -91,7 +92,7 @@ namespace Buildings
 
             if (p_willBeLoaded)
                 return;
-            
+
             foreach (var buildingToBuild in _buildingsDatabase.allBuildings)
             {
                 if (buildingToBuild.Type is BuildingType.Cottage)
@@ -99,7 +100,6 @@ namespace Buildings
                     HandleBuiltOfBuilding(buildingToBuild, true);
                 }
             }
-
 
             HandlePointsManipulation(PointsType.ShardsOfDestiny, 250, true);
             _currentlyBuildBuildings.Find(x => x.BuildingMainData.Type == BuildingType.Cottage).IsDamaged = true;
@@ -148,7 +148,8 @@ namespace Buildings
 
                 building.CurrentTechnologyDayOnQueue++;
 
-                if (building.CurrentTechnologyDayOnQueue == building.BuildingMainData.Technology.DataPerTechnologyLevel[building.CurrentTechnologyLvl].WorksDayToAchieve)
+                if (building.CurrentTechnologyDayOnQueue == building.BuildingMainData.Technology
+                        .DataPerTechnologyLevel[building.CurrentTechnologyLvl].WorksDayToAchieve)
                 {
                     BuildingsWithTechnologyUpgrade.Add(building);
                 }
@@ -194,6 +195,10 @@ namespace Buildings
                     else if (building.CurrentLevel > 1)
                     {
                         UpgradedBuildings.Add(building);
+                    }
+                    else if (building.IsDamaged)
+                    {
+                        RepairedBuildings.Add(building);
                     }
                 }
             }
@@ -290,7 +295,8 @@ namespace Buildings
                 }
                 else
                 {
-                    _currentlyBuildBuildings[i].InGameIcon.sprite = GetSpecificBuilding(p_buildingType).BuildingMainData.UpgradeStage;
+                    _currentlyBuildBuildings[i].InGameIcon.sprite =
+                        GetSpecificBuilding(p_buildingType).BuildingMainData.UpgradeStage;
                     _currentlyBuildBuildings[i].InitiateUpgradeSequence();
                 }
             }
@@ -300,17 +306,15 @@ namespace Buildings
         {
             OnBuildingTechnologyLvlUp?.Invoke(p_building);
         }
-        
+
         private void PublishBuildingRepaired(Building p_building)
         {
-            RepairedBuildings.Add(p_building);
-
             AssignWorker(p_building, false);
             OnBuildingStateChanged?.Invoke(p_building);
         }
 
         private void PublishBuildingBuiltEvent(Building p_building, bool p_unassignWorkers)
-        {   
+        {
             if (p_building.BuildingMainData.LevelToEnableMinigame == p_building.CurrentLevel)
             {
                 BuildingWithEnabledMinigame.Add(p_building);
@@ -325,6 +329,8 @@ namespace Buildings
                         UnlockedBuildings.Add(building);
                     }
                 }
+                
+                OnCottageLevelUp?.Invoke();
             }
 
             AssignWorker(p_building, p_unassignWorkers);
@@ -388,13 +394,20 @@ namespace Buildings
         public bool IsAnyBuildingNonBuilt()
         {
             var anyBuildingNeedsBuilding = false;
-            
+
             foreach (var building in _currentlyBuildBuildings)
             {
-                if (!building.CanEndBuildingSequence) 
+                if (!building.CanEndBuildingSequence)
                     continue;
-                
-                building.GatheringIcon.sprite = FinishBuildingIcon;
+
+                if (building.IsDamaged)
+                {
+                    building.GatheringIcon.sprite = FinishBuildingIcon;
+                }
+                else
+                {
+                    building.GatheringIcon.sprite = FinishBuildingIcon;
+                }
                 anyBuildingNeedsBuilding = true;
             }
 
@@ -412,7 +425,8 @@ namespace Buildings
             }
         }
 
-        public void HandlePointsManipulation(PointsType p_pointsType, int p_pointsNumber, bool p_add, bool p_createEffect = false)
+        public void HandlePointsManipulation(PointsType p_pointsType, int p_pointsNumber, bool p_add,
+            bool p_createEffect = false)
         {
             int specificValue = p_pointsNumber;
 
@@ -440,7 +454,7 @@ namespace Buildings
                     break;
             }
         }
-        
+
         private void ManipulateDefencePoints(int p_amountOfResources, bool p_createEffect = false)
         {
             _currentDefensePoints += p_amountOfResources;
@@ -470,10 +484,10 @@ namespace Buildings
 
         #region Saving
 
-                public BuildingManagerSavedData GetSavedData()
+        public BuildingManagerSavedData GetSavedData()
         {
             var savedBuildings = new List<BuildingSavedData>();
-            
+
             foreach (Building building in _currentlyBuildBuildings)
             {
                 BuildingSavedData buildingData = new BuildingSavedData
@@ -492,10 +506,10 @@ namespace Buildings
                     CurrentTechnologyLvl = building.CurrentTechnologyLvl
                     // Add other fields here
                 };
-                
+
                 savedBuildings.Add(buildingData);
             }
-            
+
             return new BuildingManagerSavedData()
             {
                 Buildings = savedBuildings,
@@ -517,7 +531,7 @@ namespace Buildings
             {
                 var probableBuilding = _currentlyBuildBuildings.Find(x => (int)
                     x.BuildingMainData.Type == (int)savedBuilding.TypeOfBuilding);
-                
+
                 if (probableBuilding != null)
                 {
                     probableBuilding.CurrentLevel = savedBuilding.CurrentLevel;
@@ -537,9 +551,9 @@ namespace Buildings
                     HandleBuiltOfBuilding(_buildingsDatabase.allBuildings.Find(
                         x => x.Type == savedBuilding.TypeOfBuilding), true);
 
-                    probableBuilding = _currentlyBuildBuildings.Find(x => 
+                    probableBuilding = _currentlyBuildBuildings.Find(x =>
                         x.BuildingMainData.Type == savedBuilding.TypeOfBuilding);
-                    
+
                     probableBuilding.CurrentLevel = savedBuilding.CurrentLevel;
                     probableBuilding.HaveWorker = savedBuilding.HaveWorker;
                     probableBuilding.IsDamaged = savedBuilding.IsDamaged;
@@ -577,16 +591,17 @@ namespace Buildings
         public bool IsProtected;
         public int CurrentTechnologyLvl;
     }
+
     [Serializable]
     public struct BuildingManagerSavedData
     {
         public List<BuildingSavedData> Buildings;
         public int ResourcesStoredInBasement;
-        public int CurrentResourcePoints; 
+        public int CurrentResourcePoints;
         public int CurrentDefensePoints;
-        public int ShardsOfDestinyAmount; 
+        public int ShardsOfDestinyAmount;
     }
-    
+
     [Serializable]
     public class BuildingTransforms
     {
