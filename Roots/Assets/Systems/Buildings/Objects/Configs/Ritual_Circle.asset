@@ -18,7 +18,7 @@ MonoBehaviour:
   InGameSprite: {fileID: 21300000, guid: 41482bc6d2cb5be4ea997537570e0cdc, type: 3}
   FirstStageBuilding: {fileID: 21300000, guid: 8995303cd28cbc54da32d93b466882d8, type: 3}
   UpgradeStage: {fileID: 21300000, guid: 8995303cd28cbc54da32d93b466882d8, type: 3}
-  DestroyedStage: {fileID: -9179253590355196134, guid: 9ddcd19eab034224eaf07a779363130e, type: 3}
+  DestroyedStage: {fileID: 21300000, guid: 9ddcd19eab034224eaf07a779363130e, type: 3}
   Description: Noone knows what exactly comes with storm but runes created in Ritual
     Circle always helps to keep danger away.
   BaseCottageLevelNeeded: 2

@@ -18,7 +18,7 @@ MonoBehaviour:
   InGameSprite: {fileID: 21300000, guid: 0f4fbc4f152f2504a8f557c76f55cf88, type: 3}
   FirstStageBuilding: {fileID: 21300000, guid: 1a7d1a34ba108db418956b802ad5eba9, type: 3}
   UpgradeStage: {fileID: 21300000, guid: 6f327b8b7a3f6334fbc1f7f7822c06f1, type: 3}
-  DestroyedStage: {fileID: 3883674035356708526, guid: 61fc9b3b9d2c89f449d9c7971b0a607d, type: 3}
+  DestroyedStage: {fileID: 21300000, guid: 61fc9b3b9d2c89f449d9c7971b0a607d, type: 3}
   Description: Main source of food for all workers. Every level up unlocks additional
     worker.
   BaseCottageLevelNeeded: 1

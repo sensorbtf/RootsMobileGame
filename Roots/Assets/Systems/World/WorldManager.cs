@@ -35,7 +35,7 @@ namespace World
         public event Action OnResourcesRequirementsMeet;
         public event Action OnLeaveDecision;
         public event Action OnDefendingVillage;
-        public event Action OnMissionProgress;
+        public event Action OnQuestsProgress;
         public event Action OnNewMissionStart;
 
         public event Action<int> OnStormCheck;
@@ -50,8 +50,8 @@ namespace World
             }
 
             buildingsManager.OnPointsGathered += HandleOverallResourcesQuests;
-            buildingsManager.OnBuildingStateChanged += CheckBuildingsMissions;
-            buildingsManager.OnBuildingTechnologyLvlUp += CheckTechnologyBuildingsMissions;
+            buildingsManager.OnBuildingStateChanged += CheckBuildingsQuests;
+            buildingsManager.OnBuildingTechnologyLvlUp += CheckTechnologyBuildingsQuests;
         }
 
         public void StartNewDay()
@@ -154,7 +154,7 @@ namespace World
             if (p_progressInMissions)
             {
                 _currentMission++;
-                OnMissionProgress?.Invoke();
+                OnQuestsProgress?.Invoke();
             }
 
             _currentDay = 1;
@@ -277,7 +277,7 @@ namespace World
             return textToReturn;
         }
 
-        private void CheckBuildingsMissions(Building p_building)
+        private void CheckBuildingsQuests(Building p_building)
         {
             foreach (var quest in CurrentQuests)
             {
@@ -295,10 +295,10 @@ namespace World
                 }
             }
 
-            OnMissionProgress?.Invoke();
+            OnQuestsProgress?.Invoke();
         }
 
-        private void CheckTechnologyBuildingsMissions(Building p_building)
+        private void CheckTechnologyBuildingsQuests(Building p_building)
         {
             foreach (var quest in CurrentQuests)
             {
@@ -310,7 +310,7 @@ namespace World
                     quest.IsCompleted = true;
             }
 
-            OnMissionProgress?.Invoke();
+            OnQuestsProgress?.Invoke();
         }
 
         public void HandleMinigamesQuests(PointsType p_pointsType, int p_pointsNumber, BuildingType p_building)
@@ -336,12 +336,11 @@ namespace World
                 }
             }
 
-            OnMissionProgress?.Invoke();
+            OnQuestsProgress?.Invoke();
         }
 
-        public void
-            HandleOverallResourcesQuests(PointsType p_pointsType,
-                int p_pointsNumber) // get points only from gathering or minigame
+        private void HandleOverallResourcesQuests(PointsType p_pointsType, int p_pointsNumber) 
+            // get points only from gathering or minigame
         {
             foreach (var quest in CurrentQuests)
             {
@@ -358,7 +357,7 @@ namespace World
                 }
             }
 
-            OnMissionProgress?.Invoke();
+            OnQuestsProgress?.Invoke();
         }
 
         public void HandleRankUp()
@@ -371,8 +370,8 @@ namespace World
         {
             foreach (var building in buildingsManager.CurrentBuildings)
             {
-                CheckBuildingsMissions(building);
-                CheckTechnologyBuildingsMissions(building);
+                CheckBuildingsQuests(building);
+                CheckTechnologyBuildingsQuests(building);
             }
         }
 
@@ -400,6 +399,9 @@ namespace World
             _currentRank = p_data.CurrentRank;
             _finalHiddenStormDay = p_data.FinalHiddenStormDay;
             _stormPower = p_data.StormPower;
+            
+            OnNewMissionStart?.Invoke();
+            OnQuestsProgress?.Invoke();
         }
     }
 

@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Type: 5
   MainPrefab: {fileID: 1328426712780355558, guid: 23727b9fbdc3c4a4396c46a286866902, type: 3}
-  Icon: {fileID: 21300000, guid: 3a5a39d4c84a87d4f832fa7cc8f33476, type: 3}
-  InGameSprite: {fileID: 21300000, guid: 3a5a39d4c84a87d4f832fa7cc8f33476, type: 3}
+  Icon: {fileID: 21300000, guid: 7af3cfd7bd4051c4fb15a1a6854835c1, type: 3}
+  InGameSprite: {fileID: 21300000, guid: 7af3cfd7bd4051c4fb15a1a6854835c1, type: 3}
   FirstStageBuilding: {fileID: 21300000, guid: b83c2691c8275be46ba4e8176ba855b8, type: 3}
   UpgradeStage: {fileID: 21300000, guid: ddcc2c61ccb27b1418fcf1292c547c4b, type: 3}
-  DestroyedStage: {fileID: 5877494740502215166, guid: 3111708103f567d478feeb285a4dd8e7, type: 3}
+  DestroyedStage: {fileID: 21300000, guid: 3111708103f567d478feeb285a4dd8e7, type: 3}
   Description: A mine shaft, going deeper into the guts of the Earth with each successive
     level. It allows the extraction of various types of raw materials.
   BaseCottageLevelNeeded: 2

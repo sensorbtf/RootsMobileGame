@@ -33,6 +33,7 @@ namespace InGameUi
         [SerializeField] private GameObject StormSliderBackground;
         [SerializeField] private GameObject StormDaysPrefab;
         [SerializeField] private GameObject StormHandle;
+        [SerializeField] private GameObject RankGo;
         
         [SerializeField] private Sprite StormImage;
         [SerializeField] private Sprite SunImage;
@@ -125,7 +126,7 @@ namespace InGameUi
 
             _worldManager.CurrentQuests[0].OnCompletion += HandleFirstQuestCompletion;
             _worldManager.CurrentQuests[1].OnCompletion += HandleSecondQuestCompletion;
-            _worldManager.OnMissionProgress += RefreshQuestsText;
+            _worldManager.OnQuestsProgress += RefreshQuestsText;
             _worldManager.OnNewMissionStart += RefreshStormSlider;
             _worldManager.OnNewDayStarted += NewDayHandler;
             _worldManager.OnStormCheck += CheckNextDaysOnDemand;
@@ -470,7 +471,7 @@ namespace InGameUi
 
             if (_worldManager.CurrentMission >= _worldManager.NeededMissionToRankUp)
             {
-                var button = _currentRankText.GetComponent<Button>();
+                var button = RankGo.GetComponent<Button>();
                 _currentRankText.text = "Click To Rank Up";
                 button.onClick.RemoveAllListeners();
                 button.onClick.AddListener(HandleQuestsCompletion);
@@ -496,7 +497,7 @@ namespace InGameUi
             _worldManager.CurrentQuests[0].OnCompletion += HandleFirstQuestCompletion;
             _worldManager.CurrentQuests[1].OnCompletion += HandleSecondQuestCompletion;
 
-            _currentRankText.GetComponent<Button>().interactable = false;
+            RankGo.GetComponent<Button>().interactable = false;
             _worldManager.CheckNewQuests();
             RefreshQuestsText();
         }
