@@ -11,6 +11,7 @@ namespace Buildings
         [SerializeField] private WorkersManager _workersManager; // need to extend
         [SerializeField] private BuildingTransforms[] _placesForBuildings; // need to extend
         [SerializeField] private BuildingDatabase _buildingsDatabase;
+        [SerializeField] private int _startingDestinyPoints = 50;
 
         private List<Building> _currentlyBuildBuildings;
         private int _resourcesStoredInBasement = 0;
@@ -101,7 +102,7 @@ namespace Buildings
                 }
             }
 
-            HandlePointsManipulation(PointsType.ShardsOfDestiny, 250, true);
+            HandlePointsManipulation(PointsType.ShardsOfDestiny, _startingDestinyPoints, true);
             _currentlyBuildBuildings.Find(x => x.BuildingMainData.Type == BuildingType.Cottage).IsDamaged = true;
         }
 

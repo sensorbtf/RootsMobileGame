@@ -129,6 +129,7 @@ MonoBehaviour:
   CurrentDayOnQueue: 0
   CurrentTechnologyDayOnQueue: 0
   HaveSomethingToCollect: 0
+  CanEndBuildingSequence: 0
   IsBeeingUpgradedOrBuilded: 0
   IsProtected: 0
   CurrentTechnologyLvl: 0
@@ -206,11 +207,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3504304118024531474, guid: 0919e5fe905fb0140b8383c0ac707b43, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 0.05
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 3504304118024531474, guid: 0919e5fe905fb0140b8383c0ac707b43, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 10.9
+      value: 12.53
       objectReference: {fileID: 0}
     - target: {fileID: 3504304118024531474, guid: 0919e5fe905fb0140b8383c0ac707b43, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -359,6 +360,18 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: 4e69dfbbdc1157d44aee0225c3291d03, type: 3}
+    - target: {fileID: 7782280717702744981, guid: f89c2262d3f414c41ba14e629414b622, type: 3}
+      propertyPath: m_Color.b
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7782280717702744981, guid: f89c2262d3f414c41ba14e629414b622, type: 3}
+      propertyPath: m_Color.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7782280717702744981, guid: f89c2262d3f414c41ba14e629414b622, type: 3}
+      propertyPath: m_Color.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7782280717702744981, guid: f89c2262d3f414c41ba14e629414b622, type: 3}
       propertyPath: m_WasSpriteAssigned
       value: 1
