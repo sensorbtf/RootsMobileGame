@@ -1,26 +1,14 @@
 using Buildings;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using Random = UnityEngine.Random;
+
 namespace Minigames
 {
-    public class RandomRightLeftClickingMinigame :Minigame
+    public class RandomRightLeftClickingMinigame : Minigame
     {
         [SerializeField] private Button _leftSideButton;
         [SerializeField] private Button _rightSideButton;
-
-        public override void StartTheGame(Building p_building)
-        {
-            base.StartTheGame(p_building);
-
-            _score = 0;
-
-            _leftSideButton.onClick.AddListener(AddScore);
-            _rightSideButton.onClick.AddListener(AddScore);
-            _leftSideButton.interactable = false;
-            _rightSideButton.interactable = false;
-
-        }
 
         private new void Update()
         {
@@ -37,10 +25,22 @@ namespace Minigames
             }
         }
 
+        public override void StartTheGame(Building p_building)
+        {
+            base.StartTheGame(p_building);
+
+            _score = 0;
+
+            _leftSideButton.onClick.AddListener(AddScore);
+            _rightSideButton.onClick.AddListener(AddScore);
+            _leftSideButton.interactable = false;
+            _rightSideButton.interactable = false;
+        }
+
         public override void AddScore()
         {
             _score += _efficiency;
-            StartInteractableMinigame(); 
+            StartInteractableMinigame();
             _scoreText.text = $"Score: {_score:F2}";
         }
 

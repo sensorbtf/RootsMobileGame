@@ -9,27 +9,28 @@ namespace World
 {
     public class WorldManager : MonoBehaviour
     {
-        [FormerlySerializedAs("_buildingManager")] [SerializeField] private BuildingsManager buildingsManager;
+        [FormerlySerializedAs("_buildingManager")] [SerializeField]
+        private BuildingsManager buildingsManager;
+
         [SerializeField] private WorkersManager _workersManager;
         [SerializeField] private Mission[] _missionData;
         [SerializeField] private CurrentQuests[] _questData;
-        [SerializeField] private int _startingWorldResources = 0;
+        [SerializeField] private int _startingWorldResources;
 
-        private int _currentDay = 0;
-        private int _currentMission = 0;
-        private int _currentRank = 0;
-        private int _finalHiddenStormDay = -1;
-        private int _stormPower;
+        public Quest[] CurrentQuests => _questData[CurrentRank].CurrentLevelQuests;
+        public int NeededMissionToRankUp => _questData[CurrentRank].NeededMissionToRankUp;
+        public int RequiredResourcePoints => _missionData[CurrentMission].NeededResourcePoints;
+        public int CurrentDay { get; private set; }
 
-        public Quest[] CurrentQuests => _questData[_currentRank].CurrentLevelQuests;
-        public int NeededMissionToRankUp => _questData[_currentRank].NeededMissionToRankUp;
-        public int RequiredResourcePoints => _missionData[_currentMission].NeededResourcePoints;
-        public int CurrentDay => _currentDay;
-        public int CurrentRank => _currentRank;
-        public int CurrentMission => _currentMission;
-        public int FinalHiddenStormDay => _finalHiddenStormDay;
-        public int StormPower => _stormPower;
-        public Vector2Int StormDaysRange => _missionData[_currentMission].DaysOfStormRange;
+        public int CurrentRank { get; private set; }
+
+        public int CurrentMission { get; private set; }
+
+        public int FinalHiddenStormDay { get; private set; } = -1;
+
+        public int StormPower { get; private set; }
+
+        public Vector2Int StormDaysRange => _missionData[CurrentMission].DaysOfStormRange;
 
         public event Action OnNewDayStarted;
         public event Action OnResourcesRequirementsMeet;
@@ -44,10 +45,7 @@ namespace World
         public void CustomStart(bool p_willBeLoaded)
         {
             buildingsManager.StartOnWorld(p_willBeLoaded);
-            if (!p_willBeLoaded)
-            {
-                StartMission(true);
-            }
+            if (!p_willBeLoaded) StartMission(true);
 
             buildingsManager.OnPointsGathered += HandleOverallResourcesQuests;
             buildingsManager.OnBuildingStateChanged += CheckBuildingsQuests;
@@ -56,11 +54,13 @@ namespace World
 
         public void StartNewDay()
         {
-            _currentDay++;
+            CurrentDay++;
             _workersManager.BaseWorkersAmounts = buildingsManager.GetFarmProductionAmount;
 
-            if (_currentDay == _finalHiddenStormDay)
+            if (CurrentDay == FinalHiddenStormDay)
+            {
                 EndMission(false, false);
+            }
             else
             {
                 HandleNewDayStarted();
@@ -101,15 +101,10 @@ namespace World
             else
             {
                 if (StormPower > buildingsManager.CurrentDefensePoints) // loss
-                {
                     HandleEndMissionConsequences(false, false);
-                }
                 else
-                {
                     OnDefendingVillage?.Invoke();
-                    return;
-                    //HandleEndMissionConsequences(p_lowerDamages, true);
-                }
+                //HandleEndMissionConsequences(p_lowerDamages, true);
             }
         }
 
@@ -126,14 +121,14 @@ namespace World
 
         public void HandleEndMissionConsequences(bool p_lowerDamages, bool p_haveWon)
         {
-            List<BuildingType> damagedBuildings = new List<BuildingType>();
+            var damagedBuildings = new List<BuildingType>();
 
             foreach (var building in buildingsManager.CurrentBuildings)
             {
                 if (building.IsProtected)
                     continue;
 
-                int random = Random.Range(0, p_lowerDamages ? 3 : 5);
+                var random = Random.Range(0, p_lowerDamages ? 3 : 5);
 
                 if (random == 1) // need better evaluation
                 {
@@ -148,24 +143,24 @@ namespace World
 
         public void StartMission(bool p_progressInMissions) // if !progress == lower points in ranking
         {
-            if (_currentMission == 0)
+            if (CurrentMission == 0)
                 buildingsManager.HandlePointsManipulation(PointsType.Resource, _startingWorldResources, true);
 
             if (p_progressInMissions)
             {
-                _currentMission++;
+                CurrentMission++;
                 OnQuestsProgress?.Invoke();
             }
 
-            _currentDay = 1;
+            CurrentDay = 1;
 
-            _stormPower = Random.Range(_missionData[_currentMission].StormPowerRange.x,
-                _missionData[_currentMission].StormPowerRange.y);
-            _finalHiddenStormDay = Random.Range(_missionData[_currentMission].DaysOfStormRange.x,
-                _missionData[_currentMission].DaysOfStormRange.y);
+            StormPower = Random.Range(_missionData[CurrentMission].StormPowerRange.x,
+                _missionData[CurrentMission].StormPowerRange.y);
+            FinalHiddenStormDay = Random.Range(_missionData[CurrentMission].DaysOfStormRange.x,
+                _missionData[CurrentMission].DaysOfStormRange.y);
 
-            Debug.Log("Storm power" + _stormPower + "_finalHiddenStormDay" + _finalHiddenStormDay
-                      + " in " + _currentMission + " mission");
+            Debug.Log("Storm power" + StormPower + "_finalHiddenStormDay" + FinalHiddenStormDay
+                      + " in " + CurrentMission + " mission");
 
             HandleResourceBasementTransition(false); //get resources from basement
             _workersManager.BaseWorkersAmounts = buildingsManager.GetFarmProductionAmount;
@@ -267,7 +262,7 @@ namespace World
                         $"{CurrentQuests[p_index].AchievedTargetAmount}/{CurrentQuests[p_index].SpecificQuest.TargetAmount}";
                     break;
                 case QuestType.RepairBuilding:
-                    textToReturn = $"Repair Building 0/1";
+                    textToReturn = "Repair Building 0/1";
                     break;
                 case QuestType.DoMinigame:
                     textToReturn = $"Do Minigame in {CurrentQuests[p_index].SpecificQuest.TargetName}";
@@ -318,43 +313,33 @@ namespace World
             foreach (var quest in CurrentQuests)
             {
                 if (quest.SpecificQuest.QuestKind is QuestType.MinigameResourcePoints or QuestType.ResourcePoints)
-                {
                     if (p_pointsType is PointsType.Resource or PointsType.ResourcesAndDefense)
                         quest.AchievedTargetAmount += p_pointsNumber;
-                }
 
                 if (quest.SpecificQuest.QuestKind is QuestType.MinigameDefensePoints or QuestType.DefensePoints)
-                {
                     if (p_pointsType is PointsType.Defense or PointsType.ResourcesAndDefense)
                         quest.AchievedTargetAmount += p_pointsNumber;
-                }
 
                 if (quest.SpecificQuest.QuestKind == QuestType.DoMinigame &&
                     quest.SpecificQuest.TargetName == p_building)
-                {
                     quest.IsCompleted = true;
-                }
             }
 
             OnQuestsProgress?.Invoke();
         }
 
-        private void HandleOverallResourcesQuests(PointsType p_pointsType, int p_pointsNumber) 
+        private void HandleOverallResourcesQuests(PointsType p_pointsType, int p_pointsNumber)
             // get points only from gathering or minigame
         {
             foreach (var quest in CurrentQuests)
             {
                 if (quest.SpecificQuest.QuestKind == QuestType.ResourcePoints)
-                {
                     if (p_pointsType is PointsType.Resource or PointsType.ResourcesAndDefense)
                         quest.AchievedTargetAmount += p_pointsNumber;
-                }
 
                 if (quest.SpecificQuest.QuestKind == QuestType.DefensePoints)
-                {
                     if (p_pointsType is PointsType.Defense or PointsType.ResourcesAndDefense)
                         quest.AchievedTargetAmount += p_pointsNumber;
-                }
             }
 
             OnQuestsProgress?.Invoke();
@@ -362,7 +347,7 @@ namespace World
 
         public void HandleRankUp()
         {
-            _currentRank++;
+            CurrentRank++;
             buildingsManager.HandleUpgradeOfBuilding(BuildingType.Cottage, true);
         }
 
@@ -382,24 +367,24 @@ namespace World
 
         public WorldManagerSavedData GetSavedData()
         {
-            return new WorldManagerSavedData()
+            return new WorldManagerSavedData
             {
-                CurrentDay = _currentDay,
-                CurrentMission = _currentMission,
-                CurrentRank = _currentRank,
-                FinalHiddenStormDay = _finalHiddenStormDay,
-                StormPower = _stormPower,
+                CurrentDay = CurrentDay,
+                CurrentMission = CurrentMission,
+                CurrentRank = CurrentRank,
+                FinalHiddenStormDay = FinalHiddenStormDay,
+                StormPower = StormPower
             };
         }
 
         public void LoadSavedData(WorldManagerSavedData p_data)
         {
-            _currentDay = p_data.CurrentDay;
-            _currentMission = p_data.CurrentMission;
-            _currentRank = p_data.CurrentRank;
-            _finalHiddenStormDay = p_data.FinalHiddenStormDay;
-            _stormPower = p_data.StormPower;
-            
+            CurrentDay = p_data.CurrentDay;
+            CurrentMission = p_data.CurrentMission;
+            CurrentRank = p_data.CurrentRank;
+            FinalHiddenStormDay = p_data.FinalHiddenStormDay;
+            StormPower = p_data.StormPower;
+
             OnNewMissionStart?.Invoke();
             OnQuestsProgress?.Invoke();
         }
@@ -429,6 +414,6 @@ namespace World
         FreeSkip = 1,
         PaidSkip = 2,
         AddSkip = 3,
-        NormalTimeSkip = 4,
+        NormalTimeSkip = 4
     }
 }

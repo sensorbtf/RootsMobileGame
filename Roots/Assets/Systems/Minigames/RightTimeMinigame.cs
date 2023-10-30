@@ -1,22 +1,22 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace Minigames
 {
-    public class RightTimeMinigame : MonoBehaviour // slider going from left to right. Player need to click in right moment (time => points possibility, efficiency == wider 
+    public class
+        RightTimeMinigame : MonoBehaviour // slider going from left to right. Player need to click in right moment (time => points possibility, efficiency == wider 
     {
         [SerializeField] private Button _gameModeButton;
-        [SerializeField] private TextMeshProUGUI _time;
         [SerializeField] private TextMeshProUGUI _score;
-
-        private float timer;
+        [SerializeField] private TextMeshProUGUI _time;
         private bool isGameActive;
 
-        private void Start()// simple clicker
+        private int score;
+
+        private float timer;
+
+        private void Start() // simple clicker
         {
         }
 
@@ -37,7 +37,6 @@ namespace Minigames
             }
         }
 
-        private int score = 0;
         private void AddScore()
         {
             score++;

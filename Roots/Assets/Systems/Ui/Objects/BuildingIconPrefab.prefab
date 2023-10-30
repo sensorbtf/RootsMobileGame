@@ -479,11 +479,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 728bc55e39861c24bb9f74d2ada71533, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BuildingIcon: {fileID: 2402062608438806067}
   NewGo: {fileID: 3790342802254995848}
-  NewInfo: {fileID: 6718188426450349247}
   InfoGo: {fileID: 9097654034079060421}
+  BuildingIcon: {fileID: 2402062608438806067}
   Informations: {fileID: 61933066463654649}
+  NewInfo: {fileID: 6718188426450349247}
 --- !u!1 &9097654034079060421
 GameObject:
   m_ObjectHideFlags: 0

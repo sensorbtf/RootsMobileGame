@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Woodcutter
   m_EditorClassIdentifier: 
   Type: 3
+  GodType: 2
   MainPrefab: {fileID: 1328426712780355558, guid: efe508c3f607fb840a7ca536f1f90ed4, type: 3}
   Icon: {fileID: 21300000, guid: 25f6559d4c860f24ca4b50da3e24a595, type: 3}
   InGameSprite: {fileID: 21300000, guid: 25f6559d4c860f24ca4b50da3e24a595, type: 3}

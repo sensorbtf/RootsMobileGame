@@ -8,7 +8,6 @@ namespace World
     {
         [SerializeField] public Quest[] CurrentLevelQuests;
         [SerializeField] public int NeededMissionToRankUp;
-
     }
 
     [Serializable]
@@ -16,10 +15,12 @@ namespace World
     {
         public QuestSO SpecificQuest;
 
-        public Action<Quest> OnCompletion;
+        private int _achievedTargetAmount;
 
-        private bool _isCompleted = false;
-        private bool _isRedeemed = false;
+        private bool _isCompleted;
+        private bool _isRedeemed;
+
+        public Action<Quest> OnCompletion;
 
         public bool IsCompleted
         {
@@ -27,32 +28,24 @@ namespace World
             set
             {
                 _isCompleted = value;
-                if (_isCompleted)
-                {
-                    OnCompletion?.Invoke(this);
-                }
+                if (_isCompleted) OnCompletion?.Invoke(this);
             }
         }
-        
+
         public bool IsRedeemed
         {
             get => _isRedeemed;
             set => _isRedeemed = value;
         }
 
-        private int _achievedTargetAmount = 0;
-
         public int AchievedTargetAmount
         {
             get => _achievedTargetAmount;
             set
-            { 
+            {
                 _achievedTargetAmount = value;
 
-                if (_achievedTargetAmount >= SpecificQuest.TargetAmount)
-                {
-                    IsCompleted = true;
-                }
+                if (_achievedTargetAmount >= SpecificQuest.TargetAmount) IsCompleted = true;
             }
         }
     }

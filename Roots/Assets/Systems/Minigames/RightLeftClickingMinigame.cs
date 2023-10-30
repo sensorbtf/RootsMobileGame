@@ -1,14 +1,31 @@
-using Buildings;
 using System;
+using Buildings;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace Minigames
 {
-    public class RightLeftClickingMinigame: Minigame
+    public class RightLeftClickingMinigame : Minigame
     {
         [SerializeField] private Button _leftSideButton;
         [SerializeField] private Button _rightSideButton;
+
+        private new void Update()
+        {
+            _timeText.text = $"Achieve {_timer} points";
+
+            if (_score >= _timer) // needed points
+            {
+                _timer = 0;
+                _isGameActive = false;
+                _collectPointsButton.interactable = true;
+                _leftSideButton.interactable = false;
+                _rightSideButton.interactable = false;
+                _timeText.text = "Check storm in 2 days";
+                OnStormReveal?.Invoke((int)_efficiency);
+            }
+        }
 
         public event Action<int> OnStormReveal;
 
@@ -22,23 +39,6 @@ namespace Minigames
             _rightSideButton.onClick.AddListener(AddScore);
             _leftSideButton.interactable = false;
             _rightSideButton.interactable = false;
-
-        }
-
-        private new void Update()
-        {
-            _timeText.text = $"Achieve {_timer} points";
-
-            if (_score >= _timer) // needed points
-            {
-                _timer = 0;
-                _isGameActive = false;
-                _collectPointsButton.interactable = true;
-                _leftSideButton.interactable = false;
-                _rightSideButton.interactable = false;
-                _timeText.text = $"Check storm in 2 days";
-                OnStormReveal?.Invoke((int)_efficiency);
-            }
         }
 
         public override void AddScore()

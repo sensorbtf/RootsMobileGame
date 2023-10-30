@@ -2,7 +2,6 @@
 using System.IO;
 using Buildings;
 using UnityEngine;
-using UnityEngine.Serialization;
 using World;
 
 namespace Saving
@@ -11,12 +10,10 @@ namespace Saving
     {
         [SerializeField] private WorldManager _worldManager;
         [SerializeField] private BuildingsManager _buildingsManager;
-        
+
         private string _path;
 
-        public event Action<MainGameManagerSavedData> OnLoad;
-
-        void Awake()
+        private void Awake()
         {
             _path = Application.persistentDataPath + "/gameData.json";
 
@@ -25,20 +22,22 @@ namespace Saving
             // _mainGameManager.OnResetProgress += ResetSave;
         }
 
+        public event Action<MainGameManagerSavedData> OnLoad;
+
         public void SaveMainGame(MainGameManagerSavedData p_data)
         {
             var path = Application.persistentDataPath + "/gameData.json";
-            
-            GameData gameData = new GameData
+
+            var gameData = new GameData
             {
                 WorldManagerSavedData = _worldManager.GetSavedData(),
                 BuildingManagerSavedData = _buildingsManager.GetSavedData(),
-                MainSavedData = p_data,
+                MainSavedData = p_data
             };
-            
-            string json = JsonUtility.ToJson(gameData);
+
+            var json = JsonUtility.ToJson(gameData);
             File.WriteAllText(path, json);
-            
+
             Debug.Log($"Saved to: {path}");
         }
 
@@ -49,13 +48,13 @@ namespace Saving
 
             var json = File.ReadAllText(_path);
             var gameData = JsonUtility.FromJson<GameData>(json);
-            
+
             _worldManager.LoadSavedData(gameData.WorldManagerSavedData);
             _buildingsManager.LoadSavedData(gameData.BuildingManagerSavedData);
-            
+
             OnLoad?.Invoke(gameData.MainSavedData);
         }
-        
+
         public void ResetSave()
         {
             Debug.Log("Save Deleted");
@@ -67,7 +66,7 @@ namespace Saving
             return File.Exists(_path);
         }
     }
-    
+
     [Serializable]
     public struct GameData
     {
@@ -75,13 +74,13 @@ namespace Saving
         public WorldManagerSavedData WorldManagerSavedData;
         public BuildingManagerSavedData BuildingManagerSavedData;
     }
-    
+
     [Serializable]
     public struct MainGameManagerSavedData
     {
-        public DateTime TimeOfWorkersSet;
         public int FreeDaysSkipAmount;
         public int CurrentPlayerState;
         public float TimeLeftInSeconds;
+        public DateTime TimeOfWorkersSet;
     }
 }

@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Alchemical_Hut
   m_EditorClassIdentifier: 
   Type: 4
+  GodType: 8
   MainPrefab: {fileID: 1328426712780355558, guid: 519c542da69cb7c4a9662fd3128ba8d3, type: 3}
   Icon: {fileID: 21300000, guid: 2031108354133e443b42e7278b7e76ab, type: 3}
   InGameSprite: {fileID: 21300000, guid: 2031108354133e443b42e7278b7e76ab, type: 3}
@@ -21,7 +22,7 @@ MonoBehaviour:
   DestroyedStage: {fileID: 21300000, guid: 29c6e68dab3019a479ae74cacf4d5026, type: 3}
   Description: 'Place where magic and science meets, to provide you with resources
     and defence points. '
-  BaseCottageLevelNeeded: 2
+  BaseCottageLevelNeeded: 5
   LevelToEnableMinigame: 2
   PerLevelData:
   - Requirements:

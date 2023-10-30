@@ -32,8 +32,8 @@ Transform:
   m_LocalScale: {x: 2.5, y: 2.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 2719830546844117594}
   - {fileID: 8439736024323659261}
+  - {fileID: 3715612518592448512}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!61 &2935468827777157681
@@ -125,7 +125,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   BuildingMainData: {fileID: 11400000, guid: 057424bd9eb95b946b96ac5f0803a69c, type: 2}
   InGameIcon: {fileID: 505754554763115416}
-  GatheringIcon: {fileID: 6315732626488919103}
+  GatheringIcon: {fileID: 4723075076367541861}
   CurrentDayOnQueue: 0
   CurrentTechnologyDayOnQueue: 0
   HaveSomethingToCollect: 0
@@ -141,6 +141,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 287201302083959740}
     m_Modifications:
+    - target: {fileID: 2778594087217826888, guid: 0919e5fe905fb0140b8383c0ac707b43, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.19
+      objectReference: {fileID: 0}
+    - target: {fileID: 2778594087217826888, guid: 0919e5fe905fb0140b8383c0ac707b43, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 14.3
+      objectReference: {fileID: 0}
     - target: {fileID: 3504304118024531474, guid: 0919e5fe905fb0140b8383c0ac707b43, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -254,14 +262,14 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0919e5fe905fb0140b8383c0ac707b43, type: 3}
---- !u!224 &2719830546844117594 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 3504304118024531474, guid: 0919e5fe905fb0140b8383c0ac707b43, type: 3}
+--- !u!4 &3715612518592448512 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 2778594087217826888, guid: 0919e5fe905fb0140b8383c0ac707b43, type: 3}
   m_PrefabInstance: {fileID: 1521950040370447432}
   m_PrefabAsset: {fileID: 0}
---- !u!212 &6315732626488919103 stripped
+--- !u!212 &4723075076367541861 stripped
 SpriteRenderer:
-  m_CorrespondingSourceObject: {fileID: 4808419585556185207, guid: 0919e5fe905fb0140b8383c0ac707b43, type: 3}
+  m_CorrespondingSourceObject: {fileID: 6094697120958210605, guid: 0919e5fe905fb0140b8383c0ac707b43, type: 3}
   m_PrefabInstance: {fileID: 1521950040370447432}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7711563348952461325

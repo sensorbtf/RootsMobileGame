@@ -7,8 +7,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-// should have been "keep same displacement on new day"
-
 namespace InGameUi
 {
     public class WorkersPanel : MonoBehaviour
@@ -20,19 +18,19 @@ namespace InGameUi
         [SerializeField] private BuildingPanel _buildingPanel;
         [SerializeField] private GatheringDefensePanel _gatheringDefensePanel;
         [SerializeField] private GodsPanel _godsPanel;
-
-        [SerializeField] private TextMeshProUGUI _tabName;
-        [SerializeField] private TextMeshProUGUI _numberOfWorkers;
         [SerializeField] private GameObject _iconPrefab;
         [SerializeField] private GameObject _barPrefab;
-        [SerializeField] private GameObject _finishWorkersAssigningButton;
         [SerializeField] private Transform contentTransform;
 
+        [SerializeField] private GameObject _finishAssigning;
         [SerializeField] private Button _activateButton;
+        [SerializeField] private TextMeshProUGUI _activateButtonText;
         [SerializeField] private Button _godsButton;
+        [SerializeField] private TextMeshProUGUI _numberOfWorkers;
 
         private List<GameObject> _runtimeBuildingsUiToDestroy;
-        private TextMeshProUGUI _buttonText;
+
+        [SerializeField] private TextMeshProUGUI _tabName;
 
         private void Start()
         {
@@ -42,9 +40,8 @@ namespace InGameUi
             _gameManager.OnPlayerStateChange += ActivatePanel;
             _godsButton.onClick.AddListener(_godsPanel.ActivatePanel);
 
-            _buttonText = _finishWorkersAssigningButton.GetComponentInChildren<TextMeshProUGUI>();
             _runtimeBuildingsUiToDestroy = new List<GameObject>();
-            
+
             gameObject.SetActive(false);
         }
 
@@ -65,12 +62,12 @@ namespace InGameUi
             UpdateWorkersText();
             UpdateButtonText();
 
-            for (int i = 0; i < 3; i++)
+            for (var i = 0; i < 3; i++)
             {
                 var newBar = Instantiate(_barPrefab, contentTransform);
                 _runtimeBuildingsUiToDestroy.Add(newBar);
                 var scriptOfBar = newBar.GetComponent<WorkersDisplacementBarRefs>();
-                int points = 0;
+                var points = 0;
                 GameObject newEntry = null;
 
                 switch (i)
@@ -81,55 +78,41 @@ namespace InGameUi
                         foreach (var data in _buildingPanel.BuildingsToShow)
                         {
                             newEntry = Instantiate(_iconPrefab, scriptOfBar.ScrollContext);
-                            ButtonIconPrefabRefs references = newEntry.GetComponent<ButtonIconPrefabRefs>();
+                            var references = newEntry.GetComponent<ButtonIconPrefabRefs>();
 
                             references.NewGo.SetActive(true);
                             references.InfoGo.SetActive(true);
                             references.NewInfo.text = "In Progress";
 
-                            if (data.Value)
-                            {
-                                references.NewInfo.text = "Will be build";
-                            }
+                            if (data.Value) references.NewInfo.text = "Will be build";
 
                             var building = buildingsManager.CurrentBuildings.Find(x => x.BuildingMainData == data.Key);
 
                             if (building != null)
                             {
                                 references.BuildingIcon.image.sprite = data.Key.Icon;
-                                var daysToComplete = 
+                                var daysToComplete =
                                     building.BuildingMainData.PerLevelData[building.CurrentLevel].Requirements
                                         .DaysToComplete - building.CurrentDayOnQueue;
-                                
+
                                 references.Informations.text = $"End in: {daysToComplete} day(s)";
 
-                                if (data.Value) 
+                                if (data.Value)
                                     continue;
-                                
+
                                 references.NewInfo.text = "Paused";
                                 var willBeCancelled =
-                                    _buildingPanel.WillBuildingBeCancelled(building, out bool wasOnList);
+                                    _buildingPanel.WillBuildingBeCancelled(building, out var wasOnList);
 
                                 if (building.HaveWorker && willBeCancelled)
-                                {
                                     references.NewInfo.text = "Will Be Paused";
-                                }
                                 else if (building.IsDamaged && !building.HaveWorker && !willBeCancelled && wasOnList)
-                                {
                                     references.NewInfo.text = "Will be repaired";
-                                }
                                 else if (building.IsDamaged && !building.HaveWorker && willBeCancelled && wasOnList)
-                                {
                                     references.NewInfo.text = "Will be Paused";
-                                }
                                 else if (!building.HaveWorker && !willBeCancelled && wasOnList)
-                                {
                                     references.NewInfo.text = "Will be resumed";
-                                }
-                                else if (building.HaveWorker)
-                                {   
-                                    references.NewInfo.text = "In Progress";
-                                }
+                                else if (building.HaveWorker) references.NewInfo.text = "In Progress";
                             }
                             else
                             {
@@ -142,21 +125,23 @@ namespace InGameUi
                     case 1:
                         foreach (var building in _gatheringDefensePanel.BuildingsOnQueue)
                         {
-                            if (building.BuildingMainData.PerLevelData[building.CurrentLevel].ProductionType != PointsType.ResourcesAndDefense &&
-                                building.BuildingMainData.PerLevelData[building.CurrentLevel].ProductionType != PointsType.Resource)
+                            if (building.BuildingMainData.PerLevelData[building.CurrentLevel].ProductionType !=
+                                PointsType.ResourcesAndDefense &&
+                                building.BuildingMainData.PerLevelData[building.CurrentLevel].ProductionType !=
+                                PointsType.Resource)
                                 continue;
 
-                            points += building.BuildingMainData.PerLevelData[building.CurrentLevel].ProductionAmountPerDay;
+                            points += buildingsManager.GetProductionOfBuilding(building.BuildingMainData.Type);
 
                             newEntry = Instantiate(_iconPrefab, scriptOfBar.ScrollContext);
                             newEntry.GetComponent<Image>().sprite =
                                 building.BuildingMainData.Icon;
-                            
-                            ButtonIconPrefabRefs references = newEntry.GetComponent<ButtonIconPrefabRefs>();
+
+                            var references = newEntry.GetComponent<ButtonIconPrefabRefs>();
 
                             references.NewGo.SetActive(false);
                             references.InfoGo.SetActive(true);
-                            
+
                             references.Informations.text = "Worker Assigned";
                         }
 
@@ -167,20 +152,22 @@ namespace InGameUi
 
                         foreach (var building in _gatheringDefensePanel.BuildingsOnQueue)
                         {
-                            if (building.BuildingMainData.PerLevelData[building.CurrentLevel].ProductionType != PointsType.ResourcesAndDefense &&
-                                building.BuildingMainData.PerLevelData[building.CurrentLevel].ProductionType != PointsType.Defense)
+                            if (building.BuildingMainData.PerLevelData[building.CurrentLevel].ProductionType !=
+                                PointsType.ResourcesAndDefense &&
+                                building.BuildingMainData.PerLevelData[building.CurrentLevel].ProductionType !=
+                                PointsType.Defense)
                                 continue;
 
-                            points += building.BuildingMainData.PerLevelData[building.CurrentLevel].ProductionAmountPerDay;
+                            points += buildingsManager.GetProductionOfBuilding(building.BuildingMainData.Type);
 
                             newEntry = Instantiate(_iconPrefab, scriptOfBar.ScrollContext);
                             newEntry.GetComponent<Image>().sprite = building.BuildingMainData.Icon;
-                            
-                            ButtonIconPrefabRefs references = newEntry.GetComponent<ButtonIconPrefabRefs>();
+
+                            var references = newEntry.GetComponent<ButtonIconPrefabRefs>();
 
                             references.NewGo.SetActive(false);
                             references.InfoGo.SetActive(true);
-                            
+
                             references.Informations.text = "Worker Assigned";
                         }
 
@@ -191,14 +178,11 @@ namespace InGameUi
                 }
             }
         }
-        
+
 
         private void ClosePanel()
         {
-            foreach (var createdUiElement in _runtimeBuildingsUiToDestroy)
-            {
-                Destroy(createdUiElement);
-            }
+            foreach (var createdUiElement in _runtimeBuildingsUiToDestroy) Destroy(createdUiElement);
 
             _runtimeBuildingsUiToDestroy.Clear();
             CameraController.IsUiOpen = false;
@@ -213,9 +197,7 @@ namespace InGameUi
             _workersManager.ResetAssignedWorkers();
 
             foreach (var building in _buildingPanel.BuildingsToShow.ToList())
-            {
                 _buildingPanel.BuildingsToShow[building.Key] = false;
-            }
 
             _gameManager.SetPlayerState(DuringDayState.DayPassing);
             ClosePanel();
@@ -236,23 +218,24 @@ namespace InGameUi
         private void UpdateWorkersText()
         {
             _buildingPanel.RefreshWorkersAmount();
-            _numberOfWorkers.text = $"Workers: {_workersManager.BaseWorkersAmounts}/{_workersManager.OverallAssignedWorkers}";
+            _numberOfWorkers.text =
+                $"Workers: {_workersManager.BaseWorkersAmounts}/{_workersManager.OverallAssignedWorkers}";
         }
-        
+
         private void UpdateButtonText()
         {
-            _finishWorkersAssigningButton.SetActive(true);
+            _finishAssigning.SetActive(true);
 
             if (_workersManager.BaseWorkersAmounts - _workersManager.OverallAssignedWorkers == 0)
             {
                 _activateButton.onClick.RemoveAllListeners();
                 _activateButton.onClick.AddListener(AssignWorkersForNewDay);
                 _activateButton.interactable = true;
-                _buttonText.text = "Start the day";
+                _activateButtonText.text = "Start the day";
             }
             else
             {
-                _buttonText.text = "Set workers to work";
+                _activateButtonText.text = "Set workers to work";
                 _activateButton.interactable = false;
             }
         }

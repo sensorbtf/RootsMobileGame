@@ -1,8 +1,8 @@
 ﻿using System;
 using Buildings;
+using Saving;
 using UnityEngine;
 using World;
-using Saving;
 
 namespace GameManager
 {
@@ -11,7 +11,7 @@ namespace GameManager
     // przenieś aktualny stan gracza tickowanie czasu z gameplay huda (i wszystko co się da)
     // przenieśc logikę z sejvingu
     // przenieść ogólną logikę z word managera
-    
+
     public class MainGameManager : MonoBehaviour
     {
         [SerializeField] private WorldManager _worldManager;
@@ -21,23 +21,18 @@ namespace GameManager
         [SerializeField] private int _oneDayTimerDurationInSeconds = 60;
         [SerializeField] private int _maxFreeDaysSkipAmount = 3;
 
-        private int _freeDaysSkipAmount;
-        private DuringDayState _currentPlayerState;
-        
-        private bool _canUseSkipByTime = false;
-        private float _timeLeftInSeconds; 
         private DateTime _startTime;
-        private string _timePassed;
-        
-        public int FreeSkipsLeft => _freeDaysSkipAmount;
-        public DuringDayState CurrentPlayerState => _currentPlayerState;
-        public int DestinyShardsSkipPrice => _destinyShardsSkipPrice;
-        public string TimePassed => _timePassed;
-        public bool CanUseSkipByTime => _canUseSkipByTime;
+        private float _timeLeftInSeconds;
 
-        public event Action<DuringDayState> OnPlayerStateChange;
-        public event Action OnDaySkipPossibility;
-        
+        public int FreeSkipsLeft { get; private set; }
+
+        public DuringDayState CurrentPlayerState { get; private set; }
+
+        public int DestinyShardsSkipPrice => _destinyShardsSkipPrice;
+        public string TimePassed { get; private set; }
+
+        public bool CanUseSkipByTime { get; private set; }
+
         private void Start()
         {
             // 0 for no sync, 1 for panel refresh rate, 2 for 1/2 panel rate
@@ -45,24 +40,36 @@ namespace GameManager
             Application.targetFrameRate = 30;
 
             var willBeLoaded = _savingManager.IsSaveAvaiable();
-            
+
             _worldManager.CustomStart(willBeLoaded);
             _savingManager.OnLoad += LoadSavedData;
-            
+
             if (willBeLoaded)
-            {
                 _savingManager.LoadMainGame();
-            }
             else
-            {
                 SetPlayerState(DuringDayState.FinishingBuilding);
-            }
         }
+
+        private void Update() // need server?
+        {
+            var elapsedSeconds = (DateTime.UtcNow - _startTime).TotalSeconds;
+            _timeLeftInSeconds = _oneDayTimerDurationInSeconds - (float)elapsedSeconds;
+
+            var minutes = Mathf.FloorToInt(_timeLeftInSeconds / 60);
+            var seconds = Mathf.FloorToInt(_timeLeftInSeconds % 60);
+
+            if (_timeLeftInSeconds > 0) TimePassed = $"{minutes}:{seconds:00}";
+
+            CheckPlayerState();
+        }
+
+        public event Action<DuringDayState> OnPlayerStateChange;
+        public event Action OnDaySkipPossibility;
 
         private void LoadSavedData(MainGameManagerSavedData p_data)
         {
             SetPlayerState((DuringDayState)p_data.CurrentPlayerState);
-            _freeDaysSkipAmount = p_data.FreeDaysSkipAmount;
+            FreeSkipsLeft = p_data.FreeDaysSkipAmount;
             _timeLeftInSeconds = p_data.TimeLeftInSeconds;
 
             var savedTime = p_data.TimeOfWorkersSet;
@@ -72,71 +79,50 @@ namespace GameManager
             var elapsed = currentTime - savedTime;
             var elapsedSeconds = elapsed.TotalSeconds;
 
-            for (int i = 0; i < _maxFreeDaysSkipAmount; i++)
+            for (var i = 0; i < _maxFreeDaysSkipAmount; i++)
             {
                 elapsedSeconds -= _oneDayTimerDurationInSeconds;
 
-                if (!(elapsedSeconds > 0)) 
+                if (!(elapsedSeconds > 0))
                     continue;
-                
-                _freeDaysSkipAmount++;
-                _canUseSkipByTime = true;
+
+                FreeSkipsLeft++;
+                CanUseSkipByTime = true;
                 OnDaySkipPossibility?.Invoke();
             }
-        }
-        private void Update() // need server?
-        {
-            double elapsedSeconds = (DateTime.UtcNow - _startTime).TotalSeconds;
-            _timeLeftInSeconds = _oneDayTimerDurationInSeconds - (float)elapsedSeconds;
-
-            int minutes = Mathf.FloorToInt(_timeLeftInSeconds / 60);
-            int seconds = Mathf.FloorToInt(_timeLeftInSeconds % 60);
-
-            if (_timeLeftInSeconds > 0)
-            {
-                _timePassed = $"{minutes}:{seconds:00}";
-            }
-
-            CheckPlayerState();
         }
 
         public void SetPlayerState(DuringDayState p_newState)
         {
-            _currentPlayerState = p_newState;
+            CurrentPlayerState = p_newState;
 
-            if (_currentPlayerState == DuringDayState.DayPassing)
+            if (CurrentPlayerState == DuringDayState.DayPassing)
             {
-                _savingManager.SaveMainGame(new MainGameManagerSavedData()
+                _savingManager.SaveMainGame(new MainGameManagerSavedData
                 {
                     TimeOfWorkersSet = _startTime,
-                    CurrentPlayerState = (int)_currentPlayerState, 
-                    FreeDaysSkipAmount = _freeDaysSkipAmount,
+                    CurrentPlayerState = (int)CurrentPlayerState,
+                    FreeDaysSkipAmount = FreeSkipsLeft,
                     TimeLeftInSeconds = _timeLeftInSeconds
                 });
-                
+
                 _startTime = DateTime.UtcNow;
-                _canUseSkipByTime = false;
+                CanUseSkipByTime = false;
             }
-            
-            OnPlayerStateChange?.Invoke(_currentPlayerState);
+
+            OnPlayerStateChange?.Invoke(CurrentPlayerState);
         }
 
         private void CheckPlayerState()
         {
-            switch (_currentPlayerState)
+            switch (CurrentPlayerState)
             {
                 // evening - day ended now collecting/building up
                 case DuringDayState.FinishingBuilding:
-                    if (!_buildingsManager.IsAnyBuildingNonBuilt())
-                    {
-                        SetPlayerState(DuringDayState.CollectingResources);
-                    }
+                    if (!_buildingsManager.IsAnyBuildingNonBuilt()) SetPlayerState(DuringDayState.CollectingResources);
                     break;
-                case DuringDayState.CollectingResources: 
-                    if (!_buildingsManager.IsAnyBuildingNonGathered())
-                    {
-                        SetPlayerState(DuringDayState.WorkDayFinished);
-                    }
+                case DuringDayState.CollectingResources:
+                    if (!_buildingsManager.IsAnyBuildingNonGathered()) SetPlayerState(DuringDayState.WorkDayFinished);
                     break;
                 case DuringDayState.WorkDayFinished:
                     // night - timer, effect
@@ -148,22 +134,33 @@ namespace GameManager
                 case DuringDayState.DayPassing:
                     if (_timeLeftInSeconds <= 0)
                     {
-                        _canUseSkipByTime = true;
+                        CanUseSkipByTime = true;
                         OnDaySkipPossibility?.Invoke();
                     }
+
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
         }
 
+        #region Saving
+
+        public void ResetSave()
+        {
+            _savingManager.ResetSave();
+        }
+
+        #endregion
+
         #region Day Skipping
+
         public void SkipDay(WayToSkip p_skipSource)
         {
             switch (p_skipSource)
             {
                 case WayToSkip.FreeSkip:
-                    _freeDaysSkipAmount--;
+                    FreeSkipsLeft--;
                     break;
                 case WayToSkip.PaidSkip:
                     _buildingsManager.HandlePointsManipulation(PointsType.ShardsOfDestiny, DestinyShardsSkipPrice,
@@ -173,34 +170,25 @@ namespace GameManager
 
             _worldManager.StartNewDay();
         }
-        
+
         public bool CanSkipDay(out WayToSkip p_reason)
         {
-            if (_freeDaysSkipAmount > 0)
+            if (FreeSkipsLeft > 0)
             {
                 p_reason = WayToSkip.FreeSkip;
                 return true;
             }
 
-            if (_buildingsManager.ShardsOfDestinyAmount >= DestinyShardsSkipPrice)
+            if (_buildingsManager.CurrentDestinyShards >= DestinyShardsSkipPrice)
             {
                 p_reason = WayToSkip.PaidSkip;
                 return true;
             }
-            else
-            {
-                p_reason = WayToSkip.CantSkip;
-                return false;
-            }
-        }
-        
-        #endregion
 
-        #region Saving
-        public void ResetSave()
-        {
-            _savingManager.ResetSave();
+            p_reason = WayToSkip.CantSkip;
+            return false;
         }
+
         #endregion
     }
 

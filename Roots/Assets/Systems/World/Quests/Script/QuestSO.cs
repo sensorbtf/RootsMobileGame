@@ -1,19 +1,17 @@
-﻿using System;
-using Buildings;
+﻿using Buildings;
 using UnityEngine;
 
 namespace World
 {
     [CreateAssetMenu(fileName = "QuestData", menuName = "ScriptableObjects/QuestData", order = 2)]
-
     public class QuestSO : ScriptableObject
     {
         public QuestType QuestKind;
-        public BuildingType TargetName;  
-        public int TargetAmount;  
+        public BuildingType TargetName;
+        public int TargetAmount;
         public int ShardsOfDestinyReward;
     }
-    
+
     public enum QuestType
     {
         AchieveBuildingLvl,
@@ -23,6 +21,6 @@ namespace World
         ResourcePoints,
         DefensePoints,
         RepairBuilding,
-        DoMinigame,
+        DoMinigame
     }
 }

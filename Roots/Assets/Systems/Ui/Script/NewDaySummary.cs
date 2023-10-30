@@ -12,16 +12,16 @@ namespace InGameUi
     {
         [SerializeField] private BuildingsManager buildingsManager;
         [SerializeField] private WorldManager worldManager;
-        [SerializeField] private TextMeshProUGUI _panelTitle;
 
         [SerializeField] private GameObject _buildingInfoPrefab;
         [SerializeField] private GameObject _goBackGo;
         [SerializeField] private Transform _contentTransform;
 
         private Button _goBackButton;
-        private List<GameObject> _runtimeBuildingsUiToDestroy;
         private bool _isCottage;
-        
+        [SerializeField] private TextMeshProUGUI _panelTitle;
+        private List<GameObject> _runtimeBuildingsUiToDestroy;
+
         private TechnologyDataPerLevel[] _technology;
 
         private void Start()
@@ -41,13 +41,11 @@ namespace InGameUi
             _isCottage = true;
             ActivateOnNewDay(_isCottage);
             _isCottage = false;
-            
+
             _panelTitle.text = "Rank up summary";
-            
+
             foreach (var building in buildingsManager.UnlockedBuildings)
-            {
                 CreateUiElement(building.Icon, $"New building unlocked: {building.Type}");
-            }
 
             buildingsManager.UnlockedBuildings.Clear();
         }
@@ -69,18 +67,12 @@ namespace InGameUi
             _goBackButton.interactable = true;
             _goBackButton.onClick.AddListener(ClosePanel);
 
-            if (!p_isCottage)
-            {
-                HandleViewOfSummary();
-            }
+            if (!p_isCottage) HandleViewOfSummary();
         }
-        
+
         private void ClosePanel()
         {
-            foreach (var createdUiElement in _runtimeBuildingsUiToDestroy)
-            {
-                Destroy(createdUiElement);
-            }
+            foreach (var createdUiElement in _runtimeBuildingsUiToDestroy) Destroy(createdUiElement);
 
             CameraController.IsUiOpen = false;
             GameplayHud.BlockHud = false;
@@ -92,41 +84,27 @@ namespace InGameUi
         private void HandleViewOfSummary()
         {
             _panelTitle.text = "End of the day summary";
-            
+
             foreach (var building in buildingsManager.UnlockedBuildings)
-            {
                 CreateUiElement(building.Icon, $"New building unlocked: {building.Type}");
-            }
 
             foreach (var building in buildingsManager.CompletlyNewBuildings)
-            {
                 CreateUiElement(building.BuildingMainData.Icon, "Just built");
-            }
 
             foreach (var building in buildingsManager.UpgradedBuildings)
-            {
                 CreateUiElement(building.BuildingMainData.Icon, "Building upgraded");
-            }
 
             foreach (var building in buildingsManager.RepairedBuildings)
-            {
                 CreateUiElement(building.BuildingMainData.Icon, "Building repaired");
-            }
 
             foreach (var building in buildingsManager.BuildingWithEnabledMinigame)
-            {
                 CreateUiElement(building.BuildingMainData.Icon, "Minigame unlocked");
-            }
 
             foreach (var building in buildingsManager.BuildingsToGatherFrom)
-            {
                 CreateUiElement(building.BuildingMainData.Icon, "Points can be gathered");
-            }
 
             foreach (var building in buildingsManager.BuildingsWithTechnologyUpgrade)
-            {
                 CreateUiElement(building.BuildingMainData.Icon, "Technology can be upgraded");
-            }
 
             buildingsManager.BuildingsToGatherFrom.Clear();
             buildingsManager.UpgradedBuildings.Clear();
@@ -139,7 +117,7 @@ namespace InGameUi
 
         private void CreateUiElement(Sprite p_icon, string p_text)
         {
-            GameObject newIcon = Instantiate(_buildingInfoPrefab, _contentTransform);
+            var newIcon = Instantiate(_buildingInfoPrefab, _contentTransform);
             _runtimeBuildingsUiToDestroy.Add(newIcon);
             var references = newIcon.GetComponent<DaySummaryUiElement>();
 

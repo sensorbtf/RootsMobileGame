@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Ritual_Circle
   m_EditorClassIdentifier: 
   Type: 6
+  GodType: 10
   MainPrefab: {fileID: 1328426712780355558, guid: 80bf6bce43a655d4aa423b1bf6d56a62, type: 3}
   Icon: {fileID: 21300000, guid: 41482bc6d2cb5be4ea997537570e0cdc, type: 3}
   InGameSprite: {fileID: 21300000, guid: 41482bc6d2cb5be4ea997537570e0cdc, type: 3}
@@ -21,7 +22,7 @@ MonoBehaviour:
   DestroyedStage: {fileID: 21300000, guid: 9ddcd19eab034224eaf07a779363130e, type: 3}
   Description: Noone knows what exactly comes with storm but runes created in Ritual
     Circle always helps to keep danger away.
-  BaseCottageLevelNeeded: 2
+  BaseCottageLevelNeeded: 3
   LevelToEnableMinigame: 0
   PerLevelData:
   - Requirements:

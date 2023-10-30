@@ -1,9 +1,7 @@
 {
     "name": "Gods",
     "rootNamespace": "",
-    "references": [
-        "GUID:d24ae5f4135c15b478887a8fab11029b"
-    ],
+    "references": [],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

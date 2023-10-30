@@ -1,13 +1,13 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Buildings;
-using Gods;
 using GameManager;
 using GeneralSystems;
+using Gods;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using System;
 
 namespace InGameUi
 {
@@ -15,16 +15,19 @@ namespace InGameUi
     {
         [SerializeField] private BuildingsManager _buildingsManager;
         [SerializeField] private GodsManager _godsManager;
-        [SerializeField] private WorkersManager _workersManager;
         [SerializeField] private MainGameManager _gameManager;
         [SerializeField] private GameObject _godPrefab;
-
-        [SerializeField] private TextMeshProUGUI _tabName;
         [SerializeField] private Transform _contentTransform;
-        [SerializeField] private Button _goBackButton;
+
+        [SerializeField] private Color _noEffect;
+        [SerializeField] private Color _smallEffect;
+        [SerializeField] private Color _mediumEffect;
+        [SerializeField] private Color _bigEffect;
 
         private List<GameObject> _createdGodsInstances;
-        public event Action OnBackToWorkersPanel;
+        [SerializeField] private Button _goBackButton;
+
+        [SerializeField] private TextMeshProUGUI _tabName;
 
         private void Start()
         {
@@ -32,6 +35,8 @@ namespace InGameUi
             _goBackButton.onClick.AddListener(BackToWorkerTab);
             gameObject.SetActive(false);
         }
+
+        public event Action OnBackToWorkersPanel;
 
         public void BackToWorkerTab()
         {
@@ -45,27 +50,30 @@ namespace InGameUi
             GameplayHud.BlockHud = true;
             CameraController.IsUiOpen = true;
 
-            foreach (var god in _godsManager.PlayerCurrentBlessings)
+            foreach (var god in _godsManager.PlayerCurrentBlessings.Keys.ToList())
             {
-                var newGod = Instantiate(_godPrefab, _contentTransform);
-                var newGodRef = newGod.GetComponent<GodInstance>();
-
-                newGodRef.GodName.text = god.Key.GodName.ToString();
-                newGodRef.GodImage.sprite = god.Key.GodImage;
-                newGodRef.AffectedBuilding.sprite = _buildingsManager.GetBuildingIcon(god.Key.AffectedBuilding);
-                newGodRef.Slider.value = (int)_godsManager.GetCurrentBlessingLevel(god.Key.GodName);
-                OnSliderValueChange(newGodRef, god.Key.GodName);
-                newGodRef.Slider.onValueChanged.AddListener(delegate { OnSliderValueChange(newGodRef, god.Key.GodName); });
+                if (!_buildingsManager.CheckIfGodsBuildingIsUnlocked(god.GodName))
+                  continue;  
                 
+                var newGod = Instantiate(_godPrefab, _contentTransform);
+                var newGodRef = newGod.GetComponent<GodInstanceUI>();
+                var buildingToInfluence = _buildingsManager.GetGodsBuilding(god.GodName);
+
+                newGodRef.GodName.text = god.GodName.ToString();
+                newGodRef.GodImage.sprite = god.GodImage;
+                newGodRef.AffectedBuilding.sprite = _buildingsManager.GetBuildingIcon(buildingToInfluence);
+                newGodRef.AffectedBuildingText.text = buildingToInfluence.ToString();
+                newGodRef.Slider.value = (int)_godsManager.GetCurrentBlessingLevel(god.GodName);
+                OnSliderValueChange(newGodRef, god.GodName);
+                newGodRef.Slider.onValueChanged.AddListener(delegate { OnSliderValueChange(newGodRef, god.GodName); });
+
+                _createdGodsInstances.Add(newGod);
             }
         }
 
         private void ClosePanel()
         {
-            foreach (var createdUiElement in _createdGodsInstances)
-            {
-                Destroy(createdUiElement);
-            }
+            foreach (var createdUiElement in _createdGodsInstances) Destroy(createdUiElement);
 
             _createdGodsInstances.Clear();
             CameraController.IsUiOpen = false;
@@ -73,52 +81,122 @@ namespace InGameUi
             gameObject.SetActive(false);
         }
 
-        private void RefereshActivationButton(GodInstance p_newGodRef)
-        { 
-        
-        }
-
-        private void OnSliderValueChange(GodInstance p_newGodRef, GodType p_godType)
+        private void OnSliderValueChange(GodInstanceUI p_newGodRef, GodType p_godType)
         {
-            var value = Math.Ceiling(p_newGodRef.Slider.value);
-            var currentBlessingLevel = _godsManager.GetCurrentBlessingLevel(p_godType);
-            var amountOfBlessings = _godsManager.GetAmountOfAviableBlessings(p_godType, currentBlessingLevel);
+            var value = (int)Math.Ceiling(p_newGodRef.Slider.value);
+            var blessingOnSlider = (BlessingLevel)value;
+            var amountOfBlessings = _godsManager.GetAmountOfAvaiableBlessings(p_godType, blessingOnSlider);
+            p_newGodRef.ActivationButton.onClick.RemoveAllListeners();
 
-            if (amountOfBlessings <= 0)
+            if (blessingOnSlider == 0)
             {
-                p_newGodRef.ActivationButton.onClick.AddListener();
-                // activate buying visuals
-                p_newGodRef.ActivationButtonText.text = $"Activate {}";
+                p_newGodRef.ActivationButton.gameObject.SetActive(false);
+                p_newGodRef.GlowEffect.color = _noEffect;
+            }
+            else if (_godsManager.IsGodBlessingOnLevelActivated(p_godType, blessingOnSlider))
+            {
+                p_newGodRef.ActivationButton.interactable = true;
+
+                p_newGodRef.ActivationButton.onClick.AddListener(delegate
+                {
+                    DeactivateSpecificBlessing(p_godType, blessingOnSlider);
+                    OnSliderValueChange(p_newGodRef, p_godType);
+                });
+
+                p_newGodRef.ActivationButtonText.text = "Deactivate";
+                SwitchEffectColor(p_newGodRef);
+                p_newGodRef.ActivationButton.gameObject.SetActive(true);
+            }
+            else if (amountOfBlessings <= 0)
+            {
+                p_newGodRef.ActivationButton.interactable = _godsManager.BlessingPrices[blessingOnSlider] <=
+                                                            _buildingsManager.CurrentDestinyShards;
+
+                p_newGodRef.ActivationButton.onClick.AddListener(delegate
+                {
+                    BuySpecificBlessing(p_godType, blessingOnSlider);
+                    OnSliderValueChange(p_newGodRef, p_godType);
+                });
+
+                p_newGodRef.ActivationButtonText.text =
+                    $"Buy for {_godsManager.BlessingPrices[blessingOnSlider]} Destiny Shards";
+                p_newGodRef.GlowEffect.color = _noEffect;
+                p_newGodRef.ActivationButton.gameObject.SetActive(true);
             }
             else
-            { 
-                p_newGodRef.ActivationButton.onClick.AddListener();
-                // activate activation things
-                p_newGodRef.ActivationButtonText.text = $"Activate {}";
+            {
+                var currentBlessingLvl = _godsManager.GetCurrentBlessingLevel(p_godType);
+                if (currentBlessingLvl != 0 && currentBlessingLvl < blessingOnSlider)
+                {
+                    p_newGodRef.BlessingChooserText.text = "Deactivate lower blessing";
+                    p_newGodRef.ActivationButton.gameObject.SetActive(false);
+                    return;
+                }
+
+                p_newGodRef.ActivationButton.interactable =
+                    _godsManager.CanActivateBlessing(p_godType, blessingOnSlider);
+                p_newGodRef.ActivationButton.onClick.AddListener(delegate
+                {
+                    ActivateSpecificBlessing(p_godType, blessingOnSlider);
+                    OnSliderValueChange(p_newGodRef, p_godType);
+                });
+
+                p_newGodRef.ActivationButtonText.text = $"Activate ({amountOfBlessings})";
+                p_newGodRef.GlowEffect.color = _noEffect;
+                p_newGodRef.ActivationButton.gameObject.SetActive(true);
             }
 
-            SwitchSliderValue(p_newGodRef);
+            SwitchDescText(p_newGodRef, blessingOnSlider);
         }
 
-        private void SwitchSliderValue(GodInstance p_newGodRef)
+        private void DeactivateSpecificBlessing(GodType p_godType, BlessingLevel p_currentBlessingLevel)
+        {
+            _godsManager.DeactivateSpecificBlessing(p_godType, p_currentBlessingLevel);
+        }
+
+        private void ActivateSpecificBlessing(GodType p_godType, BlessingLevel p_currentBlessingLevel)
+        {
+            _godsManager.ActivateSpecificBlessing(p_godType, p_currentBlessingLevel);
+        }
+
+        private void BuySpecificBlessing(GodType p_godType, BlessingLevel p_blessingLevel)
+        {
+            _godsManager.BuySpecificBlessing(p_godType, p_blessingLevel);
+            _buildingsManager.HandlePointsManipulation(PointsType.ShardsOfDestiny,
+                _godsManager.BlessingPrices[p_blessingLevel], false);
+        }
+
+        private void SwitchDescText(GodInstanceUI p_newGodRef, BlessingLevel p_blessingOnSlider)
         {
             switch (p_newGodRef.Slider.value)
             {
                 case 0:
-                    p_newGodRef.BlessingChooserText.text = "Noone blessing";
+                    p_newGodRef.BlessingChooserText.text = "Choose blessing level";
                     break;
                 case 1:
-                    p_newGodRef.BlessingChooserText.text = "Small Blessing \n +10% efficiency";
+                    p_newGodRef.BlessingChooserText.text =
+                        $"Small Blessing \n {Mathf.CeilToInt(_godsManager.GetBlessingValue(p_blessingOnSlider) * 100)}% efficiency";
                     break;
                 case 2:
-                    p_newGodRef.BlessingChooserText.text = "Medium Blessing \n +25% efficiency";
+                    p_newGodRef.BlessingChooserText.text =
+                        $"Medium Blessing \n {Mathf.CeilToInt(_godsManager.GetBlessingValue(p_blessingOnSlider) * 100)}% efficiency";
                     break;
                 case 3:
-                    p_newGodRef.BlessingChooserText.text = "Big Blessing \n +50% efficiency";
-                    break;
-                default:
+                    p_newGodRef.BlessingChooserText.text =
+                        $"Big Blessing \n {Mathf.CeilToInt(_godsManager.GetBlessingValue(p_blessingOnSlider) * 100)}% efficiency";
                     break;
             }
+        }
+
+        private void SwitchEffectColor(GodInstanceUI p_newGodRef)
+        {
+            p_newGodRef.GlowEffect.color = p_newGodRef.Slider.value switch
+            {
+                1 => _smallEffect,
+                2 => _mediumEffect,
+                3 => _bigEffect,
+                _ => p_newGodRef.GlowEffect.color
+            };
         }
     }
 }

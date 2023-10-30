@@ -10,31 +10,20 @@ namespace Buildings
         public BuildingData BuildingMainData;
         public SpriteRenderer InGameIcon;
         public SpriteRenderer GatheringIcon;
-        private int _currentLevel;
-        private bool _haveWorker = false;
-        private bool _isDamaged = false;
-        private bool _playedMinigame = false;
         [HideInInspector] public int CurrentDayOnQueue;
         [HideInInspector] public int CurrentTechnologyDayOnQueue;
-        [HideInInspector] public bool HaveSomethingToCollect = false;
-        [HideInInspector] public bool CanEndBuildingSequence = false;
-        [HideInInspector] public bool IsBeeingUpgradedOrBuilded = false;
-        [HideInInspector] public bool IsProtected = false;
-        [HideInInspector] public int CurrentTechnologyLvl = 0;
+        [HideInInspector] public bool HaveSomethingToCollect;
+        [HideInInspector] public bool CanEndBuildingSequence;
+        [HideInInspector] public bool IsBeeingUpgradedOrBuilded;
+        [HideInInspector] public bool IsProtected;
+        [HideInInspector] public int CurrentTechnologyLvl;
+        private bool _isDamaged;
 
-        private BaseDataPerLevel _currentLevelData => BuildingMainData.PerLevelData[_currentLevel];
+        private BaseDataPerLevel _currentLevelData => BuildingMainData.PerLevelData[CurrentLevel];
 
-        public int CurrentLevel
-        {
-            get => _currentLevel;
-            set => _currentLevel = value;
-        }
+        public int CurrentLevel { get; set; }
 
-        public bool HaveWorker
-        {
-            get => _haveWorker;
-            set => _haveWorker = value;
-        }
+        public bool HaveWorker { get; set; }
 
         public bool IsDamaged
         {
@@ -67,14 +56,10 @@ namespace Buildings
 
         public PointsType ProductionType => _currentLevelData.ProductionType;
 
-        public bool PlayedMinigame
-        {
-            get => _playedMinigame;
-            set => _playedMinigame = value;
-        }
+        public bool PlayedMinigame { get; set; } = false;
 
         public event Action<Building> OnBuildingClicked;
-        public event Action<PointsType, int> OnPointsGathered;
+        public event Action<BuildingType, PointsType, int> OnPointsGathered;
         public event Action<Building, bool> OnWorkDone;
         public event Action<Building> OnRepaired;
         public event Action<Building> OnBuildingDamaged;
@@ -99,7 +84,7 @@ namespace Buildings
                     else
                         HandleLevelUp();
                 }
-                
+
                 GatheringIcon.sprite = null;
                 CanEndBuildingSequence = false;
                 return;
@@ -107,7 +92,8 @@ namespace Buildings
 
             if (HaveSomethingToCollect)
             {
-                OnPointsGathered?.Invoke(ProductionType, _currentLevelData.ProductionAmountPerDay);
+                OnPointsGathered?.Invoke(BuildingMainData.Type, ProductionType,
+                    _currentLevelData.ProductionAmountPerDay);
 
                 GatheringIcon.sprite = null;
                 HaveSomethingToCollect = false;
@@ -120,28 +106,28 @@ namespace Buildings
 
         public void FinishBuildingSequence()
         {
-            _currentLevel = 1;
+            CurrentLevel = 1;
             IsBeeingUpgradedOrBuilded = false;
             InGameIcon.sprite = BuildingMainData.InGameSprite;
-            _haveWorker = false;
+            HaveWorker = false;
 
             OnWorkDone?.Invoke(this, false);
         }
 
         public void InitiateBuildingSequence()
         {
-            _currentLevel = 0;
+            CurrentLevel = 0;
             CurrentDayOnQueue = 0;
             IsBeeingUpgradedOrBuilded = true;
         }
 
         public void HandleLevelUp()
         {
-            _currentLevel++;
+            CurrentLevel++;
             IsBeeingUpgradedOrBuilded = false;
             CurrentDayOnQueue = 0;
             InGameIcon.sprite = BuildingMainData.InGameSprite;
-            _haveWorker = false;
+            HaveWorker = false;
 
             OnWorkDone?.Invoke(this, false);
         }
@@ -156,7 +142,7 @@ namespace Buildings
         {
             GatheringIcon.sprite = p_gatheringIcon;
             HaveSomethingToCollect = true;
-            _haveWorker = false;
+            HaveWorker = false;
         }
 
         public void UpgradeTechnologyLevel()
@@ -169,7 +155,7 @@ namespace Buildings
 
         public bool CanPlayMinigame()
         {
-            return _haveWorker && !PlayedMinigame && !_isDamaged && !IsBeeingUpgradedOrBuilded &&
+            return HaveWorker && !PlayedMinigame && !_isDamaged && !IsBeeingUpgradedOrBuilded &&
                    CurrentTechnologyLvl > 0;
         }
 

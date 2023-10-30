@@ -4,7 +4,6 @@ using Buildings;
 using GeneralSystems;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace InGameUi
@@ -13,22 +12,21 @@ namespace InGameUi
     {
         [SerializeField] private BuildingsManager buildingsManager;
         [SerializeField] private WorkersManager _workersManager;
-
-        [SerializeField] private TextMeshProUGUI _buildingName;
-        [SerializeField] private TextMeshProUGUI _numberOfWorkers;
         [SerializeField] private GameObject buildingEntryPrefab;
         [SerializeField] private GameObject tierPanelPrefab;
         [SerializeField] private GameObject _endBuildingButton;
         [SerializeField] private Transform contentTransform;
 
-        private List<GameObject> _runtimeBuildingsUiToDestroy;
+        [SerializeField] private TextMeshProUGUI _buildingName;
         private List<BuildingData> _buildingsOnInPanelQueue;
-        private Dictionary<BuildingData, SingleBuildingRefs> _createdUiElements;
         private Dictionary<Building, bool> _builtOrDamagedBuildings;
+        private Dictionary<BuildingData, SingleBuildingRefs> _createdUiElements;
         private Dictionary<Building, bool> _influencedBuildings;
+        [SerializeField] private TextMeshProUGUI _numberOfWorkers;
+
+        private List<GameObject> _runtimeBuildingsUiToDestroy;
 
         public Dictionary<BuildingData, bool> BuildingsToShow;
-        public event Action OnBackToWorkersPanel;
 
         private void Start()
         {
@@ -44,20 +42,16 @@ namespace InGameUi
             gameObject.SetActive(false);
         }
 
+        public event Action OnBackToWorkersPanel;
+
         private void ClosePanel()
         {
-            foreach (var createdUiElement in _runtimeBuildingsUiToDestroy)
-            {
-                Destroy(createdUiElement);
-            }
+            foreach (var createdUiElement in _runtimeBuildingsUiToDestroy) Destroy(createdUiElement);
 
             CameraController.IsUiOpen = false;
             GameplayHud.BlockHud = false;
 
-            foreach (var buildingData in _buildingsOnInPanelQueue)
-            {
-                BuildingsToShow.TryAdd(buildingData, true);
-            }
+            foreach (var buildingData in _buildingsOnInPanelQueue) BuildingsToShow.TryAdd(buildingData, true);
 
             _runtimeBuildingsUiToDestroy.Clear();
             _createdUiElements.Clear();
@@ -97,10 +91,7 @@ namespace InGameUi
                         continue;
                     }
 
-                    if (building.IsDamaged)
-                    {
-                        _builtOrDamagedBuildings.TryAdd(building, building.HaveWorker);
-                    }
+                    if (building.IsDamaged) _builtOrDamagedBuildings.TryAdd(building, building.HaveWorker);
                 }
                 else
                 {
@@ -118,19 +109,19 @@ namespace InGameUi
         {
             var buildingsByTier = new Dictionary<int, List<BuildingData>>();
             var tier = 1;
-            var currentCottageLevel = buildingsManager.CurrentBuildings.Find(x => x.BuildingMainData.Type == BuildingType.Cottage).CurrentLevel;
-            
+            var currentCottageLevel = buildingsManager.CurrentBuildings
+                .Find(x => x.BuildingMainData.Type == BuildingType.Cottage).CurrentLevel;
+
             foreach (var building in buildingsManager.AllBuildingsDatabase.allBuildings)
             {
                 if (building.Type == BuildingType.Cottage)
-                {
-                    if (!buildingsManager.CurrentBuildings.Find(x => x.BuildingMainData.Type == BuildingType.Cottage).IsDamaged)
+                    if (!buildingsManager.CurrentBuildings.Find(x => x.BuildingMainData.Type == BuildingType.Cottage)
+                            .IsDamaged)
                         continue;
-                }
 
                 if (building.BaseCottageLevelNeeded > currentCottageLevel)
                     continue;
-                
+
                 if (building.BaseCottageLevelNeeded is >= 10 and < 20)
                     tier = 3;
                 else if (building.BaseCottageLevelNeeded >= 20)
@@ -150,18 +141,18 @@ namespace InGameUi
 
         private void HandleBuildingsCreation(Dictionary<int, List<BuildingData>> p_buildingsByTier)
         {
-            foreach (int tier in p_buildingsByTier.Keys)
+            foreach (var tier in p_buildingsByTier.Keys)
             {
                 var newTierPanel = Instantiate(tierPanelPrefab, contentTransform);
                 newTierPanel.GetComponentInChildren<TextMeshProUGUI>().text = "Tier: " + tier;
                 _runtimeBuildingsUiToDestroy.Add(newTierPanel);
 
-                foreach (BuildingData buildingData in p_buildingsByTier[tier])
+                foreach (var buildingData in p_buildingsByTier[tier])
                 {
-                    GameObject newBuildingUi = Instantiate(buildingEntryPrefab, contentTransform);
+                    var newBuildingUi = Instantiate(buildingEntryPrefab, contentTransform);
                     _runtimeBuildingsUiToDestroy.Add(newBuildingUi);
 
-                    SingleBuildingRefs script = newBuildingUi.GetComponent<SingleBuildingRefs>();
+                    var script = newBuildingUi.GetComponent<SingleBuildingRefs>();
                     _createdUiElements.Add(buildingData, script);
 
                     script.BuildingName.GetComponent<TextMeshProUGUI>().text = buildingData.Type.ToString();
@@ -182,11 +173,9 @@ namespace InGameUi
                                 HandleBuildingToRepairCreation(script, builtBuilding, true);
                                 continue;
                             }
-                            else
-                            {
-                                HandleBuildingToRepairCreation(script, builtBuilding, false);
-                                continue;
-                            }
+
+                            HandleBuildingToRepairCreation(script, builtBuilding, false);
+                            continue;
                         }
 
                         if (builtBuilding.IsBeeingUpgradedOrBuilded)
@@ -202,26 +191,18 @@ namespace InGameUi
                         }
 
                         if (!_buildingsOnInPanelQueue.Contains(builtBuilding.BuildingMainData)) // open way to upgrade
-                        {
                             HandleCurrentBuildingCreation(script, builtBuilding);
-                        }
                         else if (_buildingsOnInPanelQueue.Contains(builtBuilding.BuildingMainData))
-                        {
                             HandleInProgressBuildingCreation(script, buildingData, builtBuilding.CurrentLevel);
-                        }
                     }
                     else // is completly not builded - even in building stage
                     {
                         CreateOutcomeIcon(script, buildingData, 0);
 
                         if (_buildingsOnInPanelQueue.Contains(buildingData))
-                        {
                             HandleInProgressBuildingCreation(script, buildingData, 0);
-                        }
                         else
-                        {
                             HandleCompletelyNewBuildingCreation(script, buildingData);
-                        }
                     }
                 }
             }
@@ -230,21 +211,13 @@ namespace InGameUi
         private void CreateOutcomeIcon(SingleBuildingRefs p_refsScript, BuildingData p_buildingData, int p_currentLevel)
         {
             if (p_buildingData.PerLevelData[p_currentLevel].ProductionType == PointsType.ResourcesAndDefense)
-            {
                 p_refsScript.TypeOfOutcome.sprite = buildingsManager.DefenseAndResourcesPointsIcon;
-            }
             else if (p_buildingData.PerLevelData[p_currentLevel].ProductionType == PointsType.Defense)
-            {
                 p_refsScript.TypeOfOutcome.sprite = buildingsManager.DefensePointsIcon;
-            }
             else if (p_buildingData.PerLevelData[p_currentLevel].ProductionType == PointsType.Resource)
-            {
                 p_refsScript.TypeOfOutcome.sprite = buildingsManager.ResourcesPointsIcon;
-            }
             else
-            {
                 p_refsScript.TypeOfOutcome.color = new Color(0, 0, 0, 0);
-            }
 
             p_refsScript.BuildingIcon.GetComponent<Image>().sprite = p_buildingData.Icon;
         }
@@ -296,21 +269,22 @@ namespace InGameUi
             if (p_assign)
             {
                 p_refsScript.LevelInfo.GetComponent<TextMeshProUGUI>().text = "Repair";
-                p_refsScript.BuildingInfo.GetComponent<TextMeshProUGUI>().text = $"Days To Complete: 1";
+                p_refsScript.BuildingInfo.GetComponent<TextMeshProUGUI>().text = "Days To Complete: 1";
                 p_refsScript.CreateOrUpgradeBuilding.image.color = Color.green;
                 p_refsScript.CreateOrUpgradeBuilding.interactable = _workersManager.IsAnyWorkerFree();
             }
             else
             {
                 p_refsScript.LevelInfo.GetComponent<TextMeshProUGUI>().text = "Stop Repairing";
-                p_refsScript.BuildingInfo.GetComponent<TextMeshProUGUI>().text = $"In Progress";
+                p_refsScript.BuildingInfo.GetComponent<TextMeshProUGUI>().text = "In Progress";
                 p_refsScript.CreateOrUpgradeBuilding.image.color = Color.yellow;
                 p_refsScript.CreateOrUpgradeBuilding.interactable = true;
             }
 
             p_refsScript.CreateOrUpgradeBuilding.onClick.RemoveAllListeners();
             p_refsScript.CreateOrUpgradeBuilding.onClick.AddListener(() =>
-                AssigningWorkerHandler(p_building.BuildingMainData, p_building.CurrentLevel, p_refsScript, p_assign, true));
+                AssigningWorkerHandler(p_building.BuildingMainData, p_building.CurrentLevel, p_refsScript, p_assign,
+                    true));
         }
 
         private void HandleCompletelyNewBuildingCreation(SingleBuildingRefs p_refsScript, BuildingData p_buildingData)
@@ -381,10 +355,7 @@ namespace InGameUi
                     UpdateRequirementsText(p_refsScript, p_buildingData.PerLevelData[0].Requirements);
                     p_refsScript.LevelInfo.GetComponent<TextMeshProUGUI>().text = "Build";
 
-                    if (BuildingsToShow.ContainsKey(p_buildingData))
-                    {
-                        BuildingsToShow.Remove(p_buildingData);
-                    }
+                    if (BuildingsToShow.ContainsKey(p_buildingData)) BuildingsToShow.Remove(p_buildingData);
                 }
                 else
                 {
@@ -397,12 +368,8 @@ namespace InGameUi
                         p_buildingData.PerLevelData[building.CurrentLevel].Requirements);
 
                     if (BuildingsToShow.ContainsKey(p_buildingData))
-                    {
                         if (!building.IsBeeingUpgradedOrBuilded)
-                        {
                             BuildingsToShow.Remove(p_buildingData);
-                        }
-                    }
                 }
 
                 p_refsScript.CreateOrUpgradeBuilding.onClick.RemoveAllListeners();
@@ -428,13 +395,15 @@ namespace InGameUi
                 {
                     _workersManager.WorkersInBuilding++;
                     _buildingsOnInPanelQueue.Add(p_buildingData);
-                    buildingsManager.HandlePointsManipulation(PointsType.Resource, p_buildingData.PerLevelData[p_buildingLevel].Requirements.ResourcePoints, false);
+                    buildingsManager.HandlePointsManipulation(PointsType.Resource,
+                        p_buildingData.PerLevelData[p_buildingLevel].Requirements.ResourcePoints, false);
                 }
                 else
                 {
                     _workersManager.WorkersInBuilding--;
                     _buildingsOnInPanelQueue.Remove(p_buildingData);
-                    buildingsManager.HandlePointsManipulation(PointsType.Resource, p_buildingData.PerLevelData[p_buildingLevel].Requirements.ResourcePoints, true);
+                    buildingsManager.HandlePointsManipulation(PointsType.Resource,
+                        p_buildingData.PerLevelData[p_buildingLevel].Requirements.ResourcePoints, true);
                 }
             }
 
@@ -481,13 +450,9 @@ namespace InGameUi
                     if (building.IsDamaged)
                     {
                         if (_builtOrDamagedBuildings[building])
-                        {
                             HandleBuildingToRepairCreation(element.Value, building, false);
-                        }
                         else
-                        {
                             HandleBuildingToRepairCreation(element.Value, building, true);
-                        }
 
                         continue;
                     }
@@ -530,10 +495,7 @@ namespace InGameUi
 
         public void ConfirmWorkersAssigment()
         {
-            foreach (var buildingData in _buildingsOnInPanelQueue)
-            {
-                buildingsManager.PutBuildingOnQueue(buildingData);
-            }
+            foreach (var buildingData in _buildingsOnInPanelQueue) buildingsManager.PutBuildingOnQueue(buildingData);
 
             foreach (var building in _builtOrDamagedBuildings)
             {
@@ -541,9 +503,7 @@ namespace InGameUi
                     continue;
 
                 if (_influencedBuildings[building.Key] != _builtOrDamagedBuildings[building.Key])
-                {
                     buildingsManager.HandleBuildingsModifications(building.Key);
-                }
             }
 
             RefreshWorkersAmount();
@@ -568,7 +528,7 @@ namespace InGameUi
         public void RefreshWorkersAmount()
         {
             _workersManager.WorkersInBuilding = 0;
-            List<BuildingData> addedBuildings = new List<BuildingData>();
+            var addedBuildings = new List<BuildingData>();
 
             foreach (var building in buildingsManager.CurrentBuildings)
             {
@@ -595,12 +555,8 @@ namespace InGameUi
             }
 
             foreach (var building in _buildingsOnInPanelQueue)
-            {
                 if (!addedBuildings.Contains(building))
-                {
                     _workersManager.WorkersInBuilding++;
-                }
-            }
         }
 
         public bool WillBuildingBeCancelled(Building p_building, out bool p_wasOnList)

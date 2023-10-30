@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f38f0a61f49b7c44985d84ad863744a, type: 3}
+  m_Name: Charcoal_Pile
+  m_EditorClassIdentifier: 
+  Type: 8
+  GodType: 3
+  MainPrefab: {fileID: 1328426712780355558, guid: 80de6e6efe3fc5548bcdf433e9f62bce, type: 3}
+  Icon: {fileID: 21300000, guid: 90031637d28dec642a945de3902976bc, type: 3}
+  InGameSprite: {fileID: 21300000, guid: 90031637d28dec642a945de3902976bc, type: 3}
+  FirstStageBuilding: {fileID: 21300000, guid: 2d04490bdc58332458b7afd21031610d, type: 3}
+  UpgradeStage: {fileID: 21300000, guid: 2d04490bdc58332458b7afd21031610d, type: 3}
+  DestroyedStage: {fileID: 21300000, guid: b5f458d4b1281404abd35c91aa70c826, type: 3}
+  Description: Peat Excavation
+  BaseCottageLevelNeeded: 1
+  LevelToEnableMinigame: 0
+  PerLevelData:
+  - Requirements:
+      ResourcePoints: 20
+      DaysToComplete: 1
+    ProductionType: 1
+    ProductionAmountPerDay: 20
+  - Requirements:
+      ResourcePoints: 30
+      DaysToComplete: 2
+    ProductionType: 1
+    ProductionAmountPerDay: 25
+  - Requirements:
+      ResourcePoints: 60
+      DaysToComplete: 3
+    ProductionType: 1
+    ProductionAmountPerDay: 30
+  Technology: {fileID: 11400000, guid: 17b384da89227fc4e989281ece026c0d, type: 2}

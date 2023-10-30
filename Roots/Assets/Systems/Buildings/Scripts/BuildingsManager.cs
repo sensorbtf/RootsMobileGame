@@ -1,24 +1,18 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using Gods;
 using UnityEngine;
-using System;
-using UnityEngine.Serialization;
-using UnityEngine.UI;
 
 namespace Buildings
 {
     public class BuildingsManager : MonoBehaviour
     {
+        [SerializeField] private GodsManager _godsManager; // need to extend
         [SerializeField] private WorkersManager _workersManager; // need to extend
         [SerializeField] private BuildingTransforms[] _placesForBuildings; // need to extend
         [SerializeField] private BuildingDatabase _buildingsDatabase;
         [SerializeField] private int _startingDestinyPoints = 50;
-
-        private List<Building> _currentlyBuildBuildings;
-        private int _resourcesStoredInBasement = 0;
-        private int _currentResourcePoints;
-        private int _currentDefensePoints;
-        private int _shardsOfDestinyAmount;
 
         public Sprite DefenseAndResourcesPointsIcon;
         public Sprite ResourcesPointsIcon;
@@ -34,24 +28,16 @@ namespace Buildings
         [HideInInspector] public List<Building> BuildingsToGatherFrom;
         [HideInInspector] public List<Building> BuildingsWithTechnologyUpgrade;
 
-        public event Action<Building> OnBuildingClicked;
-        public event Action<Building> OnBuildingStateChanged;
-        public event Action OnCottageLevelUp;
-        public event Action<Building> OnBuildingTechnologyLvlUp;
-        public event Action<Building> OnBuildingDestroyed;
-        public event Action<PointsType, int> OnPointsGathered;
+        private int _resourcesStoredInBasement;
+        public List<Building> CurrentBuildings { get; private set; }
 
-        public event Action<int, bool> OnResourcePointsChange;
-        public event Action<int, bool> OnDefensePointsChange;
-        public event Action<int, bool> OnDestinyShardsPointsChange;
-        public List<Building> CurrentBuildings => _currentlyBuildBuildings;
         public BuildingDatabase AllBuildingsDatabase => _buildingsDatabase;
 
         public int GetFarmProductionAmount
         {
             get
             {
-                var building = _currentlyBuildBuildings.Find(x => x.BuildingMainData.Type == BuildingType.Farm);
+                var building = CurrentBuildings.Find(x => x.BuildingMainData.Type == BuildingType.Farm);
                 if (building == null || building.CurrentLevel == 0)
                     return 1;
 
@@ -59,12 +45,12 @@ namespace Buildings
             }
         }
 
-        public int GetBaseCottageBasementDeep
+        private int GetBaseCottageBasementDeep
         {
             get
             {
-                var building = _currentlyBuildBuildings.Find(x => x.BuildingMainData.Type == BuildingType.Cottage);
-                return building.BuildingMainData.PerLevelData[building.CurrentLevel].ProductionAmountPerDay;
+                var building = GetSpecificBuilding(BuildingType.Cottage);
+                return GetSpecificBuilding(BuildingType.Cottage).BuildingMainData.PerLevelData[building.CurrentLevel].ProductionAmountPerDay;
             }
         }
 
@@ -75,11 +61,22 @@ namespace Buildings
             get => _resourcesStoredInBasement;
         }
 
-        public int CurrentResourcePoints => _currentResourcePoints;
+        public int CurrentResourcePoints { get; private set; }
 
-        public int CurrentDefensePoints => _currentDefensePoints;
+        public int CurrentDefensePoints { get; private set; }
 
-        public int ShardsOfDestinyAmount => _shardsOfDestinyAmount;
+        public int CurrentDestinyShards { get; private set; }
+
+        public event Action<Building> OnBuildingClicked;
+        public event Action<Building> OnBuildingStateChanged;
+        public event Action OnCottageLevelUp;
+        public event Action<Building> OnBuildingTechnologyLvlUp;
+        public event Action<Building> OnBuildingDestroyed;
+        public event Action<PointsType, int> OnPointsGathered;
+
+        public event Action<int, bool> OnResourcePointsChange;
+        public event Action<int, bool> OnDefensePointsChange;
+        public event Action<int, bool> OnDestinyShardsPointsChange;
 
         public void StartOnWorld(bool p_willBeLoaded)
         {
@@ -90,32 +87,24 @@ namespace Buildings
             BuildingsToGatherFrom = new List<Building>();
             BuildingsWithTechnologyUpgrade = new List<Building>();
             RepairedBuildings = new List<Building>();
-            _currentlyBuildBuildings = new List<Building>();
+            CurrentBuildings = new List<Building>();
 
             if (p_willBeLoaded)
                 return;
 
             foreach (var buildingToBuild in _buildingsDatabase.allBuildings)
-            {
                 if (buildingToBuild.Type is BuildingType.Cottage)
-                {
                     HandleBuiltOfBuilding(buildingToBuild, true);
-                }
-            }
 
             HandlePointsManipulation(PointsType.ShardsOfDestiny, _startingDestinyPoints, true);
-            _currentlyBuildBuildings.Find(x => x.BuildingMainData.Type == BuildingType.Cottage).IsDamaged = true;
+            CurrentBuildings.Find(x => x.BuildingMainData.Type == BuildingType.Cottage).IsDamaged = true;
         }
 
         public Building GetSpecificBuilding(BuildingType p_data)
         {
-            foreach (var building in _currentlyBuildBuildings)
-            {
+            foreach (var building in CurrentBuildings)
                 if (building.BuildingMainData.Type == p_data)
-                {
                     return building;
-                }
-            }
 
             return null;
         }
@@ -125,13 +114,9 @@ namespace Buildings
             var building = GetSpecificBuilding(p_buildingData.Type);
 
             if (building == null)
-            {
                 HandleBuiltOfBuilding(p_buildingData, false);
-            }
             else
-            {
                 HandleUpgradeOfBuilding(p_buildingData.Type, false);
-            }
 
             AssignWorker(GetSpecificBuilding(p_buildingData.Type), true);
         }
@@ -143,7 +128,7 @@ namespace Buildings
 
         public void RefreshBuildingsOnNewDay()
         {
-            foreach (var building in _currentlyBuildBuildings)
+            foreach (var building in CurrentBuildings)
             {
                 if (building.IsBeeingUpgradedOrBuilded || !building.HaveWorker || building.IsDamaged)
                     continue;
@@ -152,9 +137,7 @@ namespace Buildings
 
                 if (building.CurrentTechnologyDayOnQueue == building.BuildingMainData.Technology
                         .DataPerTechnologyLevel[building.CurrentTechnologyLvl].WorksDayToAchieve)
-                {
                     BuildingsWithTechnologyUpgrade.Add(building);
-                }
 
                 switch (building.BuildingMainData.PerLevelData[building.CurrentLevel].ProductionType)
                 {
@@ -174,14 +157,12 @@ namespace Buildings
                         break;
                     case PointsType.ShardsOfDestiny:
                         break;
-                    default:
-                        break;
                 }
 
                 // add some sort of bonus here to avoid saving up data in Buildingscript
             }
 
-            foreach (var building in _currentlyBuildBuildings)
+            foreach (var building in CurrentBuildings)
             {
                 building.PlayedMinigame = false;
 
@@ -191,17 +172,10 @@ namespace Buildings
                 if (building.HandleNewDay())
                 {
                     if (building.CurrentLevel == 0)
-                    {
                         CompletlyNewBuildings.Add(building);
-                    }
                     else if (building.CurrentLevel > 1)
-                    {
                         UpgradedBuildings.Add(building);
-                    }
-                    else if (building.IsDamaged)
-                    {
-                        RepairedBuildings.Add(building);
-                    }
+                    else if (building.IsDamaged) RepairedBuildings.Add(building);
                 }
             }
         }
@@ -211,7 +185,7 @@ namespace Buildings
             if (!_workersManager.IsAnyWorkerFree())
                 return false;
 
-            foreach (var building in _currentlyBuildBuildings)
+            foreach (var building in CurrentBuildings)
             {
                 if (building.BuildingMainData.Type != p_building.Type)
                     continue;
@@ -220,10 +194,7 @@ namespace Buildings
                     return false;
             }
 
-            if (CurrentResourcePoints < p_building.PerLevelData[0].Requirements.ResourcePoints)
-            {
-                return false;
-            }
+            if (CurrentResourcePoints < p_building.PerLevelData[0].Requirements.ResourcePoints) return false;
 
             return true;
         }
@@ -235,16 +206,14 @@ namespace Buildings
 
             if (CurrentResourcePoints < p_building.BuildingMainData.PerLevelData
                     [p_building.CurrentLevel].Requirements.ResourcePoints)
-            {
                 return false;
-            }
 
             return true;
         }
 
         private void HandleBuiltOfBuilding(BuildingData p_buildingData, bool p_instant)
         {
-            if (_currentlyBuildBuildings.Any(x => x.BuildingMainData.Type == p_buildingData.Type))
+            if (CurrentBuildings.Any(x => x.BuildingMainData.Type == p_buildingData.Type))
                 return;
 
             foreach (var building in _placesForBuildings)
@@ -274,7 +243,7 @@ namespace Buildings
                     newBuilding.InitiateBuildingSequence();
                 }
 
-                _currentlyBuildBuildings.Add(newBuilding);
+                CurrentBuildings.Add(newBuilding);
                 newBuilding.OnPointsGathered += GatherPoints;
                 newBuilding.OnWorkDone += PublishBuildingBuiltEvent;
                 newBuilding.OnRepaired += PublishBuildingRepaired;
@@ -286,20 +255,20 @@ namespace Buildings
 
         public void HandleUpgradeOfBuilding(BuildingType p_buildingType, bool p_instant)
         {
-            for (int i = 0; i < _currentlyBuildBuildings.Count; i++)
+            for (var i = 0; i < CurrentBuildings.Count; i++)
             {
-                if (_currentlyBuildBuildings[i].BuildingMainData.Type != p_buildingType)
+                if (CurrentBuildings[i].BuildingMainData.Type != p_buildingType)
                     continue;
 
                 if (p_instant)
                 {
-                    _currentlyBuildBuildings[i].HandleLevelUp();
+                    CurrentBuildings[i].HandleLevelUp();
                 }
                 else
                 {
-                    _currentlyBuildBuildings[i].InGameIcon.sprite =
+                    CurrentBuildings[i].InGameIcon.sprite =
                         GetSpecificBuilding(p_buildingType).BuildingMainData.UpgradeStage;
-                    _currentlyBuildBuildings[i].InitiateUpgradeSequence();
+                    CurrentBuildings[i].InitiateUpgradeSequence();
                 }
             }
         }
@@ -318,20 +287,14 @@ namespace Buildings
         private void PublishBuildingBuiltEvent(Building p_building, bool p_unassignWorkers)
         {
             if (p_building.BuildingMainData.LevelToEnableMinigame == p_building.CurrentLevel)
-            {
                 BuildingWithEnabledMinigame.Add(p_building);
-            }
 
             if (p_building.BuildingMainData.Type == BuildingType.Cottage)
             {
                 foreach (var building in AllBuildingsDatabase.allBuildings)
-                {
                     if (building.BaseCottageLevelNeeded == p_building.CurrentLevel)
-                    {
                         UnlockedBuildings.Add(building);
-                    }
-                }
-                
+
                 OnCottageLevelUp?.Invoke();
             }
 
@@ -344,10 +307,13 @@ namespace Buildings
             OnBuildingDestroyed?.Invoke(p_building);
         }
 
-        private void GatherPoints(PointsType p_type, int p_amount)
+        private void GatherPoints(BuildingType p_type, PointsType p_pointsType, int p_amount)
         {
-            HandlePointsManipulation(p_type, p_amount, true, true);
-            OnPointsGathered?.Invoke(p_type, p_amount);
+            var god = CurrentBuildings.Find(x => x.BuildingMainData.Type == p_type).BuildingMainData.GodType;
+            var amountWithBlessing = Mathf.CeilToInt(p_amount + p_amount * _godsManager.GetBlessingValue(god));
+
+            HandlePointsManipulation(p_pointsType, amountWithBlessing, true, true);
+            OnPointsGathered?.Invoke(p_pointsType, amountWithBlessing);
         }
 
         private void HandleBuildingClicked(Building p_building)
@@ -357,38 +323,28 @@ namespace Buildings
 
         public void AssignWorker(Building p_building, bool p_assign)
         {
-            if (p_assign && p_building.HaveWorker || !p_assign && !p_building.HaveWorker)
+            if ((p_assign && p_building.HaveWorker) || (!p_assign && !p_building.HaveWorker))
                 return;
 
             p_building.HaveWorker = p_assign;
 
             if (p_assign)
             {
-                Debug.Log($"Worker added to: " + p_building);
+                Debug.Log("Worker added to: " + p_building);
                 _workersManager.WorkersInBuilding++;
             }
             else
             {
-                Debug.Log($"Worker Removed from: " + p_building);
+                Debug.Log("Worker Removed from: " + p_building);
                 _workersManager.WorkersInBuilding--;
             }
         }
 
-        public int GetProductionDataOfBuilding(Building p_building)
-        {
-            return p_building.BuildingMainData.PerLevelData[p_building.CurrentLevel]
-                .ProductionAmountPerDay; // * _bonusesManager.GetBonusForBuilding(p_building)
-        }
-
         public bool IsAnyBuildingNonGathered()
         {
-            foreach (var building in _currentlyBuildBuildings)
-            {
+            foreach (var building in CurrentBuildings)
                 if (building.HaveSomethingToCollect)
-                {
                     return true;
-                }
-            }
 
             return false;
         }
@@ -397,19 +353,15 @@ namespace Buildings
         {
             var anyBuildingNeedsBuilding = false;
 
-            foreach (var building in _currentlyBuildBuildings)
+            foreach (var building in CurrentBuildings)
             {
                 if (!building.CanEndBuildingSequence)
                     continue;
 
                 if (building.IsDamaged)
-                {
                     building.GatheringIcon.sprite = FinishBuildingIcon;
-                }
                 else
-                {
                     building.GatheringIcon.sprite = FinishBuildingIcon;
-                }
                 anyBuildingNeedsBuilding = true;
             }
 
@@ -418,7 +370,7 @@ namespace Buildings
 
         public void EndMissionHandler()
         {
-            foreach (var building in _currentlyBuildBuildings)
+            foreach (var building in CurrentBuildings)
             {
                 building.HaveWorker = false;
                 building.IsProtected = false;
@@ -430,12 +382,9 @@ namespace Buildings
         public void HandlePointsManipulation(PointsType p_pointsType, int p_pointsNumber, bool p_add,
             bool p_createEffect = false)
         {
-            int specificValue = p_pointsNumber;
+            var specificValue = p_pointsNumber;
 
-            if (!p_add)
-            {
-                specificValue = 0 - p_pointsNumber;
-            }
+            if (!p_add) specificValue = 0 - p_pointsNumber;
 
             switch (p_pointsType)
             {
@@ -452,34 +401,71 @@ namespace Buildings
                 case PointsType.ShardsOfDestiny:
                     ManipulateShardsOfDestiny(specificValue, p_createEffect);
                     break;
-                default:
-                    break;
             }
+        }
+
+        public int GetProductionOfBuilding(BuildingType p_building)
+        {
+            var specificBuilding = CurrentBuildings.Find(x => x.BuildingMainData.Type == p_building);
+            var production = specificBuilding.BuildingMainData.PerLevelData[specificBuilding.CurrentLevel]
+                .ProductionAmountPerDay;
+
+            return Mathf.CeilToInt(production +
+                                   production *
+                                   _godsManager.GetBlessingValue(specificBuilding.BuildingMainData.GodType));
+        }
+
+        public BuildingType GetGodsBuilding(GodType p_godName)
+        {
+            foreach (var building in _buildingsDatabase.allBuildings)
+                if (building.GodType == p_godName)
+                    return building.Type;
+
+            Debug.LogError("Error in gods/building in BuildingsManager: GetGodsBuilding");
+            return BuildingType.Cottage;
+        }
+        
+        public bool CheckIfGodsBuildingIsUnlocked(GodType p_godName)
+        {
+            foreach (var building in _buildingsDatabase.allBuildings)
+            {
+                if (building.GodType != p_godName)
+                    continue;
+
+                return GetSpecificBuilding(BuildingType.Cottage).CurrentLevel >= building.BaseCottageLevelNeeded;
+            }
+
+            return false;
+        }
+
+        public Sprite GetBuildingIcon(BuildingType p_building)
+        {
+            return _buildingsDatabase.allBuildings.Find(x => x.Type == p_building).Icon;
         }
 
         private void ManipulateDefencePoints(int p_amountOfResources, bool p_createEffect = false)
         {
-            _currentDefensePoints += p_amountOfResources;
-            if (_currentDefensePoints < 0)
-                _currentDefensePoints = 0;
+            CurrentDefensePoints += p_amountOfResources;
+            if (CurrentDefensePoints < 0)
+                CurrentDefensePoints = 0;
 
             OnDefensePointsChange?.Invoke(p_amountOfResources, p_createEffect);
         }
 
         private void ManipulateResourcePoints(int p_amountOfResources, bool p_createEffect = false)
         {
-            _currentResourcePoints += p_amountOfResources;
-            if (_currentResourcePoints < 0)
-                _currentResourcePoints = 0;
+            CurrentResourcePoints += p_amountOfResources;
+            if (CurrentResourcePoints < 0)
+                CurrentResourcePoints = 0;
 
             OnResourcePointsChange?.Invoke(p_amountOfResources, p_createEffect);
         }
 
         private void ManipulateShardsOfDestiny(int p_amountOfResources, bool p_createEffect = false)
         {
-            _shardsOfDestinyAmount += p_amountOfResources;
-            if (_shardsOfDestinyAmount < 0)
-                _shardsOfDestinyAmount = 0;
+            CurrentDestinyShards += p_amountOfResources;
+            if (CurrentDestinyShards < 0)
+                CurrentDestinyShards = 0;
 
             OnDestinyShardsPointsChange?.Invoke(p_amountOfResources, p_createEffect);
         }
@@ -490,9 +476,9 @@ namespace Buildings
         {
             var savedBuildings = new List<BuildingSavedData>();
 
-            foreach (Building building in _currentlyBuildBuildings)
+            foreach (var building in CurrentBuildings)
             {
-                BuildingSavedData buildingData = new BuildingSavedData
+                var buildingData = new BuildingSavedData
                 {
                     TypeOfBuilding = building.BuildingMainData.Type,
                     CurrentLevel = building.CurrentLevel,
@@ -512,26 +498,26 @@ namespace Buildings
                 savedBuildings.Add(buildingData);
             }
 
-            return new BuildingManagerSavedData()
+            return new BuildingManagerSavedData
             {
                 Buildings = savedBuildings,
                 ResourcesStoredInBasement = _resourcesStoredInBasement,
-                CurrentResourcePoints = _currentResourcePoints,
-                CurrentDefensePoints = _currentDefensePoints,
-                ShardsOfDestinyAmount = _shardsOfDestinyAmount
+                CurrentResourcePoints = CurrentResourcePoints,
+                CurrentDefensePoints = CurrentDefensePoints,
+                ShardsOfDestinyAmount = CurrentDestinyShards
             };
         }
 
         public void LoadSavedData(BuildingManagerSavedData p_data)
         {
             _resourcesStoredInBasement = p_data.ResourcesStoredInBasement;
-            _currentResourcePoints = p_data.CurrentResourcePoints;
-            _currentDefensePoints = p_data.CurrentDefensePoints;
-            _shardsOfDestinyAmount = p_data.ShardsOfDestinyAmount;
+            CurrentResourcePoints = p_data.CurrentResourcePoints;
+            CurrentDefensePoints = p_data.CurrentDefensePoints;
+            CurrentDestinyShards = p_data.ShardsOfDestinyAmount;
 
             foreach (var savedBuilding in p_data.Buildings)
             {
-                var probableBuilding = _currentlyBuildBuildings.Find(x => (int)
+                var probableBuilding = CurrentBuildings.Find(x => (int)
                     x.BuildingMainData.Type == (int)savedBuilding.TypeOfBuilding);
 
                 if (probableBuilding != null)
@@ -553,7 +539,7 @@ namespace Buildings
                     HandleBuiltOfBuilding(_buildingsDatabase.allBuildings.Find(
                         x => x.Type == savedBuilding.TypeOfBuilding), true);
 
-                    probableBuilding = _currentlyBuildBuildings.Find(x =>
+                    probableBuilding = CurrentBuildings.Find(x =>
                         x.BuildingMainData.Type == savedBuilding.TypeOfBuilding);
 
                     probableBuilding.CurrentLevel = savedBuilding.CurrentLevel;
@@ -572,11 +558,6 @@ namespace Buildings
                 // postawić jeśli nie istnieje, wczytać dane
                 // jeszcze trzeba zapisać questy
             }
-        }
-
-        public Sprite GetBuildingIcon(BuildingType p_building)
-        {
-            return _buildingsDatabase.allBuildings.Find(x => x.Type == p_building).Icon;
         }
 
         #endregion

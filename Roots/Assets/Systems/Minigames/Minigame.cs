@@ -1,7 +1,6 @@
-﻿using Buildings;
-using System;
+﻿using System;
 using System.Collections;
-using TMPro;
+using Buildings;using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -13,13 +12,21 @@ namespace Minigames
         [HideInInspector] public float _efficiency;
         [HideInInspector] public bool _isGameActive;
         [HideInInspector] public bool _givesResources;
-        [HideInInspector] public float _score = 0;
+        [HideInInspector] public float _score;
         [HideInInspector] public PointsType _type;
+        public Button _collectPointsButton;
+        public TextMeshProUGUI _coutdownText;
+        public TextMeshProUGUI _scoreText;
 
         public TextMeshProUGUI _timeText;
-        public TextMeshProUGUI _scoreText;
-        public TextMeshProUGUI _coutdownText;
-        public Button _collectPointsButton;
+
+        public virtual void Update()
+        {
+            if (!_isGameActive)
+                return;
+
+            UpdateTimerText();
+        }
 
         public event Action OnMinigameEnded;
         public event Action<PointsType, int> OnMiniGamePointsCollected;
@@ -28,8 +35,10 @@ namespace Minigames
         {
             _score = 0;
 
-            _timer = p_building.BuildingMainData.Technology.DataPerTechnologyLevel[p_building.CurrentTechnologyLvl].MinigameDuration;
-            _efficiency = p_building.BuildingMainData.Technology.DataPerTechnologyLevel[p_building.CurrentTechnologyLvl].Efficiency;
+            _timer = p_building.BuildingMainData.Technology.DataPerTechnologyLevel[p_building.CurrentTechnologyLvl]
+                .MinigameDuration;
+            _efficiency = p_building.BuildingMainData.Technology.DataPerTechnologyLevel[p_building.CurrentTechnologyLvl]
+                .Efficiency;
             _type = p_building.ProductionType;
 
             _collectPointsButton.onClick.AddListener(EndMinigame);
@@ -47,16 +56,8 @@ namespace Minigames
         {
             if (_givesResources)
                 OnMiniGamePointsCollected?.Invoke(_type, (int)_score);
-            
+
             OnMinigameEnded?.Invoke();
-        }
-
-        public virtual void Update()
-        {
-            if (!_isGameActive)
-                return;
-
-            UpdateTimerText();
         }
 
         private void UpdateTimerText()
@@ -67,7 +68,7 @@ namespace Minigames
 
         private IEnumerator StartCountdown()
         {
-            int count = 3;
+            var count = 3;
 
             while (count > 0)
             {

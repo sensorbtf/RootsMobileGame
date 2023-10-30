@@ -5,21 +5,17 @@ using UnityEngine.UI;
 
 public class BlinkingTextButton : MonoBehaviour
 {
-    public TextMeshProUGUI textMesh; 
-    public Button buttonToWatch; 
-
-    private readonly float _blinkInterval = .55f; 
-    private bool _isBlinking;
+    private readonly float _blinkInterval = .55f;
     private Coroutine _blinkCoroutine;
+    private bool _isBlinking;
+    public Button buttonToWatch;
+    public TextMeshProUGUI textMesh;
 
     private void Update()
     {
         if (_isBlinking)
         {
-            if (!buttonToWatch.interactable)
-            {
-                StopBlinking();
-            }
+            if (!buttonToWatch.interactable) StopBlinking();
         }
         else
         {
@@ -33,7 +29,7 @@ public class BlinkingTextButton : MonoBehaviour
 
     private IEnumerator BlinkText()
     {
-        while (true) 
+        while (true)
         {
             textMesh.enabled = !textMesh.enabled;
 

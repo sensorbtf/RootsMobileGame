@@ -1,4 +1,5 @@
 using System;
+using Gods;
 using UnityEngine;
 
 namespace Buildings
@@ -7,6 +8,7 @@ namespace Buildings
     public class BuildingData : ScriptableObject
     {
         public BuildingType Type;
+        public GodType GodType;
         public GameObject MainPrefab;
         public Sprite Icon;
         public Sprite InGameSprite;
@@ -27,22 +29,23 @@ namespace Buildings
         public PointsType ProductionType;
         public int ProductionAmountPerDay;
     }
-    
+
     [Serializable]
     public class Requirements
     {
         public int ResourcePoints;
+
         public int DaysToComplete;
         //public BuildingRequirements[] OtherBuildingRequirements;
     }
-    
+
     [Serializable]
     public class BuildingRequirements
     {
         public BuildingType SpecificBuilding;
         public int LevelOfBuilding;
     }
-    
+
     public enum BuildingType
     {
         Cottage = 0,
@@ -53,8 +56,15 @@ namespace Buildings
         Mining_Shaft = 5,
         Ritual_Circle = 6,
         Peat_Excavation = 7,
+        Charcoal_Pile = 8,
+        Herbs_Garden = 9,
+        Apiary = 10,
+        Field_Forge = 11,
+        Woodworking_Station = 12,
+        Sacrificial_Altar = 13,
+        Barricade = 14
     }
-    
+
     public enum PointsType
     {
         Nothing = 0,

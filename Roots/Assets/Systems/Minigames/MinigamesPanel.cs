@@ -9,7 +9,9 @@ namespace Minigames
 {
     public class MinigamesPanel : MonoBehaviour
     {
-        [FormerlySerializedAs("_buildingsManager")] [SerializeField] private BuildingsManager buildingsesManager;
+        [FormerlySerializedAs("_buildingsManager")] [SerializeField]
+        private BuildingsManager buildingsesManager;
+
         [SerializeField] private WorldManager _worldManager;
         [SerializeField] private SpecificBuildingPanel _specificBuildingPanel;
         [SerializeField] private GameObject _minigamesPanelGo;
@@ -39,7 +41,6 @@ namespace Minigames
                     break;
 
                 foreach (var building in minigame._buildings)
-                {
                     if (building == p_building.BuildingMainData.Type)
                     {
                         rightMinigame = minigame._minigame;
@@ -57,7 +58,6 @@ namespace Minigames
 
                         break;
                     }
-                }
             }
         }
 
@@ -80,7 +80,7 @@ namespace Minigames
             _minigamesPanelGo.SetActive(false);
             gameObject.SetActive(false);
             _specificBuildingPanel.ActivateOnClick(_currentBuilding);
-            
+
             Destroy(_currentMinigame);
         }
 
