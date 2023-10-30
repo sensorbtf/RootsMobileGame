@@ -126,9 +126,9 @@ namespace InGameUi
             else
             {
                 var currentBlessingLvl = _godsManager.GetCurrentBlessingLevel(p_godType);
-                if (currentBlessingLvl != 0 && currentBlessingLvl < blessingOnSlider)
+                if (currentBlessingLvl != 0 && currentBlessingLvl != blessingOnSlider)
                 {
-                    p_newGodRef.BlessingChooserText.text = "Deactivate lower blessing";
+                    p_newGodRef.BlessingChooserText.text = "Deactivate other blessing";
                     p_newGodRef.ActivationButton.gameObject.SetActive(false);
                     return;
                 }
