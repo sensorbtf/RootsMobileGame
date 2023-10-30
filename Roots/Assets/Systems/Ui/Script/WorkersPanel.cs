@@ -19,6 +19,7 @@ namespace InGameUi
 
         [SerializeField] private BuildingPanel _buildingPanel;
         [SerializeField] private GatheringDefensePanel _gatheringDefensePanel;
+        [SerializeField] private GodsPanel _godsPanel;
 
         [SerializeField] private TextMeshProUGUI _tabName;
         [SerializeField] private TextMeshProUGUI _numberOfWorkers;
@@ -27,18 +28,21 @@ namespace InGameUi
         [SerializeField] private GameObject _finishWorkersAssigningButton;
         [SerializeField] private Transform contentTransform;
 
+        [SerializeField] private Button _activateButton;
+        [SerializeField] private Button _godsButton;
+
         private List<GameObject> _runtimeBuildingsUiToDestroy;
-        private Button _button;
         private TextMeshProUGUI _buttonText;
 
         private void Start()
         {
             _buildingPanel.OnBackToWorkersPanel += ActivatePanel;
             _gatheringDefensePanel.OnBackToWorkersPanel += ActivatePanel;
+            _godsPanel.OnBackToWorkersPanel += ActivatePanel;
             _gameManager.OnPlayerStateChange += ActivatePanel;
-            
+            _godsButton.onClick.AddListener(_godsPanel.ActivatePanel);
+
             _buttonText = _finishWorkersAssigningButton.GetComponentInChildren<TextMeshProUGUI>();
-            _button = _finishWorkersAssigningButton.GetComponent<Button>();
             _runtimeBuildingsUiToDestroy = new List<GameObject>();
             
             gameObject.SetActive(false);
@@ -241,15 +245,15 @@ namespace InGameUi
 
             if (_workersManager.BaseWorkersAmounts - _workersManager.OverallAssignedWorkers == 0)
             {
-                _button.onClick.RemoveAllListeners();
-                _button.onClick.AddListener(AssignWorkersForNewDay);
-                _button.interactable = true;
+                _activateButton.onClick.RemoveAllListeners();
+                _activateButton.onClick.AddListener(AssignWorkersForNewDay);
+                _activateButton.interactable = true;
                 _buttonText.text = "Start the day";
             }
             else
             {
                 _buttonText.text = "Set workers to work";
-                _button.interactable = false;
+                _activateButton.interactable = false;
             }
         }
     }

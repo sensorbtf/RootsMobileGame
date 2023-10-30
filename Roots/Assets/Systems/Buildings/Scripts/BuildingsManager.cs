@@ -3,6 +3,7 @@ using System.Linq;
 using UnityEngine;
 using System;
 using UnityEngine.Serialization;
+using UnityEngine.UI;
 
 namespace Buildings
 {
@@ -571,6 +572,11 @@ namespace Buildings
                 // postawić jeśli nie istnieje, wczytać dane
                 // jeszcze trzeba zapisać questy
             }
+        }
+
+        public Sprite GetBuildingIcon(BuildingType p_building)
+        {
+            return _buildingsDatabase.allBuildings.Find(x => x.Type == p_building).Icon;
         }
 
         #endregion

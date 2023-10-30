@@ -1,0 +1,16 @@
+{
+    "name": "Gods",
+    "rootNamespace": "",
+    "references": [
+        "GUID:d24ae5f4135c15b478887a8fab11029b"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
