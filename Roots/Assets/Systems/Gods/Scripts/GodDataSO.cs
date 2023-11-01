@@ -22,6 +22,7 @@ namespace Gods
         Morana = 8,
         Svetovid = 9,
         Ziva = 10,
+        Mokosh = 11
     }
 
     public enum BlessingLevel

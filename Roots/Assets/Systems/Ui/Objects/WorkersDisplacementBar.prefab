@@ -200,8 +200,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278190080
-  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -565,10 +565,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5bb691a2a6d3f6c4eb22f6db9a7a2474, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ScrollContext: {fileID: 1331573949922635301}
   BarButton: {fileID: 5544773109041588114}
   BarSprite: {fileID: 5237189391718618398}
   BarText: {fileID: 3485629723594187470}
-  ScrollContext: {fileID: 1331573949922635301}
 --- !u!1 &8249323334994393534
 GameObject:
   m_ObjectHideFlags: 0

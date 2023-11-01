@@ -1,5 +1,6 @@
 ﻿using System;
 using Buildings;
+using Gods;
 using Saving;
 using UnityEngine;
 using World;
@@ -14,6 +15,7 @@ namespace GameManager
 
     public class MainGameManager : MonoBehaviour
     {
+        [SerializeField] private GodsManager _godsManager;
         [SerializeField] private WorldManager _worldManager;
         [SerializeField] private BuildingsManager _buildingsManager;
         [SerializeField] private SavingManager _savingManager;
@@ -25,6 +27,8 @@ namespace GameManager
         private float _timeLeftInSeconds;
 
         public int FreeSkipsLeft { get; private set; }
+        public int HoursOfAbstence { get; private set; }
+        public int FreeSkipsGotten { get; private set; }
 
         public DuringDayState CurrentPlayerState { get; private set; }
 
@@ -33,11 +37,17 @@ namespace GameManager
 
         public bool CanUseSkipByTime { get; private set; }
 
+        public event Action OnPlayerCameBack;
+        public event Action OnAfterLoad;
+        public event Action<DuringDayState> OnPlayerStateChange;
+        public event Action OnDaySkipPossibility;
+
         private void Start()
         {
             // 0 for no sync, 1 for panel refresh rate, 2 for 1/2 panel rate
             //QualitySettings.vSyncCount = 2;
             Application.targetFrameRate = 30;
+            _startTime = DateTime.UtcNow;
 
             var willBeLoaded = _savingManager.IsSaveAvaiable();
 
@@ -58,38 +68,58 @@ namespace GameManager
             var minutes = Mathf.FloorToInt(_timeLeftInSeconds / 60);
             var seconds = Mathf.FloorToInt(_timeLeftInSeconds % 60);
 
-            if (_timeLeftInSeconds > 0) TimePassed = $"{minutes}:{seconds:00}";
+            if (_timeLeftInSeconds > 0) 
+                TimePassed = $"{minutes}:{seconds:00}";
 
             CheckPlayerState();
         }
 
-        public event Action<DuringDayState> OnPlayerStateChange;
-        public event Action OnDaySkipPossibility;
-
         private void LoadSavedData(MainGameManagerSavedData p_data)
         {
-            SetPlayerState((DuringDayState)p_data.CurrentPlayerState);
+            CurrentPlayerState = (DuringDayState)p_data.CurrentPlayerState;
             FreeSkipsLeft = p_data.FreeDaysSkipAmount;
-            _timeLeftInSeconds = p_data.TimeLeftInSeconds;
 
             var savedTime = p_data.TimeOfWorkersSet;
             var currentTime = DateTime.UtcNow;
 
-            // Calculate the elapsed time in seconds
-            var elapsed = currentTime - savedTime;
-            var elapsedSeconds = elapsed.TotalSeconds;
+            TimeSpan elapsed = currentTime - savedTime;
+            var timePassedInSeconds = elapsed.TotalSeconds;
 
-            for (var i = 0; i < _maxFreeDaysSkipAmount; i++)
+            HoursOfAbstence = 0;
+            FreeSkipsGotten = 0;
+
+            while (timePassedInSeconds >= _oneDayTimerDurationInSeconds)
             {
-                elapsedSeconds -= _oneDayTimerDurationInSeconds;
+                HoursOfAbstence++;
+                timePassedInSeconds -= _oneDayTimerDurationInSeconds;
 
-                if (!(elapsedSeconds > 0))
-                    continue;
-
-                FreeSkipsLeft++;
-                CanUseSkipByTime = true;
-                OnDaySkipPossibility?.Invoke();
+                if (FreeSkipsLeft < _maxFreeDaysSkipAmount)
+                {
+                    FreeSkipsGotten++;
+                    FreeSkipsLeft++;
+                }
             }
+
+            if (FreeSkipsGotten == 0)
+            {
+                var secondsToSubtract = elapsed.TotalSeconds % _oneDayTimerDurationInSeconds;
+                _startTime = DateTime.UtcNow;
+                var addSeconds = _startTime.AddSeconds(-secondsToSubtract);
+                _startTime = addSeconds;
+            }
+            
+            OnPlayerCameBack?.Invoke();
+            OnPlayerStateChange?.Invoke(CurrentPlayerState);
+            HandleAfterLoad();
+        }
+
+        private void HandleAfterLoad()
+        {
+            // _buildingsManager.UnlockedBuildings.Clear();
+            // _worldManager.CustomStart(false);
+            // _godsManager
+            
+            OnAfterLoad?.Invoke();
         }
 
         public void SetPlayerState(DuringDayState p_newState)
@@ -98,6 +128,8 @@ namespace GameManager
 
             if (CurrentPlayerState == DuringDayState.DayPassing)
             {
+                _startTime = DateTime.UtcNow;
+
                 _savingManager.SaveMainGame(new MainGameManagerSavedData
                 {
                     TimeOfWorkersSet = _startTime,
@@ -105,9 +137,6 @@ namespace GameManager
                     FreeDaysSkipAmount = FreeSkipsLeft,
                     TimeLeftInSeconds = _timeLeftInSeconds
                 });
-
-                _startTime = DateTime.UtcNow;
-                CanUseSkipByTime = false;
             }
 
             OnPlayerStateChange?.Invoke(CurrentPlayerState);
@@ -137,7 +166,6 @@ namespace GameManager
                         CanUseSkipByTime = true;
                         OnDaySkipPossibility?.Invoke();
                     }
-
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

@@ -1,5 +1,6 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace InGameUi
@@ -8,7 +9,9 @@ namespace InGameUi
     {
         public GameObject NewGo;
         public GameObject InfoGo;
-        public Button BuildingIcon;
+        public Image BuildingIcon;
+        public Image GlowEffect;
+        public Button BuildingButton;
         public TextMeshProUGUI Informations;
         public TextMeshProUGUI NewInfo;
     }

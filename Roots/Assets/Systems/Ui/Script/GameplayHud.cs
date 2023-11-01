@@ -60,10 +60,9 @@ namespace InGameUi
         private TextMeshProUGUI _secondMissionButtonText;
         private TextMeshProUGUI _secondQuestText;
         private Button _settingsButton;
-
-        private float _singleDayGoWidth;
         // Quests
 
+        private float _singleDayGoWidth;
         private Button _skipDayButton;
 
         [SerializeField] private TextMeshProUGUI _skipDayText;
@@ -133,14 +132,14 @@ namespace InGameUi
 
             _gameManager.OnPlayerStateChange += MainButtonHandler;
             _gameManager.OnDaySkipPossibility += CheckDaySkipPossibility;
+            _gameManager.OnAfterLoad += AfterLoadHandler;
         }
 
-        private void Update() // Better way to do it?
+        private void Update() 
         {
             _skipDayText.text = _gameManager.TimePassed;
 
             MovePoints();
-
             VinetePanel.SetActive(BlockHud);
         }
 
@@ -171,9 +170,35 @@ namespace InGameUi
                 }
         }
 
+        private void AfterLoadHandler()
+        {
+            RefreshStormSlider();
+            
+            var rectGo = StormHandle.GetComponent<RectTransform>();
+            var rect = rectGo.anchoredPosition;
+            rect.x = _singleDayGoWidth;
+            rectGo.anchoredPosition = rect;
+            
+            RefreshQuestsText();
+            
+            _worldManager.CurrentQuests[0].OnCompletion += HandleFirstQuestCompletion;
+            _worldManager.CurrentQuests[1].OnCompletion += HandleSecondQuestCompletion;
+                
+            ShardsOfDestiny.text = $"{_buildingsManager.CurrentDestinyShards.ToString()}";
+            DefensePoints.text = $"{_buildingsManager.CurrentDefensePoints.ToString()}";
+            if (_buildingsManager.CurrentResourcePoints >= _worldManager.RequiredResourcePoints)
+                ResourcePoints.text = $"{_buildingsManager.CurrentResourcePoints} / " +
+                                      $"<color=green>{_worldManager.RequiredResourcePoints}</color>";
+            else
+                ResourcePoints.text = $"{_buildingsManager.CurrentResourcePoints} / " +
+                                      $"<color=red>{_worldManager.RequiredResourcePoints}</color>";
+            
+            CheckQuestsCompletion();
+        }
+
         private void NewDayHandler()
         {
-            StormSlider.value++;
+            StormSlider.value = _worldManager.CurrentDay;
             var roundedInt = Convert.ToInt32(StormSlider.value);
 
             if (roundedInt >= _worldManager.StormDaysRange.x)
@@ -201,8 +226,6 @@ namespace InGameUi
                 Destroy(daysOnUi);
 
             _createdDaysStorm.Clear();
-            StormSlider.value = 0;
-
             StormSlider.maxValue = _worldManager.StormDaysRange.y;
 
             for (var i = 0; i < _worldManager.StormDaysRange.y; i++)
@@ -227,14 +250,16 @@ namespace InGameUi
         {
             ShardsOfDestiny.text = $"{_buildingsManager.CurrentDestinyShards.ToString()}";
 
-            if (p_makeIcons) TryToCreatePoints(p_points, PointsType.ShardsOfDestiny);
+            if (p_makeIcons) 
+                TryToCreatePoints(p_points, PointsType.ShardsOfDestiny);
         }
 
         private void RefreshDefensePoints(int p_points, bool p_makeIcons)
         {
             DefensePoints.text = $"{_buildingsManager.CurrentDefensePoints.ToString()}";
 
-            if (p_makeIcons) TryToCreatePoints(p_points, PointsType.Defense);
+            if (p_makeIcons) 
+                TryToCreatePoints(p_points, PointsType.Defense);
         }
 
         private void RefreshResourcePoints(int p_points, bool p_makeIcons)
@@ -246,7 +271,8 @@ namespace InGameUi
                 ResourcePoints.text = $"{_buildingsManager.CurrentResourcePoints} / " +
                                       $"<color=red>{_worldManager.RequiredResourcePoints}</color>";
 
-            if (p_makeIcons) TryToCreatePoints(p_points, PointsType.Resource);
+            if (p_makeIcons) 
+                TryToCreatePoints(p_points, PointsType.Resource);
         }
 
         private void TryToCreatePoints(int p_points, PointsType p_pointsType)

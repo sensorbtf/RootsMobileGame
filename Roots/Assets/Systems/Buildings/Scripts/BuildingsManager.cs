@@ -239,7 +239,8 @@ namespace Buildings
                         building.SiteForBuilding.position, Quaternion.identity);
                     newBuilding = newBuildingGo.GetComponent<Building>();
                     newBuilding.InGameIcon.sprite = newBuilding.BuildingMainData.FirstStageBuilding;
-
+                    newBuilding.CurrentLevel = 0;
+                    
                     newBuilding.InitiateBuildingSequence();
                 }
 
@@ -378,32 +379,7 @@ namespace Buildings
                 // any way of attacking 
             }
         }
-
-        public void HandlePointsManipulation(PointsType p_pointsType, int p_pointsNumber, bool p_add,
-            bool p_createEffect = false)
-        {
-            var specificValue = p_pointsNumber;
-
-            if (!p_add) specificValue = 0 - p_pointsNumber;
-
-            switch (p_pointsType)
-            {
-                case PointsType.Resource:
-                    ManipulateResourcePoints(specificValue, p_createEffect);
-                    break;
-                case PointsType.Defense:
-                    ManipulateDefencePoints(specificValue, p_createEffect);
-                    break;
-                case PointsType.ResourcesAndDefense:
-                    ManipulateResourcePoints(specificValue, p_createEffect);
-                    ManipulateDefencePoints(specificValue, p_createEffect);
-                    break;
-                case PointsType.ShardsOfDestiny:
-                    ManipulateShardsOfDestiny(specificValue, p_createEffect);
-                    break;
-            }
-        }
-
+        
         public int GetProductionOfBuilding(BuildingType p_building)
         {
             var specificBuilding = CurrentBuildings.Find(x => x.BuildingMainData.Type == p_building);
@@ -443,6 +419,32 @@ namespace Buildings
             return _buildingsDatabase.allBuildings.Find(x => x.Type == p_building).Icon;
         }
 
+        #region PointsManipulation
+        public void HandlePointsManipulation(PointsType p_pointsType, int p_pointsNumber, bool p_add,
+            bool p_createEffect = false)
+        {
+            var specificValue = p_pointsNumber;
+
+            if (!p_add) specificValue = 0 - p_pointsNumber;
+
+            switch (p_pointsType)
+            {
+                case PointsType.Resource:
+                    ManipulateResourcePoints(specificValue, p_createEffect);
+                    break;
+                case PointsType.Defense:
+                    ManipulateDefencePoints(specificValue, p_createEffect);
+                    break;
+                case PointsType.ResourcesAndDefense:
+                    ManipulateResourcePoints(specificValue, p_createEffect);
+                    ManipulateDefencePoints(specificValue, p_createEffect);
+                    break;
+                case PointsType.ShardsOfDestiny:
+                    ManipulateShardsOfDestiny(specificValue, p_createEffect);
+                    break;
+            }
+        }
+
         private void ManipulateDefencePoints(int p_amountOfResources, bool p_createEffect = false)
         {
             CurrentDefensePoints += p_amountOfResources;
@@ -469,7 +471,8 @@ namespace Buildings
 
             OnDestinyShardsPointsChange?.Invoke(p_amountOfResources, p_createEffect);
         }
-
+        #endregion
+        
         #region Saving
 
         public BuildingManagerSavedData GetSavedData()
@@ -553,11 +556,25 @@ namespace Buildings
                     probableBuilding.IsBeeingUpgradedOrBuilded = savedBuilding.IsBeeingUpgradedOrBuilded;
                     probableBuilding.IsProtected = savedBuilding.IsProtected;
                     probableBuilding.CurrentTechnologyLvl = savedBuilding.CurrentTechnologyLvl;
+
+                    if (probableBuilding.IsDamaged)
+                    {
+                        probableBuilding.InGameIcon.sprite = probableBuilding.BuildingMainData.DestroyedStage;
+                    }  
+                    else if (probableBuilding.IsBeeingUpgradedOrBuilded)
+                    {
+                        probableBuilding.InGameIcon.sprite = probableBuilding.CurrentLevel == 0 ? 
+                            probableBuilding.BuildingMainData.FirstStageBuilding : probableBuilding.BuildingMainData.UpgradeStage;
+                    }
                 }
 
                 // postawić jeśli nie istnieje, wczytać dane
                 // jeszcze trzeba zapisać questy
             }
+            
+            OnResourcePointsChange?.Invoke(0, false);
+            OnDestinyShardsPointsChange?.Invoke(0, false);
+            OnDefensePointsChange?.Invoke(0, false);
         }
 
         #endregion

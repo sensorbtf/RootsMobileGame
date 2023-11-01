@@ -19,15 +19,13 @@ namespace InGameUi
         [SerializeField] private GameObject _godPrefab;
         [SerializeField] private Transform _contentTransform;
 
-        [SerializeField] private Color _noEffect;
-        [SerializeField] private Color _smallEffect;
-        [SerializeField] private Color _mediumEffect;
-        [SerializeField] private Color _bigEffect;
-
         private List<GameObject> _createdGodsInstances;
         [SerializeField] private Button _goBackButton;
 
         [SerializeField] private TextMeshProUGUI _tabName;
+        
+        public event Action OnGodsPanelOpened;
+        public event Action OnBackToWorkersPanel;
 
         private void Start()
         {
@@ -35,8 +33,6 @@ namespace InGameUi
             _goBackButton.onClick.AddListener(BackToWorkerTab);
             gameObject.SetActive(false);
         }
-
-        public event Action OnBackToWorkersPanel;
 
         public void BackToWorkerTab()
         {
@@ -46,6 +42,7 @@ namespace InGameUi
 
         public void ActivatePanel()
         {
+            OnGodsPanelOpened?.Invoke();
             gameObject.SetActive(true);
             GameplayHud.BlockHud = true;
             CameraController.IsUiOpen = true;
@@ -91,7 +88,7 @@ namespace InGameUi
             if (blessingOnSlider == 0)
             {
                 p_newGodRef.ActivationButton.gameObject.SetActive(false);
-                p_newGodRef.GlowEffect.color = _noEffect;
+                p_newGodRef.GlowEffect.color = _godsManager.NoEffect;
             }
             else if (_godsManager.IsGodBlessingOnLevelActivated(p_godType, blessingOnSlider))
             {
@@ -120,7 +117,7 @@ namespace InGameUi
 
                 p_newGodRef.ActivationButtonText.text =
                     $"Buy for {_godsManager.BlessingPrices[blessingOnSlider]} Destiny Shards";
-                p_newGodRef.GlowEffect.color = _noEffect;
+                p_newGodRef.GlowEffect.color = _godsManager.NoEffect;
                 p_newGodRef.ActivationButton.gameObject.SetActive(true);
             }
             else
@@ -133,8 +130,7 @@ namespace InGameUi
                     return;
                 }
 
-                p_newGodRef.ActivationButton.interactable =
-                    _godsManager.CanActivateBlessing(p_godType, blessingOnSlider);
+                p_newGodRef.ActivationButton.interactable = true;
                 p_newGodRef.ActivationButton.onClick.AddListener(delegate
                 {
                     ActivateSpecificBlessing(p_godType, blessingOnSlider);
@@ -142,7 +138,7 @@ namespace InGameUi
                 });
 
                 p_newGodRef.ActivationButtonText.text = $"Activate ({amountOfBlessings})";
-                p_newGodRef.GlowEffect.color = _noEffect;
+                p_newGodRef.GlowEffect.color = _godsManager.NoEffect;
                 p_newGodRef.ActivationButton.gameObject.SetActive(true);
             }
 
@@ -192,9 +188,9 @@ namespace InGameUi
         {
             p_newGodRef.GlowEffect.color = p_newGodRef.Slider.value switch
             {
-                1 => _smallEffect,
-                2 => _mediumEffect,
-                3 => _bigEffect,
+                1 => _godsManager.SmallEffect,
+                2 => _godsManager.MediumEffect,
+                3 => _godsManager.BigEffect,
                 _ => p_newGodRef.GlowEffect.color
             };
         }

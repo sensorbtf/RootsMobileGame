@@ -1,8 +1,10 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Buildings;
 using GameManager;
 using GeneralSystems;
+using Gods;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,6 +16,7 @@ namespace InGameUi
         [SerializeField] private BuildingsManager buildingsManager;
         [SerializeField] private WorkersManager _workersManager;
         [SerializeField] private MainGameManager _gameManager;
+        [SerializeField] private GodsManager _godsManager;
 
         [SerializeField] private BuildingPanel _buildingPanel;
         [SerializeField] private GatheringDefensePanel _gatheringDefensePanel;
@@ -37,6 +40,7 @@ namespace InGameUi
             _buildingPanel.OnBackToWorkersPanel += ActivatePanel;
             _gatheringDefensePanel.OnBackToWorkersPanel += ActivatePanel;
             _godsPanel.OnBackToWorkersPanel += ActivatePanel;
+            _godsPanel.OnGodsPanelOpened += ClosePanel;
             _gameManager.OnPlayerStateChange += ActivatePanel;
             _godsButton.onClick.AddListener(_godsPanel.ActivatePanel);
 
@@ -90,7 +94,7 @@ namespace InGameUi
 
                             if (building != null)
                             {
-                                references.BuildingIcon.image.sprite = data.Key.Icon;
+                                references.BuildingIcon.sprite = data.Key.Icon;
                                 var daysToComplete =
                                     building.BuildingMainData.PerLevelData[building.CurrentLevel].Requirements
                                         .DaysToComplete - building.CurrentDayOnQueue;
@@ -116,7 +120,7 @@ namespace InGameUi
                             }
                             else
                             {
-                                references.BuildingIcon.image.sprite = data.Key.Icon;
+                                references.BuildingIcon.sprite = data.Key.Icon;
                             }
                         }
 
@@ -132,20 +136,19 @@ namespace InGameUi
                                 continue;
 
                             points += buildingsManager.GetProductionOfBuilding(building.BuildingMainData.Type);
-
+                            
                             newEntry = Instantiate(_iconPrefab, scriptOfBar.ScrollContext);
-                            newEntry.GetComponent<Image>().sprite =
-                                building.BuildingMainData.Icon;
 
                             var references = newEntry.GetComponent<ButtonIconPrefabRefs>();
-
+                            
+                            references.BuildingIcon.sprite = building.BuildingMainData.Icon;
                             references.NewGo.SetActive(false);
                             references.InfoGo.SetActive(true);
-
+                            references.GlowEffect.color = GetColor(building.BuildingMainData.GodType);
                             references.Informations.text = "Worker Assigned";
                         }
 
-                        scriptOfBar.BarText.text = $"Resource Points: {points}";
+                        scriptOfBar.BarText.text = $"Resource Points: +{points}";
                         scriptOfBar.BarButton.onClick.AddListener(() => OnGatheringOrDefenseButtonClicked(true));
                         break;
                     case 2:
@@ -161,17 +164,17 @@ namespace InGameUi
                             points += buildingsManager.GetProductionOfBuilding(building.BuildingMainData.Type);
 
                             newEntry = Instantiate(_iconPrefab, scriptOfBar.ScrollContext);
-                            newEntry.GetComponent<Image>().sprite = building.BuildingMainData.Icon;
 
                             var references = newEntry.GetComponent<ButtonIconPrefabRefs>();
 
+                            references.BuildingIcon.sprite = building.BuildingMainData.Icon;
                             references.NewGo.SetActive(false);
                             references.InfoGo.SetActive(true);
-
+                            references.GlowEffect.color = GetColor(building.BuildingMainData.GodType);
                             references.Informations.text = "Worker Assigned";
                         }
 
-                        scriptOfBar.BarText.text = $"Defense Points: {points}";
+                        scriptOfBar.BarText.text = $"Defense Points: +{points}";
 
                         scriptOfBar.BarButton.onClick.AddListener(() => OnGatheringOrDefenseButtonClicked(false));
                         break;
@@ -179,7 +182,18 @@ namespace InGameUi
             }
         }
 
-
+        private Color GetColor(GodType p_godType)
+        {
+            return _godsManager.GetCurrentBlessingLevel(p_godType) switch
+            {
+                BlessingLevel.Noone => _godsManager.NoEffect,
+                BlessingLevel.Small => _godsManager.SmallEffect,
+                BlessingLevel.Medium => _godsManager.MediumEffect,
+                BlessingLevel.Big => _godsManager.BigEffect,
+                _ => throw new ArgumentOutOfRangeException()
+            };
+        }
+        
         private void ClosePanel()
         {
             foreach (var createdUiElement in _runtimeBuildingsUiToDestroy) Destroy(createdUiElement);

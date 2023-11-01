@@ -42,7 +42,7 @@ namespace InGameUi
             ActivateOnNewDay(_isCottage);
             _isCottage = false;
 
-            _panelTitle.text = "Rank up summary";
+            _panelTitle.text = "Rank up!";
 
             foreach (var building in buildingsManager.UnlockedBuildings)
                 CreateUiElement(building.Icon, $"New building unlocked: {building.Type}");
@@ -67,12 +67,14 @@ namespace InGameUi
             _goBackButton.interactable = true;
             _goBackButton.onClick.AddListener(ClosePanel);
 
-            if (!p_isCottage) HandleViewOfSummary();
+            if (!p_isCottage) 
+                HandleViewOfSummary();
         }
 
         private void ClosePanel()
         {
-            foreach (var createdUiElement in _runtimeBuildingsUiToDestroy) Destroy(createdUiElement);
+            foreach (var createdUiElement in _runtimeBuildingsUiToDestroy) 
+                Destroy(createdUiElement);
 
             CameraController.IsUiOpen = false;
             GameplayHud.BlockHud = false;

@@ -128,6 +128,8 @@ MonoBehaviour:
     BuildingData: {fileID: 11400000, guid: 6db00223889de7946861a8c90de120f8, type: 2}
   - SiteForBuilding: {fileID: 2995086493439123659}
     BuildingData: {fileID: 11400000, guid: 057424bd9eb95b946b96ac5f0803a69c, type: 2}
+  - SiteForBuilding: {fileID: 1297454625474076791}
+    BuildingData: {fileID: 11400000, guid: e95d4a757e7645c46996a9a9a2c0e917, type: 2}
   _buildingsDatabase: {fileID: 11400000, guid: b3edb7efaacaa7243b73c8807b123489, type: 2}
   _startingDestinyPoints: 50
   DefenseAndResourcesPointsIcon: {fileID: 21300000, guid: ccdb0e4dc91696b43a5ca8cea60c220e, type: 3}

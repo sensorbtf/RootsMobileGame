@@ -4051,6 +4051,7 @@ MonoBehaviour:
   buildingsManager: {fileID: 1903800807}
   _workersManager: {fileID: 1823812590}
   _gameManager: {fileID: 1423804878}
+  _godsManager: {fileID: 2146834623}
   _buildingPanel: {fileID: 455143713}
   _gatheringDefensePanel: {fileID: 2061975645}
   _godsPanel: {fileID: 1052130585}
@@ -7078,9 +7079,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Description: {fileID: 1992927347}
+  NoButtonGo: {fileID: 1889281841}
   NoButton: {fileID: 1889281843}
   NoButtonText: {fileID: 2078360538}
   Title: {fileID: 1744682040}
+  YesButtonGo: {fileID: 122143938}
   YesButton: {fileID: 122143940}
   YesButtonText: {fileID: 1900287599}
 --- !u!114 &911948255
@@ -7095,6 +7098,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: baa0d12e2c724a99920a84cfacb207f5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _gameManager: {fileID: 1423804878}
   _worldManager: {fileID: 1218957329}
 --- !u!1 &918352706
 GameObject:
@@ -8648,10 +8652,6 @@ MonoBehaviour:
   _gameManager: {fileID: 0}
   _godPrefab: {fileID: 920524045294400590, guid: 73cded31a9731e942b82e6919df27b8c, type: 3}
   _contentTransform: {fileID: 1185805335}
-  _noEffect: {r: 0, g: 0, b: 0, a: 0}
-  _smallEffect: {r: 0.24089381, g: 0.8867924, b: 0.12130654, a: 1}
-  _mediumEffect: {r: 0.071110725, g: 0.071110725, b: 0.8867924, a: 1}
-  _bigEffect: {r: 1, g: 0.4671613, b: 0, a: 1}
   _goBackButton: {fileID: 2053295772}
   _tabName: {fileID: 1397131398}
 --- !u!1 &1061192365
@@ -9549,7 +9549,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9f6a8bf061039674e89844ee5bd53af8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buildingsManager: {fileID: 1903800807}
+  _buildingsManager: {fileID: 1903800807}
+  _godsManager: {fileID: 2146834623}
   _workersManager: {fileID: 1823812590}
   _missionData:
   - NeededResourcePoints: 60
@@ -11445,6 +11446,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d5e60eee8be4d888445ea1dde8cd36f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _godsManager: {fileID: 2146834623}
   _worldManager: {fileID: 1218957329}
   _buildingsManager: {fileID: 1903800807}
 --- !u!114 &1423804878
@@ -11459,6 +11461,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b71174d52df484e8ddc194c5a0b8863, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _godsManager: {fileID: 2146834623}
   _worldManager: {fileID: 1218957329}
   _buildingsManager: {fileID: 1903800807}
   _savingManager: {fileID: 1423804877}
@@ -12729,7 +12732,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -2.6199036, y: 111.7}
+  m_AnchoredPosition: {x: -2.619934, y: 111.7}
   m_SizeDelta: {x: 225.03, y: 523.9629}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!114 &1659490462
@@ -93103,6 +93106,54 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 427532353298394474, guid: b98e20b3b1d84e043b2bb014eff76c2f, type: 3}
+      propertyPath: BigEffect.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 427532353298394474, guid: b98e20b3b1d84e043b2bb014eff76c2f, type: 3}
+      propertyPath: BigEffect.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 427532353298394474, guid: b98e20b3b1d84e043b2bb014eff76c2f, type: 3}
+      propertyPath: BigEffect.g
+      value: 0.5528071
+      objectReference: {fileID: 0}
+    - target: {fileID: 427532353298394474, guid: b98e20b3b1d84e043b2bb014eff76c2f, type: 3}
+      propertyPath: BigEffect.r
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 427532353298394474, guid: b98e20b3b1d84e043b2bb014eff76c2f, type: 3}
+      propertyPath: SmallEffect.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 427532353298394474, guid: b98e20b3b1d84e043b2bb014eff76c2f, type: 3}
+      propertyPath: SmallEffect.b
+      value: 0.12041653
+      objectReference: {fileID: 0}
+    - target: {fileID: 427532353298394474, guid: b98e20b3b1d84e043b2bb014eff76c2f, type: 3}
+      propertyPath: SmallEffect.g
+      value: 0.7735849
+      objectReference: {fileID: 0}
+    - target: {fileID: 427532353298394474, guid: b98e20b3b1d84e043b2bb014eff76c2f, type: 3}
+      propertyPath: SmallEffect.r
+      value: 0.25943187
+      objectReference: {fileID: 0}
+    - target: {fileID: 427532353298394474, guid: b98e20b3b1d84e043b2bb014eff76c2f, type: 3}
+      propertyPath: MediumEffect.a
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 427532353298394474, guid: b98e20b3b1d84e043b2bb014eff76c2f, type: 3}
+      propertyPath: MediumEffect.b
+      value: 0.6698113
+      objectReference: {fileID: 0}
+    - target: {fileID: 427532353298394474, guid: b98e20b3b1d84e043b2bb014eff76c2f, type: 3}
+      propertyPath: MediumEffect.g
+      value: 0.123822175
+      objectReference: {fileID: 0}
+    - target: {fileID: 427532353298394474, guid: b98e20b3b1d84e043b2bb014eff76c2f, type: 3}
+      propertyPath: MediumEffect.r
+      value: 0.08530616
+      objectReference: {fileID: 0}
     - target: {fileID: 3323690418667786242, guid: b98e20b3b1d84e043b2bb014eff76c2f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 986.6515
@@ -93982,7 +94033,7 @@ SceneRoots:
   - {fileID: 1218957328}
   - {fileID: 3327664473896040690}
   - {fileID: 6346346865749143076}
+  - {fileID: 2380214193655486956}
   - {fileID: 1803423331}
   - {fileID: 13890662}
   - {fileID: 617399991}
-  - {fileID: 2380214193655486956}

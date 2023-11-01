@@ -28,7 +28,9 @@ namespace World
             set
             {
                 _isCompleted = value;
-                if (_isCompleted) OnCompletion?.Invoke(this);
+                
+                if (_isCompleted) 
+                    OnCompletion?.Invoke(this);
             }
         }
 
@@ -45,8 +47,39 @@ namespace World
             {
                 _achievedTargetAmount = value;
 
-                if (_achievedTargetAmount >= SpecificQuest.TargetAmount) IsCompleted = true;
+                if (_achievedTargetAmount >= SpecificQuest.TargetAmount) 
+                    IsCompleted = true;
             }
         }
+
+        public SavedQuestData GetSavedData()
+        {
+            return new SavedQuestData()
+            {
+                IsCompleted = _isCompleted,
+                AchievedTargetAmount = _achievedTargetAmount,
+                IsRedeemed = _isRedeemed
+            };
+        }
+        
+        public void LoadSavedData(SavedQuestData p_savedData)
+        {
+            IsRedeemed = p_savedData.IsRedeemed;
+            
+            if (IsRedeemed)
+                _isCompleted = p_savedData.IsCompleted;
+            else
+                IsCompleted = p_savedData.IsCompleted;
+            
+            _achievedTargetAmount = p_savedData.AchievedTargetAmount;
+        }
+    }
+
+    [Serializable]
+    public struct SavedQuestData
+    {
+        public int AchievedTargetAmount;
+        public bool IsCompleted;
+        public bool IsRedeemed;
     }
 }

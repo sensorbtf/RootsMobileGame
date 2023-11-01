@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Globalization;
 using System.IO;
 using Buildings;
+using Gods;
 using UnityEngine;
 using World;
 
@@ -8,6 +10,7 @@ namespace Saving
 {
     public class SavingManager : MonoBehaviour
     {
+        [SerializeField] private GodsManager _godsManager;
         [SerializeField] private WorldManager _worldManager;
         [SerializeField] private BuildingsManager _buildingsManager;
 
@@ -24,14 +27,18 @@ namespace Saving
 
         public event Action<MainGameManagerSavedData> OnLoad;
 
+
         public void SaveMainGame(MainGameManagerSavedData p_data)
         {
             var path = Application.persistentDataPath + "/gameData.json";
+
+            p_data.TimeOfWorkersSetISO8601 = p_data.TimeOfWorkersSet.ToString("o");
 
             var gameData = new GameData
             {
                 WorldManagerSavedData = _worldManager.GetSavedData(),
                 BuildingManagerSavedData = _buildingsManager.GetSavedData(),
+                GodsManagerSavedData = _godsManager.GetSavedData(),
                 MainSavedData = p_data
             };
 
@@ -49,8 +56,13 @@ namespace Saving
             var json = File.ReadAllText(_path);
             var gameData = JsonUtility.FromJson<GameData>(json);
 
+            DateTime timeOfWorkersSet = DateTime.ParseExact(gameData.MainSavedData.TimeOfWorkersSetISO8601, 
+                "o", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind);
+
+            gameData.MainSavedData.TimeOfWorkersSet = timeOfWorkersSet;
             _worldManager.LoadSavedData(gameData.WorldManagerSavedData);
             _buildingsManager.LoadSavedData(gameData.BuildingManagerSavedData);
+            _godsManager.LoadSavedData(gameData.GodsManagerSavedData);
 
             OnLoad?.Invoke(gameData.MainSavedData);
         }
@@ -73,6 +85,7 @@ namespace Saving
         public MainGameManagerSavedData MainSavedData;
         public WorldManagerSavedData WorldManagerSavedData;
         public BuildingManagerSavedData BuildingManagerSavedData;
+        public GodsManagerSavedData GodsManagerSavedData;
     }
 
     [Serializable]
@@ -82,5 +95,7 @@ namespace Saving
         public int CurrentPlayerState;
         public float TimeLeftInSeconds;
         public DateTime TimeOfWorkersSet;
+        public string TimeOfWorkersSetISO8601; // Add this field to store the DateTime as a string
     }
+
 }

@@ -1,16 +1,16 @@
 using System;
 using System.Collections.Generic;
 using Buildings;
+using Gods;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 namespace World
 {
     public class WorldManager : MonoBehaviour
     {
-        [FormerlySerializedAs("_buildingManager")] [SerializeField]
-        private BuildingsManager buildingsManager;
+        [SerializeField] private BuildingsManager _buildingsManager;
+        [SerializeField] private GodsManager _godsManager;
 
         [SerializeField] private WorkersManager _workersManager;
         [SerializeField] private Mission[] _missionData;
@@ -38,24 +38,26 @@ namespace World
         public event Action OnDefendingVillage;
         public event Action OnQuestsProgress;
         public event Action OnNewMissionStart;
-
         public event Action<int> OnStormCheck;
         public event Action<List<BuildingType>, bool> OnStormCame;
 
         public void CustomStart(bool p_willBeLoaded)
         {
-            buildingsManager.StartOnWorld(p_willBeLoaded);
-            if (!p_willBeLoaded) StartMission(true);
+            _buildingsManager.StartOnWorld(p_willBeLoaded);
+            _godsManager.CustomStart(p_willBeLoaded);
+            
+            if (!p_willBeLoaded) 
+                StartMission(true);
 
-            buildingsManager.OnPointsGathered += HandleOverallResourcesQuests;
-            buildingsManager.OnBuildingStateChanged += CheckBuildingsQuests;
-            buildingsManager.OnBuildingTechnologyLvlUp += CheckTechnologyBuildingsQuests;
+            _buildingsManager.OnPointsGathered += HandleOverallResourcesQuests;
+            _buildingsManager.OnBuildingStateChanged += CheckBuildingsQuests;
+            _buildingsManager.OnBuildingTechnologyLvlUp += CheckTechnologyBuildingsQuests;
         }
 
         public void StartNewDay()
         {
             CurrentDay++;
-            _workersManager.BaseWorkersAmounts = buildingsManager.GetFarmProductionAmount;
+            _workersManager.BaseWorkersAmounts = _buildingsManager.GetFarmProductionAmount;
 
             if (CurrentDay == FinalHiddenStormDay)
             {
@@ -65,20 +67,19 @@ namespace World
             {
                 HandleNewDayStarted();
 
-                if (!buildingsManager.IsAnyBuildingNonGathered())
+                if (!_buildingsManager.IsAnyBuildingNonGathered())
                     CheckResourcePoints();
             }
 
             // if not: new day has started tooltip: info about last one + panel for worker displacement
             // if yes: checlk if win
             // afterone "keep working" there should be turned on button "End Mission"
-            // need gods
             //do other thins (days)
         }
 
         private void CheckResourcePoints()
         {
-            if (buildingsManager.CurrentResourcePoints < RequiredResourcePoints)
+            if (_buildingsManager.CurrentResourcePoints < RequiredResourcePoints)
                 return;
 
             OnResourcesRequirementsMeet?.Invoke();
@@ -86,10 +87,13 @@ namespace World
 
         public void HandleNewDayStarted(bool p_invoke = true)
         {
-            buildingsManager.RefreshBuildingsOnNewDay();
-
+            _buildingsManager.RefreshBuildingsOnNewDay();
+            _godsManager.ResetBlessingOnNewDayStart();
+            
             if (p_invoke)
+            {
                 OnNewDayStarted?.Invoke();
+            }
         }
 
         public void EndMission(bool p_byLeft, bool p_lowerDamages)
@@ -100,7 +104,7 @@ namespace World
             }
             else
             {
-                if (StormPower > buildingsManager.CurrentDefensePoints) // loss
+                if (StormPower > _buildingsManager.CurrentDefensePoints) // loss
                     HandleEndMissionConsequences(false, false);
                 else
                     OnDefendingVillage?.Invoke();
@@ -110,7 +114,7 @@ namespace World
 
         private void EndMissionHandler()
         {
-            buildingsManager.EndMissionHandler();
+            _buildingsManager.EndMissionHandler();
             HandleResourceBasementTransition(true);
         }
 
@@ -123,7 +127,7 @@ namespace World
         {
             var damagedBuildings = new List<BuildingType>();
 
-            foreach (var building in buildingsManager.CurrentBuildings)
+            foreach (var building in _buildingsManager.CurrentBuildings)
             {
                 if (building.IsProtected)
                     continue;
@@ -144,7 +148,7 @@ namespace World
         public void StartMission(bool p_progressInMissions) // if !progress == lower points in ranking
         {
             if (CurrentMission == 0)
-                buildingsManager.HandlePointsManipulation(PointsType.Resource, _startingWorldResources, true);
+                _buildingsManager.HandlePointsManipulation(PointsType.Resource, _startingWorldResources, true);
 
             if (p_progressInMissions)
             {
@@ -163,7 +167,7 @@ namespace World
                       + " in " + CurrentMission + " mission");
 
             HandleResourceBasementTransition(false); //get resources from basement
-            _workersManager.BaseWorkersAmounts = buildingsManager.GetFarmProductionAmount;
+            _workersManager.BaseWorkersAmounts = _buildingsManager.GetFarmProductionAmount;
 
             OnNewMissionStart?.Invoke();
         }
@@ -172,21 +176,15 @@ namespace World
         {
             if (p_putInto)
             {
-                buildingsManager.HandlePointsManipulation(PointsType.Resource, RequiredResourcePoints, false);
-                buildingsManager.ResourcesInBasement = buildingsManager.CurrentResourcePoints;
+                _buildingsManager.HandlePointsManipulation(PointsType.Resource, RequiredResourcePoints, false);
+                _buildingsManager.ResourcesInBasement = _buildingsManager.CurrentResourcePoints;
             }
             else
             {
-                buildingsManager.HandlePointsManipulation(PointsType.Resource, buildingsManager.ResourcesInBasement,
+                _buildingsManager.HandlePointsManipulation(PointsType.Resource, _buildingsManager.ResourcesInBasement,
                     true);
-                buildingsManager.ResourcesInBasement = 0;
+                _buildingsManager.ResourcesInBasement = 0;
             }
-        }
-
-        public bool CheckIfDayIsFinished()
-        {
-            // need manager of minigames. If minigame ended => true
-            return true;
         }
 
         public string GetSpecificQuestText(int p_index)
@@ -240,7 +238,7 @@ namespace World
             switch (CurrentQuests[p_index].SpecificQuest.QuestKind)
             {
                 case QuestType.AchieveBuildingLvl:
-                    building = buildingsManager.GetSpecificBuilding(CurrentQuests[p_index].SpecificQuest.TargetName);
+                    building = _buildingsManager.GetSpecificBuilding(CurrentQuests[p_index].SpecificQuest.TargetName);
 
                     if (building != null)
                         level = building.CurrentLevel;
@@ -248,7 +246,7 @@ namespace World
                     textToReturn = $"Current level: {level}";
                     break;
                 case QuestType.AchieveTechnologyLvl:
-                    building = buildingsManager.GetSpecificBuilding(CurrentQuests[p_index].SpecificQuest.TargetName);
+                    building = _buildingsManager.GetSpecificBuilding(CurrentQuests[p_index].SpecificQuest.TargetName);
 
                     if (building != null)
                         level = building.CurrentTechnologyLvl;
@@ -343,17 +341,18 @@ namespace World
             }
 
             OnQuestsProgress?.Invoke();
+            CheckResourcePoints();
         }
 
         public void HandleRankUp()
         {
             CurrentRank++;
-            buildingsManager.HandleUpgradeOfBuilding(BuildingType.Cottage, true);
+            _buildingsManager.HandleUpgradeOfBuilding(BuildingType.Cottage, true);
         }
 
         public void CheckNewQuests()
         {
-            foreach (var building in buildingsManager.CurrentBuildings)
+            foreach (var building in _buildingsManager.CurrentBuildings)
             {
                 CheckBuildingsQuests(building);
                 CheckTechnologyBuildingsQuests(building);
@@ -365,6 +364,7 @@ namespace World
             OnStormCheck?.Invoke(p_daysToSee);
         }
 
+        #region Saving
         public WorldManagerSavedData GetSavedData()
         {
             return new WorldManagerSavedData
@@ -373,7 +373,9 @@ namespace World
                 CurrentMission = CurrentMission,
                 CurrentRank = CurrentRank,
                 FinalHiddenStormDay = FinalHiddenStormDay,
-                StormPower = StormPower
+                StormPower = StormPower,
+                QuestOne = CurrentQuests[0].GetSavedData(),
+                QuestTwo = CurrentQuests[1].GetSavedData(),
             };
         }
 
@@ -385,9 +387,10 @@ namespace World
             FinalHiddenStormDay = p_data.FinalHiddenStormDay;
             StormPower = p_data.StormPower;
 
-            OnNewMissionStart?.Invoke();
-            OnQuestsProgress?.Invoke();
+            CurrentQuests[0].LoadSavedData(p_data.QuestOne);
+            CurrentQuests[1].LoadSavedData(p_data.QuestTwo);
         }
+        #endregion
     }
 
     [Serializable]
@@ -398,6 +401,8 @@ namespace World
         public int CurrentRank;
         public int FinalHiddenStormDay;
         public int StormPower;
+        public SavedQuestData QuestOne;
+        public SavedQuestData QuestTwo;
     }
 
     [Serializable]
