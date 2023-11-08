@@ -1,0 +1,5 @@
+V:/GryUnity/RootsMobileGame/Roots/.utmp/Debug/5z46d721/armeabi-v7a/CMakeFiles/edit_cache.dir
+V:/GryUnity/RootsMobileGame/Roots/.utmp/Debug/5z46d721/armeabi-v7a/CMakeFiles/rebuild_cache.dir
+V:/GryUnity/RootsMobileGame/Roots/.utmp/Debug/5z46d721/armeabi-v7a/FramePacing/CMakeFiles/swappywrapper.dir
+V:/GryUnity/RootsMobileGame/Roots/.utmp/Debug/5z46d721/armeabi-v7a/FramePacing/CMakeFiles/edit_cache.dir
+V:/GryUnity/RootsMobileGame/Roots/.utmp/Debug/5z46d721/armeabi-v7a/FramePacing/CMakeFiles/rebuild_cache.dir
