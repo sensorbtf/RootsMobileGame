@@ -128,15 +128,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae54fd296b6c6614cb3172f2b52b956d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GodName: {fileID: 5549853996261836083}
-  GodImage: {fileID: 6622146481437515832}
-  GlowEffect: {fileID: 2161397305487031511}
-  AffectedBuilding: {fileID: 8429671255088305592}
-  AffectedBuildingText: {fileID: 7147651888861632809}
-  Slider: {fileID: 8034881776597703579}
-  BlessingChooserText: {fileID: 5927244248269071329}
   ActivationButton: {fileID: 1692952225771938016}
   ActivationButtonText: {fileID: 1905793665478326776}
+  AffectedBuilding: {fileID: 8429671255088305592}
+  AffectedBuildingText: {fileID: 7147651888861632809}
+  BlessingChooserText: {fileID: 5927244248269071329}
+  GlowEffect: {fileID: 2161397305487031511}
+  GodImage: {fileID: 6622146481437515832}
+  GodName: {fileID: 5549853996261836083}
+  Slider: {fileID: 8034881776597703579}
 --- !u!1 &1375776357390267697
 GameObject:
   m_ObjectHideFlags: 0
@@ -955,7 +955,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -7723343869334791792, guid: 7729b3b48c0df584290c8b6989f5d5d8, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 7729b3b48c0df584290c8b6989f5d5d8, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1

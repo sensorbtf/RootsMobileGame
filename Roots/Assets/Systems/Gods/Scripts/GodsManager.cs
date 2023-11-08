@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Gods
@@ -92,7 +93,8 @@ namespace Gods
 
         public void ResetBlessingOnNewDayStart()
         {
-            foreach (var blessing in PlayerCurrentBlessings) PlayerCurrentBlessings[blessing.Key] = BlessingLevel.Noone;
+            foreach (var blessing in PlayerCurrentBlessings.ToList()) 
+                PlayerCurrentBlessings[blessing.Key] = BlessingLevel.Noone;
         }
 
         public int GetAmountOfAvaiableBlessings(GodType p_god, BlessingLevel p_blessingLevel)
