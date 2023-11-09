@@ -136,7 +136,9 @@ PlayerSettings:
   vulkanEnableCommandBufferRecycling: 1
   loadStoreDebugModeEnabled: 0
   bundleVersion: 0.0
-  preloadedAssets: []
+  preloadedAssets:
+  - {fileID: 11400000, guid: 107054aba35d4ed47b39ce0871e1bbb7, type: 2}
+  - {fileID: 11400000, guid: fd75ebaf9c266594684967f5e7f6bbc0, type: 2}
   metroInputSource: 0
   wsaTransparentSwapchain: 0
   m_HolographicPauseOnTrackingLoss: 1
@@ -258,7 +260,7 @@ PlayerSettings:
   AndroidTargetDevices: 0
   AndroidSplashScreenScale: 0
   androidSplashScreen: {fileID: 0}
-  AndroidKeystoreName: C:/Users/mateu/OneDrive/Roots/dev.keystore
+  AndroidKeystoreName: '{dedicated}: Desktop/dev.keystore'
   AndroidKeyaliasName: dev
   AndroidEnableArmv9SecurityFeatures: 0
   AndroidBuildApkPerCpuArchitecture: 0
