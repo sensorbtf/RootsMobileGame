@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,6 +10,7 @@ using TMPro;
 public class GPGS : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _infoText;
+    private const string SAVE_FILENAME = "MyGame_SaveData";
     
     void Start()
     {
@@ -19,7 +21,7 @@ public class GPGS : MonoBehaviour
     {
         PlayGamesPlatform.Instance.Authenticate(ProcessAuthentication);
     }
-    
+
     internal void ProcessAuthentication(SignInStatus status)
     {
         if (status == SignInStatus.Success)
@@ -28,6 +30,8 @@ public class GPGS : MonoBehaviour
             var id = PlayGamesPlatform.Instance.GetUserId();
             var url = PlayGamesPlatform.Instance.GetUserImageUrl();
             _infoText.text = $"NAME: {playerName}. ID {id}. URL {url}";
+            
+            OpenSavedGame(SAVE_FILENAME);
         }
         else
         {
@@ -38,45 +42,74 @@ public class GPGS : MonoBehaviour
 
     #region Saving
 
-        void OpenSavedGame(string filename)
+    void OpenSavedGame(string filename)
     {
         ISavedGameClient savedGameClient = PlayGamesPlatform.Instance.SavedGame;
         savedGameClient.OpenWithAutomaticConflictResolution(
             filename,
             DataSource.ReadCacheOrNetwork,
             ConflictResolutionStrategy.UseLongestPlaytime,
-            (SavedGameRequestStatus status, ISavedGameMetadata game) => {
-                // handle opening the saved game
+            (status, game) =>
+            {
+                if (status == SavedGameRequestStatus.Success)
+                {
+                    _infoText.text = "Save Opened Successfully";
+
+                    LoadGameData(game);
+                    // The saved game has been successfully opened or created.
+                    // Proceed with reading from or writing to the file.
+                }
+                else
+                {
+                    // The saved game failed to open. You should handle the error appropriately.
+                    // This could involve retrying the open or informing the user of the issue.
+                }
             });
     }
 
-    void SaveGame(ISavedGameMetadata game, string dataToSave)
+    void SaveGame(ISavedGameMetadata game, string savedData, TimeSpan totalPlaytime)
     {
-        byte[] data = System.Text.Encoding.UTF8.GetBytes(dataToSave);
-        SavedGameMetadataUpdate.Builder builder = new SavedGameMetadataUpdate.Builder();
-        SavedGameMetadataUpdate updatedMetadata = builder.Build();
-
         ISavedGameClient savedGameClient = PlayGamesPlatform.Instance.SavedGame;
-        savedGameClient.CommitUpdate(game, updatedMetadata, data, (SavedGameRequestStatus status, ISavedGameMetadata updatedGame) => {
-            // handle the result of the save operation
-        });
+        SavedGameMetadataUpdate.Builder builder = new SavedGameMetadataUpdate.Builder();
+        byte[] data = System.Text.Encoding.UTF8.GetBytes(savedData);
+        
+        builder = builder
+            .WithUpdatedPlayedTime(totalPlaytime)
+            .WithUpdatedDescription("Saved game at " + DateTime.Now);
+
+        SavedGameMetadataUpdate updatedMetadata = builder.Build();
+        savedGameClient.CommitUpdate(game, updatedMetadata, data, OnSavedGameWritten);
     }
 
-    void LoadGameData(ISavedGameMetadata game)
+    public void OnSavedGameWritten(SavedGameRequestStatus status, ISavedGameMetadata game)
+    {
+        if (status == SavedGameRequestStatus.Success)
+        {
+            // handle reading or writing of saved game.
+        }
+        else
+        {
+            // handle error
+        }
+    }
+
+    public void LoadGameData(ISavedGameMetadata game)
     {
         ISavedGameClient savedGameClient = PlayGamesPlatform.Instance.SavedGame;
-        savedGameClient.ReadBinaryData(game, (SavedGameRequestStatus status, byte[] data) => {
-            if (status == SavedGameRequestStatus.Success)
-            {
-                // handle data (convert from byte[] to string)
-                string savedData = System.Text.Encoding.UTF8.GetString(data);
-                // Now you can use JSON to deserialize savedData to your game data
-            }
-            else
-            {
-                // handle error
-            }
-        });
+        savedGameClient.ReadBinaryData(game, OnSavedGameDataRead);
+    }
+
+    public void OnSavedGameDataRead(SavedGameRequestStatus status, byte[] data)
+    {
+        if (status == SavedGameRequestStatus.Success)
+        {
+            _infoText.text = "Trying to ReadData";
+            // handle processing the byte array data
+        }
+        else
+        {
+            _infoText.text = "Error in ReadData";
+        }
     }
 
     #endregion
