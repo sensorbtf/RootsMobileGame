@@ -1,4 +1,19 @@
-﻿{
-  "name": "Saving",
-  "references":[ "GUID:0d2fdfb670512784b99df29ee93927fc", "GUID:d24ae5f4135c15b478887a8fab11029b", "GUID:19e0fb56469a91649b76b8a68874a5e5" ]
+{
+    "name": "Saving",
+    "rootNamespace": "",
+    "references": [
+        "GUID:0d2fdfb670512784b99df29ee93927fc",
+        "GUID:d24ae5f4135c15b478887a8fab11029b",
+        "GUID:19e0fb56469a91649b76b8a68874a5e5",
+        "GUID:622f01492d1fdbc46b77bcebde7e4845"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }

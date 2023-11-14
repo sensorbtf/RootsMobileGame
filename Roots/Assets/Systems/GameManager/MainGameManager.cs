@@ -15,6 +15,7 @@ namespace GameManager
 
     public class MainGameManager : MonoBehaviour
     {
+        [SerializeField] private GameObject _loadingPanel;
         [SerializeField] private GodsManager _godsManager;
         [SerializeField] private WorldManager _worldManager;
         [SerializeField] private BuildingsManager _buildingsManager;
@@ -23,8 +24,11 @@ namespace GameManager
         [SerializeField] private int _oneDayTimerDurationInSeconds = 60;
         [SerializeField] private int _maxFreeDaysSkipAmount = 3;
 
-        private DateTime _startTime;
+        private DateTime _sessionStartTime;
+        private TimeSpan _totalPlayTime;
+        private DateTime _startDayTimer;
         private float _timeLeftInSeconds;
+        private bool _shouldUpdate;
 
         public int FreeSkipsLeft { get; private set; }
         public int HoursOfAbstence { get; private set; }
@@ -41,49 +45,78 @@ namespace GameManager
         public event Action OnAfterLoad;
         public event Action<DuringDayState> OnPlayerStateChange;
         public event Action OnDaySkipPossibility;
+        
 
         private void Start()
         {
+            _loadingPanel.SetActive(true);
+            _shouldUpdate = false;
+            
             // 0 for no sync, 1 for panel refresh rate, 2 for 1/2 panel rate
             //QualitySettings.vSyncCount = 2;
             Application.targetFrameRate = 30;
-            _startTime = DateTime.UtcNow;
+            _startDayTimer = DateTime.UtcNow;
+            _sessionStartTime = DateTime.Now;
 
-            var willBeLoaded = _savingManager.IsSaveAvaiable();
-
-            _worldManager.CustomStart(willBeLoaded);
-            _savingManager.OnLoad += LoadSavedData;
-
-            if (willBeLoaded)
-                _savingManager.LoadMainGame();
-            else
-                SetPlayerState(DuringDayState.FinishingBuilding);
+            _savingManager.CheckSave(isSaveAvailable =>
+            {
+                _worldManager.CustomStart(isSaveAvailable);
+                
+                if (isSaveAvailable)
+                {
+                    _savingManager.OnLoad += LoadSavedData;
+                    ChooseAndLoadSave();
+                    
+                    Debug.Log("Save loaded");
+                }
+                else
+                {
+                    _totalPlayTime = TimeSpan.Zero;
+                    SetPlayerState(DuringDayState.FinishingBuilding);
+                    
+                    _loadingPanel.SetActive(false);
+                    _shouldUpdate = true;
+                    
+                    Debug.Log("NOT LOADED");
+                }
+            });
         }
 
         private void Update() // need server?
         {
-            var elapsedSeconds = (DateTime.UtcNow - _startTime).TotalSeconds;
+            if (!_shouldUpdate)
+                return;
+
+            var elapsedSeconds = (DateTime.UtcNow - _startDayTimer).TotalSeconds;
             _timeLeftInSeconds = _oneDayTimerDurationInSeconds - (float)elapsedSeconds;
 
             var minutes = Mathf.FloorToInt(_timeLeftInSeconds / 60);
             var seconds = Mathf.FloorToInt(_timeLeftInSeconds % 60);
 
-            if (_timeLeftInSeconds > 0) 
+            if (_timeLeftInSeconds > 0)
                 TimePassed = $"{minutes}:{seconds:00}";
 
             CheckPlayerState();
+        }
+        
+        private void ChooseAndLoadSave()
+        {
+            _savingManager.ChooseProperSave(fromCloud =>
+            {
+                _savingManager.LoadMainGame(fromCloud);
+            });
         }
 
         private void LoadSavedData(MainGameManagerSavedData p_data)
         {
             CurrentPlayerState = (DuringDayState)p_data.CurrentPlayerState;
             FreeSkipsLeft = p_data.FreeDaysSkipAmount;
-
+            _totalPlayTime = TimeSpan.Parse(p_data.TotalTimePlayed);
             var savedTime = p_data.TimeOfWorkersSet;
             var currentTime = DateTime.UtcNow;
 
-            TimeSpan elapsed = currentTime - savedTime;
-            var timePassedInSeconds = elapsed.TotalSeconds;
+            TimeSpan passedTime = currentTime - savedTime;
+            var timePassedInSeconds = passedTime.TotalSeconds;
 
             HoursOfAbstence = 0;
             FreeSkipsGotten = 0;
@@ -102,12 +135,12 @@ namespace GameManager
 
             if (FreeSkipsGotten == 0)
             {
-                var secondsToSubtract = elapsed.TotalSeconds % _oneDayTimerDurationInSeconds;
-                _startTime = DateTime.UtcNow;
-                var addSeconds = _startTime.AddSeconds(-secondsToSubtract);
-                _startTime = addSeconds;
+                var secondsToSubtract = passedTime.TotalSeconds % _oneDayTimerDurationInSeconds;
+                _startDayTimer = DateTime.UtcNow;
+                var addSeconds = _startDayTimer.AddSeconds(-secondsToSubtract);
+                _startDayTimer = addSeconds;
             }
-            
+
             OnPlayerCameBack?.Invoke();
             OnPlayerStateChange?.Invoke(CurrentPlayerState);
             HandleAfterLoad();
@@ -115,9 +148,9 @@ namespace GameManager
 
         private void HandleAfterLoad()
         {
-            // _buildingsManager.UnlockedBuildings.Clear();
-            // _worldManager.CustomStart(false);
-            // _godsManager
+            _savingManager.OnLoad -= LoadSavedData;
+            _loadingPanel.SetActive(false);
+            _shouldUpdate = true;
             
             OnAfterLoad?.Invoke();
         }
@@ -128,15 +161,7 @@ namespace GameManager
 
             if (CurrentPlayerState == DuringDayState.DayPassing)
             {
-                _startTime = DateTime.UtcNow;
-
-                _savingManager.SaveMainGame(new MainGameManagerSavedData
-                {
-                    TimeOfWorkersSet = _startTime,
-                    CurrentPlayerState = (int)CurrentPlayerState,
-                    FreeDaysSkipAmount = FreeSkipsLeft,
-                    TimeLeftInSeconds = _timeLeftInSeconds
-                });
+                InitiateSaving();
             }
 
             OnPlayerStateChange?.Invoke(CurrentPlayerState);
@@ -148,10 +173,12 @@ namespace GameManager
             {
                 // evening - day ended now collecting/building up
                 case DuringDayState.FinishingBuilding:
-                    if (!_buildingsManager.IsAnyBuildingNonBuilt()) SetPlayerState(DuringDayState.CollectingResources);
+                    if (!_buildingsManager.IsAnyBuildingNonBuilt())
+                        SetPlayerState(DuringDayState.CollectingResources);
                     break;
                 case DuringDayState.CollectingResources:
-                    if (!_buildingsManager.IsAnyBuildingNonGathered()) SetPlayerState(DuringDayState.WorkDayFinished);
+                    if (!_buildingsManager.IsAnyBuildingNonGathered())
+                        SetPlayerState(DuringDayState.WorkDayFinished);
                     break;
                 case DuringDayState.WorkDayFinished:
                     // night - timer, effect
@@ -166,12 +193,45 @@ namespace GameManager
                         CanUseSkipByTime = true;
                         OnDaySkipPossibility?.Invoke();
                     }
+
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
         }
 
+        private void InitiateSaving()
+        {
+            _startDayTimer = DateTime.UtcNow;
+
+            _savingManager.SaveMainGame(new MainGameManagerSavedData
+            {
+                TimeOfWorkersSet = _startDayTimer,
+                CurrentPlayerState = (int)CurrentPlayerState,
+                FreeDaysSkipAmount = FreeSkipsLeft,
+                TotalTimePlayed = _totalPlayTime.ToString()
+            });
+        }
+
+        private void OnApplicationPause(bool p_pauseStatus)
+        {
+            if (p_pauseStatus)
+            {
+                // Game is paused or going into background
+                UpdateTotalPlayTime();
+            }
+            else
+            {
+                // Game is resumed
+                _sessionStartTime = DateTime.Now;
+            }
+        }
+
+        private void UpdateTotalPlayTime()
+        {
+            _totalPlayTime += DateTime.Now - _sessionStartTime;
+        }
+        
         #region Saving
 
         public void ResetSave()

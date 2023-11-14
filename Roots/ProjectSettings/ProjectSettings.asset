@@ -262,7 +262,7 @@ PlayerSettings:
   AndroidTargetDevices: 0
   AndroidSplashScreenScale: 0
   androidSplashScreen: {fileID: 0}
-  AndroidKeystoreName: '{dedicated}: dev.keystore'
+  AndroidKeystoreName: C:/Users/mateu/OneDrive/Roots/dev.keystore
   AndroidKeyaliasName: dev
   AndroidEnableArmv9SecurityFeatures: 0
   AndroidBuildApkPerCpuArchitecture: 0
