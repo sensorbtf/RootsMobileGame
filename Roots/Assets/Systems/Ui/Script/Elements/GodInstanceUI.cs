@@ -15,5 +15,7 @@ namespace Gods
         public Image GodImage;
         public TextMeshProUGUI GodName;
         public Slider Slider;
+        public Image SliderHandleImage;
+        public Image SliderFillImage;
     }
 }

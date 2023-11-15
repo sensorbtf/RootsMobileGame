@@ -281,10 +281,10 @@ RectTransform:
   - {fileID: 494535955}
   - {fileID: 8781965283876244775}
   - {fileID: 1850506695}
-  - {fileID: 911948251}
   - {fileID: 1839486146}
   - {fileID: 257982398}
   - {fileID: 1052130584}
+  - {fileID: 911948251}
   - {fileID: 1524646977}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -8830,7 +8830,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _buildingsManager: {fileID: 1903800807}
   _godsManager: {fileID: 2146834623}
-  _gameManager: {fileID: 0}
+  _gameManager: {fileID: 1423804878}
   _godPrefab: {fileID: 920524045294400590, guid: 73cded31a9731e942b82e6919df27b8c, type: 3}
   _contentTransform: {fileID: 1185805335}
   _goBackButton: {fileID: 2053295772}
@@ -9988,8 +9988,8 @@ MonoBehaviour:
   m_Padding:
     m_Left: 0
     m_Right: 0
-    m_Top: 0
-    m_Bottom: 0
+    m_Top: 15
+    m_Bottom: 15
   m_ChildAlignment: 0
   m_Spacing: 15
   m_ChildForceExpandWidth: 1
@@ -11649,8 +11649,9 @@ MonoBehaviour:
   _buildingsManager: {fileID: 1903800807}
   _savingManager: {fileID: 1423804877}
   _destinyShardsSkipPrice: 10
-  _oneDayTimerDurationInSeconds: 60
+  _oneDayTimerDurationInSeconds: 3600
   _maxFreeDaysSkipAmount: 3
+  _everyDayReward: []
 --- !u!1 &1424250873
 GameObject:
   m_ObjectHideFlags: 0

@@ -89,6 +89,10 @@ namespace InGameUi
             {
                 p_newGodRef.ActivationButton.gameObject.SetActive(false);
                 p_newGodRef.GlowEffect.color = _godsManager.NoEffect;
+                p_newGodRef.SliderHandleImage.color = _godsManager.NoEffect;
+                p_newGodRef.SliderFillImage.color = _godsManager.NoEffect;
+                p_newGodRef.SliderHandleImage.color = _godsManager.NoEffect;
+                p_newGodRef.SliderFillImage.color = _godsManager.NoEffect;
             }
             else if (_godsManager.IsGodBlessingOnLevelActivated(p_godType, blessingOnSlider))
             {
@@ -118,6 +122,8 @@ namespace InGameUi
                 p_newGodRef.ActivationButtonText.text =
                     $"Buy for {_godsManager.BlessingPrices[blessingOnSlider]} Destiny Shards";
                 p_newGodRef.GlowEffect.color = _godsManager.NoEffect;
+                p_newGodRef.SliderHandleImage.color = _godsManager.NoEffect;
+                p_newGodRef.SliderFillImage.color = _godsManager.NoEffect;
                 p_newGodRef.ActivationButton.gameObject.SetActive(true);
             }
             else
@@ -186,13 +192,20 @@ namespace InGameUi
 
         private void SwitchEffectColor(GodInstanceUI p_newGodRef)
         {
-            p_newGodRef.GlowEffect.color = p_newGodRef.Slider.value switch
+            Color color = Color.black;
+            
+            color = p_newGodRef.Slider.value switch
             {
                 1 => _godsManager.SmallEffect,
                 2 => _godsManager.MediumEffect,
                 3 => _godsManager.BigEffect,
                 _ => p_newGodRef.GlowEffect.color
             };
+
+            p_newGodRef.GlowEffect.color = color;
+            p_newGodRef.SliderHandleImage.color = color;
+            p_newGodRef.SliderFillImage.color = color;
+            p_newGodRef.GlowEffect.color = color;
         }
     }
 }

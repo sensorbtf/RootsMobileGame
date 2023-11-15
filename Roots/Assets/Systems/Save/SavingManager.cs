@@ -36,6 +36,7 @@ namespace Saving
             var path = Application.persistentDataPath + "/gameData.json";
 
             p_data.TimeOfWorkersSetISO8601 = p_data.TimeOfWorkersSet.ToString("o");
+            p_data.TimeOfGiftTakenISO8601 = p_data.TimeOfGiftTaken.ToString("o");
 
             var gameData = new GameData
             {
@@ -87,8 +88,12 @@ namespace Saving
         {
             DateTime timeOfWorkersSet = DateTime.ParseExact(p_gameData.MainSavedData.TimeOfWorkersSetISO8601,
                 "o", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind);
+            
+            DateTime timeOfGiftTaken = DateTime.ParseExact(p_gameData.MainSavedData.TimeOfGiftTakenISO8601,
+                "o", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind);
 
             p_gameData.MainSavedData.TimeOfWorkersSet = timeOfWorkersSet;
+            p_gameData.MainSavedData.TimeOfGiftTaken = timeOfGiftTaken;
             _worldManager.LoadSavedData(p_gameData.WorldManagerSavedData);
             _buildingsManager.LoadSavedData(p_gameData.BuildingManagerSavedData);
             _godsManager.LoadSavedData(p_gameData.GodsManagerSavedData);
@@ -132,7 +137,6 @@ namespace Saving
             });
         }
 
-
         private TimeSpan GetLocalOverallPlaytime()
         {
             if (!File.Exists(_path))
@@ -153,6 +157,8 @@ namespace Saving
             Action<byte[]> cloudDataHandler = null;
             cloudDataHandler = (byte[] data) =>
             {
+                _gpgsManager.OnCloudDataRead -= cloudDataHandler;
+                
                 if (data == null)
                 {
                     onPlaytimeRetrieved(TimeSpan.Zero);
@@ -163,7 +169,6 @@ namespace Saving
                     var gameData = JsonUtility.FromJson<GameData>(jsonString);
                     onPlaytimeRetrieved(TimeSpan.Parse(gameData.MainSavedData.TotalTimePlayed));
                 }
-                _gpgsManager.OnCloudDataRead -= cloudDataHandler;
             };
     
             _gpgsManager.OnCloudDataRead += cloudDataHandler;
@@ -183,10 +188,13 @@ namespace Saving
     [Serializable]
     public struct MainGameManagerSavedData
     {
+        public int LoginDay;
         public int FreeDaysSkipAmount;
         public int CurrentPlayerState;
         public string TotalTimePlayed;
         public DateTime TimeOfWorkersSet;
-        public string TimeOfWorkersSetISO8601; // Add this field to store the DateTime as a string
+        public string TimeOfWorkersSetISO8601; 
+        public DateTime TimeOfGiftTaken;
+        public string TimeOfGiftTakenISO8601; 
     }
 }

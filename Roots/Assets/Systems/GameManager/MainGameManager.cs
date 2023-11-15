@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Buildings;
 using Gods;
 using Saving;
@@ -23,16 +24,22 @@ namespace GameManager
         [SerializeField] private int _destinyShardsSkipPrice;
         [SerializeField] private int _oneDayTimerDurationInSeconds = 60;
         [SerializeField] private int _maxFreeDaysSkipAmount = 3;
+        [SerializeField] private DayOfWeekReward[] _everyDayReward;
 
         private DateTime _sessionStartTime;
         private TimeSpan _totalPlayTime;
-        private DateTime _startDayTimer;
+        private DateTime _startDayTime;
         private float _timeLeftInSeconds;
         private bool _shouldUpdate;
+        
+        private DateTime _giftTakenTime;
+        private bool _shouldMakeGiftViable;
+        private int _loginDay;
 
         public int FreeSkipsLeft { get; private set; }
         public int HoursOfAbstence { get; private set; }
         public int FreeSkipsGotten { get; private set; }
+        public int MaxFreeSkipsAmount => _maxFreeDaysSkipAmount;
 
         public DuringDayState CurrentPlayerState { get; private set; }
 
@@ -40,8 +47,9 @@ namespace GameManager
         public string TimePassed { get; private set; }
 
         public bool CanUseSkipByTime { get; private set; }
+        public int GetDailyReward => _everyDayReward.FirstOrDefault(x => x.Weekday == _loginDay).DestinyShardsAmount;
 
-        public event Action OnPlayerCameBack;
+        public event Action<bool> OnPlayerCameBack;
         public event Action OnAfterLoad;
         public event Action<DuringDayState> OnPlayerStateChange;
         public event Action OnDaySkipPossibility;
@@ -55,8 +63,8 @@ namespace GameManager
             // 0 for no sync, 1 for panel refresh rate, 2 for 1/2 panel rate
             //QualitySettings.vSyncCount = 2;
             Application.targetFrameRate = 30;
-            _startDayTimer = DateTime.UtcNow;
-            _sessionStartTime = DateTime.Now;
+            _startDayTime = DateTime.UtcNow;
+            _sessionStartTime = DateTime.UtcNow;
 
             _savingManager.CheckSave(isSaveAvailable =>
             {
@@ -72,6 +80,7 @@ namespace GameManager
                 else
                 {
                     _totalPlayTime = TimeSpan.Zero;
+                    _loginDay = 0;
                     SetPlayerState(DuringDayState.FinishingBuilding);
                     
                     _loadingPanel.SetActive(false);
@@ -81,13 +90,21 @@ namespace GameManager
                 }
             });
         }
-
+        
+        private void ChooseAndLoadSave()
+        {
+            _savingManager.ChooseProperSave(fromCloud =>
+            {
+                _savingManager.LoadMainGame(fromCloud);
+            });
+        }
+        
         private void Update() // need server?
         {
             if (!_shouldUpdate)
                 return;
 
-            var elapsedSeconds = (DateTime.UtcNow - _startDayTimer).TotalSeconds;
+            var elapsedSeconds = (DateTime.UtcNow - _startDayTime).TotalSeconds;
             _timeLeftInSeconds = _oneDayTimerDurationInSeconds - (float)elapsedSeconds;
 
             var minutes = Mathf.FloorToInt(_timeLeftInSeconds / 60);
@@ -98,18 +115,11 @@ namespace GameManager
 
             CheckPlayerState();
         }
-        
-        private void ChooseAndLoadSave()
-        {
-            _savingManager.ChooseProperSave(fromCloud =>
-            {
-                _savingManager.LoadMainGame(fromCloud);
-            });
-        }
 
         private void LoadSavedData(MainGameManagerSavedData p_data)
         {
             CurrentPlayerState = (DuringDayState)p_data.CurrentPlayerState;
+            _loginDay = p_data.LoginDay;
             FreeSkipsLeft = p_data.FreeDaysSkipAmount;
             _totalPlayTime = TimeSpan.Parse(p_data.TotalTimePlayed);
             var savedTime = p_data.TimeOfWorkersSet;
@@ -136,19 +146,25 @@ namespace GameManager
             if (FreeSkipsGotten == 0)
             {
                 var secondsToSubtract = passedTime.TotalSeconds % _oneDayTimerDurationInSeconds;
-                _startDayTimer = DateTime.UtcNow;
-                var addSeconds = _startDayTimer.AddSeconds(-secondsToSubtract);
-                _startDayTimer = addSeconds;
+                _startDayTime = DateTime.UtcNow;
+                var addSeconds = _startDayTime.AddSeconds(-secondsToSubtract);
+                _startDayTime = addSeconds;
             }
+            
+            _giftTakenTime = p_data.TimeOfGiftTaken;
+            var timeDifference = currentTime - _giftTakenTime;
 
-            OnPlayerCameBack?.Invoke();
+            _shouldMakeGiftViable = timeDifference.TotalHours >= 24;
+
+            _savingManager.OnLoad -= LoadSavedData;
+            OnPlayerCameBack?.Invoke(_shouldMakeGiftViable);
             OnPlayerStateChange?.Invoke(CurrentPlayerState);
+            
             HandleAfterLoad();
         }
 
         private void HandleAfterLoad()
         {
-            _savingManager.OnLoad -= LoadSavedData;
             _loadingPanel.SetActive(false);
             _shouldUpdate = true;
             
@@ -165,6 +181,17 @@ namespace GameManager
             }
 
             OnPlayerStateChange?.Invoke(CurrentPlayerState);
+        }
+
+        public void HandleLoginReward()
+        {
+            _buildingsManager.HandlePointsManipulation(PointsType.ShardsOfDestiny, GetDailyReward, true, true);
+
+            _giftTakenTime = DateTime.UtcNow;
+            
+            _loginDay++;
+            if (_loginDay == 7)
+                _loginDay = 0;
         }
 
         private void CheckPlayerState()
@@ -202,11 +229,13 @@ namespace GameManager
 
         private void InitiateSaving()
         {
-            _startDayTimer = DateTime.UtcNow;
-
+            _startDayTime = DateTime.UtcNow;
+            UpdateTotalPlayTime();
+                
             _savingManager.SaveMainGame(new MainGameManagerSavedData
             {
-                TimeOfWorkersSet = _startDayTimer,
+                TimeOfWorkersSet = _startDayTime,
+                TimeOfGiftTaken = _giftTakenTime,
                 CurrentPlayerState = (int)CurrentPlayerState,
                 FreeDaysSkipAmount = FreeSkipsLeft,
                 TotalTimePlayed = _totalPlayTime.ToString()
@@ -223,13 +252,13 @@ namespace GameManager
             else
             {
                 // Game is resumed
-                _sessionStartTime = DateTime.Now;
+                _sessionStartTime = DateTime.UtcNow;
             }
         }
 
         private void UpdateTotalPlayTime()
         {
-            _totalPlayTime += DateTime.Now - _sessionStartTime;
+            _totalPlayTime += DateTime.UtcNow - _sessionStartTime;
         }
         
         #region Saving
@@ -279,7 +308,14 @@ namespace GameManager
 
         #endregion
     }
-
+    
+    [Serializable]
+    public struct DayOfWeekReward
+    {
+        public int Weekday;
+        public int DestinyShardsAmount;
+    }
+    
     public enum DuringDayState
     {
         FinishingBuilding = 0,

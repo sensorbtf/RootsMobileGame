@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Veles_God_SO
   m_EditorClassIdentifier: 
   GodName: 1
-  GodImage: {fileID: 21300000, guid: 7729b3b48c0df584290c8b6989f5d5d8, type: 3}
+  GodImage: {fileID: 21300000, guid: b2a7bb2f1d76979439ea1b1af6dbc8fb, type: 3}

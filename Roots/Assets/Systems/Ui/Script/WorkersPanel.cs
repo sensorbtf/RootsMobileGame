@@ -99,8 +99,11 @@ namespace InGameUi
                                     building.BuildingMainData.PerLevelData[building.CurrentLevel].Requirements
                                         .DaysToComplete - building.CurrentDayOnQueue;
 
-                                references.Informations.text = $"End in: {daysToComplete} day(s)";
-
+                                if (building.IsDamaged && !building.HaveWorker)
+                                    references.Informations.text = "End in: 1 day";
+                                else
+                                    references.Informations.text = $"End in: {daysToComplete} day(s)";
+                                
                                 if (data.Value)
                                     continue;
 

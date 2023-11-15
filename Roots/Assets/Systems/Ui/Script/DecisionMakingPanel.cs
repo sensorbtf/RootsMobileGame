@@ -23,19 +23,27 @@ namespace InGameUi
             gameObject.SetActive(false);
         }
         
-        private void ViewWelcomeBackPanel()
+        private void ViewWelcomeBackPanel(bool p_shouldOfferLoginGift)
         {
             HandleTurnOnOff(true);
             
             _uiReferences.Title.text = "Welcome back";
             _uiReferences.Description.text =
-                $"Absence time: {_gameManager.HoursOfAbstence} hours. You were granted with {_gameManager.FreeSkipsGotten} free skips";
+                $"Absence time: {_gameManager.HoursOfAbstence} hours. You were granted with {_gameManager.FreeSkipsGotten}/{_gameManager.MaxFreeSkipsAmount} free skips \n Now you have {_gameManager.FreeSkipsLeft} free skips left";
 
             _uiReferences.NoButtonGo.gameObject.SetActive(false);
             _uiReferences.YesButtonGo.gameObject.SetActive(true);
-            
-            _uiReferences.YesButton.onClick.AddListener(() => HandleTurnOnOff(false));
-            _uiReferences.YesButtonText.text = "Continue";
+
+            if (p_shouldOfferLoginGift)
+            {
+                _uiReferences.YesButton.onClick.AddListener(() => HandleDestinyShardsGift());
+                _uiReferences.YesButtonText.text = $"Collect {_gameManager.GetDailyReward} Destiny Shards";
+            }
+            else
+            {
+                _uiReferences.YesButton.onClick.AddListener(() => HandleTurnOnOff(false));
+                _uiReferences.YesButtonText.text = "Continue";
+            }
         }
 
         private void ViewStormConsequencesPanel(List<BuildingType> p_destroyedBuildings, bool p_won)
@@ -120,6 +128,13 @@ namespace InGameUi
             gameObject.SetActive(p_setting);
             GameplayHud.BlockHud = p_setting;
             CameraController.IsUiOpen = p_setting;
+        }
+        
+        private void HandleDestinyShardsGift()
+        {
+            _gameManager.HandleLoginReward();
+            _uiReferences.YesButton.onClick.AddListener(() => HandleTurnOnOff(false));
+            _uiReferences.YesButtonText.text = "Continue";
         }
     }
 }
