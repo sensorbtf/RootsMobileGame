@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Collections;
 using System.Globalization;
 using System.IO;
+using System.Threading.Tasks;
 using Buildings;
 using Gods;
 using UnityEngine;
@@ -22,15 +24,24 @@ namespace Saving
         private float _sessionStartTime;
         private string _path;
         public event Action<MainGameManagerSavedData> OnLoad;
+        public event Action OnAuthenticationEnded;
 
-        private void Awake()
+        private void Start()
         {
+            StartCoroutine(AuthenticationProcess());
+        }
+
+        private IEnumerator AuthenticationProcess()
+        {
+            yield return StartCoroutine(_gpgsManager.StartAuthentication());
+
             _path = Application.persistentDataPath + "/gameData.json";
             Debug.Log(_path);
             _sessionStartTime = Time.time;
+
+            OnAuthenticationEnded?.Invoke();
         }
         
-
         public void SaveMainGame(MainGameManagerSavedData p_data)
         {
             var path = Application.persistentDataPath + "/gameData.json";
@@ -58,8 +69,15 @@ namespace Saving
         {
             if (p_cloudSave)
             {
-                _gpgsManager.OnCloudDataRead += HandleCloudSaveData;
-                _gpgsManager.TryToReadGame();
+                if (_savedDataFromCloud != null)
+                {
+                    HandleCloudSaveData(_savedDataFromCloud);
+                }
+                else
+                {
+                    _gpgsManager.OnCloudDataRead += HandleCloudSaveData;
+                    _gpgsManager.TryToReadGame();
+                }
             }
             else
             {
@@ -107,34 +125,29 @@ namespace Saving
             File.Delete(_path);
         }
         
-        public void ChooseProperSave(Action<bool> p_onDecisionMade)
+        public IEnumerator ChooseProperSave()
         {
             TimeSpan localPlayedTime = GetLocalOverallPlaytime();
-
-            GetCloudOverallPlaytime(cloudPlayedTime =>
+            yield return StartCoroutine(GetCloudOverallPlaytime(cloudPlayedTime => 
             {
                 bool fromCloud = false;
 
                 if (!(localPlayedTime == TimeSpan.Zero && cloudPlayedTime == TimeSpan.Zero))
                 {
-                    fromCloud = cloudPlayedTime > localPlayedTime;
+                    fromCloud = cloudPlayedTime >= localPlayedTime;
                 }
 
-                p_onDecisionMade(fromCloud);
-            });
+                LoadMainGame(fromCloud);
+            }));
         }
 
-        public void CheckSave(Action<bool> p_isSaveAvaiable)
+        public IEnumerator CheckSave(Action<bool> resultCallback)
         {
             TimeSpan localPlayedTime = GetLocalOverallPlaytime();
-
-            GetCloudOverallPlaytime(cloudPlayedTime =>
+            yield return StartCoroutine(GetCloudOverallPlaytime(cloudPlayedTime => 
             {
-                Debug.Log("CheckSave");
-
-                var isAnySaveGood = !(localPlayedTime == TimeSpan.Zero && cloudPlayedTime == TimeSpan.Zero);
-                p_isSaveAvaiable(isAnySaveGood);
-            });
+                resultCallback(!(localPlayedTime == TimeSpan.Zero && cloudPlayedTime == TimeSpan.Zero));
+            }));
         }
 
         private TimeSpan GetLocalOverallPlaytime()
@@ -150,29 +163,51 @@ namespace Saving
                 : TimeSpan.Zero;
         }
 
-        private void GetCloudOverallPlaytime(Action<TimeSpan> onPlaytimeRetrieved)
+        private byte[] _savedDataFromCloud;
+        
+        private IEnumerator GetCloudOverallPlaytime(Action<TimeSpan> resultCallback)
         {
-            Debug.Log("GetCloudOverallPlaytime");
+            if (_savedDataFromCloud != null)
+                yield return _savedDataFromCloud;
             
-            Action<byte[]> cloudDataHandler = null;
-            cloudDataHandler = (byte[] data) =>
+            TimeSpan cloudPlaytime = TimeSpan.Zero;
+            
+            yield return StartCoroutine(ReadCloudData(data => 
             {
-                _gpgsManager.OnCloudDataRead -= cloudDataHandler;
-                
-                if (data == null)
-                {
-                    onPlaytimeRetrieved(TimeSpan.Zero);
-                }
-                else
+                if (data != null)
                 {
                     var jsonString = System.Text.Encoding.UTF8.GetString(data);
                     var gameData = JsonUtility.FromJson<GameData>(jsonString);
-                    onPlaytimeRetrieved(TimeSpan.Parse(gameData.MainSavedData.TotalTimePlayed));
+                    cloudPlaytime = TimeSpan.Parse(gameData.MainSavedData.TotalTimePlayed);
+                    _savedDataFromCloud = data;
                 }
+
+                resultCallback(cloudPlaytime);
+            }));
+        }
+
+        private IEnumerator ReadCloudData(Action<byte[]> resultCallback)
+        {
+            bool isDataReceived = false;
+            byte[] receivedData = null;
+
+            Action<byte[]> cloudDataHandler = null;
+            cloudDataHandler = data =>
+            {
+                _gpgsManager.OnCloudDataRead -= cloudDataHandler;
+                receivedData = data;
+                isDataReceived = true;
             };
-    
+
             _gpgsManager.OnCloudDataRead += cloudDataHandler;
             _gpgsManager.TryToReadGame();
+
+            while (!isDataReceived)
+            {
+                yield return null;
+            }
+
+            resultCallback(receivedData);
         }
     }
 

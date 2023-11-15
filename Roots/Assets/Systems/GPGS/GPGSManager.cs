@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 using GooglePlayGames;
 using GooglePlayGames.BasicApi;
@@ -18,19 +19,20 @@ namespace GooglePlayServices
 
         public event Action<byte[]> OnCloudDataRead;
         
-        void Start()
+        public IEnumerator StartAuthentication()
         {
-            SignIn();
+            bool isCompleted = false;
+            PlayGamesPlatform.Instance.Authenticate((success) => {
+                isCompleted = true;
+                ProcessAuthentication(success);
+            });
+
+            yield return new WaitUntil(() => isCompleted);
         }
 
-        public void SignIn()
+        private void ProcessAuthentication(SignInStatus p_status)
         {
-            PlayGamesPlatform.Instance.Authenticate(ProcessAuthentication);
-        }
-
-        private void ProcessAuthentication(SignInStatus status)
-        {
-            if (status == SignInStatus.Success)
+            if (p_status == SignInStatus.Success)
             {
                 var playerName = PlayGamesPlatform.Instance.GetUserDisplayName();
                 var id = PlayGamesPlatform.Instance.GetUserId();

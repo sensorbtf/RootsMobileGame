@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections;
 using System.Linq;
+using System.Threading.Tasks;
 using Buildings;
 using Gods;
 using Saving;
@@ -53,52 +55,52 @@ namespace GameManager
         public event Action OnAfterLoad;
         public event Action<DuringDayState> OnPlayerStateChange;
         public event Action OnDaySkipPossibility;
-        
 
-        private void Start()
+        private void Awake()
         {
             _loadingPanel.SetActive(true);
+            _savingManager.OnAuthenticationEnded += () => StartCoroutine(CustomStart());
+        }
+
+        private IEnumerator CustomStart()
+        {
             _shouldUpdate = false;
-            
-            // 0 for no sync, 1 for panel refresh rate, 2 for 1/2 panel rate
-            //QualitySettings.vSyncCount = 2;
+
             Application.targetFrameRate = 30;
             _startDayTime = DateTime.UtcNow;
             _sessionStartTime = DateTime.UtcNow;
 
-            _savingManager.CheckSave(isSaveAvailable =>
+            bool isSaveAvailable = false;
+            yield return StartCoroutine(_savingManager.CheckSave(result => isSaveAvailable = result));
+            _worldManager.CustomStart(isSaveAvailable);
+
+            if (isSaveAvailable)
             {
-                _worldManager.CustomStart(isSaveAvailable);
-                
-                if (isSaveAvailable)
-                {
-                    _savingManager.OnLoad += LoadSavedData;
-                    ChooseAndLoadSave();
-                    
-                    Debug.Log("Save loaded");
-                }
-                else
-                {
-                    _totalPlayTime = TimeSpan.Zero;
-                    _loginDay = 0;
-                    SetPlayerState(DuringDayState.FinishingBuilding);
-                    
-                    _loadingPanel.SetActive(false);
-                    _shouldUpdate = true;
-                    
-                    Debug.Log("NOT LOADED");
-                }
-            });
+                _savingManager.OnLoad += LoadSavedData;
+                yield return StartCoroutine(ChooseAndLoadSave()); 
+                Debug.Log("Save loaded");
+            }
+            else
+            {
+                _totalPlayTime = TimeSpan.Zero;
+                _loginDay = 0;
+                SetPlayerState(DuringDayState.FinishingBuilding);
+
+                _loadingPanel.SetActive(false);
+                _shouldUpdate = true;
+
+                Debug.Log("NOT LOADED");
+            }
+
+            _savingManager.OnAuthenticationEnded -= () => StartCoroutine(CustomStart());
         }
+
         
-        private void ChooseAndLoadSave()
+        private IEnumerator ChooseAndLoadSave()
         {
-            _savingManager.ChooseProperSave(fromCloud =>
-            {
-                _savingManager.LoadMainGame(fromCloud);
-            });
+            yield return StartCoroutine(_savingManager.ChooseProperSave());
         }
-        
+
         private void Update() // need server?
         {
             if (!_shouldUpdate)
