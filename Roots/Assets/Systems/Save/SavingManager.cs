@@ -22,6 +22,7 @@ namespace Saving
         [SerializeField] private GPGSManager _gpgsManager;
 
         private float _sessionStartTime;
+        private byte[] _savedDataFromCloud;
         private string _path;
         public event Action<MainGameManagerSavedData> OnLoad;
         public event Action OnAuthenticationEnded;
@@ -122,6 +123,7 @@ namespace Saving
         public void ResetSave()
         {
             Debug.Log("Save Deleted");
+            _gpgsManager.TryToDeleteSavedGame();
             File.Delete(_path);
         }
         
@@ -162,8 +164,6 @@ namespace Saving
                 ? TimeSpan.Parse(gameData.MainSavedData.TotalTimePlayed)
                 : TimeSpan.Zero;
         }
-
-        private byte[] _savedDataFromCloud;
         
         private IEnumerator GetCloudOverallPlaytime(Action<TimeSpan> resultCallback)
         {
@@ -174,7 +174,7 @@ namespace Saving
             
             yield return StartCoroutine(ReadCloudData(data => 
             {
-                if (data != null)
+                if (data is { Length: > 1 })
                 {
                     var jsonString = System.Text.Encoding.UTF8.GetString(data);
                     var gameData = JsonUtility.FromJson<GameData>(jsonString);

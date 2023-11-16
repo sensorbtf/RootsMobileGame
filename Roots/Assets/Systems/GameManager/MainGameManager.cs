@@ -86,15 +86,14 @@ namespace GameManager
                 _loginDay = 0;
                 SetPlayerState(DuringDayState.FinishingBuilding);
 
-                _loadingPanel.SetActive(false);
                 _shouldUpdate = true;
 
                 Debug.Log("NOT LOADED");
             }
-
+            
+            _loadingPanel.SetActive(false);
             _savingManager.OnAuthenticationEnded -= () => StartCoroutine(CustomStart());
         }
-
         
         private IEnumerator ChooseAndLoadSave()
         {

@@ -1,7 +1,5 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 using UnityEngine;
 using GooglePlayGames;
 using GooglePlayGames.BasicApi;
@@ -155,5 +153,34 @@ namespace GooglePlayServices
         }
 
         #endregion
+
+        public void TryToDeleteSavedGame()
+        {
+            ISavedGameClient savedGameClient = PlayGamesPlatform.Instance.SavedGame;
+    
+            if (savedGameClient == null)
+                return;
+
+            savedGameClient.OpenWithAutomaticConflictResolution(SAVE_FILENAME, DataSource.ReadCacheOrNetwork, ConflictResolutionStrategy.UseLongestPlaytime, OnSavedGameOpened);
+        }
+
+        private void OnSavedGameOpened(SavedGameRequestStatus status, ISavedGameMetadata game)
+        {
+            if (status == SavedGameRequestStatus.Success)
+            {
+                DeleteSavedGame(game);
+            }
+            else
+            {
+                // Handle errors
+            }
+        }
+
+        private void DeleteSavedGame(ISavedGameMetadata game)
+        {
+            ISavedGameClient savedGameClient = PlayGamesPlatform.Instance.SavedGame;
+            _infoText.text = "DeleteSavedGame";
+            savedGameClient.Delete(game);
+        }
     }
 }
