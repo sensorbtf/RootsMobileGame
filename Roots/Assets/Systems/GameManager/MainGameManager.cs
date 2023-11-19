@@ -144,7 +144,7 @@ namespace GameManager
                 }
             }
 
-            if (FreeSkipsGotten == 0)
+            if (_maxFreeDaysSkipAmount != FreeSkipsLeft)
             {
                 var secondsToSubtract = passedTime.TotalSeconds % _oneDayTimerDurationInSeconds;
                 _startDayTime = DateTime.UtcNow;
@@ -155,7 +155,7 @@ namespace GameManager
             _giftTakenTime = p_data.TimeOfGiftTaken;
             var timeDifference = currentTime - _giftTakenTime;
 
-            _shouldMakeGiftViable = timeDifference.TotalHours >= 24;
+            _shouldMakeGiftViable = timeDifference.TotalHours >= 24 && _everyDayReward[_loginDay].DestinyShardsAmount > 0;
 
             _savingManager.OnLoad -= LoadSavedData;
             OnPlayerCameBack?.Invoke(_shouldMakeGiftViable);

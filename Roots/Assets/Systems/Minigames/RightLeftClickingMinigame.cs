@@ -10,6 +10,7 @@ namespace Minigames
     {
         [SerializeField] private Button _leftSideButton;
         [SerializeField] private Button _rightSideButton;
+        [SerializeField] private Slider _slider;
 
         private new void Update()
         {
@@ -43,9 +44,11 @@ namespace Minigames
 
         public override void AddScore()
         {
+            _slider.value++;
+            
             _score += _efficiency;
             StartInteractableMinigame();
-            _scoreText.text = $"Score: {_score:F2}";
+            _scoreText.text = $"Score: {_score:F1}";
         }
 
         public override void StartInteractableMinigame()

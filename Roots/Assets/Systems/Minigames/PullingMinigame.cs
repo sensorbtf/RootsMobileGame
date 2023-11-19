@@ -21,7 +21,8 @@ namespace Minigames
             if (!_isGameActive)
                 return;
 
-            if (_destructionRegion.bounds.Intersects(_currentPrefabCollider.bounds)) OnGameobjectIntersect();
+            if (_destructionRegion.bounds.Intersects(_currentPrefabCollider.bounds)) 
+                OnGameobjectIntersect();
 
             if (_timer <= 0)
             {
@@ -29,7 +30,7 @@ namespace Minigames
                 _timer = 0;
                 _isGameActive = false;
                 _collectPointsButton.interactable = true;
-                _timeText.text = $"Click to collect: {_score:F2} resource points";
+                _timeText.text = $"Click to collect: {_score:F1} resource points";
             }
         }
 
@@ -58,7 +59,7 @@ namespace Minigames
         public override void AddScore()
         {
             _score += _efficiency;
-            _scoreText.text = $"Score: {_score:F2}";
+            _scoreText.text = $"Score: {_score:F1}";
         }
 
         public override void StartInteractableMinigame()

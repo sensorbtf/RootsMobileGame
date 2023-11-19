@@ -7,6 +7,7 @@ namespace Buildings
     public class TechnologyData : ScriptableObject
     {
         public TechnologyDataPerLevel[] DataPerTechnologyLevel;
+        public Sprite SpriteOfObject;
     }
 
     [Serializable]
