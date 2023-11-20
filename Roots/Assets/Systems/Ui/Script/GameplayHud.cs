@@ -280,10 +280,10 @@ namespace InGameUi
             if (p_points <= 0)
                 return;
 
-            var dividedPoints = p_points / 4;
+            var dividedPoints = p_points / 3;
 
             if (dividedPoints == 0)
-                dividedPoints = 0;
+                dividedPoints = 1;
 
             for (var i = 0; i < dividedPoints; i++)
             {

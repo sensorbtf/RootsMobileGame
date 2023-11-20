@@ -133,6 +133,7 @@ namespace InGameUi
         private void HandleDestinyShardsGift()
         {
             _gameManager.HandleLoginReward();
+            _uiReferences.YesButton.onClick.RemoveAllListeners();
             _uiReferences.YesButton.onClick.AddListener(() => HandleTurnOnOff(false));
             _uiReferences.YesButtonText.text = "Continue";
         }

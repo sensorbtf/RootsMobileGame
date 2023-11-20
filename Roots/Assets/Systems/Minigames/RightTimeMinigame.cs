@@ -1,19 +1,21 @@
+using System.Collections.Generic;
 using Buildings;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace Minigames
 {
-    public class RightTimeMinigame : Minigame
+    public class RightTimeMinigame : Minigame //TODO add colliders and intersection methods
     {
         [SerializeField] private GameObject _movingObject; 
         [SerializeField] private int _moveSpeed;
-        [SerializeField] private float _tolerance = 0.5f;
         [SerializeField] private float _blockingDuration = 200f;
         [SerializeField] private Transform _startPosition;
         [SerializeField] private Transform _endPosition;
-        [SerializeField] private GameObject _targetPosition; 
+        [SerializeField] private RectTransform _targetPosition; 
         [SerializeField] private Button _buttonToClick; 
+        [SerializeField] private BoxCollider2D _movingObjectCollider;
+        [SerializeField] private BoxCollider2D _targetPositionCollider;
 
         private bool _isMovingToEnd = true;
         private bool _isBlocked;
@@ -79,11 +81,19 @@ namespace Minigames
         public override void StartTheGame(Building p_building)
         {
             base.StartTheGame(p_building);
-            
+    
             _currentMovementSpeed = _moveSpeed;
-            var currentScale = _targetPosition.transform.localScale;
-            _targetPosition.transform.localScale = new Vector3(currentScale.x * (1 + p_building.CurrentTechnologyLvl * 0.1f), currentScale.y, currentScale.z);
-            
+
+            float newWidth = _targetPosition.rect.width * (1 + p_building.CurrentTechnologyLvl * 0.1f);
+
+            Vector2 newSizeDelta = _targetPosition.sizeDelta;
+            newSizeDelta.x = newWidth;
+            _targetPosition.sizeDelta = newSizeDelta;
+
+            Vector2 colliderSize = _targetPositionCollider.size;
+            colliderSize.x = newWidth;
+            _targetPositionCollider.size = colliderSize;
+
             _buttonToClick.onClick.AddListener(TryToGetPoints);
             _score = 0;
         }
@@ -97,10 +107,13 @@ namespace Minigames
 
         private void TryToGetPoints()
         {
-            float distance = Mathf.Abs(_movingObject.transform.position.x - _targetPosition.transform.position.x);
-            Debug.Log("Distance: " + distance + ", Tolerance: " + _tolerance);
+            List<Collider2D> results = new List<Collider2D>();
 
-            if (distance < _tolerance)
+            ContactFilter2D filter = new ContactFilter2D().NoFilter();
+
+            _targetPositionCollider.Overlap(filter, results);
+
+            if (results.Contains(_movingObjectCollider))
             {
                 AddScore();
             }
@@ -110,6 +123,7 @@ namespace Minigames
                 _buttonToClick.interactable = false;
             }
         }
+
 
         public override void StartInteractableMinigame()
         {

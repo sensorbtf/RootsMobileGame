@@ -49,7 +49,7 @@ namespace GameManager
         public string TimePassed { get; private set; }
 
         public bool CanUseSkipByTime { get; private set; }
-        public int GetDailyReward => _everyDayReward.FirstOrDefault(x => x.Weekday == _loginDay).DestinyShardsAmount;
+        public int GetDailyReward => _everyDayReward[_loginDay].DestinyShardsAmount;
 
         public event Action<bool> OnPlayerCameBack;
         public event Action OnAfterLoad;
@@ -235,11 +235,12 @@ namespace GameManager
                 
             _savingManager.SaveMainGame(new MainGameManagerSavedData
             {
+                LoginDay = _loginDay,
+                FreeDaysSkipAmount = FreeSkipsLeft,
+                CurrentPlayerState = (int)CurrentPlayerState,
+                TotalTimePlayed = _totalPlayTime.ToString(),
                 TimeOfWorkersSet = _startDayTime,
                 TimeOfGiftTaken = _giftTakenTime,
-                CurrentPlayerState = (int)CurrentPlayerState,
-                FreeDaysSkipAmount = FreeSkipsLeft,
-                TotalTimePlayed = _totalPlayTime.ToString()
             });
         }
 

@@ -85,7 +85,18 @@ namespace InGameUi
 
         private void HandleViewOfSummary()
         {
-            _panelTitle.text = "End of the day summary";
+            string text = "";
+            
+            if (worldManager.StormDaysRange.x < worldManager.CurrentDay)
+            {
+                text = $"Day {worldManager.CurrentDay} of current mission has passed. Storm might hit us anytime";
+            }
+            else
+            {
+                text = $"Day {worldManager.CurrentDay} has passed.";
+            }
+            
+            _panelTitle.text = text;
 
             foreach (var building in buildingsManager.UnlockedBuildings)
                 CreateUiElement(building.Icon, $"New building unlocked: {building.Type}");
