@@ -155,7 +155,15 @@ namespace GameManager
             _giftTakenTime = p_data.TimeOfGiftTaken;
             var timeDifference = currentTime - _giftTakenTime;
 
-            _shouldMakeGiftViable = timeDifference.TotalHours >= 24 && _everyDayReward[_loginDay].DestinyShardsAmount > 0;
+            if (timeDifference.TotalHours >= 24)
+            {
+                if (timeDifference.TotalHours >= 48) // TODO: info about reset + info about next login reward?
+                {
+                    _loginDay = 0;
+                }
+                
+                _shouldMakeGiftViable = _everyDayReward[_loginDay].DestinyShardsAmount > 0;
+            }
 
             _savingManager.OnLoad -= LoadSavedData;
             OnPlayerCameBack?.Invoke(_shouldMakeGiftViable);
@@ -314,7 +322,6 @@ namespace GameManager
     [Serializable]
     public struct DayOfWeekReward
     {
-        public int Weekday;
         public int DestinyShardsAmount;
     }
     

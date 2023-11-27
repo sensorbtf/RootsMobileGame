@@ -91,8 +91,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8cbaab4677d0c348859b8a682e27259, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BuildingSprite: {fileID: 4403313105424738280}
   BuildingDesc: {fileID: 6528868930842461901}
+  BuildingSprite: {fileID: 4403313105424738280}
 --- !u!114 &4603709147792621443
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -154,7 +154,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 150, y: 100}
+  m_SizeDelta: {x: 145, y: 90}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7638273733774400148
 CanvasRenderer:
