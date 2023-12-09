@@ -176,7 +176,9 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      ClimbingLadderMan_0: -1052860637525129410
+      ClimbingLadderMan_1: 3524468713411821077
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

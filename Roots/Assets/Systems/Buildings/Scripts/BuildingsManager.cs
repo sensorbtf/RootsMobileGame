@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using AudioSystem;
 using Gods;
 using UnityEngine;
 
@@ -8,6 +9,7 @@ namespace Buildings
 {
     public class BuildingsManager : MonoBehaviour
     {
+        [SerializeField] private AudioManager _audioManager; // need to extend
         [SerializeField] private GodsManager _godsManager; // need to extend
         [SerializeField] private WorkersManager _workersManager; // need to extend
         [SerializeField] private BuildingTransforms[] _placesForBuildings; // need to extend

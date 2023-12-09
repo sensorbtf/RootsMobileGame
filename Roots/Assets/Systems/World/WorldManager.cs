@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using AudioSystem;
 using Buildings;
 using Gods;
 using UnityEngine;
@@ -11,6 +12,7 @@ namespace World
     {
         [SerializeField] private BuildingsManager _buildingsManager;
         [SerializeField] private GodsManager _godsManager;
+        [SerializeField] private AudioManager _audioManager;
 
         [SerializeField] private WorkersManager _workersManager;
         [SerializeField] private Mission[] _missionData;
@@ -45,6 +47,7 @@ namespace World
         {
             _buildingsManager.StartOnWorld(p_willBeLoaded);
             _godsManager.CustomStart(p_willBeLoaded);
+            _audioManager.CustomStart();
             
             if (!p_willBeLoaded) 
                 StartMission(true);

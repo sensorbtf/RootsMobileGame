@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using AudioSystem;
 using Buildings;
 using GameManager;
 using TMPro;
@@ -15,6 +16,7 @@ namespace InGameUi
         public static bool BlockHud;
         [SerializeField] private Canvas _mainCanvas;
 
+        [SerializeField] private AudioManager _audioManager;
         [SerializeField] private MainGameManager _gameManager;
         [SerializeField] private WorldManager _worldManager;
         [SerializeField] private BuildingsManager _buildingsManager;
@@ -60,8 +62,13 @@ namespace InGameUi
         private TextMeshProUGUI _secondMissionButtonText;
         private TextMeshProUGUI _secondQuestText;
         private Button _settingsButton;
+        
+        //Audio clips
+        [SerializeField] private AudioClip _destinyShardsManipulation;
+        [SerializeField] private AudioClip _resourcePointsManipulation;
+        [SerializeField] private AudioClip _defensePointsManipulation;
+        
         // Quests
-
         private float _singleDayGoWidth;
         private Button _skipDayButton;
 
@@ -307,14 +314,17 @@ namespace InGameUi
                     case PointsType.Resource:
                         image.sprite = _buildingsManager.ResourcesPointsIcon;
                         _createdImages[ResourcePointsImage.rectTransform].Add(imageObject);
+                        _audioManager.PlaySpecificSoundEffect(_resourcePointsManipulation);
                         break;
                     case PointsType.Defense:
                         image.sprite = _buildingsManager.DefensePointsIcon;
                         _createdImages[DefensePointsImage.rectTransform].Add(imageObject);
+                        _audioManager.PlaySpecificSoundEffect(_defensePointsManipulation);
                         break;
                     case PointsType.ShardsOfDestiny:
                         image.sprite = _buildingsManager.ShardsOfDestinyIcon;
                         _createdImages[ShardsOfDestinyImage.rectTransform].Add(imageObject);
+                        _audioManager.PlaySpecificSoundEffect(_destinyShardsManipulation);
                         break;
                 }
             }

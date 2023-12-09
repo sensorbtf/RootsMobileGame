@@ -152,7 +152,8 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Weles_God_Front_0: 5650439958366441649
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

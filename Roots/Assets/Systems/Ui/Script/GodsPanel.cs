@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using AudioSystem;
 using Buildings;
 using GameManager;
 using GeneralSystems;
@@ -15,6 +16,7 @@ namespace InGameUi
     {
         [SerializeField] private BuildingsManager _buildingsManager;
         [SerializeField] private GodsManager _godsManager;
+        [SerializeField] private AudioManager _audioManager;
         [SerializeField] private MainGameManager _gameManager;
         [SerializeField] private GameObject _godPrefab;
         [SerializeField] private Transform _contentTransform;
@@ -36,6 +38,8 @@ namespace InGameUi
 
         public void BackToWorkerTab()
         {
+            _audioManager.PlayButtonSoundEffect(_goBackButton.interactable);
+            
             ClosePanel();
             OnBackToWorkersPanel?.Invoke();
         }
