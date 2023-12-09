@@ -13,7 +13,7 @@ namespace AudioSystem
         [SerializeField] private AudioClip _backgroundMusic;
         [SerializeField] private AudioClip _avaiableButtonClicked;
         [SerializeField] private AudioClip _unavaiableButtonClicked;
-        [SerializeField] private AudioClip _sliderValueChangeEffect;
+        [SerializeField] private AudioClip[] _thunderstormsSounds;
 
         public void CustomStart()
         {
@@ -31,6 +31,22 @@ namespace AudioSystem
         {
             _buttonSource.clip = p_isInteractable ? _avaiableButtonClicked : _unavaiableButtonClicked;
             _buttonSource.Play();
+        }
+        
+        public void PlayThunderstormSoundEffect()
+        {
+            StartCoroutine(PlayThunderstormCoroutine());
+        }
+
+        private IEnumerator PlayThunderstormCoroutine()
+        {
+            var newSource = gameObject.AddComponent<AudioSource>();
+            newSource.clip = _thunderstormsSounds[Random.Range(0, _thunderstormsSounds.Length)];
+            newSource.Play();
+
+            yield return new WaitForSeconds(newSource.clip.length);
+            
+            Destroy(newSource);
         }
 
         public void MuteMusic(bool p_isOn)

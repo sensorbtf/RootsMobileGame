@@ -102,6 +102,17 @@ namespace Buildings
             CurrentBuildings.Find(x => x.BuildingMainData.Type == BuildingType.Cottage).IsDamaged = true;
         }
 
+        private void Update()
+        {
+            if (CurrentBuildings == null)
+                return;
+
+            foreach (var building in CurrentBuildings)
+            {
+                building.TryToHighlight();
+            }
+        }
+
         public Building GetSpecificBuilding(BuildingType p_data)
         {
             foreach (var building in CurrentBuildings)
@@ -240,7 +251,7 @@ namespace Buildings
                     newBuildingGo = Instantiate(p_buildingData.MainPrefab,
                         building.SiteForBuilding.position, Quaternion.identity);
                     newBuilding = newBuildingGo.GetComponent<Building>();
-                    newBuilding.InGameIcon.sprite = newBuilding.BuildingMainData.FirstStageBuilding;
+                    newBuilding.SetFirstStage();
                     newBuilding.CurrentLevel = 0;
                     
                     newBuilding.InitiateBuildingSequence();
@@ -269,8 +280,7 @@ namespace Buildings
                 }
                 else
                 {
-                    CurrentBuildings[i].InGameIcon.sprite =
-                        GetSpecificBuilding(p_buildingType).BuildingMainData.UpgradeStage;
+                    CurrentBuildings[i].SetUpgradeStage();
                     CurrentBuildings[i].InitiateUpgradeSequence();
                 }
             }
@@ -362,9 +372,10 @@ namespace Buildings
                     continue;
 
                 if (building.IsDamaged)
-                    building.GatheringIcon.sprite = FinishBuildingIcon;
+                    building.SetBuildingIcon(FinishBuildingIcon);
                 else
-                    building.GatheringIcon.sprite = FinishBuildingIcon;
+                    building.SetBuildingIcon(FinishBuildingIcon);
+
                 anyBuildingNeedsBuilding = true;
             }
 
@@ -561,12 +572,18 @@ namespace Buildings
 
                     if (probableBuilding.IsDamaged)
                     {
-                        probableBuilding.InGameIcon.sprite = probableBuilding.BuildingMainData.DestroyedStage;
+                        probableBuilding.SetDestroyStage();
                     }  
                     else if (probableBuilding.IsBeeingUpgradedOrBuilded)
                     {
-                        probableBuilding.InGameIcon.sprite = probableBuilding.CurrentLevel == 0 ? 
-                            probableBuilding.BuildingMainData.FirstStageBuilding : probableBuilding.BuildingMainData.UpgradeStage;
+                        if (probableBuilding.CurrentLevel == 0)
+                        {
+                            probableBuilding.SetFirstStage();
+                        }
+                        else
+                        {
+                            probableBuilding.SetUpgradeStage();
+                        }
                     }
                 }
 

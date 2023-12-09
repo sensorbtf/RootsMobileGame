@@ -10,6 +10,7 @@ namespace World
 {
     public class WorldManager : MonoBehaviour
     {
+        [SerializeField] private LightManager _lightManager;
         [SerializeField] private BuildingsManager _buildingsManager;
         [SerializeField] private GodsManager _godsManager;
         [SerializeField] private AudioManager _audioManager;
@@ -107,6 +108,8 @@ namespace World
             }
             else
             {
+                _lightManager.MakeStormEffect();
+                
                 if (StormPower > _buildingsManager.CurrentDefensePoints) // loss
                     HandleEndMissionConsequences(false, false);
                 else

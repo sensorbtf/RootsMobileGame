@@ -2,6 +2,7 @@ using System;
 using GeneralSystems;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Rendering.Universal;
 
 namespace Buildings
 {
@@ -10,6 +11,8 @@ namespace Buildings
         public BuildingData BuildingMainData;
         public SpriteRenderer InGameIcon;
         public SpriteRenderer GatheringIcon;
+        public Light2D LightOfBuilding;
+
         [HideInInspector] public int CurrentDayOnQueue;
         [HideInInspector] public int CurrentTechnologyDayOnQueue;
         [HideInInspector] public bool HaveSomethingToCollect;
@@ -18,6 +21,9 @@ namespace Buildings
         [HideInInspector] public bool IsProtected;
         [HideInInspector] public int CurrentTechnologyLvl;
         private bool _isDamaged;
+
+        private bool _shouldHighlight = false;
+        private bool _reverseLighting = false;
 
         private BaseDataPerLevel _currentLevelData => BuildingMainData.PerLevelData[CurrentLevel];
 
@@ -34,7 +40,7 @@ namespace Buildings
                 {
                     if (!value)
                     {
-                        InGameIcon.sprite = BuildingMainData.InGameSprite;
+                        SetInGameStage();
                         CurrentDayOnQueue = 0;
                         OnRepaired?.Invoke(this);
                     }
@@ -44,7 +50,7 @@ namespace Buildings
                     if (value)
                     {
                         IsBeeingUpgradedOrBuilded = false;
-                        InGameIcon.sprite = BuildingMainData.DestroyedStage;
+                        SetDestroyStage();
                         CurrentDayOnQueue = 0;
                         OnBuildingDamaged?.Invoke(this);
                     }
@@ -66,6 +72,11 @@ namespace Buildings
         public event Action<Building> OnTechnologyUpgrade;
         public event Action<Building> OnBuildingDestroyed;
 
+        private void Start()
+        {
+            LightOfBuilding.intensity = 0;
+        }
+
         public void OnPointerClick(PointerEventData p_eventData)
         {
             if (CameraController.isDragging)
@@ -85,7 +96,8 @@ namespace Buildings
                         HandleLevelUp();
                 }
 
-                GatheringIcon.sprite = null;
+                RevokeLighting();
+
                 CanEndBuildingSequence = false;
                 return;
             }
@@ -95,7 +107,7 @@ namespace Buildings
                 OnPointsGathered?.Invoke(BuildingMainData.Type, ProductionType,
                     _currentLevelData.ProductionAmountPerDay);
 
-                GatheringIcon.sprite = null;
+                RevokeLighting();
                 HaveSomethingToCollect = false;
                 return;
             }
@@ -108,7 +120,8 @@ namespace Buildings
         {
             CurrentLevel = 1;
             IsBeeingUpgradedOrBuilded = false;
-            InGameIcon.sprite = BuildingMainData.InGameSprite;
+            SetInGameStage();
+
             HaveWorker = false;
 
             OnWorkDone?.Invoke(this, false);
@@ -126,7 +139,8 @@ namespace Buildings
             CurrentLevel++;
             IsBeeingUpgradedOrBuilded = false;
             CurrentDayOnQueue = 0;
-            InGameIcon.sprite = BuildingMainData.InGameSprite;
+            SetInGameStage();
+
             HaveWorker = false;
 
             OnWorkDone?.Invoke(this, false);
@@ -141,8 +155,16 @@ namespace Buildings
         public void SetCollectionIcon(Sprite p_gatheringIcon)
         {
             GatheringIcon.sprite = p_gatheringIcon;
+            _shouldHighlight = true;
+
             HaveSomethingToCollect = true;
             HaveWorker = false;
+        }
+
+        public void SetBuildingIcon(Sprite p_finishBuildingIcon)
+        {
+            GatheringIcon.sprite = p_finishBuildingIcon;
+            _shouldHighlight = true;
         }
 
         public void UpgradeTechnologyLevel()
@@ -182,6 +204,70 @@ namespace Buildings
             }
 
             return false;
+        }
+
+        public void TryToHighlight() // TODO: Use it also on technology development?
+        {
+            if (!_shouldHighlight)
+                return;
+
+            if (_reverseLighting)
+            {
+                LightOfBuilding.intensity -= 0.02f;
+            }
+            else
+            {
+                LightOfBuilding.intensity += 0.02f;
+            }
+
+            if (!_reverseLighting)
+            {
+                if (LightOfBuilding.intensity > 0.5f)
+                {
+                    _reverseLighting = true;
+                }
+            }
+            else
+            {
+                if (LightOfBuilding.intensity <= 0f)
+                {
+                    _reverseLighting = false;
+                }
+            }
+        }
+
+        public void SetInGameStage()
+        {
+            InGameIcon.sprite = BuildingMainData.InGameSprite;
+            LightOfBuilding.lightCookieSprite = BuildingMainData.InGameSprite;
+        }
+
+        public void SetFirstStage()
+        {
+            InGameIcon.sprite = BuildingMainData.FirstStageBuilding;
+            LightOfBuilding.lightCookieSprite = BuildingMainData.FirstStageBuilding;
+        }
+
+        public void SetUpgradeStage()
+        {
+            InGameIcon.sprite = BuildingMainData.UpgradeStage;
+            LightOfBuilding.lightCookieSprite = BuildingMainData.UpgradeStage;
+        }
+
+        public void SetDestroyStage()
+        {
+            InGameIcon.sprite = BuildingMainData.DestroyedStage;
+            LightOfBuilding.lightCookieSprite = BuildingMainData.DestroyedStage;
+        }
+        
+        private void RevokeLighting()
+        {
+            GatheringIcon.sprite = null;
+
+            _shouldHighlight = false;
+            _reverseLighting = false;
+
+            LightOfBuilding.intensity = 0;
         }
     }
 }
