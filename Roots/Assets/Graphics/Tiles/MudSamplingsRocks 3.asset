@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e6f3fbb560bd6041a202ea918fa4f23, type: 3}
   m_Name: MudSamplingsRocks 3
   m_EditorClassIdentifier: 
-  m_DefaultSprite: {fileID: 21300000, guid: 609078d2dc8977944b1576b01531ffe2, type: 3}
+  m_DefaultSprite: {fileID: 21300000, guid: e998ca2c9232bf14ea924a50d9878b15, type: 3}
   m_DefaultGameObject: {fileID: 0}
   m_DefaultColliderType: 1
   m_TilingRules: []

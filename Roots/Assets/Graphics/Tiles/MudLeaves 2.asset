@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e6f3fbb560bd6041a202ea918fa4f23, type: 3}
   m_Name: MudLeaves 2
   m_EditorClassIdentifier: 
-  m_DefaultSprite: {fileID: 21300000, guid: 523093fd1d88ffe47a6719a88bf31cc7, type: 3}
+  m_DefaultSprite: {fileID: 21300000, guid: a5360a19b4386d74ba476d6143027fd7, type: 3}
   m_DefaultGameObject: {fileID: 0}
   m_DefaultColliderType: 1
   m_TilingRules: []

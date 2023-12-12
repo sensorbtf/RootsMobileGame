@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e6f3fbb560bd6041a202ea918fa4f23, type: 3}
   m_Name: Mud
   m_EditorClassIdentifier: 
-  m_DefaultSprite: {fileID: 21300000, guid: 50bf9aa08e3f7a94cbb7cbb2a4521a29, type: 3}
+  m_DefaultSprite: {fileID: 21300000, guid: 27606d39c78c38745b95b833efe0d895, type: 3}
   m_DefaultGameObject: {fileID: 0}
   m_DefaultColliderType: 1
   m_TilingRules: []

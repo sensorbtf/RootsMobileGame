@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e6f3fbb560bd6041a202ea918fa4f23, type: 3}
   m_Name: ForestGround 2
   m_EditorClassIdentifier: 
-  m_DefaultSprite: {fileID: 21300000, guid: 0e906de8e41767f4d88ec5fc3fcaa599, type: 3}
+  m_DefaultSprite: {fileID: 21300000, guid: ea594f524914f664e8a7abf7bcce2a7b, type: 3}
   m_DefaultGameObject: {fileID: 7735457498890003192, guid: c4c96b487ff376c40bf86b6f65f20904, type: 3}
   m_DefaultColliderType: 1
   m_TilingRules: []
