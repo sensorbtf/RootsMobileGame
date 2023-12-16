@@ -1,25 +1,27 @@
 ﻿using System;
-using GameManager;
+using Buildings;
 using UnityEngine;
 
 namespace Narrator
 {
     public class NarratorManager: MonoBehaviour
     {
-        [SerializeField] private MainGameManager _gameManager;
-
+        [SerializeField] private BuildingsManager _buildingsManager;
+        
         private TutorialStep _currentTutorialStep;
         private int _currentSubText = 0;
 
-        public event Action OnTutorialAdvancement;
+        public event Action<bool> OnTutorialAdvancement;
         public TutorialStep CurrentTutorialStep => _currentTutorialStep;
         public int CurrentSubText => _currentSubText;
         
         private void Start()
         {
             _currentTutorialStep = TutorialStep.Start;
-            
-            _gameManager.OnTutorialStart += StartTutorial; // TODO: Might need to change that in terms of IF;s
+            _buildingsManager.OnBuildingRepaired += CheckBuildingRepaired;
+            _buildingsManager.OnTutorialStart += StartTutorial;
+            _buildingsManager.OnBuildingStateChanged += CheckBuildingBuilt;
+            _buildingsManager.OnBuildingTechnologyLvlUp += CheckBuildingTechLevelUp;
         }
 
         public void TryToActivateNarrator(TutorialStep p_step)
@@ -28,7 +30,7 @@ namespace Narrator
             {
                 _currentTutorialStep = p_step;
                 _currentSubText = 0;
-                OnTutorialAdvancement?.Invoke();
+                OnTutorialAdvancement?.Invoke(true);
             }
         }
 
@@ -40,8 +42,36 @@ namespace Narrator
         private void StartTutorial()
         {
             _currentTutorialStep = TutorialStep.GameStarted_Q1;
-            OnTutorialAdvancement?.Invoke();
-            _gameManager.OnTutorialStart -= StartTutorial;
+            OnTutorialAdvancement?.Invoke(true);
+            
+            _buildingsManager.OnTutorialStart -= StartTutorial;
+        }
+        
+        private void CheckBuildingRepaired(Building p_building)
+        {
+            _currentTutorialStep = TutorialStep.OnCottageRepaired_Q6;
+            OnTutorialAdvancement?.Invoke(true);
+            
+            _buildingsManager.OnBuildingRepaired -= CheckBuildingRepaired;
+        }
+        
+        private void CheckBuildingBuilt(Building p_building)
+        {
+            if (_currentTutorialStep == TutorialStep.NextDayWithFarmFinished_Q8 && p_building.BuildingMainData.Type == BuildingType.Farm)
+            {
+                TryToActivateNarrator(TutorialStep.AfterFarmFinishBuild_Q9);
+            }
+            _buildingsManager.OnBuildingStateChanged -= CheckBuildingBuilt;
+        }
+        
+        private void CheckBuildingTechLevelUp(Building p_building)
+        {
+            if (_currentTutorialStep == TutorialStep.OnFarmPanelWithTechnology1_Q11 && p_building.BuildingMainData.Type == BuildingType.Farm)
+            {
+                TryToActivateNarrator(TutorialStep.OnTechnologyInFarmLvlUp_Q12);
+            }
+            
+            _buildingsManager.OnBuildingTechnologyLvlUp -= CheckBuildingTechLevelUp;
         }
 
         public NarratorManagerSavedData GetSavedData()
@@ -57,6 +87,8 @@ namespace Narrator
         {
             _currentTutorialStep = (TutorialStep)p_data.CurrentTutorialStep; 
             _currentSubText = p_data.CurrentSubText;
+
+            OnTutorialAdvancement?.Invoke(false);
         }
     }
     
@@ -78,7 +110,7 @@ namespace Narrator
         OnCottageRepaired_Q6 = 5,
         ThirdWorkingPanelOpened_Q7 = 6,
         NextDayWithFarmFinished_Q8 = 7,
-        AfterFarmBuildClick_Q9 = 8,
+        AfterFarmFinishBuild_Q9 = 8,
         OnFarmPanelOpen_Q10 = 9,
         OnFarmPanelWithTechnology1_Q11 = 10,
         OnTechnologyInFarmLvlUp_Q12 = 11,

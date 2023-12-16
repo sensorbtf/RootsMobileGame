@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Buildings;
 using GeneralSystems;
+using Narrator;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -11,6 +12,7 @@ namespace InGameUi
 {
     public class SpecificBuildingPanel : MonoBehaviour
     {
+        [SerializeField] private NarratorManager _narratorManager;
         [SerializeField] private BuildingsManager buildingsManager;
         [SerializeField] private GameObject _buildingIconPrefab;
         [SerializeField] private GameObject _goBackGo;
@@ -60,6 +62,14 @@ namespace InGameUi
             CameraController.IsUiOpen = false;
             GameplayHud.BlockHud = false;
 
+            if (_narratorManager.CurrentTutorialStep == TutorialStep.OnFarmMinigameEnded_Q13)
+            {
+                if (_building.BuildingMainData.Type == BuildingType.Farm)
+                {
+                    _narratorManager.TryToActivateNarrator(TutorialStep.OnFarmPanelClosed_Q14);
+                }
+            }
+            
             _building = null;
             _runtimeBuildingsUiToDestroy.Clear();
             gameObject.SetActive(false);
@@ -101,6 +111,22 @@ namespace InGameUi
 
             _technology = _buildingData.Technology.DataPerTechnologyLevel;
             HandleView();
+
+            if (_narratorManager.CurrentTutorialStep == TutorialStep.AfterFarmFinishBuild_Q9)
+            {
+                if (p_building.BuildingMainData.Type == BuildingType.Farm)
+                {
+                    _narratorManager.TryToActivateNarrator(TutorialStep.OnFarmPanelOpen_Q10);
+                }
+            }
+            else if (_narratorManager.CurrentTutorialStep == TutorialStep.OnFarmPanelOpen_Q10)
+            {
+                if (p_building.BuildingMainData.Type == BuildingType.Farm && p_building.CurrentTechnologyDayOnQueue == 
+                    p_building.BuildingMainData.Technology.DataPerTechnologyLevel[p_building.CurrentTechnologyLvl].WorksDayToAchieve)
+                {
+                    _narratorManager.TryToActivateNarrator(TutorialStep.OnFarmPanelWithTechnology1_Q11);
+                }
+            }
         }
 
         private void HandleCottageView()

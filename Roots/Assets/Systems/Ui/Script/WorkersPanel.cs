@@ -34,7 +34,6 @@ namespace InGameUi
         [SerializeField] private TextMeshProUGUI _numberOfWorkers;
 
         private List<GameObject> _runtimeBuildingsUiToDestroy;
-        private Tutorials _tutorialToActivate = Tutorials.FirstPanelOpen; // TODO: SAVE
         
         [SerializeField] private TextMeshProUGUI _tabName;
 
@@ -58,16 +57,31 @@ namespace InGameUi
                 ActivatePanel();
         }
 
+        private void TryToOpenNarrator()
+        {
+            if ((int)_narratorManager.CurrentTutorialStep >= (int)TutorialStep.OnMissionRestart_Q18)
+            {
+                _narratorManager.TryToActivateNarrator(TutorialStep.OnWorkersPanelOpenAfterRestart_Q19);
+                _godsButton.gameObject.SetActive(true);
+            }
+            else
+            {
+                _godsButton.gameObject.SetActive(false);
+            }
+            
+            _narratorManager.TryToActivateNarrator(TutorialStep.ThirdWorkingPanelOpened_Q7);
+            _narratorManager.TryToActivateNarrator(TutorialStep.SecondWorkingPanel_Q3);
+            _narratorManager.TryToActivateNarrator(TutorialStep.FirstWorkingPanelOpen_Q2);
+            _narratorManager.TryToActivateNarrator(TutorialStep.GameStarted_Q1);
+        }
+
         private void ActivatePanel()
         {
             gameObject.SetActive(true);
             GameplayHud.BlockHud = true;
             CameraController.IsUiOpen = true;
 
-            _narratorManager.TryToActivateNarrator(TutorialStep.FirstWorkingPanelOpen_Q2);
-            _narratorManager.TryToActivateNarrator(TutorialStep.SecondWorkingPanel_Q3);
-            _narratorManager.TryToActivateNarrator(TutorialStep.ThirdWorkingPanelOpened_Q7);
-            _narratorManager.TryToActivateNarrator(TutorialStep.OnWorkersPanelOpenAfterRestart_Q19);
+            TryToOpenNarrator();
             
             _tabName.text = "Worker Displacement";
             
@@ -223,8 +237,11 @@ namespace InGameUi
 
             foreach (var building in _buildingPanel.BuildingsToShow.ToList())
                 _buildingPanel.BuildingsToShow[building.Key] = false;
-
+            
             _gameManager.SetPlayerState(DuringDayState.DayPassing);
+            
+            _narratorManager.TryToActivateNarrator(TutorialStep.FirstDayStarted_Q4);
+                
             ClosePanel();
         }
 
@@ -264,13 +281,5 @@ namespace InGameUi
                 _activateButton.interactable = false;
             }
         }
-    }
-
-    public enum Tutorials
-    {
-        FirstPanelOpen = 1,
-        SecondPanelOpen = 2,
-        ThirdPanelOpen = 6,
-        FourthPanelOpen = 12,
     }
 }

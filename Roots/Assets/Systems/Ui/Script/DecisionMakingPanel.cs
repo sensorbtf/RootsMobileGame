@@ -2,6 +2,7 @@
 using Buildings;
 using GameManager;
 using GeneralSystems;
+using Narrator;
 using UnityEngine;
 using World;
 
@@ -9,6 +10,7 @@ namespace InGameUi
 {
     public class DecisionMakingPanel : MonoBehaviour
     {
+        [SerializeField] private NarratorManager _narratorManager;
         [SerializeField] private MainGameManager _gameManager;
         [SerializeField] private WorldManager _worldManager;
         private DecisionMakingRefs _uiReferences;
@@ -61,6 +63,8 @@ namespace InGameUi
             
             _uiReferences.YesButtonGo.gameObject.SetActive(true);
             _uiReferences.NoButtonGo.gameObject.SetActive(false);
+            
+            _narratorManager.TryToActivateNarrator(TutorialStep.OnAfterDefendPanel_Q17);
         }
 
         private void ViewLeavePanel()
@@ -119,7 +123,7 @@ namespace InGameUi
         private void DealWithStormEffects(bool p_won)
         {
             _worldManager.StartMission(p_won);
-
+            _narratorManager.TryToActivateNarrator(TutorialStep.OnMissionRestart_Q18);
             HandleTurnOnOff(false);
         }
 

@@ -9,6 +9,7 @@ namespace AudioSystem
         [SerializeField] private AudioSource _musicSource;
         [SerializeField] private AudioSource _effectSource;
         [SerializeField] private AudioSource _buttonSource;
+        [SerializeField] private AudioSource _typingSource;
 
         [SerializeField] private AudioClip _backgroundMusic;
         [SerializeField] private AudioClip _avaiableButtonClicked;
@@ -58,6 +59,20 @@ namespace AudioSystem
         {
             _effectSource.mute = !p_isOn;
             _buttonSource.mute = !p_isOn;
+        }
+
+        public void TryToPlayWritingEffect(AudioClip p_audioClip)
+        {
+            if (_typingSource.isPlaying)
+                return;
+
+            _typingSource.clip = p_audioClip;
+            _typingSource.Play();
+        }
+
+        public void MuteWritingEffect()
+        {
+            _typingSource.Stop();
         }
     }
 }

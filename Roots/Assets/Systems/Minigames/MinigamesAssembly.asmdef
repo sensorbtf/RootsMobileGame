@@ -1,19 +1,18 @@
 {
-  "name": "Minigames",
-  "rootNamespace": "",
-  "references": [
-    "GUID:8a6e0793e78fcd14f933d3c5e1c065c6",
-    "GUID:d24ae5f4135c15b478887a8fab11029b",
-    "GUID:6055be8ebefd69e48b49212b09b47b2f",
-    "GUID:0d2fdfb670512784b99df29ee93927fc"
-  ],
-  "includePlatforms": [],
-  "excludePlatforms": [],
-  "allowUnsafeCode": false,
-  "overrideReferences": false,
-  "precompiledReferences": [],
-  "autoReferenced": true,
-  "defineConstraints": [],
-  "versionDefines": [],
-  "noEngineReferences": false
+    "name": "Minigames",
+    "rootNamespace": "",
+    "references": [
+        "GUID:d24ae5f4135c15b478887a8fab11029b",
+        "GUID:6055be8ebefd69e48b49212b09b47b2f",
+        "GUID:0d2fdfb670512784b99df29ee93927fc"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }

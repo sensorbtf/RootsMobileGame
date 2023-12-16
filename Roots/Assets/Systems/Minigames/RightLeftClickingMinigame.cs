@@ -35,6 +35,7 @@ namespace Minigames
             base.StartTheGame(p_building);
 
             _score = 0;
+            _slider.value = 0;
 
             _leftSideButton.onClick.AddListener(AddScore);
             _rightSideButton.onClick.AddListener(AddScore);

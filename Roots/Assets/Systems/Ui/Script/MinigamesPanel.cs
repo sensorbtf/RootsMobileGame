@@ -1,11 +1,12 @@
 using System;
 using Buildings;
-using InGameUi;
+using Narrator;
 using UnityEngine;
 using UnityEngine.Serialization;
 using World;
+using Minigames;
 
-namespace Minigames
+namespace InGameUi
 {
     public class MinigamesPanel : MonoBehaviour
     {
@@ -82,7 +83,21 @@ namespace Minigames
             gameObject.SetActive(false);
             _specificBuildingPanel.ActivateOnClick(_currentBuilding);
 
-            _narratorManager.ActivateNarrator();
+            if (_narratorManager.CurrentTutorialStep == TutorialStep.OnTechnologyInFarmLvlUp_Q12)
+            {
+                if (_currentBuilding.BuildingMainData.Type == BuildingType.Farm)
+                {
+                    _narratorManager.TryToActivateNarrator(TutorialStep.OnFarmMinigameEnded_Q13);
+                }
+            }
+            else if (_narratorManager.CurrentTutorialStep == TutorialStep.OnFarmPanelClosed_Q14)
+            {
+                if (_currentBuilding.BuildingMainData.Type == BuildingType.GuardTower)
+                {
+                    _narratorManager.TryToActivateNarrator(TutorialStep.OnGuardTowerMinigameEnded_Q15);
+                }
+            }
+            
             Destroy(_currentMinigame);
         }
 

@@ -31,6 +31,7 @@ namespace Buildings
         [HideInInspector] public List<Building> BuildingsWithTechnologyUpgrade;
 
         private int _resourcesStoredInBasement;
+        private bool _tutorialStarted = false;
         public List<Building> CurrentBuildings { get; private set; }
 
         public BuildingDatabase AllBuildingsDatabase => _buildingsDatabase;
@@ -71,6 +72,7 @@ namespace Buildings
 
         public event Action<Building> OnBuildingClicked;
         public event Action<Building> OnBuildingStateChanged;
+        public event Action<Building> OnBuildingRepaired;
         public event Action OnCottageLevelUp;
         public event Action<Building> OnBuildingTechnologyLvlUp;
         public event Action<Building> OnBuildingDestroyed;
@@ -79,6 +81,8 @@ namespace Buildings
         public event Action<int, bool> OnResourcePointsChange;
         public event Action<int, bool> OnDefensePointsChange;
         public event Action<int, bool> OnDestinyShardsPointsChange;
+        
+        public event Action OnTutorialStart;
 
         public void StartOnWorld(bool p_willBeLoaded)
         {
@@ -92,7 +96,10 @@ namespace Buildings
             CurrentBuildings = new List<Building>();
 
             if (p_willBeLoaded)
+            {
+                _tutorialStarted = true;
                 return;
+            }
 
             foreach (var buildingToBuild in _buildingsDatabase.allBuildings)
                 if (buildingToBuild.Type is BuildingType.Cottage)
@@ -110,6 +117,15 @@ namespace Buildings
             foreach (var building in CurrentBuildings)
             {
                 building.TryToHighlight();
+            }
+
+            if (!_tutorialStarted)
+            {
+                if (ShouldStartTutorial())
+                {
+                    OnTutorialStart?.Invoke();
+                    _tutorialStarted = true;
+                }  
             }
         }
 
@@ -188,7 +204,8 @@ namespace Buildings
                         CompletlyNewBuildings.Add(building);
                     else if (building.CurrentLevel > 1)
                         UpgradedBuildings.Add(building);
-                    else if (building.IsDamaged) RepairedBuildings.Add(building);
+                    else if (building.IsDamaged) 
+                        RepairedBuildings.Add(building);
                 }
             }
         }
@@ -295,6 +312,7 @@ namespace Buildings
         {
             AssignWorker(p_building, false);
             OnBuildingStateChanged?.Invoke(p_building);
+            OnBuildingRepaired?.Invoke(p_building);
         }
 
         private void PublishBuildingBuiltEvent(Building p_building, bool p_unassignWorkers)

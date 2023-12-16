@@ -36,7 +36,8 @@ namespace GameManager
         private DateTime _giftTakenTime;
         private bool _shouldMakeGiftViable;
         private int _loginDay;
-
+        private bool _isLanguageChangeHappening;
+        
         public int FreeSkipsLeft { get; private set; }
         public int HoursOfAbstence { get; private set; }
         public int FreeSkipsGotten { get; private set; }
@@ -54,7 +55,6 @@ namespace GameManager
         public event Action OnAfterLoad;
         public event Action<DuringDayState> OnPlayerStateChange;
         public event Action OnDaySkipPossibility;
-        public event Action OnTutorialStart;
 
         private void Awake()
         {
@@ -93,11 +93,6 @@ namespace GameManager
 
                 Debug.Log("NOT LOADED");
                 _loadingPanel.SetActive(false);
-
-                if (_buildingsManager.ShouldStartTutorial())
-                {
-                    OnTutorialStart?.Invoke();
-                }
             }
 
             _savingManager.OnAuthenticationEnded -= () => StartCoroutine(CustomStart());
@@ -184,12 +179,7 @@ namespace GameManager
         {
             _loadingPanel.SetActive(false);
             _shouldUpdate = true;
-
-            if (_buildingsManager.ShouldStartTutorial())
-            {
-                OnTutorialStart?.Invoke();
-            }
-
+            
             OnAfterLoad?.Invoke();
         }
 
@@ -330,9 +320,7 @@ namespace GameManager
         }
 
         #endregion
-
-        private bool _isLanguageChangeHappening;
-
+        
         public void ChangeLocale(Languages p_language)
         {
             if (!_isLanguageChangeHappening)

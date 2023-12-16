@@ -19,37 +19,27 @@ MonoBehaviour:
     m_Items: []
   m_TableData:
   - m_Id: 3994826498048
-    m_Localized: "Jedynym sposobem na rozw\xF3j wioski jest zbieranie zasob\xF3w
-      dla g\u0142\xF3wnego miasta w zamian za projekty budowlane."
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 4562726871040
-    m_Localized: "Nie zwlekaj. Rozka\u017C swojemu jedynemu pracownikowi zaj\u0105\u0107
-      si\u0119 napraw\u0105 g\u0142\xF3wnego budynku - Chaty."
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 4562726871041
-    m_Localized: "Ka\u017Cdy pracownik sp\u0119dza noc w Chacie. Ten budynek jest
-      r\xF3wnie\u017C jedynym bezpiecznym miejscem do przechowywania niewielkiej
-      ilo\u015Bci zasob\xF3w, gdy nadejdzie burza, aby zapewni\u0107 sobie lepszy
-      start w nast\u0119pnej misji."
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 3994809720832
-    m_Localized: "Jeste\u015B nadzorc\u0105 wioski i masz tylko jedno zadanie. \n\nMusisz
-      przetrwa\u0107."
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 205056300736512
-    m_Localized: "Uko\u0144czenie ka\u017Cdej misji wymaga okre\u015Blonej ilo\u015Bci
-      zasob\xF3w i odbywa si\u0119 pomi\u0119dzy niszczycielskimi burzami, kt\xF3re
-      wystawi\u0105 twoj\u0105 wiosk\u0119 na pr\xF3b\u0119."
+    m_Localized: 
     m_Metadata:
       m_Items: []
   - m_Id: 205056342679552
-    m_Localized: "Ostatni nadzorca uciek\u0142, zostawiaj\u0105c ci tylko zniszczon\u0105
-      Chat\u0119. Napraw j\u0105, planuj\u0105c nast\u0119pny dzie\u0144. Aby to
-      zrobi\u0107, kliknij przycisk w lewym rogu ekranu."
+    m_Localized: 
     m_Metadata:
       m_Items: []
   references:

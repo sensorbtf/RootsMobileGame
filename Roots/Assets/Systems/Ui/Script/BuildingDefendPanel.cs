@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Buildings;
 using GeneralSystems;
+using Narrator;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,12 +15,12 @@ namespace InGameUi
         [FormerlySerializedAs("_buildingManager")] [SerializeField]
         private BuildingsManager buildingsManager;
 
+        [SerializeField] private NarratorManager _narratorManager;
         [SerializeField] private WorkersManager _workersManager;
         [SerializeField] private WorldManager _worldManager;
         [SerializeField] private GameObject _buildingEntryPrefab;
         [SerializeField] private GameObject _endAssigningGo;
         [SerializeField] private Transform contentTransform;
-        private List<Building> _buildingsOnInPanelQueue;
 
         private Button _endAssigmentButton;
         [SerializeField] private TextMeshProUGUI _numberOfWorkers;
@@ -31,7 +32,6 @@ namespace InGameUi
         private void Start()
         {
             _runtimeBuildingsUiToDestroy = new List<GameObject>();
-            _buildingsOnInPanelQueue = new List<Building>();
 
             _endAssigmentButton = _endAssigningGo.GetComponent<Button>();
             _endAssigmentButton.onClick.AddListener(ClosePanel);
@@ -59,6 +59,8 @@ namespace InGameUi
             CameraController.IsUiOpen = true;
             GameplayHud.BlockHud = true;
 
+            _narratorManager.TryToActivateNarrator(TutorialStep.OnDefendPanelOpened_Q16);
+            
             UpdatePanelState();
             HandleBuildingsCreation();
         }

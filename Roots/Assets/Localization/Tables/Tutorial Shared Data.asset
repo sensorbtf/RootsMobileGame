@@ -31,6 +31,10 @@ MonoBehaviour:
     m_Key: Quest_1_4
     m_Metadata:
       m_Items: []
+  - m_Id: 370743430275072
+    m_Key: Quest_1_5
+    m_Metadata:
+      m_Items: []
   - m_Id: 4562726871040
     m_Key: Quest_2_1
     m_Metadata:
@@ -87,8 +91,12 @@ MonoBehaviour:
     m_Key: Quest_10
     m_Metadata:
       m_Items: []
-  - m_Id: 211852474114059
-    m_Key: Quest_11
+  - m_Id: 335544130658304
+    m_Key: Quest_11_1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 335544155824128
+    m_Key: Quest_11_2
     m_Metadata:
       m_Items: []
   - m_Id: 211852474114060
@@ -123,8 +131,16 @@ MonoBehaviour:
     m_Key: Quest_17
     m_Metadata:
       m_Items: []
-  - m_Id: 211852474114068
-    m_Key: Quest_18
+  - m_Id: 370743455440896
+    m_Key: Quest_18_1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 370743455440897
+    m_Key: Quest_18_2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 370743455440898
+    m_Key: Quest_20
     m_Metadata:
       m_Items: []
   m_Metadata:

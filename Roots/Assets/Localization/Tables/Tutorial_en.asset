@@ -24,54 +24,50 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 3994826498048
-    m_Localized: The only way to develop your village  is collecting resources  for
+    m_Localized: The only way to develop your village is collecting resources for
       the main city in exchange for building projects.
     m_Metadata:
       m_Items: []
   - m_Id: 4562726871040
+    m_Localized: Every worker spends night in the Cottage. It's basement is also
+      the only safe place to store a small amount of resources for the next mission.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4562726871041
     m_Localized: Don't hesitate. Let your only worker take care of repairing main
       building - the Cottage.
     m_Metadata:
       m_Items: []
-  - m_Id: 4562726871041
-    m_Localized: Every worker spends night in the Cottage. This building is also
-      the only safe place to store a small amount of resources when storm comes to
-      give yourself a better start in the next mission.
-    m_Metadata:
-      m_Items: []
   - m_Id: 205056300736512
     m_Localized: Completing every mission demands a specific amount of resources
-      and takes place between mysterious storms that will put your village into a
-      test.
+      and takes place between destructive storms that will put your village into
+      a test.
     m_Metadata:
       m_Items: []
   - m_Id: 205056342679552
-    m_Localized: '
-
-      The last overseer has run away, leaving for you only a
-      destroyed Cottage. Repair it by planning your next working day. To do it, click
-      the button in the left corner of the screen.'
+    m_Localized: "The last overseer has run away, leaving for you only a destroyed
+      Cottage. \n\nRepair it while planning your next working day."
     m_Metadata:
       m_Items: []
   - m_Id: 211852423782400
-    m_Localized: There you can see everything you have chosen in specific sections
-      of work. Now press the underneath button to start the day.
+    m_Localized: "There you can see summarize of everything that you have chosen
+      in specific sections of work. \n\nNow press the underneath button to start
+      the day."
     m_Metadata:
       m_Items: []
   - m_Id: 211852474114048
-    m_Localized: Every day in this world takes a couple of real time hours, but you
-      can skip this waiting process either by using Free Skips or spending Destiny
-      Shards.
+    m_Localized: Every day takes a couple of real time hours, but you can skip this
+      waiting process either by using Free Skips or spending Destiny Shards.
     m_Metadata:
       m_Items: []
   - m_Id: 211852474114049
-    m_Localized: To skip this day, press the button in the left down corner.
+    m_Localized: To skip this day, press the button in the right down corner.
     m_Metadata:
       m_Items: []
   - m_Id: 211852474114050
-    m_Localized: Congratulations! You skipped the working day right to the evening.
-      Now you have to finish every finished activity, so feel free to click repaired
-      Cottage.
+    m_Localized: "Congratulations! You skipped the working day right to the next
+      morning. \n\nNow you have to finish every finished activity, so feel free to
+      click on repaired Cottage."
     m_Metadata:
       m_Items: []
   - m_Id: 211852474114051
@@ -85,20 +81,20 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 211852474114053
-    m_Localized: You can build or upgrade buildings, start harvesting resource points
-      or enhance defense level for next storm. It's all up to you but remember that
-      every choice is important.
+    m_Localized: "You can build or upgrade buildings, start harvesting resource points
+      or enhance defense level for next storm. \n\nIt's all up to you but remember
+      that every choice is important."
     m_Metadata:
       m_Items: []
   - m_Id: 211852474114054
-    m_Localized: To complete missions, you have to collect enough resource points.
-      Although you can run away with them before the storm, leaving the village unprotected
-      will result in higher level of destruction.
+    m_Localized: "To complete missions, you have to collect enough resource points.
+      \n\nLeaving the village unprotected will result in higher level of destruction
+      that will slow you in the next mission."
     m_Metadata:
       m_Items: []
   - m_Id: 211852474114055
     m_Localized: "Now when we have a place to sleep in, it is the right time to start
-      collecting food. Do it by building Farm which\_specify the number of workers
+      collecting food. \n\nDo it by building Farm which\_specify the number of workers
       in your village."
     m_Metadata:
       m_Items: []
@@ -111,21 +107,14 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 211852474114058
-    m_Localized: Can you see the buttons describing technology and helping your workers?
-      Assign one worker for this building to unlock unique minigame and help your
-      village grow!
-    m_Metadata:
-      m_Items: []
-  - m_Id: 211852474114059
-    m_Localized: By pointing workers to work inside production buildings, you are
-      developing technology advancement by which you can bring up Technology Level.
-      This not only unlocks minigame for speeding up your points collection but also
-      increases income from it.
+    m_Localized: "Can you see the buttons describing technology and helping your
+      workers? \n\nAssign one worker for this building to unlock unique minigame
+      and help your village grow!"
     m_Metadata:
       m_Items: []
   - m_Id: 211852474114060
-    m_Localized: Now help your worker on field. Click button to start time-sensitive
-      minigame.
+    m_Localized: "With more advanced Technology Level now you can help your worker
+      on field. \n\nClick button to start time-sensitive minigame."
     m_Metadata:
       m_Items: []
   - m_Id: 211852474114061
@@ -139,21 +128,22 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 211852474114063
-    m_Localized: By building Guard Tower you will be able not only to rise your Defense
-      Points by using workers but also check if the storm will take place in next
-      two days. Do it by playing minigame which influences the Storm Meter.
+    m_Localized: "By building Guard Tower you will be able not only to rise your
+      Defense Points by using workers but also check if the storm will take place
+      in next two days. \n\nDo it by playing minigame which influences the Storm
+      Meter."
     m_Metadata:
       m_Items: []
   - m_Id: 211852474114064
-    m_Localized: Storm Meter is showing all the days that a single mission takes.
-      When the indicator changes shape to lighting, the storm might take place any
-      day.
+    m_Localized: "Storm Meter is showing all the days that a single mission takes.
+      \n\nWhen the indicator changes shape to lighting, the storm might take place
+      any day."
     m_Metadata:
       m_Items: []
   - m_Id: 211852474114065
-    m_Localized: See? It looks like this night might bring the danger, but as you
-      don't have enough resource points, you can't just run back to city. You will
-      have to stand for yourself.
+    m_Localized: "See? It looks like this night might bring the danger, but as you
+      don't have enough resource points, you can't just run back to city. \n\nYou
+      will have to stand for yourself."
     m_Metadata:
       m_Items: []
   - m_Id: 211852474114066
@@ -163,16 +153,39 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 211852474114067
-    m_Localized: You managed to defend your village but at cost of all Defense and
-      most Resource points. The mission for specific amount of Resources is still
-      on the table, so roll up your sleeves and get to work.
+    m_Localized: "You managed to defend your village but at cost of all Defense and
+      most Resource points. \n\nThe mission for specific amount of Resources is still
+      on the table, so roll up your sleeves and get to work."
     m_Metadata:
       m_Items: []
-  - m_Id: 211852474114068
+  - m_Id: 335544130658304
+    m_Localized: By pointing workers to work inside production buildings, you are
+      developing technology advancement by which you can bring up Technology Level.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 335544155824128
+    m_Localized: "Technology Level in building not only unlocks minigame for speeding
+      up your points collection but also increases income from it. \n\nNow, click
+      the Technology Level Up button."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 370743430275072
+    m_Localized: To do it, click the button in the bottom left corner of the screen.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 370743455440896
     m_Localized: Feeling lost about next steps? Feel free to check side quests in
-      the right upper corner to get on track of developing your village. Every side
-      quest made will provide you with Destiny Shards and Ranking Up will give you
-      new buildings plans.
+      the right upper corner to get on track of developing your village.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 370743455440897
+    m_Localized: Every side quest made will provide you with Destiny Shards and Ranking
+      Up will give you new buildings plans.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 370743455440898
+    m_Localized: "You have gained access to special blessings from gods. \n\nClick
+      the God Panel button to get access to boosts for specific buildings."
     m_Metadata:
       m_Items: []
   references:

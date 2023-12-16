@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using AudioSystem;
 using Buildings;
 using GameManager;
+using Narrator;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -16,6 +17,7 @@ namespace InGameUi
         public static bool BlockHud;
         [SerializeField] private Canvas _mainCanvas;
 
+        [SerializeField] private NarratorManager _narratorManager;
         [SerializeField] private AudioManager _audioManager;
         [SerializeField] private MainGameManager _gameManager;
         [SerializeField] private WorldManager _worldManager;
@@ -28,6 +30,8 @@ namespace InGameUi
 
         [SerializeField] private Sprite StormImage;
         [SerializeField] private Sprite SunImage;
+        [SerializeField] private Sprite NormalHandleImage;
+        [SerializeField] private Sprite LightingHandleImage;
 
         [SerializeField] private GameObject SkipDayGo;
         [SerializeField] private GameObject EndMissionGo;
@@ -166,13 +170,13 @@ namespace InGameUi
                     if (i >= _worldManager.FinalHiddenStormDay)
                     {
                         _createdDaysStorm[i].GetComponentInChildren<Image>().sprite = StormImage;
-                        StormHandle.GetComponent<Image>().color = Color.red;
+                        StormHandle.GetComponent<Image>().sprite = LightingHandleImage;
                         StormSlider.fillRect.GetComponent<Image>().color = new Color(255, 0, 0, 0.5f);
                     }
                     else
                     {
                         _createdDaysStorm[i].GetComponentInChildren<Image>().sprite = SunImage;
-                        StormHandle.GetComponent<Image>().color = Color.white;
+                        StormHandle.GetComponent<Image>().sprite = NormalHandleImage;
                         StormSlider.fillRect.GetComponent<Image>().color = new Color(0, 0, 0, 0.5f);
                     }
                 }
@@ -207,17 +211,26 @@ namespace InGameUi
 
         private void NewDayHandler()
         {
+            if (_narratorManager.CurrentTutorialStep == TutorialStep.ThirdWorkingPanelOpened_Q7)
+            {
+                var farm = _buildingsManager.CurrentBuildings.Find(x => x.BuildingMainData.Type == BuildingType.Farm);
+                if (farm != null && farm.CanEndBuildingSequence && farm.CurrentLevel == 0)
+                {
+                    _narratorManager.TryToActivateNarrator(TutorialStep.NextDayWithFarmFinished_Q8);
+                }
+            }
+            
             StormSlider.value = _worldManager.CurrentDay;
             var roundedInt = Convert.ToInt32(StormSlider.value);
 
             if (roundedInt >= _worldManager.StormDaysRange.x)
             {
-                StormHandle.GetComponent<Image>().color = Color.red;
+                StormHandle.GetComponent<Image>().sprite = LightingHandleImage;
                 StormSlider.fillRect.GetComponent<Image>().color = new Color(255, 0, 0, 0.5f);
             }
             else
             {
-                StormHandle.GetComponent<Image>().color = Color.white;
+                StormHandle.GetComponent<Image>().sprite = NormalHandleImage;
             }
 
             if (roundedInt != 1)
@@ -365,8 +378,8 @@ namespace InGameUi
 
                     if (_wasMainButtonRefreshed)
                     {
-                        _endDayButtonText.text = "Plan next day";
                         _endDayButton.onClick.AddListener(OpenWorkersDisplacementPanel);
+                        _endDayButtonText.text = "Plan next day";
                         _wasMainButtonRefreshed = false;
                     }
 
@@ -443,6 +456,8 @@ namespace InGameUi
 
             _gameManager.SetPlayerState(DuringDayState.FinishingBuilding);
             _gameManager.SkipDay(p_skipSource);
+            
+            _narratorManager.TryToActivateNarrator(TutorialStep.OnDaySkip_Q5);
         }
 
         #region Quests
