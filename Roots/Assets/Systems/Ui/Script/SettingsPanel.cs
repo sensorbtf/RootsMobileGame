@@ -1,9 +1,13 @@
+using System;
+using System.Collections;
 using AudioSystem;
 using GameManager;
 using GeneralSystems;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Localization;
+using UnityEngine.Localization.Settings;
 
 namespace InGameUi
 {
@@ -16,6 +20,9 @@ namespace InGameUi
         [SerializeField] private Toggle _muteMusic;
         [SerializeField] private Toggle _muteEffect;
         
+        [SerializeField] private Button _englishLanguage;
+        [SerializeField] private Button _polishLanguage;
+
         [SerializeField] private TextMeshProUGUI _muteMusicText;
         [SerializeField] private TextMeshProUGUI _muteEffectText;
 
@@ -24,11 +31,14 @@ namespace InGameUi
             gameObject.SetActive(false);
 
             HandleSoundSettings();
-            
+
             _resetGameButton.onClick.AddListener(ResetGame);
             _backButton.onClick.AddListener(ClosePanel);
             _muteMusic.onValueChanged.AddListener(MuteMusic);
             _muteEffect.onValueChanged.AddListener(MuteEffects);
+            
+            _englishLanguage.onClick.AddListener(delegate { ChangeLanguage(Languages.English); });
+            _polishLanguage.onClick.AddListener(delegate { ChangeLanguage(Languages.Polish); });
         }
 
         public void OpenPanel()
@@ -46,21 +56,21 @@ namespace InGameUi
 
             gameObject.SetActive(false);
         }
-        
+
         private void MuteMusic(bool p_isToggleOn)
         {
             _audioManager.MuteMusic(p_isToggleOn);
             _muteMusicText.text = p_isToggleOn ? "On" : "Off";
 
-            PlayerPrefs.SetInt("Setting_MuteMusic", p_isToggleOn ? 0 : 1);// 0 == umuted, 1 == muted
+            PlayerPrefs.SetInt("Setting_MuteMusic", p_isToggleOn ? 0 : 1); // 0 == umuted, 1 == muted
             PlayerPrefs.Save();
         }
-        
+
         private void MuteEffects(bool p_isToggleOn)
         {
             _audioManager.MuteEffects(p_isToggleOn);
             _muteEffectText.text = p_isToggleOn ? "On" : "Off";
-            
+
             PlayerPrefs.SetInt("Setting_MuteEffects", p_isToggleOn ? 0 : 1);
             PlayerPrefs.Save();
         }
@@ -76,11 +86,21 @@ namespace InGameUi
             var muteSettingBool = muteSettingInt == 0;
             _muteMusic.isOn = muteSettingBool;
             MuteMusic(muteSettingBool);
-            
+
             muteSettingInt = PlayerPrefs.GetInt("Setting_MuteEffects", 0);
             muteSettingBool = muteSettingInt == 0;
             _muteEffect.isOn = muteSettingBool;
             MuteEffects(muteSettingBool);
         }
+        
+        private void ChangeLanguage(Languages p_language)
+        {
+            _gameManager.ChangeLocale(p_language);
+        }
     }
+
+    // foreach (Languages day in Enum.GetValues(typeof(Languages)))
+    // {
+    //     // CREATE PREFAB LANGUAGE
+    // }
 }

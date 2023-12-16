@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Morana_God_SO
   m_EditorClassIdentifier: 
   GodName: 8
-  GodImage: {fileID: 21300000, guid: 7b661b3be8856a14a913531b36fed77b, type: 3}
+  GodImage: {fileID: 21300000, guid: d3626a0d4f5bd734b9f2a65505c2a82a, type: 3}

@@ -8,6 +8,7 @@ using Gods;
 using UnityEngine;
 using World;
 using GooglePlayServices;
+using Narrator;
 using UnityEngine.Serialization;
 
 namespace Saving
@@ -17,6 +18,7 @@ namespace Saving
     public class SavingManager : MonoBehaviour
     {
         [SerializeField] private GodsManager _godsManager;
+        [SerializeField] private NarratorManager _narratorManager;
         [SerializeField] private WorldManager _worldManager;
         [SerializeField] private BuildingsManager _buildingsManager;
         [SerializeField] private GPGSManager _gpgsManager;
@@ -55,6 +57,7 @@ namespace Saving
                 WorldManagerSavedData = _worldManager.GetSavedData(),
                 BuildingManagerSavedData = _buildingsManager.GetSavedData(),
                 GodsManagerSavedData = _godsManager.GetSavedData(),
+                NarratorManagerSavedData = _narratorManager.GetSavedData(),
                 MainSavedData = p_data
             };
 
@@ -116,6 +119,7 @@ namespace Saving
             _worldManager.LoadSavedData(p_gameData.WorldManagerSavedData);
             _buildingsManager.LoadSavedData(p_gameData.BuildingManagerSavedData);
             _godsManager.LoadSavedData(p_gameData.GodsManagerSavedData);
+            _narratorManager.LoadSavedData(p_gameData.NarratorManagerSavedData);
 
             OnLoad?.Invoke(p_gameData.MainSavedData);
         }
@@ -218,6 +222,7 @@ namespace Saving
         public WorldManagerSavedData WorldManagerSavedData;
         public BuildingManagerSavedData BuildingManagerSavedData;
         public GodsManagerSavedData GodsManagerSavedData;
+        public NarratorManagerSavedData NarratorManagerSavedData;
     }
 
     [Serializable]

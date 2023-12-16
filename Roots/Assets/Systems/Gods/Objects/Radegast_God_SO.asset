@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Radegast_God_SO
   m_EditorClassIdentifier: 
   GodName: 7
-  GodImage: {fileID: 21300000, guid: 7729b3b48c0df584290c8b6989f5d5d8, type: 3}
+  GodImage: {fileID: 21300000, guid: 5e0d5b1cb7a71634a9a3347c4801ba53, type: 3}

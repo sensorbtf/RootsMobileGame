@@ -45,8 +45,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9f76d06dca2f294ebe570553bff6774, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _audioManager: {fileID: 0}
   _globalLight: {fileID: 2232282736029429564}
-  _baseIntensity: 0.7
+  _baseIntensity: 0.8
   _maxIntensity: 1.5
   _minIntensity: 0.5
   _maxFlashDuration: 0.05

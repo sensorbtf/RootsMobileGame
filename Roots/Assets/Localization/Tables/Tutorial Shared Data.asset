@@ -1,0 +1,140 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
+  m_Name: Tutorial Shared Data
+  m_EditorClassIdentifier: 
+  m_TableCollectionName: Tutorial
+  m_TableCollectionNameGuidString: 133afdc9c80de6940ae2e80a7ea770a2
+  m_Entries:
+  - m_Id: 3994809720832
+    m_Key: Quest_1_1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3994826498048
+    m_Key: Quest_1_2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 205056300736512
+    m_Key: Quest_1_3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 205056342679552
+    m_Key: Quest_1_4
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4562726871040
+    m_Key: Quest_2_1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4562726871041
+    m_Key: Quest_2_2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 211852423782400
+    m_Key: Quest_3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 211852474114048
+    m_Key: Quest_4_1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 211852474114049
+    m_Key: Quest_4_2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 211852474114050
+    m_Key: Quest_5
+    m_Metadata:
+      m_Items: []
+  - m_Id: 211852474114051
+    m_Key: Quest_6
+    m_Metadata:
+      m_Items: []
+  - m_Id: 211852474114052
+    m_Key: Quest_7_1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 211852474114053
+    m_Key: Quest_7_2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 211852474114054
+    m_Key: Quest_7_3
+    m_Metadata:
+      m_Items: []
+  - m_Id: 211852474114055
+    m_Key: Quest_7_4
+    m_Metadata:
+      m_Items: []
+  - m_Id: 211852474114056
+    m_Key: Quest_8
+    m_Metadata:
+      m_Items: []
+  - m_Id: 211852474114057
+    m_Key: Quest_9
+    m_Metadata:
+      m_Items: []
+  - m_Id: 211852474114058
+    m_Key: Quest_10
+    m_Metadata:
+      m_Items: []
+  - m_Id: 211852474114059
+    m_Key: Quest_11
+    m_Metadata:
+      m_Items: []
+  - m_Id: 211852474114060
+    m_Key: Quest_12
+    m_Metadata:
+      m_Items: []
+  - m_Id: 211852474114061
+    m_Key: Quest_13
+    m_Metadata:
+      m_Items: []
+  - m_Id: 211852474114062
+    m_Key: Quest_14_1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 211852474114063
+    m_Key: Quest_14_2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 211852474114064
+    m_Key: Quest_15_1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 211852474114065
+    m_Key: Quest_15_2
+    m_Metadata:
+      m_Items: []
+  - m_Id: 211852474114066
+    m_Key: Quest_16
+    m_Metadata:
+      m_Items: []
+  - m_Id: 211852474114067
+    m_Key: Quest_17
+    m_Metadata:
+      m_Items: []
+  - m_Id: 211852474114068
+    m_Key: Quest_18
+    m_Metadata:
+      m_Items: []
+  m_Metadata:
+    m_Items: []
+  m_KeyGenerator:
+    rid: 4941701490607390744
+  references:
+    version: 2
+    RefIds:
+    - rid: 4941701490607390744
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables, asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1702659186106

@@ -1,0 +1,57 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: Tutorial_pl
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: pl
+  m_SharedData: {fileID: 11400000, guid: 133afdc9c80de6940ae2e80a7ea770a2, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 3994826498048
+    m_Localized: "Jedynym sposobem na rozw\xF3j wioski jest zbieranie zasob\xF3w
+      dla g\u0142\xF3wnego miasta w zamian za projekty budowlane."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4562726871040
+    m_Localized: "Nie zwlekaj. Rozka\u017C swojemu jedynemu pracownikowi zaj\u0105\u0107
+      si\u0119 napraw\u0105 g\u0142\xF3wnego budynku - Chaty."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4562726871041
+    m_Localized: "Ka\u017Cdy pracownik sp\u0119dza noc w Chacie. Ten budynek jest
+      r\xF3wnie\u017C jedynym bezpiecznym miejscem do przechowywania niewielkiej
+      ilo\u015Bci zasob\xF3w, gdy nadejdzie burza, aby zapewni\u0107 sobie lepszy
+      start w nast\u0119pnej misji."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3994809720832
+    m_Localized: "Jeste\u015B nadzorc\u0105 wioski i masz tylko jedno zadanie. \n\nMusisz
+      przetrwa\u0107."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 205056300736512
+    m_Localized: "Uko\u0144czenie ka\u017Cdej misji wymaga okre\u015Blonej ilo\u015Bci
+      zasob\xF3w i odbywa si\u0119 pomi\u0119dzy niszczycielskimi burzami, kt\xF3re
+      wystawi\u0105 twoj\u0105 wiosk\u0119 na pr\xF3b\u0119."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 205056342679552
+    m_Localized: "Ostatni nadzorca uciek\u0142, zostawiaj\u0105c ci tylko zniszczon\u0105
+      Chat\u0119. Napraw j\u0105, planuj\u0105c nast\u0119pny dzie\u0144. Aby to
+      zrobi\u0107, kliknij przycisk w lewym rogu ekranu."
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []

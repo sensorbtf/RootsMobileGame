@@ -431,6 +431,12 @@ namespace Buildings
         {
             return _buildingsDatabase.allBuildings.Find(x => x.Type == p_building).Icon;
         }
+        
+        public bool ShouldStartTutorial()
+        {
+            return CurrentBuildings.Count == 1 && CurrentBuildings
+                .First(x => x.BuildingMainData.Type == BuildingType.Cottage).IsDamaged;
+        }
 
         #region PointsManipulation
         public void HandlePointsManipulation(PointsType p_pointsType, int p_pointsNumber, bool p_add,

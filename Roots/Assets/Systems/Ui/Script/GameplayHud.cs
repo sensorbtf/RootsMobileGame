@@ -62,12 +62,12 @@ namespace InGameUi
         private TextMeshProUGUI _secondMissionButtonText;
         private TextMeshProUGUI _secondQuestText;
         private Button _settingsButton;
-        
+
         //Audio clips
         [SerializeField] private AudioClip _destinyShardsManipulation;
         [SerializeField] private AudioClip _resourcePointsManipulation;
         [SerializeField] private AudioClip _defensePointsManipulation;
-        
+
         // Quests
         private float _singleDayGoWidth;
         private Button _skipDayButton;
@@ -142,7 +142,7 @@ namespace InGameUi
             _gameManager.OnAfterLoad += AfterLoadHandler;
         }
 
-        private void Update() 
+        private void Update()
         {
             _skipDayText.text = _gameManager.TimePassed;
 
@@ -160,6 +160,7 @@ namespace InGameUi
                 $"Checking days. Current Day {currentDay}. Next Day {nextDaysToCheck}. Checking: {nextDaysToCheck}");
 
             for (var i = nextDay; i < nextDaysToCheck; i++)
+            {
                 if (_createdDaysStorm[i])
                 {
                     if (i >= _worldManager.FinalHiddenStormDay)
@@ -175,22 +176,23 @@ namespace InGameUi
                         StormSlider.fillRect.GetComponent<Image>().color = new Color(0, 0, 0, 0.5f);
                     }
                 }
+            }
         }
 
         private void AfterLoadHandler()
         {
             RefreshStormSlider();
-            
+
             var rectGo = StormHandle.GetComponent<RectTransform>();
             var rect = rectGo.anchoredPosition;
             rect.x = _singleDayGoWidth;
             rectGo.anchoredPosition = rect;
-            
+
             RefreshQuestsText();
-            
+
             _worldManager.CurrentQuests[0].OnCompletion += HandleFirstQuestCompletion;
             _worldManager.CurrentQuests[1].OnCompletion += HandleSecondQuestCompletion;
-                
+
             ShardsOfDestiny.text = $"{_buildingsManager.CurrentDestinyShards.ToString()}";
             DefensePoints.text = $"{_buildingsManager.CurrentDefensePoints.ToString()}";
             if (_buildingsManager.CurrentResourcePoints >= _worldManager.RequiredResourcePoints)
@@ -199,7 +201,7 @@ namespace InGameUi
             else
                 ResourcePoints.text = $"{_buildingsManager.CurrentResourcePoints} / " +
                                       $"<color=red>{_worldManager.RequiredResourcePoints}</color>";
-            
+
             CheckQuestsCompletion();
         }
 
@@ -257,7 +259,7 @@ namespace InGameUi
         {
             ShardsOfDestiny.text = $"{_buildingsManager.CurrentDestinyShards.ToString()}";
 
-            if (p_makeIcons) 
+            if (p_makeIcons)
                 TryToCreatePoints(p_points, PointsType.ShardsOfDestiny);
         }
 
@@ -265,7 +267,7 @@ namespace InGameUi
         {
             DefensePoints.text = $"{_buildingsManager.CurrentDefensePoints.ToString()}";
 
-            if (p_makeIcons) 
+            if (p_makeIcons)
                 TryToCreatePoints(p_points, PointsType.Defense);
         }
 
@@ -278,7 +280,7 @@ namespace InGameUi
                 ResourcePoints.text = $"{_buildingsManager.CurrentResourcePoints} / " +
                                       $"<color=red>{_worldManager.RequiredResourcePoints}</color>";
 
-            if (p_makeIcons) 
+            if (p_makeIcons)
                 TryToCreatePoints(p_points, PointsType.Resource);
         }
 

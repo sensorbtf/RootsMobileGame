@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections;
-using System.Linq;
-using System.Threading.Tasks;
 using Buildings;
 using Gods;
 using Saving;
 using UnityEngine;
+using UnityEngine.Localization.Settings;
 using World;
 
 namespace GameManager
@@ -33,7 +32,7 @@ namespace GameManager
         private DateTime _startDayTime;
         private float _timeLeftInSeconds;
         private bool _shouldUpdate;
-        
+
         private DateTime _giftTakenTime;
         private bool _shouldMakeGiftViable;
         private int _loginDay;
@@ -55,11 +54,15 @@ namespace GameManager
         public event Action OnAfterLoad;
         public event Action<DuringDayState> OnPlayerStateChange;
         public event Action OnDaySkipPossibility;
+        public event Action OnTutorialStart;
 
         private void Awake()
         {
             _loadingPanel.SetActive(true);
             _savingManager.OnAuthenticationEnded += () => StartCoroutine(CustomStart());
+            
+            var language = PlayerPrefs.GetInt("Saved_Language", 0);
+            ChangeLocale((Languages)language);
         }
 
         private IEnumerator CustomStart()
@@ -77,7 +80,7 @@ namespace GameManager
             if (isSaveAvailable)
             {
                 _savingManager.OnLoad += LoadSavedData;
-                yield return StartCoroutine(ChooseAndLoadSave()); 
+                yield return StartCoroutine(ChooseAndLoadSave());
                 Debug.Log("Save loaded");
             }
             else
@@ -89,12 +92,17 @@ namespace GameManager
                 _shouldUpdate = true;
 
                 Debug.Log("NOT LOADED");
+                _loadingPanel.SetActive(false);
+
+                if (_buildingsManager.ShouldStartTutorial())
+                {
+                    OnTutorialStart?.Invoke();
+                }
             }
-            
-            _loadingPanel.SetActive(false);
+
             _savingManager.OnAuthenticationEnded -= () => StartCoroutine(CustomStart());
         }
-        
+
         private IEnumerator ChooseAndLoadSave()
         {
             yield return StartCoroutine(_savingManager.ChooseProperSave());
@@ -151,7 +159,7 @@ namespace GameManager
                 var addSeconds = _startDayTime.AddSeconds(-secondsToSubtract);
                 _startDayTime = addSeconds;
             }
-            
+
             _giftTakenTime = p_data.TimeOfGiftTaken;
             var timeDifference = currentTime - _giftTakenTime;
 
@@ -161,14 +169,14 @@ namespace GameManager
                 {
                     _loginDay = 0;
                 }
-                
+
                 _shouldMakeGiftViable = _everyDayReward[_loginDay].DestinyShardsAmount > 0;
             }
 
             _savingManager.OnLoad -= LoadSavedData;
             OnPlayerCameBack?.Invoke(_shouldMakeGiftViable);
             OnPlayerStateChange?.Invoke(CurrentPlayerState);
-            
+
             HandleAfterLoad();
         }
 
@@ -176,7 +184,12 @@ namespace GameManager
         {
             _loadingPanel.SetActive(false);
             _shouldUpdate = true;
-            
+
+            if (_buildingsManager.ShouldStartTutorial())
+            {
+                OnTutorialStart?.Invoke();
+            }
+
             OnAfterLoad?.Invoke();
         }
 
@@ -197,7 +210,7 @@ namespace GameManager
             _buildingsManager.HandlePointsManipulation(PointsType.ShardsOfDestiny, GetDailyReward, true, true);
 
             _giftTakenTime = DateTime.UtcNow;
-            
+
             _loginDay++;
             if (_loginDay == 7)
                 _loginDay = 0;
@@ -240,7 +253,7 @@ namespace GameManager
         {
             _startDayTime = DateTime.UtcNow;
             UpdateTotalPlayTime();
-                
+
             _savingManager.SaveMainGame(new MainGameManagerSavedData
             {
                 LoginDay = _loginDay,
@@ -270,7 +283,7 @@ namespace GameManager
         {
             _totalPlayTime += DateTime.UtcNow - _sessionStartTime;
         }
-        
+
         #region Saving
 
         public void ResetSave()
@@ -317,14 +330,35 @@ namespace GameManager
         }
 
         #endregion
+
+        private bool _isLanguageChangeHappening;
+
+        public void ChangeLocale(Languages p_language)
+        {
+            if (!_isLanguageChangeHappening)
+            {
+                StartCoroutine(SetLocale(p_language));
+            }
+        }
+
+        private IEnumerator SetLocale(Languages p_language)
+        {
+            _isLanguageChangeHappening = true;
+            yield return LocalizationSettings.InitializationOperation;
+            LocalizationSettings.SelectedLocale = LocalizationSettings.AvailableLocales.Locales[(int)p_language];
+            _isLanguageChangeHappening = false;
+
+            PlayerPrefs.SetInt("Saved_Language", (int)p_language);
+            PlayerPrefs.Save();
+        }
     }
-    
+
     [Serializable]
     public struct DayOfWeekReward
     {
         public int DestinyShardsAmount;
     }
-    
+
     public enum DuringDayState
     {
         FinishingBuilding = 0,
@@ -332,5 +366,11 @@ namespace GameManager
         WorkDayFinished = 2,
         SettingWorkers = 3,
         DayPassing = 4
+    }
+
+    public enum Languages
+    {
+        English = 0,
+        Polish = 1,
     }
 }

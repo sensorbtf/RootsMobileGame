@@ -5,6 +5,7 @@ using Buildings;
 using GameManager;
 using GeneralSystems;
 using Gods;
+using Narrator;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -17,6 +18,7 @@ namespace InGameUi
         [SerializeField] private WorkersManager _workersManager;
         [SerializeField] private MainGameManager _gameManager;
         [SerializeField] private GodsManager _godsManager;
+        [SerializeField] private NarratorManager _narratorManager;
 
         [SerializeField] private BuildingPanel _buildingPanel;
         [SerializeField] private GatheringDefensePanel _gatheringDefensePanel;
@@ -32,7 +34,8 @@ namespace InGameUi
         [SerializeField] private TextMeshProUGUI _numberOfWorkers;
 
         private List<GameObject> _runtimeBuildingsUiToDestroy;
-
+        private Tutorials _tutorialToActivate = Tutorials.FirstPanelOpen; // TODO: SAVE
+        
         [SerializeField] private TextMeshProUGUI _tabName;
 
         private void Start()
@@ -61,8 +64,13 @@ namespace InGameUi
             GameplayHud.BlockHud = true;
             CameraController.IsUiOpen = true;
 
+            _narratorManager.TryToActivateNarrator(TutorialStep.FirstWorkingPanelOpen_Q2);
+            _narratorManager.TryToActivateNarrator(TutorialStep.SecondWorkingPanel_Q3);
+            _narratorManager.TryToActivateNarrator(TutorialStep.ThirdWorkingPanelOpened_Q7);
+            _narratorManager.TryToActivateNarrator(TutorialStep.OnWorkersPanelOpenAfterRestart_Q19);
+            
             _tabName.text = "Worker Displacement";
-
+            
             UpdateWorkersText();
             UpdateButtonText();
 
@@ -256,5 +264,13 @@ namespace InGameUi
                 _activateButton.interactable = false;
             }
         }
+    }
+
+    public enum Tutorials
+    {
+        FirstPanelOpen = 1,
+        SecondPanelOpen = 2,
+        ThirdPanelOpen = 6,
+        FourthPanelOpen = 12,
     }
 }

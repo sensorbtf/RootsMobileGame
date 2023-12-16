@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Perun_God_SO
   m_EditorClassIdentifier: 
   GodName: 2
-  GodImage: {fileID: 21300000, guid: b2a7bb2f1d76979439ea1b1af6dbc8fb, type: 3}
+  GodImage: {fileID: 21300000, guid: 1cd4ea5945086aa459d7b84ee0b52148, type: 3}

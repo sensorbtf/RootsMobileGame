@@ -1,0 +1,180 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: Tutorial_en
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: en
+  m_SharedData: {fileID: 11400000, guid: 133afdc9c80de6940ae2e80a7ea770a2, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 3994809720832
+    m_Localized: "You are overseer of the village with only one task. \n\nYou have
+      to survive."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3994826498048
+    m_Localized: The only way to develop your village  is collecting resources  for
+      the main city in exchange for building projects.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4562726871040
+    m_Localized: Don't hesitate. Let your only worker take care of repairing main
+      building - the Cottage.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4562726871041
+    m_Localized: Every worker spends night in the Cottage. This building is also
+      the only safe place to store a small amount of resources when storm comes to
+      give yourself a better start in the next mission.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 205056300736512
+    m_Localized: Completing every mission demands a specific amount of resources
+      and takes place between mysterious storms that will put your village into a
+      test.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 205056342679552
+    m_Localized: '
+
+      The last overseer has run away, leaving for you only a
+      destroyed Cottage. Repair it by planning your next working day. To do it, click
+      the button in the left corner of the screen.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 211852423782400
+    m_Localized: There you can see everything you have chosen in specific sections
+      of work. Now press the underneath button to start the day.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 211852474114048
+    m_Localized: Every day in this world takes a couple of real time hours, but you
+      can skip this waiting process either by using Free Skips or spending Destiny
+      Shards.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 211852474114049
+    m_Localized: To skip this day, press the button in the left down corner.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 211852474114050
+    m_Localized: Congratulations! You skipped the working day right to the evening.
+      Now you have to finish every finished activity, so feel free to click repaired
+      Cottage.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 211852474114051
+    m_Localized: Good job! Now plan the next working day by clicking the button in
+      the left corner.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 211852474114052
+    m_Localized: While planing a new working day, you have to select a specific job
+      for every available worker.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 211852474114053
+    m_Localized: You can build or upgrade buildings, start harvesting resource points
+      or enhance defense level for next storm. It's all up to you but remember that
+      every choice is important.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 211852474114054
+    m_Localized: To complete missions, you have to collect enough resource points.
+      Although you can run away with them before the storm, leaving the village unprotected
+      will result in higher level of destruction.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 211852474114055
+    m_Localized: "Now when we have a place to sleep in, it is the right time to start
+      collecting food. Do it by building Farm which\_specify the number of workers
+      in your village."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 211852474114056
+    m_Localized: Tap on just built farm to finish the whole building process.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 211852474114057
+    m_Localized: Now tap on it again to get all information about this building role.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 211852474114058
+    m_Localized: Can you see the buttons describing technology and helping your workers?
+      Assign one worker for this building to unlock unique minigame and help your
+      village grow!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 211852474114059
+    m_Localized: By pointing workers to work inside production buildings, you are
+      developing technology advancement by which you can bring up Technology Level.
+      This not only unlocks minigame for speeding up your points collection but also
+      increases income from it.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 211852474114060
+    m_Localized: Now help your worker on field. Click button to start time-sensitive
+      minigame.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 211852474114061
+    m_Localized: Good job! By helping workers in building you can gain many additional
+      points, but be aware that you can't do the job in every workplace.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 211852474114062
+    m_Localized: It's time to prepare for the incoming storm. You never know when
+      exactly will it come.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 211852474114063
+    m_Localized: By building Guard Tower you will be able not only to rise your Defense
+      Points by using workers but also check if the storm will take place in next
+      two days. Do it by playing minigame which influences the Storm Meter.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 211852474114064
+    m_Localized: Storm Meter is showing all the days that a single mission takes.
+      When the indicator changes shape to lighting, the storm might take place any
+      day.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 211852474114065
+    m_Localized: See? It looks like this night might bring the danger, but as you
+      don't have enough resource points, you can't just run back to city. You will
+      have to stand for yourself.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 211852474114066
+    m_Localized: The storm came, but its power is low enough to let you fight for
+      yourself. Now you can select the building that you want to defend for all cost
+      to make sure it won't be damaged by monsters.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 211852474114067
+    m_Localized: You managed to defend your village but at cost of all Defense and
+      most Resource points. The mission for specific amount of Resources is still
+      on the table, so roll up your sleeves and get to work.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 211852474114068
+    m_Localized: Feeling lost about next steps? Feel free to check side quests in
+      the right upper corner to get on track of developing your village. Every side
+      quest made will provide you with Destiny Shards and Ranking Up will give you
+      new buildings plans.
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []
