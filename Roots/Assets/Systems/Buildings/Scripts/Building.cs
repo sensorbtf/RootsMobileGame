@@ -174,11 +174,17 @@ namespace Buildings
 
             OnTechnologyUpgrade?.Invoke(this);
         }
+        
+        public bool CanUpgradeTechnology()
+        {
+            return BuildingMainData.Technology.DataPerTechnologyLevel[CurrentTechnologyLvl].WorksDayToAchieve ==
+                   CurrentTechnologyDayOnQueue;
+        }
 
         public bool CanPlayMinigame()
         {
-            return HaveWorker && !PlayedMinigame && !_isDamaged && !IsBeeingUpgradedOrBuilded &&
-                   CurrentTechnologyLvl > 0;
+            return  !PlayedMinigame && !_isDamaged && !IsBeeingUpgradedOrBuilded &&
+                   CurrentTechnologyLvl > 0; //HaveWorker
         }
 
         public bool HandleNewDay()

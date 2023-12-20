@@ -69,7 +69,7 @@ namespace World
             }
             else
             {
-                HandleNewDayStarted();
+                HandleNewDayStarted(true);
 
                 if (!_buildingsManager.IsAnyBuildingNonGathered())
                     CheckResourcePoints();
@@ -83,13 +83,18 @@ namespace World
 
         private void CheckResourcePoints()
         {
-            if (_buildingsManager.CurrentResourcePoints < RequiredResourcePoints)
+            if (!AreResourcesEnough())
                 return;
 
             OnResourcesRequirementsMeet?.Invoke();
         }
 
-        public void HandleNewDayStarted(bool p_invoke = true)
+        public bool AreResourcesEnough()
+        {
+            return _buildingsManager.CurrentResourcePoints >= RequiredResourcePoints;
+        }
+
+        public void HandleNewDayStarted(bool p_invoke)
         {
             _buildingsManager.RefreshBuildingsOnNewDay();
             _godsManager.ResetBlessingOnNewDayStart();
@@ -121,6 +126,7 @@ namespace World
         private void EndMissionHandler()
         {
             _buildingsManager.EndMissionHandler();
+            _workersManager.ResetAssignedWorkers();
             HandleResourceBasementTransition(true);
         }
 
@@ -162,7 +168,8 @@ namespace World
                 OnQuestsProgress?.Invoke();
             }
 
-            CurrentDay = 1;
+            CurrentDay = 0;
+            StartNewDay();
 
             StormPower = Random.Range(_missionData[CurrentMission].StormPowerRange.x,
                 _missionData[CurrentMission].StormPowerRange.y);

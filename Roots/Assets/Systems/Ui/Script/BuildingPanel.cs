@@ -27,6 +27,8 @@ namespace InGameUi
         private List<GameObject> _runtimeBuildingsUiToDestroy;
 
         public Dictionary<BuildingData, bool> BuildingsToShow;
+        
+        public event Action OnBackToWorkersPanel;
 
         private void Start()
         {
@@ -42,7 +44,11 @@ namespace InGameUi
             gameObject.SetActive(false);
         }
 
-        public event Action OnBackToWorkersPanel;
+        private void OnDestroy()
+        {
+            buildingsManager.OnBuildingStateChanged -= HandleBuildEnded;
+            buildingsManager.OnBuildingDestroyed -= HandleBuildEnded;
+        }
 
         private void ClosePanel()
         {

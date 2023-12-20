@@ -20,6 +20,11 @@ namespace Minigames
 
         public TextMeshProUGUI _timeText;
 
+        public event Action OnMinigameEnded;
+        public event Action<PointsType, int> OnMiniGamePointsCollected;
+        
+        public event Action<int> OnStormReveal;
+        
         public virtual void Update()
         {
             if (!_isGameActive)
@@ -28,8 +33,6 @@ namespace Minigames
             UpdateTimerText();
         }
 
-        public event Action OnMinigameEnded;
-        public event Action<PointsType, int> OnMiniGamePointsCollected;
 
         public virtual void StartTheGame(Building p_building)
         {
@@ -56,6 +59,8 @@ namespace Minigames
         {
             if (_givesResources)
                 OnMiniGamePointsCollected?.Invoke(_type, (int)_score);
+            else
+                OnStormReveal?.Invoke(2);
 
             OnMinigameEnded?.Invoke();
         }

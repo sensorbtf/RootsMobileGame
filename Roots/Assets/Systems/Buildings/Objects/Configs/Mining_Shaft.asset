@@ -22,7 +22,7 @@ MonoBehaviour:
   DestroyedStage: {fileID: 21300000, guid: 3111708103f567d478feeb285a4dd8e7, type: 3}
   Description: A mine shaft, going deeper into the guts of the Earth with each successive
     level. It allows the extraction of various types of raw materials.
-  BaseCottageLevelNeeded: 4
+  BaseCottageLevelNeeded: 5
   LevelToEnableMinigame: 0
   PerLevelData:
   - Requirements:

@@ -34,6 +34,11 @@ namespace Saving
             StartCoroutine(AuthenticationProcess());
         }
 
+        private void OnDestroy()
+        {
+            _gpgsManager.OnCloudDataRead -= HandleCloudSaveData;
+        }
+
         private IEnumerator AuthenticationProcess()
         {
             yield return StartCoroutine(_gpgsManager.StartAuthentication());
@@ -47,6 +52,9 @@ namespace Saving
         
         public void SaveMainGame(MainGameManagerSavedData p_data)
         {
+            if ((int)_narratorManager.CurrentTutorialStep < 18)
+                return;
+
             var path = Application.persistentDataPath + "/gameData.json";
 
             p_data.TimeOfWorkersSetISO8601 = p_data.TimeOfWorkersSet.ToString("o");

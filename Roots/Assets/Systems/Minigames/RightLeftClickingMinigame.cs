@@ -12,6 +12,7 @@ namespace Minigames
         [SerializeField] private Button _rightSideButton;
         [SerializeField] private Slider _slider;
 
+        
         private new void Update()
         {
             _timeText.text = $"Achieve {_timer} points";
@@ -23,12 +24,10 @@ namespace Minigames
                 _collectPointsButton.interactable = true;
                 _leftSideButton.interactable = false;
                 _rightSideButton.interactable = false;
+
                 _timeText.text = "Check storm in 2 days";
-                OnStormReveal?.Invoke((int)_efficiency);
             }
         }
-
-        public event Action<int> OnStormReveal;
 
         public override void StartTheGame(Building p_building)
         {

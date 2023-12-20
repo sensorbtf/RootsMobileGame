@@ -283,6 +283,19 @@ namespace Buildings
                 newBuilding.OnBuildingDamaged += HandleBuildingDamaged;
             }
         }
+        
+        private void OnDestroy()
+        {
+            foreach (var newBuilding in CurrentBuildings)
+            {
+                newBuilding.OnPointsGathered -= GatherPoints;
+                newBuilding.OnWorkDone -= PublishBuildingBuiltEvent;
+                newBuilding.OnRepaired -= PublishBuildingRepaired;
+                newBuilding.OnTechnologyUpgrade -= PublishBuildingTechnologyEvent;
+                newBuilding.OnBuildingClicked -= HandleBuildingClicked;
+                newBuilding.OnBuildingDamaged -= HandleBuildingDamaged;
+            }
+        }
 
         public void HandleUpgradeOfBuilding(BuildingType p_buildingType, bool p_instant)
         {

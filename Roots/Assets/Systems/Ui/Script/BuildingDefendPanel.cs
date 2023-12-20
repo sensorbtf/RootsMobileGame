@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Buildings;
 using GeneralSystems;
@@ -40,9 +41,15 @@ namespace InGameUi
             gameObject.SetActive(false);
         }
 
+        private void OnDestroy()
+        {
+            _worldManager.OnDefendingVillage -= OpenPanel;
+        }
+
         private void ClosePanel()
         {
-            foreach (var createdUiElement in _runtimeBuildingsUiToDestroy) Destroy(createdUiElement);
+            foreach (var createdUiElement in _runtimeBuildingsUiToDestroy) 
+                Destroy(createdUiElement);
 
             CameraController.IsUiOpen = false;
             GameplayHud.BlockHud = false;
@@ -59,7 +66,7 @@ namespace InGameUi
             CameraController.IsUiOpen = true;
             GameplayHud.BlockHud = true;
 
-            _narratorManager.TryToActivateNarrator(TutorialStep.OnDefendPanelOpened_Q16);
+            _narratorManager.TryToActivateNarrator(TutorialStep.OnDefendPanelOpened_Q18);
             
             UpdatePanelState();
             HandleBuildingsCreation();

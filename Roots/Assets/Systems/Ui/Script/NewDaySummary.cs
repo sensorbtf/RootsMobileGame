@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Buildings;
 using GeneralSystems;
@@ -34,6 +35,12 @@ namespace InGameUi
             _goBackButton = _goBackGo.GetComponent<Button>();
 
             gameObject.SetActive(false);
+        }
+
+        private void OnDestroy()
+        {
+            worldManager.OnNewDayStarted -= ActivateOnNewDay;
+            buildingsManager.OnCottageLevelUp -= AfterRankUp;
         }
 
         private void AfterRankUp()

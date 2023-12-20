@@ -43,6 +43,12 @@ namespace InGameUi
             OnOffButton.onClick.AddListener(delegate { ShowAndMovePanel(false); });
         }
 
+        private void OnDestroy()
+        {
+            LocalizationSettings.SelectedLocaleChanged -= OnLocaleChanged;
+            _narratorManager.OnTutorialAdvancement -= ActivateNarrator;
+        }
+
         public void ActivateNarrator(bool p_show)
         {
             if (p_show)
@@ -81,8 +87,6 @@ namespace InGameUi
                 OnOffButton.onClick.RemoveAllListeners();
                 OnOffButton.onClick.AddListener(delegate { ShowAndMovePanel(false); });
                 ButtonImage.sprite = ShowUiSprite;
-
-                GameplayHud.BlockHud = false;
                 _viniete.SetActive(false);
             }
         }
@@ -109,6 +113,12 @@ namespace InGameUi
 
         private IEnumerator MoveUI(Vector3 p_targetPosition, bool p_shouldStartTyping)
         {
+            if (p_shouldStartTyping)
+            {
+                _viniete.SetActive(true);
+                Text.text = "";
+            }
+            
             float elapsed = 0;
             Vector3 initialPosition = gameObject.transform.localPosition;
 
@@ -124,8 +134,6 @@ namespace InGameUi
 
             if (p_shouldStartTyping)
             {
-                Text.text = "";
-
                 _typingCoroutine =
                     StartCoroutine(
                         TypeText(GetCurrentText().Text[_narratorManager.CurrentSubText].GetLocalizedString()));
@@ -139,7 +147,6 @@ namespace InGameUi
         private IEnumerator TypeText(string p_text)
         {
             Text.text = "";
-            GameplayHud.BlockHud = true;
             _viniete.SetActive(true);
             
             foreach (char c in p_text)
@@ -148,7 +155,9 @@ namespace InGameUi
                 Text.text += c;
                 yield return new WaitForSeconds(_typingSpeed);
             }
-            
+
+
+            _typingCoroutine = null;
             _audioManager.MuteWritingEffect();
         }
 

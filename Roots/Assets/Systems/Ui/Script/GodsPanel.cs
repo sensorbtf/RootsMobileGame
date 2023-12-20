@@ -180,15 +180,15 @@ namespace InGameUi
                     break;
                 case 1:
                     p_newGodRef.BlessingChooserText.text =
-                        $"Small Blessing \n {Mathf.CeilToInt(_godsManager.GetBlessingValue(p_blessingOnSlider) * 100)}% efficiency";
+                        $"Small Blessing \n +{Mathf.CeilToInt(_godsManager.GetBlessingValue(p_blessingOnSlider) * 100)}% efficiency";
                     break;
                 case 2:
                     p_newGodRef.BlessingChooserText.text =
-                        $"Medium Blessing \n {Mathf.CeilToInt(_godsManager.GetBlessingValue(p_blessingOnSlider) * 100)}% efficiency";
+                        $"Medium Blessing \n +{Mathf.CeilToInt(_godsManager.GetBlessingValue(p_blessingOnSlider) * 100)}% efficiency";
                     break;
                 case 3:
                     p_newGodRef.BlessingChooserText.text =
-                        $"Big Blessing \n {Mathf.CeilToInt(_godsManager.GetBlessingValue(p_blessingOnSlider) * 100)}% efficiency";
+                        $"Big Blessing \n +{Mathf.CeilToInt(_godsManager.GetBlessingValue(p_blessingOnSlider) * 100)}% efficiency";
                     break;
             }
         }

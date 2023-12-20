@@ -63,6 +63,20 @@ namespace InGameUi
             }
         }
 
+        private void OnDestroy()
+        {
+            _specificBuildingPanel.OnOpenMiniGameOfType -= OpenRightMinigame;
+            if (_currentMinigameScript != null)
+            {
+                _currentMinigameScript.OnMiniGamePointsCollected -= CollectPointsFromMinigame;
+                _currentMinigameScript.OnMinigameEnded -= GoBackToSpecificPanel;
+                if (_currentMinigameScript is RightLeftClickingMinigame watchTowerMinigame)
+                {
+                    watchTowerMinigame.OnStormReveal -= RevealStorm;
+                }
+            }
+        }
+
         private void RevealStorm(int p_daysToSee)
         {
             _worldManager.RevealStorm(p_daysToSee);
@@ -83,18 +97,18 @@ namespace InGameUi
             gameObject.SetActive(false);
             _specificBuildingPanel.ActivateOnClick(_currentBuilding);
 
-            if (_narratorManager.CurrentTutorialStep == TutorialStep.OnTechnologyInFarmLvlUp_Q12)
+            if (_narratorManager.CurrentTutorialStep == TutorialStep.OnTechnologyInFarmLvlUp_Q13)
             {
                 if (_currentBuilding.BuildingMainData.Type == BuildingType.Farm)
                 {
-                    _narratorManager.TryToActivateNarrator(TutorialStep.OnFarmMinigameEnded_Q13);
+                    _narratorManager.TryToActivateNarrator(TutorialStep.OnFarmMinigameEnded_Q14);
                 }
             }
-            else if (_narratorManager.CurrentTutorialStep == TutorialStep.OnFarmPanelClosed_Q14)
+            else if (_narratorManager.CurrentTutorialStep == TutorialStep.AfterRankUp_Q16)
             {
                 if (_currentBuilding.BuildingMainData.Type == BuildingType.GuardTower)
                 {
-                    _narratorManager.TryToActivateNarrator(TutorialStep.OnGuardTowerMinigameEnded_Q15);
+                    _narratorManager.TryToActivateNarrator(TutorialStep.OnGuardTowerMinigameEnded_Q17);
                 }
             }
             

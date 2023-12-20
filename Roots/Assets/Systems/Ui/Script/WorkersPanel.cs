@@ -51,6 +51,15 @@ namespace InGameUi
             gameObject.SetActive(false);
         }
 
+        private void OnDestroy()
+        {
+            _buildingPanel.OnBackToWorkersPanel -= ActivatePanel;
+            _gatheringDefensePanel.OnBackToWorkersPanel -= ActivatePanel;
+            _godsPanel.OnBackToWorkersPanel -= ActivatePanel;
+            _godsPanel.OnGodsPanelOpened -= ClosePanel;
+            _gameManager.OnPlayerStateChange -= ActivatePanel;
+        }
+
         private void ActivatePanel(DuringDayState p_currentState)
         {
             if (p_currentState == DuringDayState.SettingWorkers)
@@ -59,9 +68,9 @@ namespace InGameUi
 
         private void TryToOpenNarrator()
         {
-            if ((int)_narratorManager.CurrentTutorialStep >= (int)TutorialStep.OnMissionRestart_Q18)
+            if (_narratorManager.CurrentTutorialStep == TutorialStep.OnMissionRestart_Q20)
             {
-                _narratorManager.TryToActivateNarrator(TutorialStep.OnWorkersPanelOpenAfterRestart_Q19);
+                _narratorManager.TryToActivateNarrator(TutorialStep.OnWorkersPanelOpenAfterRestart_Q21);
                 _godsButton.gameObject.SetActive(true);
             }
             else
@@ -69,10 +78,11 @@ namespace InGameUi
                 _godsButton.gameObject.SetActive(false);
             }
             
-            _narratorManager.TryToActivateNarrator(TutorialStep.ThirdWorkingPanelOpened_Q7);
-            _narratorManager.TryToActivateNarrator(TutorialStep.SecondWorkingPanel_Q3);
-            _narratorManager.TryToActivateNarrator(TutorialStep.FirstWorkingPanelOpen_Q2);
-            _narratorManager.TryToActivateNarrator(TutorialStep.GameStarted_Q1);
+            _narratorManager.TryToActivateNarrator(TutorialStep.OnFourthWorkingPanelOpen_Q11);
+            _narratorManager.TryToActivateNarrator(TutorialStep.OnThirdWorkingPanelOpen_Q7);
+            _narratorManager.TryToActivateNarrator(TutorialStep.OnSecondWorkingPanelOpen_Q3);
+            _narratorManager.TryToActivateNarrator(TutorialStep.OnFirstWorkingPanelOpen_Q2);
+            _narratorManager.TryToActivateNarrator(TutorialStep.OnGameStarted_Q1);
         }
 
         private void ActivatePanel()
@@ -150,6 +160,21 @@ namespace InGameUi
                         }
 
                         scriptOfBar.BarButton.onClick.AddListener(OnBuildOrUpgradeButtonClicked);
+                        if (_narratorManager.CurrentTutorialStep == TutorialStep.AfterRankUp_Q16)
+                        {
+                            var gt = buildingsManager.GetSpecificBuilding(BuildingType.GuardTower);
+
+                            if (gt == null || gt.CurrentLevel != 1)
+                            {
+                                scriptOfBar.BarButton.interactable = true;
+                            }
+                            else
+                            {
+                                scriptOfBar.BarButton.interactable = false;
+                            }
+                        }
+                        else
+                            scriptOfBar.BarButton.interactable = !_narratorManager.ShouldBlockBuildingTab();
                         break;
                     case 1:
                         foreach (var building in _gatheringDefensePanel.BuildingsOnQueue)
@@ -175,6 +200,8 @@ namespace InGameUi
 
                         scriptOfBar.BarText.text = $"Resource Points: +{points}";
                         scriptOfBar.BarButton.onClick.AddListener(() => OnGatheringOrDefenseButtonClicked(true));
+                        
+                        scriptOfBar.BarButton.interactable = !_narratorManager.ShouldBlockResource();
                         break;
                     case 2:
 
@@ -202,6 +229,25 @@ namespace InGameUi
                         scriptOfBar.BarText.text = $"Defense Points: +{points}";
 
                         scriptOfBar.BarButton.onClick.AddListener(() => OnGatheringOrDefenseButtonClicked(false));
+                        
+                        if (_narratorManager.CurrentTutorialStep == TutorialStep.AfterRankUp_Q16)
+                        {
+                            var gt = buildingsManager.GetSpecificBuilding(BuildingType.GuardTower);
+
+                            if (gt != null && gt.CurrentLevel == 1)
+                            {
+                                scriptOfBar.BarButton.interactable = true;
+                            }
+                            else
+                            {
+                                scriptOfBar.BarButton.interactable = false;
+                            }
+                        }
+                        else
+                        {
+                            scriptOfBar.BarButton.interactable = !_narratorManager.ShouldBlockDefense();
+                        }
+                        
                         break;
                 }
             }
@@ -240,7 +286,7 @@ namespace InGameUi
             
             _gameManager.SetPlayerState(DuringDayState.DayPassing);
             
-            _narratorManager.TryToActivateNarrator(TutorialStep.FirstDayStarted_Q4);
+            _narratorManager.TryToActivateNarrator(TutorialStep.OnFirstDayStarted_Q4);
                 
             ClosePanel();
         }

@@ -31,12 +31,12 @@ MonoBehaviour:
     ProductionType: 1
     ProductionAmountPerDay: 5
   - Requirements:
-      ResourcePoints: 20
+      ResourcePoints: 150
       DaysToComplete: 2
     ProductionType: 1
     ProductionAmountPerDay: 10
   - Requirements:
-      ResourcePoints: 30
+      ResourcePoints: 300
       DaysToComplete: 3
     ProductionType: 1
     ProductionAmountPerDay: 15

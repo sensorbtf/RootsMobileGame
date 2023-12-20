@@ -5,6 +5,7 @@ using Gods;
 using Saving;
 using UnityEngine;
 using UnityEngine.Localization.Settings;
+using UnityEngine.SceneManagement;
 using World;
 
 namespace GameManager
@@ -63,6 +64,12 @@ namespace GameManager
             
             var language = PlayerPrefs.GetInt("Saved_Language", 0);
             ChangeLocale((Languages)language);
+        }
+
+        private void OnDestroy()
+        {
+            _savingManager.OnAuthenticationEnded -= () => StartCoroutine(CustomStart());
+            _savingManager.OnLoad -= LoadSavedData;
         }
 
         private IEnumerator CustomStart()
@@ -279,6 +286,7 @@ namespace GameManager
         public void ResetSave()
         {
             _savingManager.ResetSave();
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
 
         #endregion

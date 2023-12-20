@@ -67,6 +67,8 @@ namespace InGameUi
         private TextMeshProUGUI _secondQuestText;
         private Button _settingsButton;
 
+        private DuringDayState _state;
+
         //Audio clips
         [SerializeField] private AudioClip _destinyShardsManipulation;
         [SerializeField] private AudioClip _resourcePointsManipulation;
@@ -146,42 +148,106 @@ namespace InGameUi
             _gameManager.OnAfterLoad += AfterLoadHandler;
         }
 
+        private void OnDestroy()
+        {
+            _buildingsManager.OnResourcePointsChange -= RefreshResourcePoints;
+            _buildingsManager.OnDefensePointsChange -= RefreshDefensePoints;
+            _buildingsManager.OnDestinyShardsPointsChange -= RefreshShardsPoints;
+            _worldManager.OnResourcesRequirementsMeet -= ActivateEndMissionButton;
+            _worldManager.CurrentQuests[0].OnCompletion -= HandleFirstQuestCompletion;
+            _worldManager.CurrentQuests[1].OnCompletion -= HandleSecondQuestCompletion;
+            _worldManager.OnQuestsProgress -= RefreshQuestsText;
+            _worldManager.OnNewMissionStart -= RefreshStormSlider;
+            _worldManager.OnNewDayStarted -= NewDayHandler;
+            _worldManager.OnStormCheck -= CheckNextDaysOnDemand;
+            _gameManager.OnPlayerStateChange -= MainButtonHandler;
+            _gameManager.OnDaySkipPossibility -= CheckDaySkipPossibility;
+            _gameManager.OnAfterLoad -= AfterLoadHandler;
+            _worldManager.CurrentQuests[0].OnCompletion -= HandleFirstQuestCompletion;
+            _worldManager.CurrentQuests[1].OnCompletion -= HandleSecondQuestCompletion;
+        }
+
         private void Update()
         {
             _skipDayText.text = _gameManager.TimePassed;
 
             MovePoints();
             VinetePanel.SetActive(BlockHud);
+
+            if (_state != DuringDayState.WorkDayFinished)
+            {
+                _endDayButton.interactable = false;
+            }
+            else
+            {
+                if (_narratorManager.CurrentTutorialStep == TutorialStep.OnFarmPanelWithTechnology_Q12)
+                {
+                    _endDayButton.interactable = !_buildingsManager.GetSpecificBuilding(BuildingType.Farm).CanUpgradeTechnology();
+                }
+                else if (_narratorManager.CurrentTutorialStep == TutorialStep.AfterRankUp_Q16)
+                {
+                    var gt = _buildingsManager.GetSpecificBuilding(BuildingType.GuardTower);
+                    
+                    if (gt != null && (gt.CanUpgradeTechnology() || gt.CanPlayMinigame()))
+                    {
+                        _endDayButton.interactable = false;
+                    }
+                    else
+                    {
+                        _endDayButton.interactable = true;
+                    }
+                }
+                else
+                {
+                    _endDayButton.interactable = !_narratorManager.ShouldBlockBuildingPanelButton();
+                }
+            }
+            
+            if (_narratorManager.CurrentTutorialStep is TutorialStep.OnFinishedFarm_Q9
+                or TutorialStep.OnFarmPanelOpen_Q10 or TutorialStep.OnFourthWorkingPanelOpen_Q11
+                or TutorialStep.OnFarmPanelWithTechnology_Q12
+                or TutorialStep.OnTechnologyInFarmLvlUp_Q13 or TutorialStep.OnFarmMinigameEnded_Q14)
+            {
+                RankGo.GetComponent<Button>().interactable = false;
+            }
+
+            if (_narratorManager.CurrentTutorialStep is TutorialStep.OnFarmPanelClosed_Q15)
+            {
+                RankGo.GetComponent<Button>().interactable = true;
+            }
+            
+            _skipDayButton.interactable = !_narratorManager.ShouldBlockSkipButton();
         }
 
         private void CheckNextDaysOnDemand(int p_daysFromCurrent)
         {
             var currentDay = Convert.ToInt32(StormSlider.value);
-            var nextDay = 1 + currentDay;
-            var nextDaysToCheck = currentDay + p_daysFromCurrent;
+            var nextDaysToCheck =
+                currentDay + p_daysFromCurrent; // Include p_daysFromCurrent days starting from currentDay
 
-            Debug.Log(
-                $"Checking days. Current Day {currentDay}. Next Day {nextDaysToCheck}. Checking: {nextDaysToCheck}");
-
-            for (var i = nextDay; i < nextDaysToCheck; i++)
+            for (var i = currentDay; i <= nextDaysToCheck; i++) // <= to include nextDaysToCheck in the loop
             {
-                if (_createdDaysStorm[i])
+                if (_createdDaysStorm.Count <= i - 1)
+                    continue;
+
+                if (_createdDaysStorm[i - 1])
                 {
                     if (i >= _worldManager.FinalHiddenStormDay)
                     {
-                        _createdDaysStorm[i].GetComponentInChildren<Image>().sprite = StormImage;
+                        _createdDaysStorm[i - 1].GetComponentInChildren<Image>().sprite = StormImage;
                         StormHandle.GetComponent<Image>().sprite = LightingHandleImage;
                         StormSlider.fillRect.GetComponent<Image>().color = new Color(255, 0, 0, 0.5f);
                     }
                     else
                     {
-                        _createdDaysStorm[i].GetComponentInChildren<Image>().sprite = SunImage;
+                        _createdDaysStorm[i - 1].GetComponentInChildren<Image>().sprite = SunImage;
                         StormHandle.GetComponent<Image>().sprite = NormalHandleImage;
                         StormSlider.fillRect.GetComponent<Image>().color = new Color(0, 0, 0, 0.5f);
                     }
                 }
             }
         }
+
 
         private void AfterLoadHandler()
         {
@@ -211,15 +277,16 @@ namespace InGameUi
 
         private void NewDayHandler()
         {
-            if (_narratorManager.CurrentTutorialStep == TutorialStep.ThirdWorkingPanelOpened_Q7)
+            if (_narratorManager.CurrentTutorialStep == TutorialStep.OnThirdWorkingPanelOpen_Q7)
             {
                 var farm = _buildingsManager.CurrentBuildings.Find(x => x.BuildingMainData.Type == BuildingType.Farm);
                 if (farm != null && farm.CanEndBuildingSequence && farm.CurrentLevel == 0)
                 {
-                    _narratorManager.TryToActivateNarrator(TutorialStep.NextDayWithFarmFinished_Q8);
+                    _narratorManager.TryToActivateNarrator(TutorialStep.OnFinishingFarmAvaiable_Q8);
                 }
             }
-            
+
+            _state = DuringDayState.WorkDayFinished;
             StormSlider.value = _worldManager.CurrentDay;
             var roundedInt = Convert.ToInt32(StormSlider.value);
 
@@ -365,13 +432,18 @@ namespace InGameUi
 
         private void MainButtonHandler(DuringDayState p_newState)
         {
+            _state = p_newState;
             switch (p_newState)
             {
                 case DuringDayState.FinishingBuilding:
+                    _endDayButton.interactable = false;
                     _endDayButtonText.text = "Finalize building process";
+                    _wasMainButtonRefreshed = true;
                     break;
                 case DuringDayState.CollectingResources:
+                    _endDayButton.interactable = false;
                     _endDayButtonText.text = "Collect available points";
+                    _wasMainButtonRefreshed = true;
                     break;
                 case DuringDayState.WorkDayFinished:
                     _endDayButton.interactable = true;
@@ -386,6 +458,7 @@ namespace InGameUi
                     break;
 
                 case DuringDayState.SettingWorkers:
+                    _endDayButton.interactable = false;
                     _endDayButtonText.text = "Setting workers";
                     break;
 
@@ -456,8 +529,8 @@ namespace InGameUi
 
             _gameManager.SetPlayerState(DuringDayState.FinishingBuilding);
             _gameManager.SkipDay(p_skipSource);
-            
-            _narratorManager.TryToActivateNarrator(TutorialStep.OnDaySkip_Q5);
+
+            _narratorManager.TryToActivateNarrator(TutorialStep.OnDaySkipped_Q5);
         }
 
         #region Quests
@@ -527,6 +600,8 @@ namespace InGameUi
 
         private void HandleQuestsCompletion()
         {
+            _narratorManager.TryToActivateNarrator(TutorialStep.AfterRankUp_Q16);
+
             _worldManager.CurrentQuests[0].OnCompletion -= HandleFirstQuestCompletion;
             _worldManager.CurrentQuests[1].OnCompletion -= HandleSecondQuestCompletion;
 
@@ -548,7 +623,16 @@ namespace InGameUi
             _secondMissionButtonText.text = _worldManager.GetSpecificQuestObjectiveText(1);
 
             _currentMissionText.text = _worldManager.CurrentMission.ToString();
-            _currentRankText.text = _worldManager.CurrentRank.ToString();
+
+            if (_worldManager.CurrentQuests[0].IsRedeemed && _worldManager.CurrentQuests[1].IsRedeemed &&
+                _worldManager.CurrentMission >= _worldManager.NeededMissionToRankUp)
+            {
+                _currentRankText.text = "Click To Rank Up";
+            }
+            else
+            {
+                _currentRankText.text = _worldManager.CurrentRank.ToString();
+            }
         }
 
         #endregion

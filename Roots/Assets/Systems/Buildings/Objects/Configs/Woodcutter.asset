@@ -22,7 +22,7 @@ MonoBehaviour:
   DestroyedStage: {fileID: 21300000, guid: 5470f9ed5306c2a40b177035acfd547e, type: 3}
   Description: Wood is essential for buildings and every day survival. Woodcutters
     that work here will also help you extend borders of village.
-  BaseCottageLevelNeeded: 2
+  BaseCottageLevelNeeded: 5
   LevelToEnableMinigame: 0
   PerLevelData:
   - Requirements:

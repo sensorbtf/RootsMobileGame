@@ -22,7 +22,7 @@ MonoBehaviour:
   DestroyedStage: {fileID: 21300000, guid: f337417ab8e612e42b1b21e435e966f1, type: 3}
   Description: First defense structure in village. Gives small portion of defense
     points and check next days in case of storm.
-  BaseCottageLevelNeeded: 1
+  BaseCottageLevelNeeded: 2
   LevelToEnableMinigame: 0
   PerLevelData:
   - Requirements:

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using Buildings;
 using GameManager;
 using GeneralSystems;
@@ -20,11 +21,20 @@ namespace InGameUi
             _worldManager.OnResourcesRequirementsMeet += ViewResourcesMetPanel;
             _worldManager.OnLeaveDecision += ViewLeavePanel;
             _worldManager.OnStormCame += ViewStormConsequencesPanel;
-            _uiReferences = gameObject.GetComponent<DecisionMakingRefs>();
             _gameManager.OnPlayerCameBack += ViewWelcomeBackPanel;
+            
+            _uiReferences = gameObject.GetComponent<DecisionMakingRefs>();
             gameObject.SetActive(false);
         }
-        
+
+        private void OnDestroy()
+        {
+            _worldManager.OnResourcesRequirementsMeet -= ViewResourcesMetPanel;
+            _worldManager.OnLeaveDecision -= ViewLeavePanel;
+            _worldManager.OnStormCame -= ViewStormConsequencesPanel;
+            _gameManager.OnPlayerCameBack -= ViewWelcomeBackPanel;
+        }
+
         private void ViewWelcomeBackPanel(bool p_shouldOfferLoginGift)
         {
             HandleTurnOnOff(true);
@@ -55,16 +65,19 @@ namespace InGameUi
             _uiReferences.Title.text = "Destroyed Buildings";
             _uiReferences.Description.text = "";
 
-            foreach (var buildingType in p_destroyedBuildings) _uiReferences.Description.text += buildingType + "\n";
+            foreach (var buildingType in p_destroyedBuildings) 
+                _uiReferences.Description.text += buildingType + "\n";
 
-            _uiReferences.YesButtonText.text = p_won ? "Start New Mission" : "Try Again";
-            _uiReferences.YesButton.onClick.AddListener(() => DealWithStormEffects(p_won));
+            var hasCompletedMission = p_won && _worldManager.AreResourcesEnough();
+
+            _uiReferences.YesButtonText.text = hasCompletedMission ? "Start New Mission" : "Try Again";
+            _uiReferences.YesButton.onClick.AddListener(() => DealWithStormEffects(hasCompletedMission));
             _uiReferences.YesButton.interactable = true;
             
             _uiReferences.YesButtonGo.gameObject.SetActive(true);
             _uiReferences.NoButtonGo.gameObject.SetActive(false);
             
-            _narratorManager.TryToActivateNarrator(TutorialStep.OnAfterDefendPanel_Q17);
+            _narratorManager.TryToActivateNarrator(TutorialStep.OnAfterDefendPanel_Q19);
         }
 
         private void ViewLeavePanel()
@@ -123,7 +136,7 @@ namespace InGameUi
         private void DealWithStormEffects(bool p_won)
         {
             _worldManager.StartMission(p_won);
-            _narratorManager.TryToActivateNarrator(TutorialStep.OnMissionRestart_Q18);
+            _narratorManager.TryToActivateNarrator(TutorialStep.OnMissionRestart_Q20);
             HandleTurnOnOff(false);
         }
 

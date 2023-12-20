@@ -24,6 +24,14 @@ namespace Narrator
             _buildingsManager.OnBuildingTechnologyLvlUp += CheckBuildingTechLevelUp;
         }
 
+        private void OnDestroy()
+        {
+            _buildingsManager.OnBuildingRepaired -= CheckBuildingRepaired;
+            _buildingsManager.OnTutorialStart -= StartTutorial;
+            _buildingsManager.OnBuildingStateChanged -= CheckBuildingBuilt;
+            _buildingsManager.OnBuildingTechnologyLvlUp -= CheckBuildingTechLevelUp;
+        }
+
         public void TryToActivateNarrator(TutorialStep p_step)
         {
             if ((int)p_step == (int)_currentTutorialStep + 1)
@@ -31,6 +39,7 @@ namespace Narrator
                 _currentTutorialStep = p_step;
                 _currentSubText = 0;
                 OnTutorialAdvancement?.Invoke(true);
+                Debug.Log("Quest: " + _currentTutorialStep);
             }
         }
 
@@ -41,36 +50,38 @@ namespace Narrator
 
         private void StartTutorial()
         {
-            _currentTutorialStep = TutorialStep.GameStarted_Q1;
-            OnTutorialAdvancement?.Invoke(true);
+            TryToActivateNarrator(TutorialStep.OnGameStarted_Q1);
             
             _buildingsManager.OnTutorialStart -= StartTutorial;
         }
         
         private void CheckBuildingRepaired(Building p_building)
         {
-            _currentTutorialStep = TutorialStep.OnCottageRepaired_Q6;
-            OnTutorialAdvancement?.Invoke(true);
+            if (p_building.BuildingMainData.Type == BuildingType.Cottage)
+            {
+                TryToActivateNarrator(TutorialStep.OnCottageRepaired_Q6);
             
-            _buildingsManager.OnBuildingRepaired -= CheckBuildingRepaired;
+                _buildingsManager.OnBuildingRepaired -= CheckBuildingRepaired;
+            }
         }
         
         private void CheckBuildingBuilt(Building p_building)
         {
-            if (_currentTutorialStep == TutorialStep.NextDayWithFarmFinished_Q8 && p_building.BuildingMainData.Type == BuildingType.Farm)
-            {
-                TryToActivateNarrator(TutorialStep.AfterFarmFinishBuild_Q9);
-            }
+            if (_currentTutorialStep != TutorialStep.OnFinishingFarmAvaiable_Q8 ||
+                p_building.BuildingMainData.Type != BuildingType.Farm) 
+                return;
+            
+            TryToActivateNarrator(TutorialStep.OnFinishedFarm_Q9);
             _buildingsManager.OnBuildingStateChanged -= CheckBuildingBuilt;
         }
         
         private void CheckBuildingTechLevelUp(Building p_building)
         {
-            if (_currentTutorialStep == TutorialStep.OnFarmPanelWithTechnology1_Q11 && p_building.BuildingMainData.Type == BuildingType.Farm)
-            {
-                TryToActivateNarrator(TutorialStep.OnTechnologyInFarmLvlUp_Q12);
-            }
+            if (_currentTutorialStep != TutorialStep.OnFarmPanelWithTechnology_Q12 ||
+                p_building.BuildingMainData.Type != BuildingType.Farm) 
+                return;
             
+            TryToActivateNarrator(TutorialStep.OnTechnologyInFarmLvlUp_Q13);
             _buildingsManager.OnBuildingTechnologyLvlUp -= CheckBuildingTechLevelUp;
         }
 
@@ -90,6 +101,39 @@ namespace Narrator
 
             OnTutorialAdvancement?.Invoke(false);
         }
+
+        public bool ShouldBlockBuildingTab()
+        {
+            return _currentTutorialStep is TutorialStep.OnFourthWorkingPanelOpen_Q11 or TutorialStep.OnTechnologyInFarmLvlUp_Q13
+                or TutorialStep.OnFarmPanelClosed_Q15;
+        }
+        
+        public bool ShouldBlockResource()
+        {
+            return _currentTutorialStep is TutorialStep.OnFirstWorkingPanelOpen_Q2 
+                or TutorialStep.OnSecondWorkingPanelOpen_Q3 or TutorialStep.OnThirdWorkingPanelOpen_Q7 
+                or TutorialStep.AfterRankUp_Q16;
+        }
+        
+        public bool ShouldBlockDefense()
+        {
+            return _currentTutorialStep is TutorialStep.OnFirstWorkingPanelOpen_Q2
+                or TutorialStep.OnSecondWorkingPanelOpen_Q3 or TutorialStep.OnThirdWorkingPanelOpen_Q7 
+                or TutorialStep.OnFourthWorkingPanelOpen_Q11 or TutorialStep.OnTechnologyInFarmLvlUp_Q13 
+                or TutorialStep.OnFarmPanelClosed_Q15;
+        }
+        
+        public bool ShouldBlockBuildingPanelButton()
+        {
+            return _currentTutorialStep is TutorialStep.OnDaySkipped_Q5 or TutorialStep.OnFinishingFarmAvaiable_Q8 
+                or TutorialStep.OnFinishedFarm_Q9 or TutorialStep.OnFourthWorkingPanelOpen_Q11 or TutorialStep.OnFarmPanelWithTechnology_Q12 
+                or TutorialStep.OnFarmPanelClosed_Q15; 
+        }
+        
+        public bool ShouldBlockSkipButton()
+        {
+            return _currentTutorialStep is TutorialStep.OnTechnologyInFarmLvlUp_Q13 or TutorialStep.OnFarmPanelClosed_Q15;
+        }
     }
     
     [Serializable]
@@ -102,24 +146,26 @@ namespace Narrator
     public enum TutorialStep
     {
         Start = -1,
-        GameStarted_Q1 = 0,
-        FirstWorkingPanelOpen_Q2 = 1,
-        SecondWorkingPanel_Q3 = 2,
-        FirstDayStarted_Q4 = 3,
-        OnDaySkip_Q5 = 4,
+        OnGameStarted_Q1 = 0,
+        OnFirstWorkingPanelOpen_Q2 = 1,
+        OnSecondWorkingPanelOpen_Q3 = 2,
+        OnFirstDayStarted_Q4 = 3,
+        OnDaySkipped_Q5 = 4,
         OnCottageRepaired_Q6 = 5,
-        ThirdWorkingPanelOpened_Q7 = 6,
-        NextDayWithFarmFinished_Q8 = 7,
-        AfterFarmFinishBuild_Q9 = 8,
+        OnThirdWorkingPanelOpen_Q7 = 6,
+        OnFinishingFarmAvaiable_Q8 = 7,
+        OnFinishedFarm_Q9 = 8,
         OnFarmPanelOpen_Q10 = 9,
-        OnFarmPanelWithTechnology1_Q11 = 10,
-        OnTechnologyInFarmLvlUp_Q12 = 11,
-        OnFarmMinigameEnded_Q13 = 12,
-        OnFarmPanelClosed_Q14 = 13,
-        OnGuardTowerMinigameEnded_Q15 = 14,
-        OnDefendPanelOpened_Q16 = 15,
-        OnAfterDefendPanel_Q17 = 16,
-        OnMissionRestart_Q18 = 17,
-        OnWorkersPanelOpenAfterRestart_Q19 = 18,
+        OnFourthWorkingPanelOpen_Q11 = 10,
+        OnFarmPanelWithTechnology_Q12 = 11,
+        OnTechnologyInFarmLvlUp_Q13 = 12,
+        OnFarmMinigameEnded_Q14 = 13,
+        OnFarmPanelClosed_Q15 = 14,
+        AfterRankUp_Q16 = 15,
+        OnGuardTowerMinigameEnded_Q17 = 16,
+        OnDefendPanelOpened_Q18 = 17,
+        OnAfterDefendPanel_Q19 = 18,
+        OnMissionRestart_Q20 = 19,
+        OnWorkersPanelOpenAfterRestart_Q21 = 20,
     }
 }

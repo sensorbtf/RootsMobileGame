@@ -83,13 +83,13 @@ MonoBehaviour:
   - m_Id: 211852474114053
     m_Localized: "You can build or upgrade buildings, start harvesting resource points
       or enhance defense level for next storm. \n\nIt's all up to you but remember
-      that every choice is important."
+      that every choice is important for village growth."
     m_Metadata:
       m_Items: []
   - m_Id: 211852474114054
     m_Localized: "To complete missions, you have to collect enough resource points.
       \n\nLeaving the village unprotected will result in higher level of destruction
-      that will slow you in the next mission."
+      that will make your next mission harder."
     m_Metadata:
       m_Items: []
   - m_Id: 211852474114055
@@ -99,11 +99,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 211852474114056
-    m_Localized: Tap on just built farm to finish the whole building process.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 211852474114057
-    m_Localized: Now tap on it again to get all information about this building role.
+    m_Localized: Tap on just built farm to Finish the whole building process.
     m_Metadata:
       m_Items: []
   - m_Id: 211852474114058
@@ -112,78 +108,103 @@ MonoBehaviour:
       and help your village grow!"
     m_Metadata:
       m_Items: []
-  - m_Id: 211852474114060
-    m_Localized: "With more advanced Technology Level now you can help your worker
-      on field. \n\nClick button to start time-sensitive minigame."
-    m_Metadata:
-      m_Items: []
   - m_Id: 211852474114061
-    m_Localized: Good job! By helping workers in building you can gain many additional
-      points, but be aware that you can't do the job in every workplace.
+    m_Localized: "With more advanced Technology Level now you can help your worker
+      on field. \n\nDo it by clicking button to start time-sensitive minigame."
     m_Metadata:
       m_Items: []
-  - m_Id: 211852474114062
+  - m_Id: 211852474114064
     m_Localized: It's time to prepare for the incoming storm. You never know when
       exactly will it come.
     m_Metadata:
       m_Items: []
-  - m_Id: 211852474114063
-    m_Localized: "By building Guard Tower you will be able not only to rise your
-      Defense Points by using workers but also check if the storm will take place
-      in next two days. \n\nDo it by playing minigame which influences the Storm
-      Meter."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 211852474114064
-    m_Localized: "Storm Meter is showing all the days that a single mission takes.
-      \n\nWhen the indicator changes shape to lighting, the storm might take place
-      any day."
-    m_Metadata:
-      m_Items: []
   - m_Id: 211852474114065
-    m_Localized: "See? It looks like this night might bring the danger, but as you
-      don't have enough resource points, you can't just run back to city. \n\nYou
-      will have to stand for yourself."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 211852474114066
-    m_Localized: The storm came, but its power is low enough to let you fight for
-      yourself. Now you can select the building that you want to defend for all cost
-      to make sure it won't be damaged by monsters.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 211852474114067
-    m_Localized: "You managed to defend your village but at cost of all Defense and
-      most Resource points. \n\nThe mission for specific amount of Resources is still
-      on the table, so roll up your sleeves and get to work."
-    m_Metadata:
-      m_Items: []
-  - m_Id: 335544130658304
-    m_Localized: By pointing workers to work inside production buildings, you are
-      developing technology advancement by which you can bring up Technology Level.
-    m_Metadata:
-      m_Items: []
-  - m_Id: 335544155824128
-    m_Localized: "Technology Level in building not only unlocks minigame for speeding
-      up your points collection but also increases income from it. \n\nNow, click
-      the Technology Level Up button."
+    m_Localized: To unlock building plans for Guard Tower, claim quest reward by
+      pressing blinking buttons in top right corner and then Rank Up to unlock new
+      building and Level Up you Cottage.
     m_Metadata:
       m_Items: []
   - m_Id: 370743430275072
     m_Localized: To do it, click the button in the bottom left corner of the screen.
     m_Metadata:
       m_Items: []
-  - m_Id: 370743455440896
+  - m_Id: 1485459716235264
+    m_Localized: Now tap on Farm again to get all information about this building.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1485459716235268
+    m_Localized: Good job! By helping workers in building you can gain many additional
+      points, but be aware that you can't do the job in every workplace.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1485459716235269
+    m_Localized: 'By building Guard Tower you will be able not only to rise your
+      Defense Points by using workers but also check if the storm will take place
+      in next two days. '
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1485459716235270
+    m_Localized: Do it by first upgrading Technology Level and then playing minigame
+      which influences the Storm Meter.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1485459716235271
+    m_Localized: The storm came, but it is weak enough to let you fight for yourself.
+      Now you can select the building that you want to defend for all cost to make
+      sure it won't be damaged by monsters.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1765999015026688
+    m_Localized: By pointing workers to work inside production buildings, you are
+      developing technology advancement by which you can bring up Technology Level.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1765999052775424
+    m_Localized: 'Technology Level in building not only unlocks minigame for speeding
+      up your points collection but also increases income from it. '
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1765999052775425
+    m_Localized: Now, click the Technology Level Up button.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1765999052775426
+    m_Localized: "Storm Meter is showing all the days that a single mission takes.
+      \n\nWhen the indicator changes shape to lighting, the storm might take place
+      any day."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1765999052775427
+    m_Localized: "See? It looks like this night might bring the danger, but as you
+      don't have enough resource points, you can't just run back to city. \n\nYou
+      will have to stand for yourself."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1765999052775428
+    m_Localized: 'You managed to defend your village but at cost of all Resource
+      Points that couldn''t be hided in basement.
+
+
+      The mission for specific
+      amount of Resources is still on the table, so roll up your sleeves and get
+      to work.'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1765999052775429
     m_Localized: Feeling lost about next steps? Feel free to check side quests in
       the right upper corner to get on track of developing your village.
     m_Metadata:
       m_Items: []
-  - m_Id: 370743455440897
-    m_Localized: Every side quest made will provide you with Destiny Shards and Ranking
-      Up will give you new buildings plans.
+  - m_Id: 1765999052775430
+    m_Localized: 'Every side quest made will provide you with Destiny Shards while
+      Ranking Up will give you new buildings plans.
+
+
+      And remember - losing
+      is part of the process.'
     m_Metadata:
       m_Items: []
-  - m_Id: 370743455440898
+  - m_Id: 1765999052775431
     m_Localized: "You have gained access to special blessings from gods. \n\nClick
       the God Panel button to get access to boosts for specific buildings."
     m_Metadata:

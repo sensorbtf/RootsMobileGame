@@ -39,6 +39,8 @@ namespace InGameUi
         private Button _startMiniGameButton;
         private TechnologyDataPerLevel[] _technology;
 
+        public event Action<Building> OnOpenMiniGameOfType;
+        
         private void Start()
         {
             buildingsManager.OnBuildingClicked += ActivateOnClick;
@@ -53,7 +55,10 @@ namespace InGameUi
             gameObject.SetActive(false);
         }
 
-        public event Action<Building> OnOpenMiniGameOfType;
+        private void OnDestroy()
+        {
+            buildingsManager.OnBuildingClicked -= ActivateOnClick;
+        }
 
         private void ClosePanel()
         {
@@ -62,14 +67,14 @@ namespace InGameUi
             CameraController.IsUiOpen = false;
             GameplayHud.BlockHud = false;
 
-            if (_narratorManager.CurrentTutorialStep == TutorialStep.OnFarmMinigameEnded_Q13)
+            if (_building != null)
             {
                 if (_building.BuildingMainData.Type == BuildingType.Farm)
                 {
-                    _narratorManager.TryToActivateNarrator(TutorialStep.OnFarmPanelClosed_Q14);
+                    _narratorManager.TryToActivateNarrator(TutorialStep.OnFarmPanelClosed_Q15);
                 }
             }
-            
+
             _building = null;
             _runtimeBuildingsUiToDestroy.Clear();
             gameObject.SetActive(false);
@@ -112,19 +117,19 @@ namespace InGameUi
             _technology = _buildingData.Technology.DataPerTechnologyLevel;
             HandleView();
 
-            if (_narratorManager.CurrentTutorialStep == TutorialStep.AfterFarmFinishBuild_Q9)
+            if (_narratorManager.CurrentTutorialStep == TutorialStep.OnFinishedFarm_Q9)
             {
                 if (p_building.BuildingMainData.Type == BuildingType.Farm)
                 {
                     _narratorManager.TryToActivateNarrator(TutorialStep.OnFarmPanelOpen_Q10);
                 }
             }
-            else if (_narratorManager.CurrentTutorialStep == TutorialStep.OnFarmPanelOpen_Q10)
+            else if (_narratorManager.CurrentTutorialStep == TutorialStep.OnFourthWorkingPanelOpen_Q11)
             {
                 if (p_building.BuildingMainData.Type == BuildingType.Farm && p_building.CurrentTechnologyDayOnQueue == 
                     p_building.BuildingMainData.Technology.DataPerTechnologyLevel[p_building.CurrentTechnologyLvl].WorksDayToAchieve)
                 {
-                    _narratorManager.TryToActivateNarrator(TutorialStep.OnFarmPanelWithTechnology1_Q11);
+                    _narratorManager.TryToActivateNarrator(TutorialStep.OnFarmPanelWithTechnology_Q12);
                 }
             }
         }
@@ -156,7 +161,7 @@ namespace InGameUi
             _levelUpProgression.minValue = 0;
             _levelUpProgression.maxValue = _technology[_building.CurrentTechnologyLvl].WorksDayToAchieve;
             _levelUpProgression.value = _building.CurrentTechnologyDayOnQueue;
-            _sliderValue.text = $"{_levelUpProgression.value}/{_levelUpProgression.maxValue}";
+            _sliderValue.text = $"Working days: {_levelUpProgression.value}/{_levelUpProgression.maxValue}";
             _getIntoWorkGo.GetComponentInChildren<TextMeshProUGUI>().text = "Start Work \n" +
                                                                             $"Efficiency: {_technology[_building.CurrentTechnologyLvl].Efficiency}\n Duration: {_technology[_building.CurrentTechnologyLvl].MinigameDuration} seconds.";
 

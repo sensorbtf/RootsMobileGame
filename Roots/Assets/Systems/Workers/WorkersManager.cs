@@ -19,7 +19,7 @@ public class WorkersManager : MonoBehaviour
         WorkersInBuilding = 0;
         WorkersInDefences = 0;
         WorkersInResources = 0;
-        WorkersInDefences = 0;
+        WorkersDefending = 0;
     }
 
     public bool IsAnyWorkerFree()

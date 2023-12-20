@@ -21,7 +21,7 @@ MonoBehaviour:
   UpgradeStage: {fileID: 21300000, guid: b82630a2c46b9d84dbac7a64f588cb18, type: 3}
   DestroyedStage: {fileID: 21300000, guid: 5470f9ed5306c2a40b177035acfd547e, type: 3}
   Description: Wood is transported here to further processing.
-  BaseCottageLevelNeeded: 2
+  BaseCottageLevelNeeded: 5
   LevelToEnableMinigame: 0
   PerLevelData:
   - Requirements:
