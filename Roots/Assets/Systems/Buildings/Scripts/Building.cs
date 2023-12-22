@@ -24,6 +24,8 @@ namespace Buildings
 
         private bool _shouldHighlight = false;
         private bool _reverseLighting = false;
+        private GameObject _gatheringIconGo;
+        private Vector3 _originalGatheringIconScale;
 
         private BaseDataPerLevel _currentLevelData => BuildingMainData.PerLevelData[CurrentLevel];
 
@@ -75,6 +77,8 @@ namespace Buildings
         private void Start()
         {
             LightOfBuilding.intensity = 0;
+            _gatheringIconGo = GatheringIcon.gameObject;
+            _originalGatheringIconScale = _gatheringIconGo.transform.localScale;
         }
 
         public void OnPointerClick(PointerEventData p_eventData)
@@ -212,33 +216,27 @@ namespace Buildings
             return false;
         }
 
-        public void TryToHighlight() // TODO: Use it also on technology development?
+        public void TryToHighlight()
         {
             if (!_shouldHighlight)
                 return;
 
-            if (_reverseLighting)
-            {
-                LightOfBuilding.intensity -= 0.02f;
-            }
-            else
-            {
-                LightOfBuilding.intensity += 0.02f;
-            }
+            // Adjust light intensity
+            float intensityChange = _reverseLighting ? -0.02f : 0.02f;
+            LightOfBuilding.intensity += intensityChange;
 
-            if (!_reverseLighting)
+            // Calculate a pulsing scale factor (e.g., oscillating between 0.8 and 1.2 if original scale is 1)
+            float scaleMultiplier = 1 + Mathf.Sin(Time.time * 5f) * 0.2f; // Adjust 5f for speed, 0.2f for magnitude
+            _gatheringIconGo.transform.localScale = _originalGatheringIconScale * scaleMultiplier;
+
+            // Check and update the state for reversing lighting
+            if (_reverseLighting && LightOfBuilding.intensity <= 0f)
             {
-                if (LightOfBuilding.intensity > 0.5f)
-                {
-                    _reverseLighting = true;
-                }
+                _reverseLighting = false;
             }
-            else
+            else if (!_reverseLighting && LightOfBuilding.intensity > 0.5f)
             {
-                if (LightOfBuilding.intensity <= 0f)
-                {
-                    _reverseLighting = false;
-                }
+                _reverseLighting = true;
             }
         }
 

@@ -29,7 +29,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 3, y: 3, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8439736024323659261}
@@ -267,6 +267,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4391122587642909782, guid: 0919e5fe905fb0140b8383c0ac707b43, type: 3}
+      propertyPath: LightOfBuilding
+      value: 
+      objectReference: {fileID: 3464726553591565599}
     - target: {fileID: 5745483744605312716, guid: 0919e5fe905fb0140b8383c0ac707b43, type: 3}
       propertyPath: m_Name
       value: GatheringIcon
@@ -275,7 +279,8 @@ PrefabInstance:
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
       objectReference: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4391122587642909782, guid: 0919e5fe905fb0140b8383c0ac707b43, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

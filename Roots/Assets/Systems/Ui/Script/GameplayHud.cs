@@ -252,6 +252,7 @@ namespace InGameUi
         private void AfterLoadHandler()
         {
             RefreshStormSlider();
+            _state = _gameManager.CurrentPlayerState;
 
             var rectGo = StormHandle.GetComponent<RectTransform>();
             var rect = rectGo.anchoredPosition;
