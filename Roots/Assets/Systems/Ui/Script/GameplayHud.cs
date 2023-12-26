@@ -6,6 +6,7 @@ using GameManager;
 using Narrator;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 using World;
 using Random = UnityEngine.Random;
@@ -14,35 +15,38 @@ namespace InGameUi
 {
     public class GameplayHud : MonoBehaviour
     {
-        public static bool BlockHud;
+        [Header("System Refs")]
         [SerializeField] private Canvas _mainCanvas;
-
         [SerializeField] private NarratorManager _narratorManager;
         [SerializeField] private AudioManager _audioManager;
         [SerializeField] private MainGameManager _gameManager;
         [SerializeField] private WorldManager _worldManager;
         [SerializeField] private BuildingsManager _buildingsManager;
+        [SerializeField] private AdsForRewards _rewardingAdsManager;
         [SerializeField] private SettingsPanel _settingsPanel;
+      
+        [Header("Elements Refs")]
         [SerializeField] private GameObject StormSliderBackground;
         [SerializeField] private GameObject StormDaysPrefab;
         [SerializeField] private GameObject StormHandle;
         [SerializeField] private GameObject RankGo;
 
-        [SerializeField] private Sprite StormImage;
-        [SerializeField] private Sprite SunImage;
         [SerializeField] private Sprite NormalHandleImage;
         [SerializeField] private Sprite LightingHandleImage;
+        [SerializeField] private Color NormalDay;
+        [SerializeField] private Color StormDay;
 
         [SerializeField] private GameObject SkipDayGo;
         [SerializeField] private GameObject EndMissionGo;
         [SerializeField] private GameObject EndDayGo;
         [SerializeField] private GameObject VinetePanel;
 
-        //left side of screen
+        //right side of screen
         [SerializeField] private GameObject _settingsButtonGo;
+        [SerializeField] private GameObject _addButtonGo;
         //left side of screen
 
-        // Quests
+        [Header("Quest")]
         [SerializeField] private GameObject QuestsCompletedGo;
         [SerializeField] private GameObject FirstMissionGo;
         [SerializeField] private GameObject SecondMissionGo;
@@ -66,20 +70,24 @@ namespace InGameUi
         private TextMeshProUGUI _secondMissionButtonText;
         private TextMeshProUGUI _secondQuestText;
         private Button _settingsButton;
+        private Button _addButton;
 
         private DuringDayState _state;
 
         //Audio clips
+        [Header("Audio")]
         [SerializeField] private AudioClip _destinyShardsManipulation;
         [SerializeField] private AudioClip _resourcePointsManipulation;
         [SerializeField] private AudioClip _defensePointsManipulation;
+        [SerializeField] private AudioClip _rankUpSound;
+        [SerializeField] private AudioClip _onQuestCompletionSound;
+        [SerializeField] private AudioClip _daySkippedSound;
 
         // Quests
         private float _singleDayGoWidth;
         private Button _skipDayButton;
 
         [SerializeField] private TextMeshProUGUI _skipDayText;
-        private bool _wasMainButtonRefreshed = true;
         [SerializeField] private TextMeshProUGUI DefensePoints;
         [SerializeField] private Image DefensePointsImage;
 
@@ -91,6 +99,10 @@ namespace InGameUi
 
         [SerializeField] private Slider StormSlider;
 
+        private bool _wasMainButtonRefreshed = true;
+        
+        public static bool BlockHud;
+        
         private void Awake()
         {
             _createdDaysStorm = new List<GameObject>();
@@ -106,6 +118,8 @@ namespace InGameUi
             _endMissionButton = EndMissionGo.GetComponent<Button>();
             _endDayButton = EndDayGo.GetComponent<Button>();
             _settingsButton = _settingsButtonGo.GetComponent<Button>();
+            _addButton = _addButtonGo.GetComponent<Button>();
+            _addButton.onClick.AddListener(delegate { _rewardingAdsManager.ShowRewardedAdd(); });
 
             _endDayButtonText = _endDayButton.GetComponentInChildren<TextMeshProUGUI>();
             _firstQuestText = FirstMissionGo.GetComponentInChildren<TextMeshProUGUI>();
@@ -124,7 +138,11 @@ namespace InGameUi
             EndMissionGo.SetActive(false);
             BlockHud = false;
 
-            _settingsButton.onClick.AddListener(delegate { _settingsPanel.OpenPanel(); });
+            _settingsButton.onClick.AddListener(delegate
+            {
+                _audioManager.PlayButtonSoundEffect(_settingsButton.interactable);
+                _settingsPanel.OpenPanel();
+            });
 
             ShardsOfDestiny.text = $"{_buildingsManager.CurrentDestinyShards}";
             DefensePoints.text = $"{_buildingsManager.CurrentDefensePoints}";
@@ -165,6 +183,8 @@ namespace InGameUi
             _gameManager.OnAfterLoad -= AfterLoadHandler;
             _worldManager.CurrentQuests[0].OnCompletion -= HandleFirstQuestCompletion;
             _worldManager.CurrentQuests[1].OnCompletion -= HandleSecondQuestCompletion;
+            
+            _addButton.onClick.RemoveAllListeners();
         }
 
         private void Update()
@@ -234,13 +254,13 @@ namespace InGameUi
                 {
                     if (i >= _worldManager.FinalHiddenStormDay)
                     {
-                        _createdDaysStorm[i - 1].GetComponentInChildren<Image>().sprite = StormImage;
+                        _createdDaysStorm[i - 1].GetComponentInChildren<Image>().color = StormDay;
                         StormHandle.GetComponent<Image>().sprite = LightingHandleImage;
                         StormSlider.fillRect.GetComponent<Image>().color = new Color(255, 0, 0, 0.5f);
                     }
                     else
                     {
-                        _createdDaysStorm[i - 1].GetComponentInChildren<Image>().sprite = SunImage;
+                        _createdDaysStorm[i - 1].GetComponentInChildren<Image>().color = NormalDay;
                         StormHandle.GetComponent<Image>().sprite = NormalHandleImage;
                         StormSlider.fillRect.GetComponent<Image>().color = new Color(0, 0, 0, 0.5f);
                     }
@@ -324,8 +344,7 @@ namespace InGameUi
                 var currentDay = i + 1;
 
                 gO.GetComponentInChildren<TextMeshProUGUI>().text = currentDay.ToString();
-                if (i >= _worldManager.StormDaysRange.x)
-                    gO.GetComponentInChildren<Image>().sprite = StormImage;
+                gO.GetComponentInChildren<Image>().color = i >= _worldManager.StormDaysRange.x ? StormDay : NormalDay;
 
                 _createdDaysStorm.Add(gO);
             }
@@ -516,6 +535,8 @@ namespace InGameUi
 
         private void OpenWorkersDisplacementPanel()
         {
+            _audioManager.PlayButtonSoundEffect(_endDayButton.interactable);
+
             _gameManager.SetPlayerState(DuringDayState.SettingWorkers);
             _endDayButton.onClick.RemoveListener(OpenWorkersDisplacementPanel);
             _wasMainButtonRefreshed = true;
@@ -523,6 +544,8 @@ namespace InGameUi
 
         private void OnWorkDaySkipped(WayToSkip p_skipSource)
         {
+            _audioManager.PlaySpecificSoundEffect(_daySkippedSound);
+            
             _skipDayButton.onClick.RemoveAllListeners();
             SkipDayGo.SetActive(false);
             _skipDayButton.interactable = false;
@@ -556,6 +579,8 @@ namespace InGameUi
 
         private void GatherPointsFromQuest(int p_questIndex, Quest p_quest)
         {
+            _audioManager.PlaySpecificSoundEffect(_onQuestCompletionSound);
+
             p_quest.IsRedeemed = true;
 
             if (p_questIndex == 0)
@@ -601,6 +626,8 @@ namespace InGameUi
 
         private void HandleQuestsCompletion()
         {
+            _audioManager.PlaySpecificSoundEffect(_rankUpSound);
+
             _narratorManager.TryToActivateNarrator(TutorialStep.AfterRankUp_Q16);
 
             _worldManager.CurrentQuests[0].OnCompletion -= HandleFirstQuestCompletion;

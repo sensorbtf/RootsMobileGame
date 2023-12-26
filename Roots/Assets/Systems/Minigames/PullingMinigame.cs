@@ -34,9 +34,9 @@ namespace Minigames
             }
         }
 
-        public override void StartTheGame(Building p_building)
+        public override void SetupGame(Building p_building)
         {
-            base.StartTheGame(p_building);
+            base.SetupGame(p_building);
 
             _destructionRegion = _destructionRegionGo.GetComponent<Collider2D>();
             _score = 0;
@@ -62,7 +62,7 @@ namespace Minigames
             _scoreText.text = $"Score: {_score:F1}";
         }
 
-        public override void StartInteractableMinigame()
+        public override void StartMinigame()
         {
             CreatePrefab();
         }

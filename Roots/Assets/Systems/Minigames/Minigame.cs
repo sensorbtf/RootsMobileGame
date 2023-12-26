@@ -34,7 +34,7 @@ namespace Minigames
         }
 
 
-        public virtual void StartTheGame(Building p_building)
+        public virtual void SetupGame(Building p_building)
         {
             _score = 0;
 
@@ -83,7 +83,7 @@ namespace Minigames
             }
 
             _coutdownText.text = "Start!";
-            StartInteractableMinigame();
+            StartMinigame();
             _isGameActive = true;
             yield return new WaitForSeconds(0.5f);
             _coutdownText.enabled = false;
@@ -91,6 +91,6 @@ namespace Minigames
 
         public abstract void AddScore();
 
-        public abstract void StartInteractableMinigame();
+        public abstract void StartMinigame();
     }
 }

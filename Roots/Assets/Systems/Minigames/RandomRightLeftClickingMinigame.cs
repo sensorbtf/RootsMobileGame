@@ -25,9 +25,9 @@ namespace Minigames
             }
         }
 
-        public override void StartTheGame(Building p_building)
+        public override void SetupGame(Building p_building)
         {
-            base.StartTheGame(p_building);
+            base.SetupGame(p_building);
 
             _score = 0;
 
@@ -40,11 +40,11 @@ namespace Minigames
         public override void AddScore()
         {
             _score += _efficiency;
-            StartInteractableMinigame();
+            StartMinigame();
             _scoreText.text = $"Score: {_score:F1}";
         }
 
-        public override void StartInteractableMinigame()
+        public override void StartMinigame()
         {
             if (Random.Range(0, 2) == 0)
             {

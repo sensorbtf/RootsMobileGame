@@ -1,15 +1,18 @@
 using System;
 using System.Collections.Generic;
+using AudioSystem;
 using Buildings;
 using GeneralSystems;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 namespace InGameUi
 {
     public class BuildingPanel : MonoBehaviour
     {
+        [SerializeField] private AudioManager _audioManager;
         [SerializeField] private BuildingsManager buildingsManager;
         [SerializeField] private WorkersManager _workersManager;
         [SerializeField] private GameObject buildingEntryPrefab;
@@ -18,11 +21,16 @@ namespace InGameUi
         [SerializeField] private Transform contentTransform;
 
         [SerializeField] private TextMeshProUGUI _buildingName;
+        [SerializeField] private TextMeshProUGUI _numberOfWorkers;
+        
+        [Header("Audio")]
+        [SerializeField] private AudioClip _onAssignEffect;
+        [SerializeField] private AudioClip _onUnAssignEffect;
+         
         private List<BuildingData> _buildingsOnInPanelQueue;
         private Dictionary<Building, bool> _builtOrDamagedBuildings;
         private Dictionary<BuildingData, SingleBuildingRefs> _createdUiElements;
         private Dictionary<Building, bool> _influencedBuildings;
-        [SerializeField] private TextMeshProUGUI _numberOfWorkers;
 
         private List<GameObject> _runtimeBuildingsUiToDestroy;
 
@@ -52,10 +60,10 @@ namespace InGameUi
 
         private void ClosePanel()
         {
-            foreach (var createdUiElement in _runtimeBuildingsUiToDestroy) Destroy(createdUiElement);
-
-            CameraController.IsUiOpen = false;
-            GameplayHud.BlockHud = false;
+            _audioManager.PlayButtonSoundEffect(true);
+            
+            foreach (var createdUiElement in _runtimeBuildingsUiToDestroy) 
+                Destroy(createdUiElement);
 
             foreach (var buildingData in _buildingsOnInPanelQueue) BuildingsToShow.TryAdd(buildingData, true);
 
@@ -347,10 +355,12 @@ namespace InGameUi
         {
             if (p_assign)
             {
+                _audioManager.PlaySpecificSoundEffect(_onAssignEffect);
                 HandleStartedBuildingWork(p_refsScript, p_buildingData, p_buildingLevel, p_isBuilt);
             }
             else
             {
+                _audioManager.PlaySpecificSoundEffect(_onUnAssignEffect); 
                 p_refsScript.CreateOrUpgradeBuilding.image.color = Color.green;
                 p_refsScript.CreateOrUpgradeBuilding.interactable = _workersManager.IsAnyWorkerFree();
 
@@ -541,22 +551,22 @@ namespace InGameUi
                 if (!building.IsBeeingUpgradedOrBuilded && !building.IsDamaged)
                     continue;
 
-                if (_builtOrDamagedBuildings.ContainsKey(building))
+                if (_builtOrDamagedBuildings.TryGetValue(building, out var damagedBuilding))
                 {
-                    if (_builtOrDamagedBuildings[building])
-                    {
-                        _workersManager.WorkersInBuilding++;
-                        BuildingsToShow.TryAdd(building.BuildingMainData, false);
-                        addedBuildings.Add(building.BuildingMainData);
-                    }
+                    if (!damagedBuilding) 
+                        continue;
+                    
+                    _workersManager.WorkersInBuilding++;
+                    BuildingsToShow.TryAdd(building.BuildingMainData, false);
+                    addedBuildings.Add(building.BuildingMainData);
                 }
                 else
                 {
-                    if (building.HaveWorker)
-                    {
-                        _workersManager.WorkersInBuilding++;
-                        addedBuildings.Add(building.BuildingMainData);
-                    }
+                    if (!building.HaveWorker) 
+                        continue;
+                    
+                    _workersManager.WorkersInBuilding++;
+                    addedBuildings.Add(building.BuildingMainData);
                 }
             }
 
@@ -567,10 +577,10 @@ namespace InGameUi
 
         public bool WillBuildingBeCancelled(Building p_building, out bool p_wasOnList)
         {
-            if (_builtOrDamagedBuildings.ContainsKey(p_building))
+            if (_builtOrDamagedBuildings.TryGetValue(p_building, out var building))
             {
                 p_wasOnList = true;
-                return !_builtOrDamagedBuildings[p_building];
+                return !building;
             }
 
             p_wasOnList = false;

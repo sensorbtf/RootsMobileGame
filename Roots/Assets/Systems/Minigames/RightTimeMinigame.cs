@@ -78,9 +78,9 @@ namespace Minigames
             _timeText.text = $"Click to collect: {_score:F1} resource points";
         }
 
-        public override void StartTheGame(Building p_building)
+        public override void SetupGame(Building p_building)
         {
-            base.StartTheGame(p_building);
+            base.SetupGame(p_building);
     
             _currentMovementSpeed = _moveSpeed;
 
@@ -125,7 +125,7 @@ namespace Minigames
         }
 
 
-        public override void StartInteractableMinigame()
+        public override void StartMinigame()
         {
             _collectPointsButton.interactable = true;
         }

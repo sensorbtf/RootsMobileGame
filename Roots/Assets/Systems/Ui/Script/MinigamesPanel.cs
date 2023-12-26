@@ -48,7 +48,7 @@ namespace InGameUi
                         rightMinigame = minigame._minigame;
                         _currentMinigame = Instantiate(rightMinigame, _minigamesPanelGo.transform);
                         _currentMinigameScript = _currentMinigame.GetComponent<Minigame>();
-                        _currentMinigameScript.StartTheGame(p_building);
+                        _currentMinigameScript.SetupGame(p_building);
                         _currentMinigameScript.OnMiniGamePointsCollected += CollectPointsFromMinigame;
                         _currentMinigameScript.OnMinigameEnded += GoBackToSpecificPanel;
 

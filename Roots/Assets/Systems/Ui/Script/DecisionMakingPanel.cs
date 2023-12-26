@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using AudioSystem;
 using Buildings;
 using GameManager;
 using GeneralSystems;
@@ -11,6 +12,7 @@ namespace InGameUi
 {
     public class DecisionMakingPanel : MonoBehaviour
     {
+        [SerializeField] private AudioManager _audioManager;
         [SerializeField] private NarratorManager _narratorManager;
         [SerializeField] private MainGameManager _gameManager;
         [SerializeField] private WorldManager _worldManager;
@@ -48,12 +50,20 @@ namespace InGameUi
 
             if (p_shouldOfferLoginGift)
             {
-                _uiReferences.YesButton.onClick.AddListener(() => HandleDestinyShardsGift());
+                _uiReferences.YesButton.onClick.AddListener(delegate
+                {
+                    _audioManager.PlayButtonSoundEffect(_uiReferences.YesButton.interactable);
+                    HandleDestinyShardsGift();
+                });
                 _uiReferences.YesButtonText.text = $"Collect {_gameManager.GetDailyReward} Destiny Shards";
             }
             else
             {
-                _uiReferences.YesButton.onClick.AddListener(() => HandleTurnOnOff(false));
+                _uiReferences.YesButton.onClick.AddListener(delegate
+                {
+                    _audioManager.PlayButtonSoundEffect(_uiReferences.YesButton.interactable);
+                    HandleTurnOnOff(false);
+                });
                 _uiReferences.YesButtonText.text = "Continue";
             }
         }
@@ -71,7 +81,11 @@ namespace InGameUi
             var hasCompletedMission = p_won && _worldManager.AreResourcesEnough();
 
             _uiReferences.YesButtonText.text = hasCompletedMission ? "Start New Mission" : "Try Again";
-            _uiReferences.YesButton.onClick.AddListener(() => DealWithStormEffects(hasCompletedMission));
+            _uiReferences.YesButton.onClick.AddListener(delegate
+            {
+                _audioManager.PlayButtonSoundEffect(_uiReferences.YesButton.interactable);
+                DealWithStormEffects(hasCompletedMission);
+            });
             _uiReferences.YesButton.interactable = true;
             
             _uiReferences.YesButtonGo.gameObject.SetActive(true);
@@ -91,9 +105,17 @@ namespace InGameUi
             _uiReferences.NoButtonGo.gameObject.SetActive(true);
             _uiReferences.YesButtonGo.gameObject.SetActive(true);
             
-            _uiReferences.YesButton.onClick.AddListener(() => HandleLeaveEffects(true));
+            _uiReferences.YesButton.onClick.AddListener(delegate
+            {
+                _audioManager.PlayButtonSoundEffect(_uiReferences.YesButton.interactable);
+                HandleLeaveEffects(true);
+            });
             _uiReferences.YesButtonText.text = "Continue";
-            _uiReferences.NoButton.onClick.AddListener(() => HandleLeaveEffects(false));
+            _uiReferences.NoButton.onClick.AddListener(delegate
+            {
+                _audioManager.PlayButtonSoundEffect(_uiReferences.NoButton.interactable);
+                HandleLeaveEffects(false);
+            });
             _uiReferences.NoButtonText.text = "Offer Destiny Shards for least damages";
         }
 
@@ -107,9 +129,17 @@ namespace InGameUi
             _uiReferences.NoButtonGo.gameObject.SetActive(true);
             _uiReferences.YesButtonGo.gameObject.SetActive(true);
             
-            _uiReferences.YesButton.onClick.AddListener(() => HandleLeaveDecision(true));
+            _uiReferences.YesButton.onClick.AddListener(delegate
+            {
+                _audioManager.PlayButtonSoundEffect(_uiReferences.YesButton.interactable);
+                HandleLeaveDecision(true);
+            });
             _uiReferences.YesButtonText.text = "Yes, leave everything for monsters";
-            _uiReferences.NoButton.onClick.AddListener(() => HandleLeaveDecision(false));
+            _uiReferences.NoButton.onClick.AddListener(delegate
+            {
+                _audioManager.PlayButtonSoundEffect(_uiReferences.NoButton.interactable);
+                HandleLeaveDecision(false);
+            });
             _uiReferences.NoButtonText.text = "No, keep working.";
         }
 
@@ -139,6 +169,17 @@ namespace InGameUi
             _narratorManager.TryToActivateNarrator(TutorialStep.OnMissionRestart_Q20);
             HandleTurnOnOff(false);
         }
+        private void HandleDestinyShardsGift()
+        {
+            _gameManager.HandleLoginReward();
+            _uiReferences.YesButton.onClick.RemoveAllListeners();
+            _uiReferences.YesButton.onClick.AddListener(delegate
+            {
+                _audioManager.PlayButtonSoundEffect(_uiReferences.YesButton.interactable);
+                HandleTurnOnOff(false);
+            });
+            _uiReferences.YesButtonText.text = "Continue";
+        }
 
         private void HandleTurnOnOff(bool p_setting)
         {
@@ -147,12 +188,5 @@ namespace InGameUi
             CameraController.IsUiOpen = p_setting;
         }
         
-        private void HandleDestinyShardsGift()
-        {
-            _gameManager.HandleLoginReward();
-            _uiReferences.YesButton.onClick.RemoveAllListeners();
-            _uiReferences.YesButton.onClick.AddListener(() => HandleTurnOnOff(false));
-            _uiReferences.YesButtonText.text = "Continue";
-        }
     }
 }

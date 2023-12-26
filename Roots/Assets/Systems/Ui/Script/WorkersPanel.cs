@@ -65,33 +65,14 @@ namespace InGameUi
             if (p_currentState == DuringDayState.SettingWorkers)
                 ActivatePanel();
         }
-
-        private void TryToOpenNarrator()
-        {
-            if (_narratorManager.CurrentTutorialStep == TutorialStep.OnMissionRestart_Q20)
-            {
-                _narratorManager.TryToActivateNarrator(TutorialStep.OnWorkersPanelOpenAfterRestart_Q21);
-                _godsButton.gameObject.SetActive(true);
-            }
-            else
-            {
-                _godsButton.gameObject.SetActive(false);
-            }
-            
-            _narratorManager.TryToActivateNarrator(TutorialStep.OnFourthWorkingPanelOpen_Q11);
-            _narratorManager.TryToActivateNarrator(TutorialStep.OnThirdWorkingPanelOpen_Q7);
-            _narratorManager.TryToActivateNarrator(TutorialStep.OnSecondWorkingPanelOpen_Q3);
-            _narratorManager.TryToActivateNarrator(TutorialStep.OnFirstWorkingPanelOpen_Q2);
-            _narratorManager.TryToActivateNarrator(TutorialStep.OnGameStarted_Q1);
-        }
-
+        
         private void ActivatePanel()
         {
+            TryToOpenNarrator();
+            
             gameObject.SetActive(true);
             GameplayHud.BlockHud = true;
             CameraController.IsUiOpen = true;
-
-            TryToOpenNarrator();
             
             _tabName.text = "Worker Displacement";
             
@@ -267,7 +248,8 @@ namespace InGameUi
         
         private void ClosePanel()
         {
-            foreach (var createdUiElement in _runtimeBuildingsUiToDestroy) Destroy(createdUiElement);
+            foreach (var createdUiElement in _runtimeBuildingsUiToDestroy) 
+                Destroy(createdUiElement);
 
             _runtimeBuildingsUiToDestroy.Clear();
             CameraController.IsUiOpen = false;
@@ -326,6 +308,25 @@ namespace InGameUi
                 _activateButtonText.text = "Set workers to work";
                 _activateButton.interactable = false;
             }
+        }
+        
+        private void TryToOpenNarrator()
+        {
+            if (_narratorManager.CurrentTutorialStep == TutorialStep.OnMissionRestart_Q20)
+            {
+                _narratorManager.TryToActivateNarrator(TutorialStep.OnWorkersPanelOpenAfterRestart_Q21);
+                _godsButton.gameObject.SetActive(true);
+            }
+            else
+            {
+                _godsButton.gameObject.SetActive(false);
+            }
+            
+            _narratorManager.TryToActivateNarrator(TutorialStep.OnFourthWorkingPanelOpen_Q11);
+            _narratorManager.TryToActivateNarrator(TutorialStep.OnThirdWorkingPanelOpen_Q7);
+            _narratorManager.TryToActivateNarrator(TutorialStep.OnSecondWorkingPanelOpen_Q3);
+            _narratorManager.TryToActivateNarrator(TutorialStep.OnFirstWorkingPanelOpen_Q2);
+            _narratorManager.TryToActivateNarrator(TutorialStep.OnGameStarted_Q1);
         }
     }
 }

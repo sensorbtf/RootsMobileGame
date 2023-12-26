@@ -69,7 +69,7 @@ namespace World
             }
             else
             {
-                HandleNewDayStarted(true);
+                HandleNewDayStarted(CurrentDay != 1);
 
                 if (!_buildingsManager.IsAnyBuildingNonGathered())
                     CheckResourcePoints();

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using AudioSystem;
+using GeneralSystems;
 using Narrator;
 using TMPro;
 using UnityEngine;
@@ -12,6 +13,8 @@ namespace InGameUi
 {
     public class NarratorPanel : MonoBehaviour
     {
+        [Header("System refs")]
+        [SerializeField] private UiManager _uiManager;
         [SerializeField] private AudioManager _audioManager;
         [SerializeField] private NarratorManager _narratorManager;
         [SerializeField] private GameObject _viniete;
@@ -20,10 +23,14 @@ namespace InGameUi
         [SerializeField] private Button OnOffButton;
         [SerializeField] private Image ButtonImage;
         
+        [Header("Sprites")]
         [SerializeField] private Sprite HideUiSprite;
         [SerializeField] private Sprite ShowUiSprite;
         [SerializeField] private Sprite MoreSprite;
+        
+        [Header("Audio Clips")]
         [SerializeField] private AudioClip _soundEffect;
+        [SerializeField] private AudioClip _unrollingPaper;
         
         [SerializeField] private Vector3 _startPosition;
         [SerializeField] private Vector3 _endPosition;
@@ -31,7 +38,7 @@ namespace InGameUi
         [SerializeField] private float _typingSpeed = 0.05f;
 
         [SerializeField] private TutorialTexts[] TutorialTexts;
-        
+
         private Coroutine _typingCoroutine;
 
         private void Start()
@@ -49,16 +56,24 @@ namespace InGameUi
             _narratorManager.OnTutorialAdvancement -= ActivateNarrator;
         }
 
-        public void ActivateNarrator(bool p_show)
+        private void ActivateNarrator(bool p_show)
         {
             if (p_show)
             {
-                ShowAndMovePanel(true);
+                ShowAndMovePanel(true, false);
             }
         }
 
-        private void ShowAndMovePanel(bool p_shouldType)
+        private void ShowAndMovePanel(bool p_shouldType, bool p_shouldButtonClick = true)
         {
+            CameraController.IsUiOpen = true;
+            _viniete.SetActive(true);
+            
+            if (p_shouldButtonClick)
+            {
+                _audioManager.PlayButtonSoundEffect(OnOffButton.interactable);
+            }
+
             StartCoroutine(MoveUI(_startPosition, p_shouldType));
 
             if (GetCurrentText().Text.Length == _narratorManager.CurrentSubText + 1)
@@ -77,6 +92,8 @@ namespace InGameUi
 
         private void HideAndMovePanel()
         {
+            _audioManager.PlayButtonSoundEffect(OnOffButton.interactable);
+            
             if (_typingCoroutine != null) 
             {
                 SkipTyping();
@@ -88,11 +105,14 @@ namespace InGameUi
                 OnOffButton.onClick.AddListener(delegate { ShowAndMovePanel(false); });
                 ButtonImage.sprite = ShowUiSprite;
                 _viniete.SetActive(false);
+                CameraController.IsUiOpen = _uiManager.IsAnyPanelOpen();
             }
         }
 
         private void GetNextText()
         {
+            _audioManager.PlayButtonSoundEffect(OnOffButton.interactable);
+            
             if (_typingCoroutine != null) 
             {
                 SkipTyping();
@@ -119,6 +139,7 @@ namespace InGameUi
                 Text.text = "";
             }
             
+            _audioManager.PlaySpecificSoundEffect(_unrollingPaper);
             float elapsed = 0;
             Vector3 initialPosition = gameObject.transform.localPosition;
 

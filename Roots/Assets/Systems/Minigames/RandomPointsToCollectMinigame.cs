@@ -32,9 +32,9 @@ namespace Minigames
             }
         }
 
-        public override void StartTheGame(Building p_building)
+        public override void SetupGame(Building p_building)
         {
-            base.StartTheGame(p_building);
+            base.SetupGame(p_building);
             _maxObjectToInstantiateInOnetime = Mathf.FloorToInt(p_building.BuildingMainData.Technology
                 .DataPerTechnologyLevel[p_building.CurrentTechnologyLvl].Efficiency);
             
@@ -74,7 +74,7 @@ namespace Minigames
             _scoreText.text = $"Score: {_score:F1}";
         }
 
-        public override void StartInteractableMinigame()
+        public override void StartMinigame()
         {
             for (int i = 0; i < _maxObjectToInstantiateInOnetime; i++)
             {

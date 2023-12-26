@@ -9,18 +9,36 @@ namespace Buildings
 {
     public class BuildingsManager : MonoBehaviour
     {
-        [SerializeField] private AudioManager _audioManager; // need to extend
-        [SerializeField] private GodsManager _godsManager; // need to extend
-        [SerializeField] private WorkersManager _workersManager; // need to extend
-        [SerializeField] private BuildingTransforms[] _placesForBuildings; // need to extend
+        [Header("System References")]
+        [SerializeField] private AudioManager _audioManager;
+        [SerializeField] private GodsManager _godsManager;
+        [SerializeField] private WorkersManager _workersManager;
+        [SerializeField] private BuildingTransforms[] _placesForBuildings;
         [SerializeField] private BuildingDatabase _buildingsDatabase;
         [SerializeField] private int _startingDestinyPoints = 50;
 
+        [Header("Icons")]
         public Sprite DefenseAndResourcesPointsIcon;
         public Sprite ResourcesPointsIcon;
         public Sprite DefensePointsIcon;
         public Sprite ShardsOfDestinyIcon;
         public Sprite FinishBuildingIcon;
+        
+        [Header("Audio Clips")]
+        [SerializeField] private AudioClip _buildingFinishedEffect;
+        [SerializeField] private AudioClip CottageSoundEffect;
+        [SerializeField] private AudioClip FarmSoundEffect;
+        [SerializeField] private AudioClip GuardTowerSoundEffect;
+        [SerializeField] private AudioClip WoodcutterSoundEffect;
+        [SerializeField] private AudioClip Alchemical_HutSoundEffect;
+        [SerializeField] private AudioClip Mining_ShaftSoundEffect;
+        [SerializeField] private AudioClip Ritual_CircleSoundEffect;
+        [SerializeField] private AudioClip Peat_ExcavationSoundEffect;
+        [SerializeField] private AudioClip Charcoal_PileSoundEffect;
+        [SerializeField] private AudioClip Herbs_GardenSoundEffect;
+        [SerializeField] private AudioClip ApiarySoundEffect;
+        [SerializeField] private AudioClip Woodworking_StationSoundEffect;
+        [SerializeField] private AudioClip Sacrificial_AltarSoundEffect;
 
         [HideInInspector] public List<BuildingData> UnlockedBuildings;
         [HideInInspector] public List<Building> CompletlyNewBuildings;
@@ -119,13 +137,13 @@ namespace Buildings
                 building.TryToHighlight();
             }
 
-            if (!_tutorialStarted)
+            if (_tutorialStarted) 
+                return;
+            
+            if (ShouldStartTutorial())
             {
-                if (ShouldStartTutorial())
-                {
-                    OnTutorialStart?.Invoke();
-                    _tutorialStarted = true;
-                }  
+                OnTutorialStart?.Invoke();
+                _tutorialStarted = true;
             }
         }
 
@@ -323,6 +341,8 @@ namespace Buildings
 
         private void PublishBuildingRepaired(Building p_building)
         {
+            _audioManager.PlaySpecificSoundEffect(_buildingFinishedEffect);
+            
             AssignWorker(p_building, false);
             OnBuildingStateChanged?.Invoke(p_building);
             OnBuildingRepaired?.Invoke(p_building);
@@ -330,6 +350,8 @@ namespace Buildings
 
         private void PublishBuildingBuiltEvent(Building p_building, bool p_unassignWorkers)
         {
+            _audioManager.PlaySpecificSoundEffect(_buildingFinishedEffect);
+            
             if (p_building.BuildingMainData.LevelToEnableMinigame == p_building.CurrentLevel)
                 BuildingWithEnabledMinigame.Add(p_building);
 
@@ -362,9 +384,11 @@ namespace Buildings
 
         private void HandleBuildingClicked(Building p_building)
         {
+            _audioManager.PlaySpecificSoundEffect(GetRightSoundEffect(p_building.BuildingMainData.Type));
+            
             OnBuildingClicked?.Invoke(p_building);
         }
-
+        
         public void AssignWorker(Building p_building, bool p_assign)
         {
             if ((p_assign && p_building.HaveWorker) || (!p_assign && !p_building.HaveWorker))
@@ -419,8 +443,6 @@ namespace Buildings
             {
                 building.HaveWorker = false;
                 building.IsProtected = false;
-
-                // any way of attacking 
             }
         }
         
@@ -463,10 +485,45 @@ namespace Buildings
             return _buildingsDatabase.allBuildings.Find(x => x.Type == p_building).Icon;
         }
         
-        public bool ShouldStartTutorial()
+        private bool ShouldStartTutorial()
         {
             return CurrentBuildings.Count == 1 && CurrentBuildings
                 .First(x => x.BuildingMainData.Type == BuildingType.Cottage).IsDamaged;
+        }
+        
+        private AudioClip GetRightSoundEffect(BuildingType p_type)
+        {
+            switch (p_type)
+            {
+                case BuildingType.Cottage:
+                    return CottageSoundEffect;
+                case BuildingType.Farm:
+                    return FarmSoundEffect;
+                case BuildingType.GuardTower:
+                    return GuardTowerSoundEffect;
+                case BuildingType.Woodcutter:
+                    return WoodcutterSoundEffect;
+                case BuildingType.Alchemical_Hut:
+                    return Alchemical_HutSoundEffect;
+                case BuildingType.Mining_Shaft:
+                    return Mining_ShaftSoundEffect;
+                case BuildingType.Ritual_Circle:
+                    return Ritual_CircleSoundEffect;
+                case BuildingType.Peat_Excavation:
+                    return Peat_ExcavationSoundEffect;
+                case BuildingType.Charcoal_Pile:
+                    return Charcoal_PileSoundEffect;
+                case BuildingType.Herbs_Garden:
+                    return Herbs_GardenSoundEffect;
+                case BuildingType.Apiary:
+                    return ApiarySoundEffect;
+                case BuildingType.Woodworking_Station:
+                    return Woodworking_StationSoundEffect;
+                case BuildingType.Sacrificial_Altar:
+                    return Sacrificial_AltarSoundEffect;
+            }
+
+            return null;
         }
 
         #region PointsManipulation

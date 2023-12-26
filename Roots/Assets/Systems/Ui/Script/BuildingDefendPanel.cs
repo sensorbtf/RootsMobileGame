@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using AudioSystem;
 using Buildings;
 using GeneralSystems;
 using Narrator;
@@ -13,21 +14,26 @@ namespace InGameUi
 {
     public class BuildingDefendPanel : MonoBehaviour
     {
-        [FormerlySerializedAs("_buildingManager")] [SerializeField]
-        private BuildingsManager buildingsManager;
-
+        [Header("System Refs")] 
+        [SerializeField] private BuildingsManager buildingsManager;
+        [SerializeField] private AudioManager _audioManager;
         [SerializeField] private NarratorManager _narratorManager;
         [SerializeField] private WorkersManager _workersManager;
         [SerializeField] private WorldManager _worldManager;
+        
+        [Header("Object Refs")] 
         [SerializeField] private GameObject _buildingEntryPrefab;
         [SerializeField] private GameObject _endAssigningGo;
         [SerializeField] private Transform contentTransform;
-
-        private Button _endAssigmentButton;
         [SerializeField] private TextMeshProUGUI _numberOfWorkers;
-
         [SerializeField] private TextMeshProUGUI _panelTitle;
 
+        [Header("Sounds")] 
+        [SerializeField] private AudioClip _defendBuildingSound;
+        [SerializeField] private AudioClip _undefendBuilding;
+        
+        private Button _endAssigmentButton;
+        
         private List<GameObject> _runtimeBuildingsUiToDestroy;
 
         private void Start()
@@ -48,6 +54,8 @@ namespace InGameUi
 
         private void ClosePanel()
         {
+            _audioManager.PlayButtonSoundEffect(_endAssigmentButton.interactable);
+            
             foreach (var createdUiElement in _runtimeBuildingsUiToDestroy) 
                 Destroy(createdUiElement);
 
@@ -118,11 +126,13 @@ namespace InGameUi
         {
             if (p_scriptDefendToggle.isOn)
             {
+                _audioManager.PlaySpecificSoundEffect(_defendBuildingSound);
                 _workersManager.WorkersDefending++;
                 p_building.IsProtected = true;
             }
             else
             {
+                _audioManager.PlaySpecificSoundEffect(_undefendBuilding);
                 _workersManager.WorkersDefending--;
                 p_building.IsProtected = false;
             }
