@@ -25,6 +25,7 @@ namespace InGameUi
 
         [SerializeField] private TextMeshProUGUI _muteMusicText;
         [SerializeField] private TextMeshProUGUI _muteEffectText;
+        [SerializeField] private TextMeshProUGUI _resetWorldText;
 
         private void Start()
         {
@@ -32,13 +33,32 @@ namespace InGameUi
 
             HandleSoundSettings();
 
-            _resetGameButton.onClick.AddListener(ResetGame);
-            _backButton.onClick.AddListener(ClosePanel);
+            _resetGameButton.onClick.AddListener(delegate
+            {
+                _audioManager.PlayButtonSoundEffect(_resetGameButton.interactable);
+                ChangeResetButton(true);
+            });
+            
+            _backButton.onClick.AddListener(delegate
+            {
+                _audioManager.PlayButtonSoundEffect(_backButton.interactable);
+                ClosePanel();
+            });
             _muteMusic.onValueChanged.AddListener(MuteMusic);
             _muteEffect.onValueChanged.AddListener(MuteEffects);
+            _englishLanguage.onClick.AddListener(delegate
+            {
+                _audioManager.PlayButtonSoundEffect(true);
+                ChangeLanguage(Languages.English);
+            });
+            _polishLanguage.onClick.AddListener(delegate
+            {
+                _audioManager.PlayButtonSoundEffect(true);
+                ChangeLanguage(Languages.Polish);
+            });
             
-            _englishLanguage.onClick.AddListener(delegate { ChangeLanguage(Languages.English); });
-            _polishLanguage.onClick.AddListener(delegate { ChangeLanguage(Languages.Polish); });
+            ChangeResetButton(false);
+            ChangeLanguage((Languages)PlayerPrefs.GetInt("Setting_Language", 0));
         }
 
         public void OpenPanel()
@@ -57,8 +77,36 @@ namespace InGameUi
             gameObject.SetActive(false);
         }
 
+        private void ChangeResetButton(bool p_enableReset)
+        {
+            if (p_enableReset)
+            {
+                _resetWorldText.text = "Confirm";
+                
+                _resetGameButton.onClick.RemoveAllListeners();
+                _resetGameButton.onClick.AddListener(delegate
+                {
+                    _audioManager.PlayButtonSoundEffect(_resetGameButton.interactable);
+                    ResetGame();
+                });
+            }
+            else
+            {
+                _resetWorldText.text = "Delete Save";
+                
+                _resetGameButton.onClick.RemoveAllListeners();
+                _resetGameButton.onClick.AddListener(delegate
+                {
+                    _audioManager.PlayButtonSoundEffect(_resetGameButton.interactable);
+                    ChangeResetButton(true);
+                });
+            }
+        }
+
         private void MuteMusic(bool p_isToggleOn)
         {
+            _audioManager.PlayButtonSoundEffect(_muteMusic.interactable);
+            
             _audioManager.MuteMusic(p_isToggleOn);
             _muteMusicText.text = p_isToggleOn ? "On" : "Off";
 
@@ -68,6 +116,8 @@ namespace InGameUi
 
         private void MuteEffects(bool p_isToggleOn)
         {
+            _audioManager.PlayButtonSoundEffect(_muteEffect.interactable);
+            
             _audioManager.MuteEffects(p_isToggleOn);
             _muteEffectText.text = p_isToggleOn ? "On" : "Off";
 
@@ -96,6 +146,7 @@ namespace InGameUi
         private void ChangeLanguage(Languages p_language)
         {
             _gameManager.ChangeLocale(p_language);
+            PlayerPrefs.SetInt("Setting_Language", (int)p_language);
         }
     }
 

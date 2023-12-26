@@ -391,8 +391,8 @@ GameObject:
   m_Component:
   - component: {fileID: 15667955}
   - component: {fileID: 15667957}
-  - component: {fileID: 15667956}
   - component: {fileID: 15667958}
+  - component: {fileID: 15667956}
   m_Layer: 5
   m_Name: NarratorPanel
   m_TagString: Untagged
@@ -3266,6 +3266,7 @@ MonoBehaviour:
   _polishLanguage: {fileID: 618097724}
   _muteMusicText: {fileID: 1365728492}
   _muteEffectText: {fileID: 189546685}
+  _resetWorldText: {fileID: 679190535}
 --- !u!114 &258470498 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7270523348980877802, guid: cd267607c50d02d46976326ae5ec7af6, type: 3}
@@ -16611,19 +16612,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1667203060}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: InGameUi.BuildingPanel, InGameUiAssembly
-        m_MethodName: BackToWorkerTab
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1667203060
 MonoBehaviour:
   m_ObjectHideFlags: 0
