@@ -45,7 +45,7 @@ namespace Minigames
 
         public override void AddScore()
         {
-            var realEfficiency = _slider.value / _efficiency;
+            var realEfficiency = _slider.maxValue / _efficiency;
             _slider.value += realEfficiency;
             _score += realEfficiency;
             StartMinigame();

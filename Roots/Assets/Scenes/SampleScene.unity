@@ -416,10 +416,10 @@ RectTransform:
   - {fileID: 2141746231}
   m_Father: {fileID: 13890662}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 1}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 0, y: 0.5}
   m_AnchoredPosition: {x: -560, y: 387}
-  m_SizeDelta: {x: 650, y: -1520}
+  m_SizeDelta: {x: 650, y: 400}
   m_Pivot: {x: 0, y: 0.5}
 --- !u!114 &15667956
 MonoBehaviour:
@@ -5136,9 +5136,9 @@ MonoBehaviour:
   StormHandle: {fileID: 1340976675}
   RankGo: {fileID: 885037038}
   NormalHandleImage: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
-  LightingHandleImage: {fileID: -894095381526335850, guid: f38eb4982aaf4ba4e8781391b6a582e1, type: 3}
+  LightingHandleImage: {fileID: 21300000, guid: f38eb4982aaf4ba4e8781391b6a582e1, type: 3}
   NormalDay: {r: 1, g: 0.7139205, b: 0, a: 1}
-  StormDay: {r: 0.17653276, g: 0, b: 0.7830189, a: 0}
+  StormDay: {r: 0.17653276, g: 0, b: 0.7830189, a: 1}
   SkipDayGo: {fileID: 1655497}
   EndMissionGo: {fileID: 1326116410}
   EndDayGo: {fileID: 280330243}
@@ -5578,8 +5578,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d7abd704c1a3ec249b50f0a36861a542, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  zoomOutMin: 80
-  zoomOutMax: 100
+  zoomOutMin: 100
+  zoomOutMax: 120
   zoomSpeed: 2
   zoomOutFactor: 4
   leftBoundaryObject: {fileID: 637016238}
@@ -13494,8 +13494,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: -25}
-  m_SizeDelta: {x: 20, y: -50}
+  m_AnchoredPosition: {x: 0, y: -59.352783}
+  m_SizeDelta: {x: 53.6948, y: -1.5315}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1340976677
 MonoBehaviour:
@@ -13517,7 +13517,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 21300000, guid: f38eb4982aaf4ba4e8781391b6a582e1, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -78579,6 +78579,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _narratorManager: {fileID: 394808267}
   buildingsManager: {fileID: 7728127175900293271}
+  _gameManager: {fileID: 1423804878}
   _buildingIconPrefab: {fileID: 6617740715642735727, guid: 4e1c4ef5ae3b8dc40b225f356d41bce9, type: 3}
   _goBackGo: {fileID: 1341489167}
   _lvlUpGo: {fileID: 372348625}

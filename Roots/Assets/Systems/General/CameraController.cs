@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -48,17 +49,12 @@ namespace GeneralSystems
         {
             HandleZoomRestoration();
             CheckGoDetection();
-
+            
             if (_startedOnGo)
+            {
                 return;
-
-            if (!isDragging && EventSystem.current.IsPointerOverGameObject())
-                return;
-
-            if (!isDragging && Input.touchCount > 0 &&
-                EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId))
-                return;
-
+            }
+            
             if (IsUiOpen)
             {
                 if (!WasZoomedIn)
@@ -76,22 +72,67 @@ namespace GeneralSystems
             HandleCameraBoundaries();
             HandleInputBasedZoom();
         }
+        
+        private bool IsPointerOverUIObjectOnLayer(string layerName)
+        {
+            // Check for both mouse and touch input
+            Vector2 inputPosition;
+            if (Input.GetMouseButton(0)) // If there's a mouse click
+            {
+                inputPosition = Input.mousePosition;
+            }
+            else if (Input.touchCount > 0) // If there's a touch input
+            {
+                inputPosition = Input.GetTouch(0).position;
+            }
+            else
+            {
+                return false; // No input detected
+            }
+
+            PointerEventData pointerData = new PointerEventData(EventSystem.current)
+            {
+                position = inputPosition
+            };
+
+            List<RaycastResult> results = new List<RaycastResult>();
+            EventSystem.current.RaycastAll(pointerData, results);
+
+            foreach (RaycastResult result in results)
+            {
+                if (result.gameObject.layer == LayerMask.NameToLayer(layerName))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
 
         private void CheckGoDetection()
         {
             if (!_startedOnGo)
             {
-                if (Input.GetMouseButtonDown(0) ||
-                    (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began))
+                if (Input.GetMouseButtonDown(0) || (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began))
                 {
+                    if (IsPointerOverUIObjectOnLayer("UI"))
+                    {
+                        _startedOnGo = true;
+                        return;
+                    }
+
                     var inputPosition = Input.GetMouseButton(0) ? new Vector2(Input.mousePosition.x, Input.mousePosition.y) : new Vector2(Input.GetTouch(0).position.x, Input.GetTouch(0).position.y);
                     var ray = Camera.main.ScreenPointToRay(inputPosition);
 
-                    var hit = Physics2D.Raycast(ray.origin, ray.direction);    
+                    RaycastHit2D hit = Physics2D.Raycast(ray.origin, ray.direction);
 
                     if (hit.collider != null)
                     {
-                        _startedOnGo = true;
+                        if (hit.collider.gameObject.layer == LayerMask.NameToLayer("UI"))
+                        {
+                            _startedOnGo = true;
+                        }
                     }
                 }
             }
@@ -104,6 +145,7 @@ namespace GeneralSystems
                 }
             }
         }
+
         private void HandleCameraMovementAndZoom()
         {
             if (Input.GetMouseButtonDown(0))

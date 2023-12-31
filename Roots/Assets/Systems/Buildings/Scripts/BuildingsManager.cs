@@ -48,6 +48,8 @@ namespace Buildings
         [HideInInspector] public List<Building> BuildingsToGatherFrom;
         [HideInInspector] public List<Building> BuildingsWithTechnologyUpgrade;
 
+        #region Properties
+
         private int _resourcesStoredInBasement;
         private bool _tutorialStarted = false;
         public List<Building> CurrentBuildings { get; private set; }
@@ -101,6 +103,8 @@ namespace Buildings
         public event Action<int, bool> OnDestinyShardsPointsChange;
         
         public event Action OnTutorialStart;
+        
+        #endregion
 
         public void StartOnWorld(bool p_willBeLoaded)
         {
@@ -262,7 +266,7 @@ namespace Buildings
             return true;
         }
 
-        private void HandleBuiltOfBuilding(BuildingData p_buildingData, bool p_instant)
+        public void HandleBuiltOfBuilding(BuildingData p_buildingData, bool p_instant)
         {
             if (CurrentBuildings.Any(x => x.BuildingMainData.Type == p_buildingData.Type))
                 return;

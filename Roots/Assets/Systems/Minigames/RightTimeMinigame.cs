@@ -72,10 +72,11 @@ namespace Minigames
         private void EndGame()
         {
             _buttonToClick.interactable = false;
-            
+            _collectPointsButton.interactable = true;
+
             _timer = 0;
             _isGameActive = false;
-            _timeText.text = $"Click to collect: {_score:F1} resource points";
+            _timeText.text = $"Click to collect: {_score:F0} resource points";
         }
 
         public override void SetupGame(Building p_building)
@@ -127,7 +128,7 @@ namespace Minigames
 
         public override void StartMinigame()
         {
-            _collectPointsButton.interactable = true;
+            _collectPointsButton.interactable = false;
         }
     }
 }

@@ -47,6 +47,7 @@ namespace GameManager
         private DateTime _giftTakenTime;
         private bool _shouldMakeGiftViable;
         private int _loginDay;
+        private int _minigamesPlayed;
         private bool _isLanguageChangeHappening;
         
         public int FreeSkipsLeft { get; private set; }
@@ -60,6 +61,29 @@ namespace GameManager
         public string TimePassed { get; private set; }
 
         public bool CanUseSkipByTime { get; private set; }
+        public bool CanPlayMinigame 
+        {
+            get
+            {
+                int cottageLevel = _buildingsManager.GetSpecificBuilding(BuildingType.Cottage).CurrentLevel;
+                int maxMinigamesAllowed;
+
+                if (cottageLevel < 10)
+                {
+                    maxMinigamesAllowed = 1;
+                }
+                else if (cottageLevel <= 20)
+                {
+                    maxMinigamesAllowed = 2;
+                }
+                else
+                {
+                    maxMinigamesAllowed = 3;
+                }
+
+                return _minigamesPlayed < maxMinigamesAllowed;  
+            }
+        }
         public int GetDailyReward => _everyDayReward[_loginDay].DestinyShardsAmount;
 
         public event Action<bool> OnPlayerCameBack;
@@ -73,7 +97,7 @@ namespace GameManager
             _savingManager.OnAuthenticationEnded += () => StartCoroutine(CustomStart());
 
             _lightManager.SetTimers(_oneDayTimerDurationInSeconds / 2f, _oneDayTimerDurationInSeconds);
-            
+            _minigamesPlayed = 0;
             var language = PlayerPrefs.GetInt("Saved_Language", 0);
             ChangeLocale((Languages)language);
         }
@@ -209,7 +233,11 @@ namespace GameManager
 
             switch (p_newState)
             {
+                case DuringDayState.SettingWorkers:
+                    OnMinigameActivity(false);
+                    break;
                 case DuringDayState.WorkDayFinished:
+                    InitiateSaving();
                     break;
                 case DuringDayState.DayPassing:
                     _audioManager.PlaySpecificSoundEffect(_newDayStarted);
@@ -346,6 +374,18 @@ namespace GameManager
         }
 
         #endregion
+        
+        public void OnMinigameActivity(bool p_anotherMinigamePlayed)
+        {
+            if (p_anotherMinigamePlayed)
+            {
+                _minigamesPlayed += 1;
+            }
+            else
+            {
+                _minigamesPlayed = 0;
+            }
+        }
         
         public void ChangeLocale(Languages p_language)
         {

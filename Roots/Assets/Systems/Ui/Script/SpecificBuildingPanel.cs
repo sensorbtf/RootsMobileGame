@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Buildings;
+using GameManager;
 using GeneralSystems;
 using Narrator;
 using TMPro;
@@ -14,6 +15,8 @@ namespace InGameUi
     {
         [SerializeField] private NarratorManager _narratorManager;
         [SerializeField] private BuildingsManager buildingsManager;
+        [SerializeField] private MainGameManager _gameManager;
+        
         [SerializeField] private GameObject _buildingIconPrefab;
         [SerializeField] private GameObject _goBackGo;
         [SerializeField] private GameObject _lvlUpGo;
@@ -92,7 +95,7 @@ namespace InGameUi
 
             _startMiniGameButton.onClick.RemoveAllListeners();
             _startMiniGameButton.onClick.AddListener(() => StartMiniGame(p_building));
-            _startMiniGameButton.interactable = p_building.CanPlayMinigame();
+            _startMiniGameButton.interactable = _gameManager.CanPlayMinigame && p_building.CanPlayMinigame();
 
             _goBackButton.interactable = true;
             _goBackButton.onClick.AddListener(ClosePanel);
@@ -220,6 +223,15 @@ namespace InGameUi
                 }
             }
 
+            if (_building.CurrentTechnologyLvl + 1 > _building.BuildingMainData.Technology.DataPerTechnologyLevel.Length)
+            {
+                _lvlUpButtonText.text = "Max Level";
+                _lvlUpGo.GetComponentInChildren<TextMeshProUGUI>().text =
+                    $"Technology Level:  {_building.CurrentTechnologyLvl}";
+                
+                return;
+            }
+            
             if (_areRequirementsMet)
             {
                 _lvlUpButtonText.text = "Assign workers here to develop technologies";
@@ -252,6 +264,7 @@ namespace InGameUi
 
         private void StartMiniGame(Building p_building)
         {
+            _gameManager.OnMinigameActivity(true);
             gameObject.SetActive(false);
             p_building.PlayedMinigame = true;
             OnOpenMiniGameOfType?.Invoke(p_building);

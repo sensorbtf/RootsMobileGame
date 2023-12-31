@@ -121,5 +121,10 @@ namespace InGameUi
             public GameObject _minigame;
             public BuildingType[] _buildings;
         }
+
+        public void DebugOpenMinigame(BuildingType p_selectedBuildingType)
+        {
+            OpenRightMinigame(buildingsesManager.GetSpecificBuilding(p_selectedBuildingType));
+        }
     }
 }
