@@ -16,15 +16,16 @@ namespace GeneralSystems
         public float zoomSpeed = 5f; // Adjust this for smoother zoom transitions
         public float zoomOutFactor = 20f; // Adjust this for the amount of zoom out
 
-        private bool shouldRestoreZoom = false; // Flag to indicate if we should restore zoom
-        
+        private bool shouldRestoreZoom = false;
+        private bool _startedOnGo = false;
+
         public Transform leftBoundaryObject;
         public Transform rightBoundaryObject;
         public Transform topBoundaryObject;
         public Transform bottomBoundaryObject;
         private float _bottomBoundary;
         private Camera _camera;
-        
+
         private float _leftBoundary;
         private float _rightBoundary;
         private float _topBoundary;
@@ -39,20 +40,25 @@ namespace GeneralSystems
             if (rightBoundaryObject != null) _rightBoundary = rightBoundaryObject.position.x;
             if (topBoundaryObject != null) _topBoundary = topBoundaryObject.position.y;
             if (bottomBoundaryObject != null) _bottomBoundary = bottomBoundaryObject.position.y;
-            
+
             IsUiOpen = false;
         }
 
         private void Update()
         {
             HandleZoomRestoration();
-            
-            if (!isDragging && EventSystem.current.IsPointerOverGameObject()) 
-                return; 
-            
-            if (!isDragging && Input.touchCount > 0 && EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId)) 
+            CheckGoDetection();
+
+            if (_startedOnGo)
                 return;
-            
+
+            if (!isDragging && EventSystem.current.IsPointerOverGameObject())
+                return;
+
+            if (!isDragging && Input.touchCount > 0 &&
+                EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId))
+                return;
+
             if (IsUiOpen)
             {
                 if (!WasZoomedIn)
@@ -60,7 +66,7 @@ namespace GeneralSystems
                     _camera.orthographicSize = zoomOutMin;
                     WasZoomedIn = true;
                 }
-                
+
                 return;
             }
 
@@ -71,6 +77,33 @@ namespace GeneralSystems
             HandleInputBasedZoom();
         }
 
+        private void CheckGoDetection()
+        {
+            if (!_startedOnGo)
+            {
+                if (Input.GetMouseButtonDown(0) ||
+                    (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began))
+                {
+                    var inputPosition = Input.GetMouseButton(0) ? new Vector2(Input.mousePosition.x, Input.mousePosition.y) : new Vector2(Input.GetTouch(0).position.x, Input.GetTouch(0).position.y);
+                    var ray = Camera.main.ScreenPointToRay(inputPosition);
+
+                    var hit = Physics2D.Raycast(ray.origin, ray.direction);    
+
+                    if (hit.collider != null)
+                    {
+                        _startedOnGo = true;
+                    }
+                }
+            }
+
+            if (_startedOnGo)
+            {
+                if (Input.GetMouseButtonUp(0) || (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Ended))
+                {
+                    _startedOnGo = false;
+                }
+            }
+        }
         private void HandleCameraMovementAndZoom()
         {
             if (Input.GetMouseButtonDown(0))

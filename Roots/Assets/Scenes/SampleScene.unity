@@ -6951,8 +6951,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.23677264, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -6, y: 0}
+  m_AnchoredPosition: {x: -112.50003, y: 0}
+  m_SizeDelta: {x: -118.5, y: 0}
   m_Pivot: {x: 1, y: 0.5}
 --- !u!114 &698091135
 MonoBehaviour:
@@ -6974,7 +6974,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 100
+  m_text: 1000/1000
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 07747ff60e51ef14f901fc8769dab46a, type: 2}
   m_sharedMaterial: {fileID: 7724632414381704537, guid: 07747ff60e51ef14f901fc8769dab46a, type: 2}
@@ -7001,12 +7001,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 45
+  m_fontSize: 36.25
   m_fontSizeBase: 45
   m_fontWeight: 400
-  m_enableAutoSizing: 0
+  m_enableAutoSizing: 1
   m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_fontSizeMax: 45
   m_fontStyle: 0
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 512
@@ -10939,7 +10939,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -2.3701172, y: 0.91241455}
+  m_AnchoredPosition: {x: -2.3701172, y: 0.9123535}
   m_SizeDelta: {x: -81.3811, y: -63.8675}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1100344241
@@ -11703,19 +11703,7 @@ MonoBehaviour:
   _godsManager: {fileID: 2146834623}
   _audioManager: {fileID: 1330379814}
   _workersManager: {fileID: 1823812590}
-  _missionData:
-  - NeededResourcePoints: 1
-    DaysOfStormRange: {x: 1, y: 1}
-    StormPowerRange: {x: 1, y: 1}
-  - NeededResourcePoints: 200
-    DaysOfStormRange: {x: 8, y: 8}
-    StormPowerRange: {x: 1, y: 2}
-  - NeededResourcePoints: 100
-    DaysOfStormRange: {x: 5, y: 10}
-    StormPowerRange: {x: 5, y: 10}
-  - NeededResourcePoints: 150
-    DaysOfStormRange: {x: 6, y: 12}
-    StormPowerRange: {x: 5, y: 10}
+  _missions: {fileID: 11400000, guid: 8f095d0fd86b4fa4ca9495edf86c3e76, type: 2}
   _questData:
   - CurrentLevelQuests:
     - SpecificQuest: {fileID: 11400000, guid: 13fb62143c8192f40b80153458482784, type: 2}
@@ -11757,6 +11745,9 @@ MonoBehaviour:
     - SpecificQuest: {fileID: 11400000, guid: 2fa35a08d538c0c4a939a737fec694f2, type: 2}
     - SpecificQuest: {fileID: 11400000, guid: 4e0b14c26ec9fbc4fb224e0e4af9e3de, type: 2}
     NeededMissionToRankUp: 2
+  SafeFailQuests:
+  - SpecificQuest: {fileID: 11400000, guid: 809de70cc956b8841bf1de944d65647f, type: 2}
+  - SpecificQuest: {fileID: 11400000, guid: f3e1f5ed5cd080b438a406449066244e, type: 2}
   _startingWorldResources: 50
 --- !u!1 &1223427136
 GameObject:

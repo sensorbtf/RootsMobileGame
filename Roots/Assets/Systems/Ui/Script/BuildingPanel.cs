@@ -241,8 +241,18 @@ namespace InGameUi
             var nextLevel = p_building.CurrentLevel;
             nextLevel++;
 
-            p_refsScript.LevelInfo.GetComponent<TextMeshProUGUI>().text =
-                $"{p_building.CurrentLevel} >> {nextLevel}";
+            string info;
+            
+            if (nextLevel < p_building.BuildingMainData.PerLevelData.Length)
+            {
+                info = $"{p_building.CurrentLevel} >> {nextLevel}";
+            }
+            else
+            {
+                info = "Max Level";
+            }
+
+            p_refsScript.LevelInfo.GetComponent<TextMeshProUGUI>().text = info;
 
             if (buildingsManager.CanUpgradeBuilding(p_building))
             {

@@ -252,6 +252,9 @@ namespace Buildings
             if (!_workersManager.IsAnyWorkerFree())
                 return false;
 
+            if (p_building.CurrentLevel + 1 >= p_building.BuildingMainData.PerLevelData.Length)
+                return false;
+            
             if (CurrentResourcePoints < p_building.BuildingMainData.PerLevelData
                     [p_building.CurrentLevel].Requirements.ResourcePoints)
                 return false;
