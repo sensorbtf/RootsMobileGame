@@ -15,12 +15,12 @@ MonoBehaviour:
   Type: 9
   GodType: 5
   MainPrefab: {fileID: 1328426712780355558, guid: 36360ded9970f9342b3fe0485d64001d, type: 3}
-  Icon: {fileID: 21300000, guid: 25f6559d4c860f24ca4b50da3e24a595, type: 3}
-  InGameSprite: {fileID: 21300000, guid: 25f6559d4c860f24ca4b50da3e24a595, type: 3}
-  FirstStageBuilding: {fileID: 21300000, guid: 5470f9ed5306c2a40b177035acfd547e, type: 3}
-  UpgradeStage: {fileID: 21300000, guid: 7641bf042c19a9f49bbcd1a54820e231, type: 3}
-  DestroyedStage: {fileID: 21300000, guid: 5470f9ed5306c2a40b177035acfd547e, type: 3}
-  Description: X
+  Icon: {fileID: 21300000, guid: 9519b51e93a534a45bf2a7e878d5db27, type: 3}
+  InGameSprite: {fileID: 21300000, guid: 9519b51e93a534a45bf2a7e878d5db27, type: 3}
+  FirstStageBuilding: {fileID: 21300000, guid: 56794494720d7ac42ad6d85a9186c784, type: 3}
+  UpgradeStage: {fileID: 21300000, guid: 56794494720d7ac42ad6d85a9186c784, type: 3}
+  DestroyedStage: {fileID: 21300000, guid: 36c5bc1421246a74c9c67c678cc63392, type: 3}
+  Description: Herbs Garden
   BaseCottageLevelNeeded: 5
   LevelToEnableMinigame: 0
   PerLevelData:

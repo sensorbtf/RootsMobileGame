@@ -552,7 +552,7 @@ namespace InGameUi
             _wasMainButtonRefreshed = true;
 
             _gameManager.SetPlayerState(DuringDayState.FinishingBuilding);
-            _gameManager.SkipDay(p_skipSource);
+            _gameManager.EndTheDay(p_skipSource);
 
             _narratorManager.TryToActivateNarrator(TutorialStep.OnDaySkipped_Q5);
         }

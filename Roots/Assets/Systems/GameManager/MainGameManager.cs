@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using AudioSystem;
 using Buildings;
 using Gods;
 using Saving;
@@ -18,22 +19,31 @@ namespace GameManager
 
     public class MainGameManager : MonoBehaviour
     {
+        [Header("System References")]
         [SerializeField] private GameObject _loadingPanel;
-        [SerializeField] private GodsManager _godsManager;
+        [SerializeField] private LightManager _lightManager;
+        [SerializeField] private AudioManager _audioManager;
         [SerializeField] private WorldManager _worldManager;
         [SerializeField] private BuildingsManager _buildingsManager;
         [SerializeField] private SavingManager _savingManager;
+        
+        [Header("Variables")]
         [SerializeField] private int _destinyShardsSkipPrice;
         [SerializeField] private int _oneDayTimerDurationInSeconds = 60;
         [SerializeField] private int _maxFreeDaysSkipAmount = 3;
         [SerializeField] private DayOfWeekReward[] _everyDayReward;
 
+        [Header("Audio Clips")]
+        [SerializeField] private AudioClip _newDayStarted;
+        [SerializeField] private AudioClip _dayEnded;
+        [SerializeField] private AudioClip _tawernMumbling;
+        
         private DateTime _sessionStartTime;
         private TimeSpan _totalPlayTime;
         private DateTime _startDayTime;
         private float _timeLeftInSeconds;
         private bool _shouldUpdate;
-
+        
         private DateTime _giftTakenTime;
         private bool _shouldMakeGiftViable;
         private int _loginDay;
@@ -61,9 +71,28 @@ namespace GameManager
         {
             _loadingPanel.SetActive(true);
             _savingManager.OnAuthenticationEnded += () => StartCoroutine(CustomStart());
+
+            _lightManager.SetTimers(_oneDayTimerDurationInSeconds / 2f, _oneDayTimerDurationInSeconds);
             
             var language = PlayerPrefs.GetInt("Saved_Language", 0);
             ChangeLocale((Languages)language);
+        }
+
+        private void Update() 
+        {
+            if (!_shouldUpdate)
+                return;
+
+            var elapsedSeconds = (DateTime.UtcNow - _startDayTime).TotalSeconds;
+            _timeLeftInSeconds = _oneDayTimerDurationInSeconds - (float)elapsedSeconds;
+
+            var minutes = Mathf.FloorToInt(_timeLeftInSeconds / 60);
+            var seconds = Mathf.FloorToInt(_timeLeftInSeconds % 60);
+
+            if (_timeLeftInSeconds > 0)
+                TimePassed = $"{minutes}:{seconds:00}";
+
+            CheckPlayerState();
         }
 
         private void OnDestroy()
@@ -110,22 +139,6 @@ namespace GameManager
             yield return StartCoroutine(_savingManager.ChooseProperSave());
         }
 
-        private void Update() // need server?
-        {
-            if (!_shouldUpdate)
-                return;
-
-            var elapsedSeconds = (DateTime.UtcNow - _startDayTime).TotalSeconds;
-            _timeLeftInSeconds = _oneDayTimerDurationInSeconds - (float)elapsedSeconds;
-
-            var minutes = Mathf.FloorToInt(_timeLeftInSeconds / 60);
-            var seconds = Mathf.FloorToInt(_timeLeftInSeconds % 60);
-
-            if (_timeLeftInSeconds > 0)
-                TimePassed = $"{minutes}:{seconds:00}";
-
-            CheckPlayerState();
-        }
 
         private void LoadSavedData(MainGameManagerSavedData p_data)
         {
@@ -194,9 +207,15 @@ namespace GameManager
         {
             CurrentPlayerState = p_newState;
 
-            if (CurrentPlayerState == DuringDayState.DayPassing)
+            switch (p_newState)
             {
-                InitiateSaving();
+                case DuringDayState.WorkDayFinished:
+                    break;
+                case DuringDayState.DayPassing:
+                    _audioManager.PlaySpecificSoundEffect(_newDayStarted);
+                    _lightManager.SetMorningColorInstantly();
+                    InitiateSaving();
+                    break;
             }
 
             OnPlayerStateChange?.Invoke(CurrentPlayerState);
@@ -227,19 +246,17 @@ namespace GameManager
                         SetPlayerState(DuringDayState.WorkDayFinished);
                     break;
                 case DuringDayState.WorkDayFinished:
-                    // night - timer, effect
                     break;
-                // planning of day - new day started, cock is shouting or storm is coming
                 case DuringDayState.SettingWorkers:
-                    // workers setting - mumbling tawernsound in the background?
+                    _audioManager.PlaySpecificSoundEffect(_tawernMumbling);
                     break;
                 case DuringDayState.DayPassing:
+                    _lightManager.UpdateLighting(_timeLeftInSeconds);
                     if (_timeLeftInSeconds <= 0)
                     {
                         CanUseSkipByTime = true;
                         OnDaySkipPossibility?.Invoke();
                     }
-
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -293,7 +310,7 @@ namespace GameManager
 
         #region Day Skipping
 
-        public void SkipDay(WayToSkip p_skipSource)
+        public void EndTheDay(WayToSkip p_skipSource)
         {
             switch (p_skipSource)
             {
@@ -305,7 +322,8 @@ namespace GameManager
                         false);
                     break;
             }
-
+            
+            _lightManager.SetEveningColorInstantly();
             _worldManager.StartNewDay();
         }
 

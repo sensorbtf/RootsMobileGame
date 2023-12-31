@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 namespace GeneralSystems
 {
@@ -44,6 +45,14 @@ namespace GeneralSystems
 
         private void Update()
         {
+            HandleZoomRestoration();
+            
+            if (!isDragging && EventSystem.current.IsPointerOverGameObject()) 
+                return; 
+            
+            if (!isDragging && Input.touchCount > 0 && EventSystem.current.IsPointerOverGameObject(Input.GetTouch(0).fingerId)) 
+                return;
+            
             if (IsUiOpen)
             {
                 if (!WasZoomedIn)
@@ -58,7 +67,6 @@ namespace GeneralSystems
             WasZoomedIn = false;
 
             HandleCameraMovementAndZoom();
-            HandleZoomRestoration();
             HandleCameraBoundaries();
             HandleInputBasedZoom();
         }

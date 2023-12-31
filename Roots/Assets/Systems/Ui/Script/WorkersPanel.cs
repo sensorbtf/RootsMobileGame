@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using AudioSystem;
 using Buildings;
 using GameManager;
 using GeneralSystems;
@@ -19,6 +20,7 @@ namespace InGameUi
         [SerializeField] private MainGameManager _gameManager;
         [SerializeField] private GodsManager _godsManager;
         [SerializeField] private NarratorManager _narratorManager;
+        [SerializeField] private AudioManager _audioManager;
 
         [SerializeField] private BuildingPanel _buildingPanel;
         [SerializeField] private GatheringDefensePanel _gatheringDefensePanel;
@@ -44,7 +46,11 @@ namespace InGameUi
             _godsPanel.OnBackToWorkersPanel += ActivatePanel;
             _godsPanel.OnGodsPanelOpened += ClosePanel;
             _gameManager.OnPlayerStateChange += ActivatePanel;
-            _godsButton.onClick.AddListener(_godsPanel.ActivatePanel);
+            _godsButton.onClick.AddListener(delegate
+            {
+                _audioManager.PlayButtonSoundEffect(true);
+                _godsPanel.ActivatePanel();
+            });
 
             _runtimeBuildingsUiToDestroy = new List<GameObject>();
 
@@ -259,6 +265,8 @@ namespace InGameUi
 
         private void AssignWorkersForNewDay()
         {
+            _audioManager.PlayButtonSoundEffect(true);
+            
             _buildingPanel.ConfirmWorkersAssigment();
             _gatheringDefensePanel.ConfirmWorkersAssigment();
             _workersManager.ResetAssignedWorkers();
@@ -275,12 +283,14 @@ namespace InGameUi
 
         private void OnBuildOrUpgradeButtonClicked()
         {
+            _audioManager.PlayButtonSoundEffect(true);
             ClosePanel();
             _buildingPanel.HandleView(true);
         }
 
         private void OnGatheringOrDefenseButtonClicked(bool p_gathering)
         {
+            _audioManager.PlayButtonSoundEffect(true);
             ClosePanel();
             _gatheringDefensePanel.HandleView(p_gathering);
         }

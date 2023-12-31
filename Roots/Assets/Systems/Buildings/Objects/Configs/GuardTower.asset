@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: GuardTower
   m_EditorClassIdentifier: 
   Type: 2
-  GodType: 0
+  GodType: 12
   MainPrefab: {fileID: 1328426712780355558, guid: 15e1ee510388ceb44bda51c47dadd178, type: 3}
   Icon: {fileID: 21300000, guid: d0a291ae06554044d8ae09a202a9e6b5, type: 3}
   InGameSprite: {fileID: 21300000, guid: d0a291ae06554044d8ae09a202a9e6b5, type: 3}

@@ -1,0 +1,536 @@
+fileFormatVersion: 2
+guid: 56794494720d7ac42ad6d85a9186c784
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -6158226250584919296
+    second: Herbs_Garden_UpgradeStage_0
+  - first:
+      213: -3478395992409491465
+    second: Herbs_Garden_UpgradeStage_1
+  - first:
+      213: 4157532791682686581
+    second: Herbs_Garden_UpgradeStage_2
+  - first:
+      213: 8639195561198602304
+    second: Herbs_Garden_UpgradeStage_3
+  - first:
+      213: 5938121865144656601
+    second: Herbs_Garden_UpgradeStage_4
+  - first:
+      213: -6282632099790501645
+    second: Herbs_Garden_UpgradeStage_5
+  - first:
+      213: 4494042490145401856
+    second: Herbs_Garden_UpgradeStage_6
+  - first:
+      213: -2164372606708137559
+    second: Herbs_Garden_UpgradeStage_7
+  - first:
+      213: -8515127320572037024
+    second: Herbs_Garden_UpgradeStage_8
+  - first:
+      213: -7203495744355621269
+    second: Herbs_Garden_UpgradeStage_9
+  - first:
+      213: -8792114910890883115
+    second: Herbs_Garden_UpgradeStage_10
+  - first:
+      213: -6679917124772873591
+    second: Herbs_Garden_UpgradeStage_11
+  - first:
+      213: 1743323687111800482
+    second: Herbs_Garden_UpgradeStage_12
+  - first:
+      213: -4718548203719058403
+    second: Herbs_Garden_UpgradeStage_13
+  - first:
+      213: -760265779464498409
+    second: Herbs_Garden_UpgradeStage_14
+  - first:
+      213: 4167073481371916904
+    second: Herbs_Garden_UpgradeStage_15
+  externalObjects: {}
+  serializedVersion: 12
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 1
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 7
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 0
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: iPhone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Herbs_Garden_UpgradeStage_0
+      rect:
+        serializedVersion: 2
+        x: 156
+        y: 209
+        width: 312
+        height: 636
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 003766f4ad5998aa0800000000000000
+      internalID: -6158226250584919296
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Herbs_Garden_UpgradeStage_1
+      rect:
+        serializedVersion: 2
+        x: 428
+        y: 805
+        width: 1074
+        height: 197
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7f73a4436414abfc0800000000000000
+      internalID: -3478395992409491465
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Herbs_Garden_UpgradeStage_2
+      rect:
+        serializedVersion: 2
+        x: 566
+        y: 736
+        width: 799
+        height: 156
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 57ed846eb0682b930800000000000000
+      internalID: 4157532791682686581
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Herbs_Garden_UpgradeStage_3
+      rect:
+        serializedVersion: 2
+        x: 1463
+        y: 208
+        width: 312
+        height: 636
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 048cf5a279694e770800000000000000
+      internalID: 8639195561198602304
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Herbs_Garden_UpgradeStage_4
+      rect:
+        serializedVersion: 2
+        x: 347
+        y: 287
+        width: 241
+        height: 478
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9d26de4ff52786250800000000000000
+      internalID: 5938121865144656601
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Herbs_Garden_UpgradeStage_5
+      rect:
+        serializedVersion: 2
+        x: 513
+        y: 354
+        width: 225
+        height: 345
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3f8458d546b9fc8a0800000000000000
+      internalID: -6282632099790501645
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Herbs_Garden_UpgradeStage_6
+      rect:
+        serializedVersion: 2
+        x: 682
+        y: 650
+        width: 568
+        height: 146
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 00ce0a695db0e5e30800000000000000
+      internalID: 4494042490145401856
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Herbs_Garden_UpgradeStage_7
+      rect:
+        serializedVersion: 2
+        x: 824
+        y: 574
+        width: 283
+        height: 106
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9a1439fd49a96f1e0800000000000000
+      internalID: -2164372606708137559
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Herbs_Garden_UpgradeStage_8
+      rect:
+        serializedVersion: 2
+        x: 1194
+        y: 354
+        width: 224
+        height: 345
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 068741821d034d980800000000000000
+      internalID: -8515127320572037024
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Herbs_Garden_UpgradeStage_9
+      rect:
+        serializedVersion: 2
+        x: 1343
+        y: 287
+        width: 241
+        height: 478
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b6625a849ca080c90800000000000000
+      internalID: -7203495744355621269
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Herbs_Garden_UpgradeStage_10
+      rect:
+        serializedVersion: 2
+        x: 713
+        y: 436
+        width: 155
+        height: 181
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5d70fe732122cf580800000000000000
+      internalID: -8792114910890883115
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Herbs_Garden_UpgradeStage_11
+      rect:
+        serializedVersion: 2
+        x: 824
+        y: 372
+        width: 283
+        height: 106
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 98a3dd844ca2c43a0800000000000000
+      internalID: -6679917124772873591
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Herbs_Garden_UpgradeStage_12
+      rect:
+        serializedVersion: 2
+        x: 1064
+        y: 436
+        width: 154
+        height: 181
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2a6b2da28a7813810800000000000000
+      internalID: 1743323687111800482
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Herbs_Garden_UpgradeStage_13
+      rect:
+        serializedVersion: 2
+        x: 566
+        y: 161
+        width: 799
+        height: 156
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d1c94cd9869548eb0800000000000000
+      internalID: -4718548203719058403
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Herbs_Garden_UpgradeStage_14
+      rect:
+        serializedVersion: 2
+        x: 680
+        y: 257
+        width: 569
+        height: 146
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 71312283d4ef275f0800000000000000
+      internalID: -760265779464498409
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Herbs_Garden_UpgradeStage_15
+      rect:
+        serializedVersion: 2
+        x: 430
+        y: 50
+        width: 1073
+        height: 197
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 86a9f12d04b64d930800000000000000
+      internalID: 4167073481371916904
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    nameFileIdTable:
+      Herbs_Garden_UpgradeStage_0: -6158226250584919296
+      Herbs_Garden_UpgradeStage_1: -3478395992409491465
+      Herbs_Garden_UpgradeStage_10: -8792114910890883115
+      Herbs_Garden_UpgradeStage_11: -6679917124772873591
+      Herbs_Garden_UpgradeStage_12: 1743323687111800482
+      Herbs_Garden_UpgradeStage_13: -4718548203719058403
+      Herbs_Garden_UpgradeStage_14: -760265779464498409
+      Herbs_Garden_UpgradeStage_15: 4167073481371916904
+      Herbs_Garden_UpgradeStage_2: 4157532791682686581
+      Herbs_Garden_UpgradeStage_3: 8639195561198602304
+      Herbs_Garden_UpgradeStage_4: 5938121865144656601
+      Herbs_Garden_UpgradeStage_5: -6282632099790501645
+      Herbs_Garden_UpgradeStage_6: 4494042490145401856
+      Herbs_Garden_UpgradeStage_7: -2164372606708137559
+      Herbs_Garden_UpgradeStage_8: -8515127320572037024
+      Herbs_Garden_UpgradeStage_9: -7203495744355621269
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

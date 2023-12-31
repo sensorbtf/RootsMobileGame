@@ -15,7 +15,7 @@ namespace Buildings
         [SerializeField] private WorkersManager _workersManager;
         [SerializeField] private BuildingTransforms[] _placesForBuildings;
         [SerializeField] private BuildingDatabase _buildingsDatabase;
-        [SerializeField] private int _startingDestinyPoints = 50;
+        [SerializeField] private int _startingDestinyPoints = 3000;
 
         [Header("Icons")]
         public Sprite DefenseAndResourcesPointsIcon;
@@ -444,6 +444,9 @@ namespace Buildings
                 building.HaveWorker = false;
                 building.IsProtected = false;
             }
+
+            CurrentResourcePoints = 0;
+            CurrentDefensePoints = 0;
         }
         
         public int GetProductionOfBuilding(BuildingType p_building)
@@ -467,14 +470,14 @@ namespace Buildings
             return BuildingType.Cottage;
         }
         
-        public bool CheckIfGodsBuildingIsUnlocked(GodType p_godName)
+        public bool CheckIfGodsBuildingIsBuilt(GodType p_godName)
         {
-            foreach (var building in _buildingsDatabase.allBuildings)
+            foreach (var building in CurrentBuildings)
             {
-                if (building.GodType != p_godName)
+                if (building.BuildingMainData.GodType != p_godName)
                     continue;
 
-                return GetSpecificBuilding(BuildingType.Cottage).CurrentLevel >= building.BaseCottageLevelNeeded;
+                return true;
             }
 
             return false;
@@ -517,7 +520,7 @@ namespace Buildings
                     return Herbs_GardenSoundEffect;
                 case BuildingType.Apiary:
                     return ApiarySoundEffect;
-                case BuildingType.Woodworking_Station:
+                case BuildingType.Workshop:
                     return Woodworking_StationSoundEffect;
                 case BuildingType.Sacrificial_Altar:
                     return Sacrificial_AltarSoundEffect;
@@ -532,7 +535,8 @@ namespace Buildings
         {
             var specificValue = p_pointsNumber;
 
-            if (!p_add) specificValue = 0 - p_pointsNumber;
+            if (!p_add) 
+                specificValue = 0 - p_pointsNumber;
 
             switch (p_pointsType)
             {

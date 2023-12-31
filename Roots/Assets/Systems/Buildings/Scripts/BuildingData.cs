@@ -39,13 +39,6 @@ namespace Buildings
         //public BuildingRequirements[] OtherBuildingRequirements;
     }
 
-    [Serializable]
-    public class BuildingRequirements
-    {
-        public BuildingType SpecificBuilding;
-        public int LevelOfBuilding;
-    }
-
     public enum BuildingType
     {
         Cottage = 0,
@@ -59,10 +52,8 @@ namespace Buildings
         Charcoal_Pile = 8,
         Herbs_Garden = 9,
         Apiary = 10,
-        Field_Forge = 11,
-        Woodworking_Station = 12,
-        Sacrificial_Altar = 13,
-        Barricade = 14
+        Workshop = 11,
+        Sacrificial_Altar = 12,
     }
 
     public enum PointsType

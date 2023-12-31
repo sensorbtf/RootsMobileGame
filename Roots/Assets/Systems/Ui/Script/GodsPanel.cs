@@ -53,7 +53,7 @@ namespace InGameUi
 
             foreach (var god in _godsManager.PlayerCurrentBlessings.Keys.ToList())
             {
-                if (!_buildingsManager.CheckIfGodsBuildingIsUnlocked(god.GodName))
+                if (!_buildingsManager.CheckIfGodsBuildingIsBuilt(god.GodName))
                   continue;  
                 
                 var newGod = Instantiate(_godPrefab, _contentTransform);

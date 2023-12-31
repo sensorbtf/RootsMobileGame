@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using AudioSystem;
 using UnityEngine;
 using UnityEngine.Rendering.Universal;
+using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
 public class LightManager : MonoBehaviour
@@ -20,6 +21,13 @@ public class LightManager : MonoBehaviour
     [SerializeField] private float _maxInterval;
     [SerializeField] private float _minInterval;
 
+    [SerializeField] private Color _morningColor;
+    [SerializeField] private Color _dayColor;
+    [SerializeField] private Color _eveningColor;
+    
+    private float _halfTimeOfDay;
+    private float _oneDayTimerDurationInSeconds;
+    
     public void MakeStormEffect()
     {
         StartCoroutine(StormCoroutine());
@@ -44,5 +52,34 @@ public class LightManager : MonoBehaviour
         }
         
         _globalLight.intensity = _baseIntensity;
+    }
+
+    public void UpdateLighting(float p_time)
+    {
+        if (p_time > _halfTimeOfDay) 
+        {
+            _globalLight.color = Color.Lerp(_morningColor, _dayColor, (3600f - p_time) / 1800f);
+        }
+        else
+        {
+            _globalLight.color = Color.Lerp(_dayColor, _eveningColor, (1800f - p_time) / 1800f);
+        }
+    }
+
+    public void SetMorningColorInstantly()
+    {
+
+        _globalLight.color = _morningColor;
+    }
+    
+    public void SetEveningColorInstantly()
+    {
+        _globalLight.color = _eveningColor;
+    }
+
+    public void SetTimers(float p_halfTimeOfDay, int p_oneDayTimerDurationInSeconds)
+    {
+        _halfTimeOfDay = p_halfTimeOfDay;
+        _oneDayTimerDurationInSeconds = p_oneDayTimerDurationInSeconds;
     }
 }
