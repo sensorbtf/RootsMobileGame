@@ -32,8 +32,8 @@ namespace InGameUi
         [SerializeField] private AudioClip _soundEffect;
         [SerializeField] private AudioClip _unrollingPaper;
         
-        [SerializeField] private Vector3 _startPosition;
-        [SerializeField] private Vector3 _endPosition;
+        [SerializeField] private RectTransform _start;
+        [SerializeField] private RectTransform _end;
         [SerializeField] private float _duration = 1.0f;
         [SerializeField] private float _typingSpeed = 0.05f;
 
@@ -47,7 +47,11 @@ namespace InGameUi
             _narratorManager.OnTutorialAdvancement += ActivateNarrator;
             
             OnOffButton.onClick.RemoveAllListeners();
-            OnOffButton.onClick.AddListener(delegate { ShowAndMovePanel(false); });
+            OnOffButton.onClick.AddListener(delegate
+            {
+                _audioManager.PlayButtonSoundEffect(OnOffButton.interactable);
+                ShowAndMovePanel(false);
+            });
         }
 
         private void OnDestroy()
@@ -60,22 +64,19 @@ namespace InGameUi
         {
             if (p_show)
             {
-                ShowAndMovePanel(true, false);
+                ShowAndMovePanel(true);
             }
         }
 
-        private void ShowAndMovePanel(bool p_shouldType, bool p_shouldButtonClick = true)
+        private void ShowAndMovePanel(bool p_shouldType)
         {
             CameraController.IsUiOpen = true;
             _viniete.SetActive(true);
             
-            if (p_shouldButtonClick)
-            {
-                _audioManager.PlayButtonSoundEffect(OnOffButton.interactable);
-            }
-
-            StartCoroutine(MoveUI(_startPosition, p_shouldType));
-
+            StartCoroutine(MoveUI(_start.localPosition, p_shouldType));
+            
+            Debug.Log("test _start.localPositio" + _start.localPosition);
+            
             if (GetCurrentText().Text.Length == _narratorManager.CurrentSubText + 1)
             {
                 OnOffButton.onClick.RemoveAllListeners();
@@ -100,7 +101,8 @@ namespace InGameUi
             }
             else
             {
-                StartCoroutine(MoveUI(_endPosition, false));
+                Debug.Log("test _end.localPositio" + _end.localPosition);
+                StartCoroutine(MoveUI(_end.localPosition, false));
                 OnOffButton.onClick.RemoveAllListeners();
                 OnOffButton.onClick.AddListener(delegate { ShowAndMovePanel(false); });
                 ButtonImage.sprite = ShowUiSprite;

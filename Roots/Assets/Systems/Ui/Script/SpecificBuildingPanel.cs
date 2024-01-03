@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using AudioSystem;
 using Buildings;
 using GameManager;
 using GeneralSystems;
@@ -13,6 +14,7 @@ namespace InGameUi
 {
     public class SpecificBuildingPanel : MonoBehaviour
     {
+        [SerializeField] private AudioManager _audioManager;
         [SerializeField] private NarratorManager _narratorManager;
         [SerializeField] private BuildingsManager buildingsManager;
         [SerializeField] private MainGameManager _gameManager;

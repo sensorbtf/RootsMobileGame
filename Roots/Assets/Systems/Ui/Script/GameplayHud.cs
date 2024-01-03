@@ -6,7 +6,6 @@ using GameManager;
 using Narrator;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UI;
 using World;
 using Random = UnityEngine.Random;
@@ -22,10 +21,12 @@ namespace InGameUi
         [SerializeField] private MainGameManager _gameManager;
         [SerializeField] private WorldManager _worldManager;
         [SerializeField] private BuildingsManager _buildingsManager;
-        [SerializeField] private AdsForRewards _rewardingAdsManager;
         [SerializeField] private SettingsPanel _settingsPanel;
-      
-        [Header("Elements Refs")]
+        [SerializeField] private DecisionMakingPanel _decisionsPanel;
+        [SerializeField] private InfoPanel _infoPanel;
+
+        [Header("Elements Refs")] 
+        [SerializeField] private Button[] _pointsButtons;
         [SerializeField] private GameObject StormSliderBackground;
         [SerializeField] private GameObject StormDaysPrefab;
         [SerializeField] private GameObject StormHandle;
@@ -119,7 +120,7 @@ namespace InGameUi
             _endDayButton = EndDayGo.GetComponent<Button>();
             _settingsButton = _settingsButtonGo.GetComponent<Button>();
             _addButton = _addButtonGo.GetComponent<Button>();
-            _addButton.onClick.AddListener(delegate { _rewardingAdsManager.ShowRewardedAdd(); });
+            _addButton.onClick.AddListener(() => _decisionsPanel.AdvertisementAlert());
 
             _endDayButtonText = _endDayButton.GetComponentInChildren<TextMeshProUGUI>();
             _firstQuestText = FirstMissionGo.GetComponentInChildren<TextMeshProUGUI>();
@@ -149,6 +150,12 @@ namespace InGameUi
             ResourcePoints.text = $"{_buildingsManager.CurrentResourcePoints} / " +
                                   $"{_worldManager.RequiredResourcePoints}";
 
+            foreach (var button in _pointsButtons)
+            {
+                button.onClick.RemoveAllListeners();
+                button.onClick.AddListener(delegate { _infoPanel.ShowResourcesInfo(); });
+            }
+            
             _buildingsManager.OnResourcePointsChange += RefreshResourcePoints;
             _buildingsManager.OnDefensePointsChange += RefreshDefensePoints;
             _buildingsManager.OnDestinyShardsPointsChange += RefreshShardsPoints;

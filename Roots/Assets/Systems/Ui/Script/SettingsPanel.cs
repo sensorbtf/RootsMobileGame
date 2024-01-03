@@ -1,13 +1,9 @@
-using System;
-using System.Collections;
 using AudioSystem;
 using GameManager;
 using GeneralSystems;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.Localization;
-using UnityEngine.Localization.Settings;
 
 namespace InGameUi
 {

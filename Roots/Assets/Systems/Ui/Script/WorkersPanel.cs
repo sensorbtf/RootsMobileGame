@@ -306,7 +306,8 @@ namespace InGameUi
         {
             _finishAssigning.SetActive(true);
 
-            if (_workersManager.BaseWorkersAmounts - _workersManager.OverallAssignedWorkers == 0)
+            if (_workersManager.BaseWorkersAmounts - _workersManager.OverallAssignedWorkers == 0 ||
+                buildingsManager.CurrentBuildings.Count - 1 < _workersManager.BaseWorkersAmounts)
             {
                 _activateButton.onClick.RemoveAllListeners();
                 _activateButton.onClick.AddListener(AssignWorkersForNewDay);

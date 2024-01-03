@@ -14,17 +14,27 @@ namespace InGameUi
 {
     public class GodsPanel : MonoBehaviour
     {
+        [Header("System Refs")]
         [SerializeField] private BuildingsManager _buildingsManager;
         [SerializeField] private GodsManager _godsManager;
         [SerializeField] private AudioManager _audioManager;
-        [SerializeField] private MainGameManager _gameManager;
+        [SerializeField] private MainGameManager _gameManager; 
+        
+        [Header("Refs")]
         [SerializeField] private GameObject _godPrefab;
         [SerializeField] private Transform _contentTransform;
-
-        private List<GameObject> _createdGodsInstances;
         [SerializeField] private Button _goBackButton;
-
         [SerializeField] private TextMeshProUGUI _tabName;
+        
+        [Header("Audio Refs")]
+        [SerializeField] private AudioClip _boughtEffect;
+        [SerializeField] private AudioClip _deactivateEffect;
+        [SerializeField] private AudioClip _nooneEffectActivation;
+        [SerializeField] private AudioClip _smallEffectActivation;
+        [SerializeField] private AudioClip _mediumEffectActivation;
+        [SerializeField] private AudioClip _bigEffectActivation;
+        
+        private List<GameObject> _createdGodsInstances;
         
         public event Action OnGodsPanelOpened;
         public event Action OnBackToWorkersPanel;
@@ -156,16 +166,36 @@ namespace InGameUi
 
         private void DeactivateSpecificBlessing(GodType p_godType, BlessingLevel p_currentBlessingLevel)
         {
+            _audioManager.PlaySpecificSoundEffect(_deactivateEffect);
+
             _godsManager.DeactivateSpecificBlessing(p_godType, p_currentBlessingLevel);
         }
 
         private void ActivateSpecificBlessing(GodType p_godType, BlessingLevel p_currentBlessingLevel)
         {
+            switch (p_currentBlessingLevel)
+            {
+                case BlessingLevel.Noone:
+                    _audioManager.PlaySpecificSoundEffect(_nooneEffectActivation);
+                    break;
+                case BlessingLevel.Small:
+                    _audioManager.PlaySpecificSoundEffect(_smallEffectActivation);
+                    break;
+                case BlessingLevel.Medium:
+                    _audioManager.PlaySpecificSoundEffect(_mediumEffectActivation);
+                    break;
+                case BlessingLevel.Big:
+                    _audioManager.PlaySpecificSoundEffect(_bigEffectActivation);
+                    break;
+            }
+
             _godsManager.ActivateSpecificBlessing(p_godType, p_currentBlessingLevel);
         }
 
         private void BuySpecificBlessing(GodType p_godType, BlessingLevel p_blessingLevel)
         {
+            _audioManager.PlaySpecificSoundEffect(_boughtEffect);
+            
             _godsManager.BuySpecificBlessing(p_godType, p_blessingLevel);
             _buildingsManager.HandlePointsManipulation(PointsType.ShardsOfDestiny,
                 _godsManager.BlessingPrices[p_blessingLevel], false);

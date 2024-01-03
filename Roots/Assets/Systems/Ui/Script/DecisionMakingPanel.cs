@@ -16,6 +16,7 @@ namespace InGameUi
         [SerializeField] private NarratorManager _narratorManager;
         [SerializeField] private MainGameManager _gameManager;
         [SerializeField] private WorldManager _worldManager;
+        [SerializeField] private AdsForRewards _rewardingAdsManager;
         private DecisionMakingRefs _uiReferences;
 
         private void Start()
@@ -35,6 +36,32 @@ namespace InGameUi
             _worldManager.OnLeaveDecision -= ViewLeavePanel;
             _worldManager.OnStormCame -= ViewStormConsequencesPanel;
             _gameManager.OnPlayerCameBack -= ViewWelcomeBackPanel;
+        }
+
+        public void AdvertisementAlert()
+        {
+            HandleTurnOnOff(true);
+            
+            _uiReferences.Title.text = "Advertisement";
+            _uiReferences.Description.text = $"Do you want to Watch advertisement to get free Start Dust?";
+
+            _uiReferences.NoButtonGo.gameObject.SetActive(true);
+            _uiReferences.YesButtonGo.gameObject.SetActive(true);
+            
+            _uiReferences.YesButtonText.text = "Watch";
+            _uiReferences.NoButtonText.text = "Back";
+
+            _uiReferences.YesButton.onClick.AddListener(delegate
+            {
+                _audioManager.PlayButtonSoundEffect(_uiReferences.YesButton.interactable);
+                _rewardingAdsManager.ShowRewardedAdd(); 
+            });
+            
+            _uiReferences.NoButton.onClick.AddListener(delegate
+            {
+                _audioManager.PlayButtonSoundEffect(_uiReferences.YesButton.interactable);
+                HandleTurnOnOff(false);
+            });
         }
 
         private void ViewWelcomeBackPanel(bool p_shouldOfferLoginGift)
@@ -181,12 +208,11 @@ namespace InGameUi
             _uiReferences.YesButtonText.text = "Continue";
         }
 
-        private void HandleTurnOnOff(bool p_setting)
+        private void HandleTurnOnOff(bool p_turnOffPanel)
         {
-            gameObject.SetActive(p_setting);
-            GameplayHud.BlockHud = p_setting;
-            CameraController.IsUiOpen = p_setting;
+            gameObject.SetActive(p_turnOffPanel);
+            GameplayHud.BlockHud = p_turnOffPanel;
+            CameraController.IsUiOpen = p_turnOffPanel;
         }
-        
     }
 }

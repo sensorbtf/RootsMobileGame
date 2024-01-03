@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using AudioSystem;
 using Buildings;
 using GeneralSystems;
 using TMPro;
@@ -11,6 +12,7 @@ namespace InGameUi
 {
     public class NewDaySummary : MonoBehaviour
     {
+        [SerializeField] private AudioManager _audioManager;
         [SerializeField] private BuildingsManager buildingsManager;
         [SerializeField] private WorldManager worldManager;
 
@@ -72,7 +74,12 @@ namespace InGameUi
 
             _goBackGo.SetActive(true);
             _goBackButton.interactable = true;
-            _goBackButton.onClick.AddListener(ClosePanel);
+            
+            _goBackButton.onClick.AddListener(delegate
+            {
+                _audioManager.PlayButtonSoundEffect(true);
+                ClosePanel();
+            });
 
             if (!p_isCottage) 
                 HandleViewOfSummary();
