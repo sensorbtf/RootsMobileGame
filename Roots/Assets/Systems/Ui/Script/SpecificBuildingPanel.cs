@@ -111,7 +111,7 @@ namespace InGameUi
             _getIntoWorkGo.SetActive(true);
             _scrollBarGo.SetActive(true);
 
-            _buildingName.text = $"{_buildingData.Type} ({_building.CurrentLevel})";
+            _buildingName.text = $"{_buildingData.Type} ({_building.CurrentLevel} lvl)";
 
             if (_buildingData.Type == BuildingType.Cottage)
             {
@@ -167,13 +167,10 @@ namespace InGameUi
             _levelUpProgression.maxValue = _technology[_building.CurrentTechnologyLvl].WorksDayToAchieve;
             _levelUpProgression.value = _building.CurrentTechnologyDayOnQueue;
             _sliderValue.text = $"Working days: {_levelUpProgression.value}/{_levelUpProgression.maxValue}";
-            _getIntoWorkGo.GetComponentInChildren<TextMeshProUGUI>().text = "Start Work \n" +
-                                                                            $"Efficiency: {_technology[_building.CurrentTechnologyLvl].Efficiency}\n Duration: {_technology[_building.CurrentTechnologyLvl].MinigameDuration} seconds.";
+            _getIntoWorkGo.GetComponentInChildren<TextMeshProUGUI>().text = "Start Work";
 
             var nextLevel = _building.CurrentTechnologyLvl;
             nextLevel++;
-            var techInfo =
-                $"Efficiency: {_technology[_building.CurrentTechnologyLvl].Efficiency} >> {_technology[nextLevel].Efficiency} \n Duration: {_technology[_building.CurrentTechnologyLvl].MinigameDuration} >> {_technology[nextLevel].MinigameDuration} seconds.";
 
             if (Math.Abs(_levelUpProgression.value - _levelUpProgression.maxValue) < 0.5)
                 _canDevelopTechnology = true;
@@ -229,7 +226,7 @@ namespace InGameUi
             {
                 _lvlUpButtonText.text = "Max Level";
                 _lvlUpGo.GetComponentInChildren<TextMeshProUGUI>().text =
-                    $"Technology Level:  {_building.CurrentTechnologyLvl}";
+                    $"Technology Level: {_building.CurrentTechnologyLvl}";
                 
                 return;
             }
@@ -238,20 +235,20 @@ namespace InGameUi
             {
                 _lvlUpButtonText.text = "Assign workers here to develop technologies";
                 _lvlUpGo.GetComponentInChildren<TextMeshProUGUI>().text =
-                    $"Technology Level:  {_building.CurrentTechnologyLvl}";
+                    $"Technology Level: {_building.CurrentTechnologyLvl}";
             }
             else if (!_areRequirementsMet)
             {
                 _lvlUpButtonText.text = "Meet Requirements to Develop Technologies";
                 _lvlUpGo.GetComponentInChildren<TextMeshProUGUI>().text =
-                    $"Technology Level:  {_building.CurrentTechnologyLvl}";
+                    $"Technology Level: {_building.CurrentTechnologyLvl}";
             }
 
             if (_canDevelopTechnology)
             {
                 _lvlUpGo.GetComponentInChildren<TextMeshProUGUI>().text =
                     $"{_building.CurrentTechnologyLvl} >> {nextLevel}";
-                _lvlUpButtonText.text = "Develop technology to get better in mini game: \n" + techInfo;
+                _lvlUpButtonText.text = "Upgrade technology";
                 _lvlUpButton.interactable = true;
                 _lvlUpButton.onClick.AddListener(() => UpgradeTechnology(_building));
             }

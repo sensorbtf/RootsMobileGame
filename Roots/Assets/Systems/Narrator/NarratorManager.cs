@@ -7,6 +7,7 @@ namespace Narrator
     public class NarratorManager: MonoBehaviour
     {
         [SerializeField] private BuildingsManager _buildingsManager;
+        [SerializeField] private bool _enableNarrator = true;
         
         private TutorialStep _currentTutorialStep;
         private int _currentSubText = 0;
@@ -17,7 +18,15 @@ namespace Narrator
         
         private void Start()
         {
-            _currentTutorialStep = TutorialStep.Start;
+            if (_enableNarrator)
+            {
+                _currentTutorialStep = TutorialStep.Start;
+            }
+            else
+            {
+                _currentTutorialStep = TutorialStep.OnWorkersPanelOpenAfterRestart_Q21;
+            }
+            
             _buildingsManager.OnBuildingRepaired += CheckBuildingRepaired;
             _buildingsManager.OnTutorialStart += StartTutorial;
             _buildingsManager.OnBuildingStateChanged += CheckBuildingBuilt;
@@ -99,6 +108,15 @@ namespace Narrator
             _currentTutorialStep = (TutorialStep)p_data.CurrentTutorialStep; 
             _currentSubText = p_data.CurrentSubText;
 
+            if (_enableNarrator)
+            {
+                _currentTutorialStep = TutorialStep.Start;
+            }
+            else
+            {
+                _currentTutorialStep = TutorialStep.OnWorkersPanelOpenAfterRestart_Q21;
+            }
+            
             OnTutorialAdvancement?.Invoke(false);
         }
 
