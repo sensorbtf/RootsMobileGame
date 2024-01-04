@@ -18,7 +18,7 @@ namespace Minigames
                 _isGameActive = false;
                 _collectPointsButton.interactable = true;
                 _buttonToMash.interactable = false;
-                _timeText.text = $"Click to collect: {_score:F0} resource points";
+                _timeText.text = $"Collect: {_score:F0} resource points";
             }
         }
 
@@ -31,6 +31,7 @@ namespace Minigames
                 p_building.BuildingMainData.Technology.SpriteOfObject;
             _buttonToMash.onClick.AddListener(AddScore);
             _buttonToMash.interactable = false;
+            _collectPointsButton.interactable = false;
         }
 
         public override void AddScore()
@@ -38,7 +39,7 @@ namespace Minigames
             _buttonToMash.interactable = false;
             _score += _efficiency;
             StartMinigame();
-            _scoreText.text = $"Score: {_score:F1}";
+            _scoreText.text = $"Score: {_score:F0}";
         }
 
         public override void StartMinigame()

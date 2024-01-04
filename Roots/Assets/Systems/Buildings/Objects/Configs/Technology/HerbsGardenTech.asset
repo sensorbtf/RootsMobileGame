@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4462eaa3d7574021977e5437be530cbb, type: 3}
+  m_Name: HerbsGardenTech
+  m_EditorClassIdentifier: 
+  DataPerTechnologyLevel:
+  - RequiredBuildingLevel: 1
+    OtherBuildingsRequirements:
+    - Building: 0
+      Level: 1
+    WorksDayToAchieve: 1
+    MinigameDuration: 10
+    Efficiency: 1
+  - RequiredBuildingLevel: 1
+    OtherBuildingsRequirements:
+    - Building: 0
+      Level: 1
+    WorksDayToAchieve: 2
+    MinigameDuration: 11
+    Efficiency: 1.2
+  - RequiredBuildingLevel: 22
+    OtherBuildingsRequirements:
+    - Building: 0
+      Level: 2
+    WorksDayToAchieve: 3
+    MinigameDuration: 12
+    Efficiency: 1.3

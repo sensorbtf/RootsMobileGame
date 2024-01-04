@@ -45,14 +45,14 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 205056342679552
-    m_Localized: "The last overseer has run away, leaving for you only a destroyed
-      Cottage. \n\nRepair it while planning your next working day."
+    m_Localized: "The last overseer has run away, leaving only a destroyed Cottage.
+      \n\nRepair it while planning your next working day."
     m_Metadata:
       m_Items: []
   - m_Id: 211852423782400
     m_Localized: "There you can see summarize of everything that you have chosen
-      in specific sections of work. \n\nNow press the underneath button to start
-      the day."
+      in specific sections of work. \n\nAfter pointing worker to repair Cottage press
+      the underneath button to start the day."
     m_Metadata:
       m_Items: []
   - m_Id: 211852474114048

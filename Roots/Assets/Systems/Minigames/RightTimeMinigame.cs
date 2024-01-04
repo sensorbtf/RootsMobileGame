@@ -77,7 +77,7 @@ namespace Minigames
 
             _timer = 0;
             _isGameActive = false;
-            _timeText.text = $"Click to collect: {_score:F0} resource points";
+            _timeText.text = $"Collect: {_score:F0} resource points";
         }
 
         public override void SetupGame(Building p_building)
@@ -109,45 +109,18 @@ namespace Minigames
         
         private void TryToGetPoints()
         {
-            // Define the size and position of the overlap box
             Vector2 boxSize = _targetPositionCollider.size;
-            Vector2 boxPosition = _targetPositionCollider.transform.position;
+            var transform1 = _targetPositionCollider.transform;
+            Vector2 boxPosition = transform1.position;
 
-            // Define the angle of the box, usually the same as the target collider
-            float angle = _targetPositionCollider.transform.eulerAngles.z;
+            float angle = transform1.eulerAngles.z;
 
-            // Create a contact filter that doesn't filter out any results
             ContactFilter2D filter = new ContactFilter2D().NoFilter();
 
-            // Perform the overlap box check
             Collider2D[] results = Physics2D.OverlapBoxAll(boxPosition, boxSize, angle, filter.layerMask);
 
-            // Check if the moving object's collider is in the results array
             if (Array.Exists(results, collider => collider == _movingObjectCollider))
             {
-                // If the moving object is in the target area, add score
-                AddScore();
-                Debug.Log("Score added: Moving object is inside the target area.");
-            }
-            else
-            {
-                // If not, handle the scenario where the object is outside the target area
-                _isBlocked = true;
-                _buttonToClick.interactable = false;
-                Debug.Log("Moving object is outside the target area.");
-            }
-        }
-
-
-        private void TryToGetPo2ints()
-        {
-            List<Collider2D> results = new List<Collider2D>();
-            ContactFilter2D filter = new ContactFilter2D().NoFilter();
-
-            _targetPositionCollider.Overlap(filter, results);
-
-            if (results.Contains(_movingObjectCollider))
-            {
                 AddScore();
             }
             else
@@ -156,7 +129,7 @@ namespace Minigames
                 _buttonToClick.interactable = false;
             }
         }
-        
+
         public override void StartMinigame()
         {
             _collectPointsButton.interactable = false;

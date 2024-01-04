@@ -28,7 +28,7 @@ namespace Minigames
                 _timer = 0;
                 _isGameActive = false;
                 _collectPointsButton.interactable = true;
-                _timeText.text = $"Click to collect: {_score:F0} resource points";
+                _timeText.text = $"Collect: {_score:F0} resource points";
             }
         }
 

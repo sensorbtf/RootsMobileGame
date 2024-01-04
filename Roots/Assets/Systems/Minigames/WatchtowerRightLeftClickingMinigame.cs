@@ -1,3 +1,4 @@
+using System;
 using Buildings;
 using TMPro;
 using UnityEngine;
@@ -5,23 +6,25 @@ using UnityEngine.UI;
 
 namespace Minigames
 {
-    public class RandomRightLeftClickingMinigame : Minigame
+    public class WatchtowerRightLeftClickingMinigame : Minigame
     {
         [SerializeField] private Button _leftSideButton;
         [SerializeField] private Button _rightSideButton;
+        [SerializeField] private Slider _slider;
 
         private new void Update()
         {
-            base.Update();
+            _timeText.text = $"Achieve {_timer} points";
 
-            if (_timer <= 0)
+            if (_score >= _timer) // needed points
             {
                 _timer = 0;
                 _isGameActive = false;
                 _collectPointsButton.interactable = true;
                 _leftSideButton.interactable = false;
                 _rightSideButton.interactable = false;
-                _timeText.text = $"Collect: {_score:F0} resource points";
+
+                _timeText.text = "Check storm in 2 days";
             }
         }
 
@@ -30,31 +33,35 @@ namespace Minigames
             base.SetupGame(p_building);
 
             _score = 0;
+            _slider.value = 0;
 
             _leftSideButton.onClick.AddListener(AddScore);
             _rightSideButton.onClick.AddListener(AddScore);
             _leftSideButton.interactable = false;
             _rightSideButton.interactable = false;
+            _collectPointsButton.interactable = true;
         }
 
         public override void AddScore()
         {
-            _score += _efficiency;
+            var realEfficiency = _slider.maxValue / _efficiency;
+            _slider.value += realEfficiency;
+            _score += realEfficiency;
             StartMinigame();
-            _scoreText.text = $"Score: {_score:F1}";
+            _scoreText.text = $"Score: {_score:F0}";
         }
 
         public override void StartMinigame()
         {
-            if (Random.Range(0, 2) == 0)
+            if (_leftSideButton.interactable)
             {
-                _leftSideButton.interactable = true;
-                _rightSideButton.interactable = false;
+                _leftSideButton.interactable = false;
+                _rightSideButton.interactable = true;
             }
             else
             {
-                _rightSideButton.interactable = true;
-                _leftSideButton.interactable = false;
+                _leftSideButton.interactable = true;
+                _rightSideButton.interactable = false;
             }
         }
     }

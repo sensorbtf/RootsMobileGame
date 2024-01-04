@@ -31,7 +31,11 @@ public class InfoPanel : MonoBehaviour
         LocalizationSettings.SelectedLocaleChanged += OnLocaleChanged;
 
         gameObject.SetActive(false);
-        _button.onClick.AddListener(delegate { HandleTurnOnOff(false); });
+        _button.onClick.AddListener(delegate 
+        { 
+            _audioManager.PlayButtonSoundEffect(true);
+            HandleTurnOnOff(false); 
+        });
     }
     
     private void OnDestroy()

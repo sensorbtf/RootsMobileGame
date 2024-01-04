@@ -1,0 +1,44 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
+  m_Name: SimplePanels Shared Data
+  m_EditorClassIdentifier: 
+  m_TableCollectionName: SimplePanels
+  m_TableCollectionNameGuidString: e95e1cf7a5a57a24db940eccf802409f
+  m_Entries:
+  - m_Id: 4624978731008
+    m_Key: ok_button_text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3847740645376
+    m_Key: accept_button_text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3847782588416
+    m_Key: back_button_text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 4233184600064
+    m_Key: resources_info_panel_title
+    m_Metadata:
+      m_Items: []
+  m_Metadata:
+    m_Items: []
+  m_KeyGenerator:
+    rid: 5104600486365888514
+  references:
+    version: 2
+    RefIds:
+    - rid: 5104600486365888514
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables, asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1704393462318
