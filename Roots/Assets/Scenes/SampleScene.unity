@@ -86463,13 +86463,13 @@ MonoBehaviour:
   - _minigame: {fileID: 1458857352782118226, guid: 0fe0de437f2d0ab4880a78a1de6dee95, type: 3}
     _buildings: 03000000
   - _minigame: {fileID: 1458857352782118226, guid: 5f08e6ce69f8031479f61257c996601c, type: 3}
-    _buildings: 07000000
+    _buildings: 0700000003000000
   - _minigame: {fileID: 1458857352782118226, guid: 2fb8d025242d80a4295059ded3ea170c, type: 3}
     _buildings: 02000000
   - _minigame: {fileID: 1458857352782118226, guid: eb1eb2e9a0a510a458b81028622e98a2, type: 3}
     _buildings: 05000000080000000b000000
   - _minigame: {fileID: 1458857352782118226, guid: 0e21d3f1b4f18ba41a3aa18522792908, type: 3}
-    _buildings: 05000000080000000b00000001000000
+    _buildings: 050000000800000001000000
   - _minigame: {fileID: 1458857352782118226, guid: 4c388b7e13414ad419c9e91e5244fc1f, type: 3}
     _buildings: 0a000000
 --- !u!4 &5602339483304854385 stripped

@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Sacrificial_Altar
   m_EditorClassIdentifier: 
   Type: 12
-  GodType: 0
+  GodType: 7
   MainPrefab: {fileID: 1328426712780355558, guid: c152e8ba46f1efe4ea48f014aa3ed16e, type: 3}
   Icon: {fileID: 21300000, guid: 4705603df41095642922d0264c15e6df, type: 3}
   InGameSprite: {fileID: 21300000, guid: 4705603df41095642922d0264c15e6df, type: 3}
