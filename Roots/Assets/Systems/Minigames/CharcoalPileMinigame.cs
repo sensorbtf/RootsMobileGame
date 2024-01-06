@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 namespace Minigames
 {
-    public class ClickerMinigame : Minigame
+    public class CharcoalPileMinigame: Minigame // TODO particles of fire
     {
         [SerializeField] private Button _buttonToMash;
 
