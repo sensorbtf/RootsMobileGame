@@ -197,7 +197,7 @@ namespace InGameUi
             _audioManager.PlaySpecificSoundEffect(_boughtEffect);
             
             _godsManager.BuySpecificBlessing(p_godType, p_blessingLevel);
-            _buildingsManager.HandlePointsManipulation(PointsType.ShardsOfDestiny,
+            _buildingsManager.HandlePointsManipulation(PointsType.StarDust,
                 _godsManager.BlessingPrices[p_blessingLevel], false);
         }
 

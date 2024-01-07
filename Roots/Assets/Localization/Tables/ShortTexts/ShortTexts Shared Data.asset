@@ -27,6 +27,14 @@ MonoBehaviour:
     m_Key: star_dust_points
     m_Metadata:
       m_Items: []
+  - m_Id: 714902133465088
+    m_Key: level_info
+    m_Metadata:
+      m_Items: []
+  - m_Id: 718117830844416
+    m_Key: _neededLvlText
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

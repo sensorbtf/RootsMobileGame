@@ -23,7 +23,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 334268653568
-    m_Localized: Help worker
+    m_Localized: Start minigame
     m_Metadata:
       m_Items: []
   - m_Id: 408746909696
@@ -32,6 +32,30 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 492867870720
     m_Localized: Endurance
+    m_Metadata:
+      m_Items: []
+  - m_Id: 140098422628352
+    m_Localized: 'Resources stored in basement:'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 140098439405568
+    m_Localized: 'Working days:'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 140098439405569
+    m_Localized: Not built
+    m_Metadata:
+      m_Items: []
+  - m_Id: 140098439405570
+    m_Localized: Max level reached
+    m_Metadata:
+      m_Items: []
+  - m_Id: 140098439405571
+    m_Localized: Assign more workers
+    m_Metadata:
+      m_Items: []
+  - m_Id: 140098439405572
+    m_Localized: Meet requirements to develop technology
     m_Metadata:
       m_Items: []
   references:

@@ -30,6 +30,14 @@ MonoBehaviour:
     m_Localized: "- Gwiezdny Py\u0142"
     m_Metadata:
       m_Items: []
+  - m_Id: 714902133465088
+    m_Localized: poziom
+    m_Metadata:
+      m_Items: []
+  - m_Id: 718117830844416
+    m_Localized: 'Wymagany poziom:'
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

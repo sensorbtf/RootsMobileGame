@@ -333,11 +333,11 @@ namespace World
             foreach (var quest in CurrentQuests)
             {
                 if (quest.SpecificQuest.QuestKind is QuestType.MinigameResourcePoints or QuestType.ResourcePoints)
-                    if (p_pointsType is PointsType.Resource or PointsType.ResourcesAndDefense)
+                    if (p_pointsType is PointsType.Resource or PointsType.ResourcesAndDefense or PointsType.DefenseAndResources)
                         quest.AchievedTargetAmount += p_pointsNumber;
 
                 if (quest.SpecificQuest.QuestKind is QuestType.MinigameDefensePoints or QuestType.DefensePoints)
-                    if (p_pointsType is PointsType.Defense or PointsType.ResourcesAndDefense)
+                    if (p_pointsType is PointsType.Defense or PointsType.ResourcesAndDefense or PointsType.DefenseAndResources)
                         quest.AchievedTargetAmount += p_pointsNumber;
 
                 if (quest.SpecificQuest.QuestKind == QuestType.DoMinigame &&
@@ -354,11 +354,11 @@ namespace World
             foreach (var quest in CurrentQuests)
             {
                 if (quest.SpecificQuest.QuestKind == QuestType.ResourcePoints)
-                    if (p_pointsType is PointsType.Resource or PointsType.ResourcesAndDefense)
+                    if (p_pointsType is PointsType.Resource or PointsType.ResourcesAndDefense or PointsType.DefenseAndResources)
                         quest.AchievedTargetAmount += p_pointsNumber;
 
                 if (quest.SpecificQuest.QuestKind == QuestType.DefensePoints)
-                    if (p_pointsType is PointsType.Defense or PointsType.ResourcesAndDefense)
+                    if (p_pointsType is PointsType.Defense or PointsType.ResourcesAndDefense or PointsType.DefenseAndResources)
                         quest.AchievedTargetAmount += p_pointsNumber;
             }
 

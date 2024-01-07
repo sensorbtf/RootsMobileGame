@@ -8,6 +8,7 @@ using GeneralSystems;
 using Narrator;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Localization;
 using UnityEngine.UI;
 
 namespace InGameUi
@@ -32,7 +33,8 @@ namespace InGameUi
         [Header("Duration Slider")]
         [SerializeField] private Slider _durationSlider;
         [SerializeField] private TextMeshProUGUI _durationSliderValue;
-
+        
+        [Header("Refs")]
         [SerializeField] private GameObject _buildingIconPrefab;
         [SerializeField] private GameObject _goBackGo;
         [SerializeField] private GameObject _lvlUpGo;
@@ -40,6 +42,17 @@ namespace InGameUi
         [SerializeField] private GameObject _scrollBarGo;
         [SerializeField] private Transform _contentTransform;
 
+        [Header("Localization")]
+        [SerializeField] private LocalizedString _resourcesInBasement;
+        [SerializeField] private LocalizedString _workingDaysText;
+        [SerializeField] private LocalizedString _notBuiltText;
+        [SerializeField] private LocalizedString _neededLvlText;
+        [SerializeField] private LocalizedString _maxLevelText;
+        [SerializeField] private LocalizedString _assignMoreWorkers;
+        [SerializeField] private LocalizedString _requirementsMetText;
+        [SerializeField] private LocalizedString _lvlText;
+
+        
         private bool _areRequirementsMet;
         private Building _building;
         private BuildingData _buildingData;
@@ -122,7 +135,7 @@ namespace InGameUi
             _scrollBarGo.SetActive(true);
             _sliderGos.SetActive(true);
             GetComponent<RectTransform>().sizeDelta = new Vector2(900, 1200);
-            _buildingName.text = $"{_buildingData.Type} ({_building.CurrentLevel} lvl)";
+            _buildingName.text = $"{_buildingData.BuildingName.GetLocalizedString()} ({_building.CurrentLevel} {_lvlText.GetLocalizedString()})";
 
             if (_buildingData.Type == BuildingType.Cottage)
             {
@@ -156,15 +169,14 @@ namespace InGameUi
             _levelUpProgression.minValue = 0;
             _levelUpProgression.maxValue = amountOfStorageInBasement;
 
-            _description.text = _buildingData.Description;
+            _description.text = _buildingData.Description.GetLocalizedString();
 
             if (amountOfStorageInBasement >= buildingsManager.CurrentResourcePoints)
                 _levelUpProgression.value = _levelUpProgression.maxValue;
             else
                 _levelUpProgression.value = buildingsManager.CurrentResourcePoints;
 
-            _sliderValue.text =
-                $"Resources stored in basement: {_levelUpProgression.value}/{_levelUpProgression.maxValue}";
+            _sliderValue.text = $"{_resourcesInBasement.GetLocalizedString()} {_levelUpProgression.value}/{_levelUpProgression.maxValue}";
             _getIntoWorkGo.SetActive(false);
             _lvlUpGo.SetActive(false);
             _getIntoWorkGo.SetActive(false);
@@ -175,11 +187,11 @@ namespace InGameUi
 
         private void HandleView()
         {
-            _description.text = _buildingData.Description;
+            _description.text = _buildingData.Description.GetLocalizedString();
             _levelUpProgression.minValue = 0;
             _levelUpProgression.maxValue = _technology[_building.CurrentTechnologyLvl].WorksDayToAchieve;
             _levelUpProgression.value = _building.CurrentTechnologyDayOnQueue;
-            _sliderValue.text = $"Working days: {_levelUpProgression.value}/{_levelUpProgression.maxValue}";
+            _sliderValue.text = $"{_workingDaysText.GetLocalizedString()} {_levelUpProgression.value}/{_levelUpProgression.maxValue}";
             
             _efficiencySlider.minValue = 0;
             _efficiencySlider.maxValue = _buildingData.Technology.DataPerTechnologyLevel.Last().Efficiency;
@@ -219,8 +231,8 @@ namespace InGameUi
                     uiReferences.BuildingIcon.sprite = currentBuildingData.Icon;
                     uiReferences.NewGo.SetActive(true);
                     uiReferences.InfoGo.SetActive(true);
-                    uiReferences.NewInfo.text = "Not built";
-                    uiReferences.Informations.text = $"Need lvl: {building.Level}";
+                    uiReferences.NewInfo.text = _notBuiltText.GetLocalizedString();
+                    uiReferences.Informations.text = $"{_neededLvlText.GetLocalizedString()} {building.Level}";
                     uiReferences.Informations.color = Color.red;
                     _areRequirementsMet = false;
                 }
@@ -246,7 +258,7 @@ namespace InGameUi
 
             if (_building.CurrentTechnologyLvl + 1 > _building.BuildingMainData.Technology.DataPerTechnologyLevel.Length)
             {
-                _lvlUpButtonText.text = "Max Level";
+                _lvlUpButtonText.text = _maxLevelText.GetLocalizedString();
                 _lvlUpButton.interactable = false;
 
                 return;
@@ -263,14 +275,14 @@ namespace InGameUi
 
             if (!_canDevelopTechnology && _areRequirementsMet)
             {
-                _lvlUpButtonText.text = "Assign more workers";
+                _lvlUpButtonText.text = _assignMoreWorkers.GetLocalizedString();
                 _lvlUpButton.interactable = false;
                 return;
             }
             
             if (_canDevelopTechnology && !_areRequirementsMet)
             {
-                _lvlUpButtonText.text = "Meet Requirements to Develop Technologies";
+                _lvlUpButtonText.text = _requirementsMetText.GetLocalizedString();
                 _lvlUpButton.interactable = false;
                 return;
             }

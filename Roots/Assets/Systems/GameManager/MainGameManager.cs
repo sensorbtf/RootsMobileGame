@@ -251,7 +251,7 @@ namespace GameManager
 
         public void HandleLoginReward()
         {
-            _buildingsManager.HandlePointsManipulation(PointsType.ShardsOfDestiny, GetDailyReward, true, true);
+            _buildingsManager.HandlePointsManipulation(PointsType.StarDust, GetDailyReward, true, true);
 
             _giftTakenTime = DateTime.UtcNow;
 
@@ -346,7 +346,7 @@ namespace GameManager
                     FreeSkipsLeft--;
                     break;
                 case WayToSkip.PaidSkip:
-                    _buildingsManager.HandlePointsManipulation(PointsType.ShardsOfDestiny, DestinyShardsSkipPrice,
+                    _buildingsManager.HandlePointsManipulation(PointsType.StarDust, DestinyShardsSkipPrice,
                         false);
                     break;
             }

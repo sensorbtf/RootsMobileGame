@@ -46,7 +46,7 @@ public class AdsForRewards : MonoBehaviour, IUnityAdsLoadListener, IUnityAdsShow
         if (placementId == typeOfAd && showCompletionState.Equals(UnityAdsShowCompletionState.COMPLETED))
         {
             Debug.Log("Rewarded Ad Completed");
-            _buildingsManager.HandlePointsManipulation(PointsType.ShardsOfDestiny, _rewardAmount, true, true);
+            _buildingsManager.HandlePointsManipulation(PointsType.StarDust, _rewardAmount, true, true);
         }
     }
     #endregion

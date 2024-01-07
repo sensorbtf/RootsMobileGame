@@ -13,6 +13,15 @@ MonoBehaviour:
   m_Name: Herbs_Garden
   m_EditorClassIdentifier: 
   Type: 9
+  BuildingName:
+    m_TableReference:
+      m_TableCollectionName: GUID:a0e1de45fe5d06a4b9f8bfb17bd52c3f
+    m_TableEntryReference:
+      m_KeyId: 7052419588108
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   GodType: 5
   MainPrefab: {fileID: 1328426712780355558, guid: 36360ded9970f9342b3fe0485d64001d, type: 3}
   Icon: {fileID: 21300000, guid: 9519b51e93a534a45bf2a7e878d5db27, type: 3}
@@ -20,7 +29,15 @@ MonoBehaviour:
   FirstStageBuilding: {fileID: 21300000, guid: 56794494720d7ac42ad6d85a9186c784, type: 3}
   UpgradeStage: {fileID: 21300000, guid: 56794494720d7ac42ad6d85a9186c784, type: 3}
   DestroyedStage: {fileID: 21300000, guid: 36c5bc1421246a74c9c67c678cc63392, type: 3}
-  Description: Herbs Garden
+  Description:
+    m_TableReference:
+      m_TableCollectionName: GUID:a0e1de45fe5d06a4b9f8bfb17bd52c3f
+    m_TableEntryReference:
+      m_KeyId: 7052419588109
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   BaseCottageLevelNeeded: 5
   LevelToEnableMinigame: 0
   PerLevelData:
@@ -40,3 +57,6 @@ MonoBehaviour:
     ProductionType: 1
     ProductionAmountPerDay: 30
   Technology: {fileID: 11400000, guid: 60df8f1c2368c674faf18d34c26b7773, type: 2}
+  references:
+    version: 2
+    RefIds: []

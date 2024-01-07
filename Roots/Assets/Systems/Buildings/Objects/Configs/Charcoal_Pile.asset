@@ -13,6 +13,15 @@ MonoBehaviour:
   m_Name: Charcoal_Pile
   m_EditorClassIdentifier: 
   Type: 8
+  BuildingName:
+    m_TableReference:
+      m_TableCollectionName: GUID:a0e1de45fe5d06a4b9f8bfb17bd52c3f
+    m_TableEntryReference:
+      m_KeyId: 7052419588106
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   GodType: 3
   MainPrefab: {fileID: 1328426712780355558, guid: 80de6e6efe3fc5548bcdf433e9f62bce, type: 3}
   Icon: {fileID: 21300000, guid: 90031637d28dec642a945de3902976bc, type: 3}
@@ -20,7 +29,15 @@ MonoBehaviour:
   FirstStageBuilding: {fileID: 21300000, guid: 2d04490bdc58332458b7afd21031610d, type: 3}
   UpgradeStage: {fileID: 21300000, guid: 2d04490bdc58332458b7afd21031610d, type: 3}
   DestroyedStage: {fileID: 21300000, guid: b5f458d4b1281404abd35c91aa70c826, type: 3}
-  Description: Charcual Pile
+  Description:
+    m_TableReference:
+      m_TableCollectionName: GUID:a0e1de45fe5d06a4b9f8bfb17bd52c3f
+    m_TableEntryReference:
+      m_KeyId: 7052419588107
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   BaseCottageLevelNeeded: 5
   LevelToEnableMinigame: 0
   PerLevelData:
@@ -40,3 +57,6 @@ MonoBehaviour:
     ProductionType: 1
     ProductionAmountPerDay: 30
   Technology: {fileID: 11400000, guid: 17b384da89227fc4e989281ece026c0d, type: 2}
+  references:
+    version: 2
+    RefIds: []

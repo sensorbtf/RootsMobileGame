@@ -27,6 +27,11 @@ namespace AudioSystem
             _effectSource.clip = p_audioClip;
             _effectSource.Play();
         }
+        
+        public void CreateNewAudioSource(AudioClip p_audioClip)
+        {
+            StartCoroutine(GenerateNewAudioSource(p_audioClip));
+        }
 
         public void PlayButtonSoundEffect(bool p_isInteractable)
         {
@@ -36,13 +41,13 @@ namespace AudioSystem
         
         public void PlayThunderstormSoundEffect()
         {
-            StartCoroutine(PlayThunderstormCoroutine());
+            StartCoroutine(GenerateNewAudioSource(_thunderstormsSounds[Random.Range(0, _thunderstormsSounds.Length)]));
         }
 
-        private IEnumerator PlayThunderstormCoroutine()
+        private IEnumerator GenerateNewAudioSource(AudioClip p_clip)
         {
             var newSource = gameObject.AddComponent<AudioSource>();
-            newSource.clip = _thunderstormsSounds[Random.Range(0, _thunderstormsSounds.Length)];
+            newSource.clip = p_clip;
             newSource.Play();
 
             yield return new WaitForSeconds(newSource.clip.length);

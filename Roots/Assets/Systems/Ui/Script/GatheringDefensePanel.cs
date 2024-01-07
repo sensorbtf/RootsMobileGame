@@ -80,7 +80,9 @@ namespace InGameUi
                     if (building.BuildingMainData.PerLevelData[building.CurrentLevel].ProductionType !=
                         PointsType.Resource &&
                         building.BuildingMainData.PerLevelData[building.CurrentLevel].ProductionType !=
-                        PointsType.ResourcesAndDefense)
+                        PointsType.ResourcesAndDefense &&
+                    building.BuildingMainData.PerLevelData[building.CurrentLevel].ProductionType !=
+                        PointsType.DefenseAndResources)
                         continue;
                 }
                 else
@@ -88,7 +90,9 @@ namespace InGameUi
                     if (building.BuildingMainData.PerLevelData[building.CurrentLevel].ProductionType !=
                         PointsType.Defense &&
                         building.BuildingMainData.PerLevelData[building.CurrentLevel].ProductionType !=
-                        PointsType.ResourcesAndDefense)
+                        PointsType.ResourcesAndDefense &&
+                        building.BuildingMainData.PerLevelData[building.CurrentLevel].ProductionType !=
+                        PointsType.DefenseAndResources)
                         continue;
                 }
 
@@ -198,7 +202,9 @@ namespace InGameUi
                 var canProduce = building.Key.BuildingMainData.PerLevelData[building.Key.CurrentLevel].ProductionType ==
                                  PointsType.Resource ||
                                  building.Key.BuildingMainData.PerLevelData[building.Key.CurrentLevel].ProductionType ==
-                                 PointsType.ResourcesAndDefense;
+                                 PointsType.ResourcesAndDefense ||
+                                 building.Key.BuildingMainData.PerLevelData[building.Key.CurrentLevel].ProductionType ==
+                                 PointsType.DefenseAndResources;
 
                 if (BuildingsOnQueue.Contains(building.Key))
                     AssignWorkerHandler(building.Key, building.Value, canProduce);

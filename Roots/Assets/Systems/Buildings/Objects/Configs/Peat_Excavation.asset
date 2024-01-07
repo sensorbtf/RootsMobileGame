@@ -13,6 +13,15 @@ MonoBehaviour:
   m_Name: Peat_Excavation
   m_EditorClassIdentifier: 
   Type: 7
+  BuildingName:
+    m_TableReference:
+      m_TableCollectionName: GUID:a0e1de45fe5d06a4b9f8bfb17bd52c3f
+    m_TableEntryReference:
+      m_KeyId: 7052419588104
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   GodType: 1
   MainPrefab: {fileID: 1328426712780355558, guid: dd9ce37ffa6908b4ba673d7a4b56e421, type: 3}
   Icon: {fileID: 21300000, guid: 92351ce44f86628489aed22b73281dc3, type: 3}
@@ -20,7 +29,15 @@ MonoBehaviour:
   FirstStageBuilding: {fileID: 21300000, guid: 4b6563f557574a74caa16c0a70637f2b, type: 3}
   UpgradeStage: {fileID: 21300000, guid: 4b965ac520346c74f82d5506b559fb89, type: 3}
   DestroyedStage: {fileID: 21300000, guid: e8ad9dc08448a194d94985c404c76680, type: 3}
-  Description: Peat Excavation is git
+  Description:
+    m_TableReference:
+      m_TableCollectionName: GUID:a0e1de45fe5d06a4b9f8bfb17bd52c3f
+    m_TableEntryReference:
+      m_KeyId: 7052419588105
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   BaseCottageLevelNeeded: 5
   LevelToEnableMinigame: 0
   PerLevelData:
@@ -40,3 +57,6 @@ MonoBehaviour:
     ProductionType: 1
     ProductionAmountPerDay: 30
   Technology: {fileID: 11400000, guid: 17b384da89227fc4e989281ece026c0d, type: 2}
+  references:
+    version: 2
+    RefIds: []

@@ -13,6 +13,15 @@ MonoBehaviour:
   m_Name: Workshop
   m_EditorClassIdentifier: 
   Type: 11
+  BuildingName:
+    m_TableReference:
+      m_TableCollectionName: GUID:a0e1de45fe5d06a4b9f8bfb17bd52c3f
+    m_TableEntryReference:
+      m_KeyId: 7052419588112
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   GodType: 9
   MainPrefab: {fileID: 1328426712780355558, guid: a7987109fb3645b459b0f71fb0f7f186, type: 3}
   Icon: {fileID: 21300000, guid: 91cc49a5102f3d444b6d16a2874a3df9, type: 3}
@@ -20,7 +29,15 @@ MonoBehaviour:
   FirstStageBuilding: {fileID: 21300000, guid: b82630a2c46b9d84dbac7a64f588cb18, type: 3}
   UpgradeStage: {fileID: 21300000, guid: b82630a2c46b9d84dbac7a64f588cb18, type: 3}
   DestroyedStage: {fileID: 21300000, guid: 5470f9ed5306c2a40b177035acfd547e, type: 3}
-  Description: Wood is transported here to further processing.
+  Description:
+    m_TableReference:
+      m_TableCollectionName: GUID:a0e1de45fe5d06a4b9f8bfb17bd52c3f
+    m_TableEntryReference:
+      m_KeyId: 7052419588113
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   BaseCottageLevelNeeded: 5
   LevelToEnableMinigame: 0
   PerLevelData:
@@ -40,3 +57,6 @@ MonoBehaviour:
     ProductionType: 1
     ProductionAmountPerDay: 30
   Technology: {fileID: 11400000, guid: 60df8f1c2368c674faf18d34c26b7773, type: 2}
+  references:
+    version: 2
+    RefIds: []

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using AudioSystem;
 using Buildings;using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,6 +9,8 @@ namespace Minigames
 {
     public abstract class Minigame : MonoBehaviour
     {
+        [SerializeField] internal AudioManager _audioManager;
+
         [HideInInspector] public float _timer;
         [HideInInspector] public float _efficiency;
         [HideInInspector] public bool _isGameActive;
@@ -38,6 +41,13 @@ namespace Minigames
         {
             _score = 0;
 
+            AudioManager myObject = FindObjectOfType<AudioManager>();
+
+            if (myObject != null)
+            {
+                _audioManager = myObject;
+            }
+            
             _timer = p_building.BuildingMainData.Technology.DataPerTechnologyLevel[p_building.CurrentTechnologyLvl]
                 .MinigameDuration;
             _efficiency = p_building.BuildingMainData.Technology.DataPerTechnologyLevel[p_building.CurrentTechnologyLvl]

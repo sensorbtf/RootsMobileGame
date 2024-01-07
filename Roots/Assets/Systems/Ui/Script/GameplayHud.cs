@@ -367,7 +367,7 @@ namespace InGameUi
             ShardsOfDestiny.text = $"{_buildingsManager.CurrentDestinyShards.ToString()}";
 
             if (p_makeIcons)
-                TryToCreatePoints(p_points, PointsType.ShardsOfDestiny);
+                TryToCreatePoints(p_points, PointsType.StarDust);
         }
 
         private void RefreshDefensePoints(int p_points, bool p_makeIcons)
@@ -430,7 +430,7 @@ namespace InGameUi
                         _createdImages[DefensePointsImage.rectTransform].Add(imageObject);
                         _audioManager.PlaySpecificSoundEffect(_defensePointsManipulation);
                         break;
-                    case PointsType.ShardsOfDestiny:
+                    case PointsType.StarDust:
                         image.sprite = _buildingsManager.ShardsOfDestinyIcon;
                         _createdImages[ShardsOfDestinyImage.rectTransform].Add(imageObject);
                         _audioManager.PlaySpecificSoundEffect(_destinyShardsManipulation);
@@ -601,7 +601,7 @@ namespace InGameUi
                 _secondMissionButtonText.text = "Completed";
             }
 
-            _buildingsManager.HandlePointsManipulation(PointsType.ShardsOfDestiny,
+            _buildingsManager.HandlePointsManipulation(PointsType.StarDust,
                 p_quest.SpecificQuest.ShardsOfDestinyReward, true, true);
 
             CheckQuestsCompletion();

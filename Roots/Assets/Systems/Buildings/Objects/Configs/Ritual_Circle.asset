@@ -13,6 +13,15 @@ MonoBehaviour:
   m_Name: Ritual_Circle
   m_EditorClassIdentifier: 
   Type: 6
+  BuildingName:
+    m_TableReference:
+      m_TableCollectionName: GUID:a0e1de45fe5d06a4b9f8bfb17bd52c3f
+    m_TableEntryReference:
+      m_KeyId: 7052419588102
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   GodType: 10
   MainPrefab: {fileID: 1328426712780355558, guid: 80bf6bce43a655d4aa423b1bf6d56a62, type: 3}
   Icon: {fileID: 21300000, guid: 41482bc6d2cb5be4ea997537570e0cdc, type: 3}
@@ -20,8 +29,15 @@ MonoBehaviour:
   FirstStageBuilding: {fileID: 21300000, guid: 8995303cd28cbc54da32d93b466882d8, type: 3}
   UpgradeStage: {fileID: 21300000, guid: 8995303cd28cbc54da32d93b466882d8, type: 3}
   DestroyedStage: {fileID: 21300000, guid: 9ddcd19eab034224eaf07a779363130e, type: 3}
-  Description: Noone knows what exactly comes with storm but runes created in Ritual
-    Circle always help to keep danger away.
+  Description:
+    m_TableReference:
+      m_TableCollectionName: GUID:a0e1de45fe5d06a4b9f8bfb17bd52c3f
+    m_TableEntryReference:
+      m_KeyId: 7052419588103
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   BaseCottageLevelNeeded: 5
   LevelToEnableMinigame: 0
   PerLevelData:
@@ -46,3 +62,6 @@ MonoBehaviour:
     ProductionType: 3
     ProductionAmountPerDay: 25
   Technology: {fileID: 11400000, guid: 60df8f1c2368c674faf18d34c26b7773, type: 2}
+  references:
+    version: 2
+    RefIds: []

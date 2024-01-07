@@ -1,6 +1,7 @@
 using System;
 using Gods;
 using UnityEngine;
+using UnityEngine.Localization;
 
 namespace Buildings
 {
@@ -8,6 +9,7 @@ namespace Buildings
     public class BuildingData : ScriptableObject
     {
         public BuildingType Type;
+        public LocalizedString BuildingName;
         public GodType GodType;
         public GameObject MainPrefab;
         public Sprite Icon;
@@ -15,7 +17,7 @@ namespace Buildings
         public Sprite FirstStageBuilding;
         public Sprite UpgradeStage;
         public Sprite DestroyedStage;
-        public string Description;
+        public LocalizedString Description;
         public int BaseCottageLevelNeeded;
         public int LevelToEnableMinigame;
         [SerializeField] public BaseDataPerLevel[] PerLevelData;
@@ -34,9 +36,7 @@ namespace Buildings
     public class Requirements
     {
         public int ResourcePoints;
-
         public int DaysToComplete;
-        //public BuildingRequirements[] OtherBuildingRequirements;
     }
 
     public enum BuildingType
@@ -62,6 +62,7 @@ namespace Buildings
         Resource = 1,
         Defense = 2,
         ResourcesAndDefense = 3,
-        ShardsOfDestiny = 4
+        StarDust = 4,
+        DefenseAndResources = 5
     }
 }

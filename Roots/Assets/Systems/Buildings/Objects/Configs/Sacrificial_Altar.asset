@@ -13,6 +13,15 @@ MonoBehaviour:
   m_Name: Sacrificial_Altar
   m_EditorClassIdentifier: 
   Type: 12
+  BuildingName:
+    m_TableReference:
+      m_TableCollectionName: GUID:a0e1de45fe5d06a4b9f8bfb17bd52c3f
+    m_TableEntryReference:
+      m_KeyId: 7052419588114
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   GodType: 7
   MainPrefab: {fileID: 1328426712780355558, guid: c152e8ba46f1efe4ea48f014aa3ed16e, type: 3}
   Icon: {fileID: 21300000, guid: 4705603df41095642922d0264c15e6df, type: 3}
@@ -20,7 +29,15 @@ MonoBehaviour:
   FirstStageBuilding: {fileID: 21300000, guid: d4e061ee878d4ef4a9864b4d95704fb1, type: 3}
   UpgradeStage: {fileID: 21300000, guid: 6ad66ed2d24901345a9bad924422fade, type: 3}
   DestroyedStage: {fileID: 21300000, guid: 3ae08dff10334ed469ac06cb9ba8bf18, type: 3}
-  Description: sacrificial_altar-Desc
+  Description:
+    m_TableReference:
+      m_TableCollectionName: GUID:a0e1de45fe5d06a4b9f8bfb17bd52c3f
+    m_TableEntryReference:
+      m_KeyId: 7052419588115
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   BaseCottageLevelNeeded: 5
   LevelToEnableMinigame: 0
   PerLevelData:
@@ -40,3 +57,6 @@ MonoBehaviour:
     ProductionType: 1
     ProductionAmountPerDay: 30
   Technology: {fileID: 11400000, guid: 60df8f1c2368c674faf18d34c26b7773, type: 2}
+  references:
+    version: 2
+    RefIds: []

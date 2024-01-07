@@ -225,6 +225,8 @@ namespace InGameUi
         private void CreateOutcomeIcon(SingleBuildingRefs p_refsScript, BuildingData p_buildingData, int p_currentLevel)
         {
             if (p_buildingData.PerLevelData[p_currentLevel].ProductionType == PointsType.ResourcesAndDefense)
+                p_refsScript.TypeOfOutcome.sprite = buildingsManager.ResourcesAndDefensePointsIcon;
+            else if (p_buildingData.PerLevelData[p_currentLevel].ProductionType == PointsType.DefenseAndResources)
                 p_refsScript.TypeOfOutcome.sprite = buildingsManager.DefenseAndResourcesPointsIcon;
             else if (p_buildingData.PerLevelData[p_currentLevel].ProductionType == PointsType.Defense)
                 p_refsScript.TypeOfOutcome.sprite = buildingsManager.DefensePointsIcon;

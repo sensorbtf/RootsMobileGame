@@ -13,6 +13,15 @@ MonoBehaviour:
   m_Name: GuardTower
   m_EditorClassIdentifier: 
   Type: 2
+  BuildingName:
+    m_TableReference:
+      m_TableCollectionName: GUID:a0e1de45fe5d06a4b9f8bfb17bd52c3f
+    m_TableEntryReference:
+      m_KeyId: 7052419588096
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   GodType: 12
   MainPrefab: {fileID: 1328426712780355558, guid: 15e1ee510388ceb44bda51c47dadd178, type: 3}
   Icon: {fileID: 21300000, guid: d0a291ae06554044d8ae09a202a9e6b5, type: 3}
@@ -20,8 +29,15 @@ MonoBehaviour:
   FirstStageBuilding: {fileID: 21300000, guid: f337417ab8e612e42b1b21e435e966f1, type: 3}
   UpgradeStage: {fileID: 21300000, guid: 4bb8222fe7b525c40aef1e4fd13ee205, type: 3}
   DestroyedStage: {fileID: 21300000, guid: f337417ab8e612e42b1b21e435e966f1, type: 3}
-  Description: First defense structure in village. Gives small portion of defense
-    points and check next days in case of storm.
+  Description:
+    m_TableReference:
+      m_TableCollectionName: GUID:a0e1de45fe5d06a4b9f8bfb17bd52c3f
+    m_TableEntryReference:
+      m_KeyId: 7052419588097
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   BaseCottageLevelNeeded: 2
   LevelToEnableMinigame: 0
   PerLevelData:
@@ -41,3 +57,6 @@ MonoBehaviour:
     ProductionType: 2
     ProductionAmountPerDay: 15
   Technology: {fileID: 11400000, guid: 60df8f1c2368c674faf18d34c26b7773, type: 2}
+  references:
+    version: 2
+    RefIds: []

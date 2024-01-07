@@ -13,6 +13,15 @@ MonoBehaviour:
   m_Name: Cottage
   m_EditorClassIdentifier: 
   Type: 0
+  BuildingName:
+    m_TableReference:
+      m_TableCollectionName: GUID:a0e1de45fe5d06a4b9f8bfb17bd52c3f
+    m_TableEntryReference:
+      m_KeyId: 318418378752
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   GodType: 0
   MainPrefab: {fileID: 1328426712780355558, guid: 87828ae970e7daa458c1959de94084c4, type: 3}
   Icon: {fileID: 21300000, guid: 4e69dfbbdc1157d44aee0225c3291d03, type: 3}
@@ -20,8 +29,15 @@ MonoBehaviour:
   FirstStageBuilding: {fileID: 21300000, guid: 56e1d9c95e01c694f92e785d034179a5, type: 3}
   UpgradeStage: {fileID: 21300000, guid: fc1cccd5912bccf4dbe4509549fb56f5, type: 3}
   DestroyedStage: {fileID: 21300000, guid: 56e1d9c95e01c694f92e785d034179a5, type: 3}
-  Description: Residence's basement is a safe place to store excess resources on
-    mission completion and recover them on the next one
+  Description:
+    m_TableReference:
+      m_TableCollectionName: GUID:a0e1de45fe5d06a4b9f8bfb17bd52c3f
+    m_TableEntryReference:
+      m_KeyId: 346000121856
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   BaseCottageLevelNeeded: 0
   LevelToEnableMinigame: 0
   PerLevelData:
@@ -56,3 +72,6 @@ MonoBehaviour:
     ProductionType: 0
     ProductionAmountPerDay: 25
   Technology: {fileID: 0}
+  references:
+    version: 2
+    RefIds: []

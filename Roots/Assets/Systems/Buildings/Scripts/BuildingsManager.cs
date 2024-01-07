@@ -19,6 +19,7 @@ namespace Buildings
 
         [Header("Icons")]
         public Sprite DefenseAndResourcesPointsIcon;
+        public Sprite ResourcesAndDefensePointsIcon;
         public Sprite ResourcesPointsIcon;
         public Sprite DefensePointsIcon;
         public Sprite ShardsOfDestinyIcon;
@@ -127,7 +128,7 @@ namespace Buildings
                 if (buildingToBuild.Type is BuildingType.Cottage)
                     HandleBuiltOfBuilding(buildingToBuild, true);
 
-            HandlePointsManipulation(PointsType.ShardsOfDestiny, _startingDestinyPoints, true);
+            HandlePointsManipulation(PointsType.StarDust, _startingDestinyPoints, true);
             CurrentBuildings.Find(x => x.BuildingMainData.Type == BuildingType.Cottage).IsDamaged = true;
         }
 
@@ -203,10 +204,14 @@ namespace Buildings
                         BuildingsToGatherFrom.Add(building);
                         break;
                     case PointsType.ResourcesAndDefense:
+                        building.SetCollectionIcon(ResourcesAndDefensePointsIcon);
+                        BuildingsToGatherFrom.Add(building);
+                        break;
+                    case PointsType.DefenseAndResources:
                         building.SetCollectionIcon(DefenseAndResourcesPointsIcon);
                         BuildingsToGatherFrom.Add(building);
                         break;
-                    case PointsType.ShardsOfDestiny:
+                    case PointsType.StarDust:
                         break;
                 }
 
@@ -555,9 +560,13 @@ namespace Buildings
                     break;
                 case PointsType.ResourcesAndDefense:
                     ManipulateResourcePoints(specificValue, p_createEffect);
-                    ManipulateDefencePoints(specificValue, p_createEffect);
+                    ManipulateDefencePoints(specificValue / 2, p_createEffect);
                     break;
-                case PointsType.ShardsOfDestiny:
+                case PointsType.DefenseAndResources:
+                    ManipulateDefencePoints(specificValue, p_createEffect);
+                    ManipulateResourcePoints(specificValue / 2, p_createEffect);
+                    break;
+                case PointsType.StarDust:
                     ManipulateShardsOfDestiny(specificValue, p_createEffect);
                     break;
             }

@@ -31,6 +31,30 @@ MonoBehaviour:
     m_Key: duration_text
     m_Metadata:
       m_Items: []
+  - m_Id: 140098422628352
+    m_Key: basement_resources
+    m_Metadata:
+      m_Items: []
+  - m_Id: 140098439405568
+    m_Key: working_days_text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 140098439405569
+    m_Key: not_built_into
+    m_Metadata:
+      m_Items: []
+  - m_Id: 140098439405570
+    m_Key: max_level_reached
+    m_Metadata:
+      m_Items: []
+  - m_Id: 140098439405571
+    m_Key: not_enough_tech_development
+    m_Metadata:
+      m_Items: []
+  - m_Id: 140098439405572
+    m_Key: meet_requirements
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

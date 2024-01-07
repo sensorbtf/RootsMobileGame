@@ -87237,6 +87237,7 @@ MonoBehaviour:
   _buildingsDatabase: {fileID: 11400000, guid: b3edb7efaacaa7243b73c8807b123489, type: 2}
   _startingDestinyPoints: 3000
   DefenseAndResourcesPointsIcon: {fileID: 21300000, guid: ccdb0e4dc91696b43a5ca8cea60c220e, type: 3}
+  ResourcesAndDefensePointsIcon: {fileID: 21300000, guid: ccdb0e4dc91696b43a5ca8cea60c220e, type: 3}
   ResourcesPointsIcon: {fileID: 21300000, guid: 9ce0aa9ec4e105943959eaff215907b9, type: 3}
   DefensePointsIcon: {fileID: 21300000, guid: 39c919cf0fb73ec489e92b2ca44ab57a, type: 3}
   ShardsOfDestinyIcon: {fileID: 21300000, guid: 0238c4f93a79eee4498db1af75abbf23, type: 3}
@@ -87534,6 +87535,81 @@ MonoBehaviour:
   _getIntoWorkGo: {fileID: 1745599440604177080}
   _scrollBarGo: {fileID: 5977111272816514206}
   _contentTransform: {fileID: 8658155073605840065}
+  _resourcesInBasement:
+    m_TableReference:
+      m_TableCollectionName: GUID:93bb09af93610874eafee6bf723d5327
+    m_TableEntryReference:
+      m_KeyId: 140098422628352
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  _workingDaysText:
+    m_TableReference:
+      m_TableCollectionName: GUID:93bb09af93610874eafee6bf723d5327
+    m_TableEntryReference:
+      m_KeyId: 140098439405568
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  _notBuiltText:
+    m_TableReference:
+      m_TableCollectionName: GUID:93bb09af93610874eafee6bf723d5327
+    m_TableEntryReference:
+      m_KeyId: 140098439405569
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  _neededLvlText:
+    m_TableReference:
+      m_TableCollectionName: GUID:22d71a5c37154b44b900b979d13ef516
+    m_TableEntryReference:
+      m_KeyId: 718117830844416
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  _maxLevelText:
+    m_TableReference:
+      m_TableCollectionName: GUID:93bb09af93610874eafee6bf723d5327
+    m_TableEntryReference:
+      m_KeyId: 140098439405570
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  _assignMoreWorkers:
+    m_TableReference:
+      m_TableCollectionName: GUID:93bb09af93610874eafee6bf723d5327
+    m_TableEntryReference:
+      m_KeyId: 140098439405571
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  _requirementsMetText:
+    m_TableReference:
+      m_TableCollectionName: GUID:93bb09af93610874eafee6bf723d5327
+    m_TableEntryReference:
+      m_KeyId: 140098439405572
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  _lvlText:
+    m_TableReference:
+      m_TableCollectionName: GUID:22d71a5c37154b44b900b979d13ef516
+    m_TableEntryReference:
+      m_KeyId: 714902133465088
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  references:
+    version: 2
+    RefIds: []
 --- !u!114 &8410811558822634213
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -87680,7 +87756,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 50.85
+  m_fontSize: 41.85
   m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 1

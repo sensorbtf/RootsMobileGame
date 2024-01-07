@@ -1,0 +1,132 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
+  m_Name: Buildings Shared Data
+  m_EditorClassIdentifier: 
+  m_TableCollectionName: Buildings
+  m_TableCollectionNameGuidString: a0e1de45fe5d06a4b9f8bfb17bd52c3f
+  m_Entries:
+  - m_Id: 318418378752
+    m_Key: cottage_name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 346000121856
+    m_Key: cottage_description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1505477713920
+    m_Key: farm_name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1528571551744
+    m_Key: farm_description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1559617789952
+    m_Key: woodcutter_name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1656925642752
+    m_Key: woodcutter_description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7052419588096
+    m_Key: guard_tower_name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7052419588097
+    m_Key: guard_tower_description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7052419588098
+    m_Key: alchemical_hut_name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7052419588099
+    m_Key: alchemical_hut_description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7052419588100
+    m_Key: minig_shaft_name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7052419588101
+    m_Key: minig_shaft_description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7052419588102
+    m_Key: ritual_circle_name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7052419588103
+    m_Key: ritual_circle_description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7052419588104
+    m_Key: peat_excavation_name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7052419588105
+    m_Key: peat_excavation_description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7052419588106
+    m_Key: charcoal_pile_name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7052419588107
+    m_Key: charcoal_pile_description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7052419588108
+    m_Key: herbs_garden_name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7052419588109
+    m_Key: herbs_garden_description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7052419588110
+    m_Key: apiary_name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7052419588111
+    m_Key: apiary_description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7052419588112
+    m_Key: workshop_name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7052419588113
+    m_Key: workshop_description
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7052419588114
+    m_Key: sacrificial_altar_name
+    m_Metadata:
+      m_Items: []
+  - m_Id: 7052419588115
+    m_Key: sacrificial_altar_description
+    m_Metadata:
+      m_Items: []
+  m_Metadata:
+    m_Items: []
+  m_KeyGenerator:
+    rid: 5104600532015906822
+  references:
+    version: 2
+    RefIds:
+    - rid: 5104600532015906822
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables, asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1704566526597
