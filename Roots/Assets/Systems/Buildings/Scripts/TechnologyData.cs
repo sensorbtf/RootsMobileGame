@@ -6,6 +6,7 @@ namespace Buildings
     [CreateAssetMenu(fileName = "TechnologyData", menuName = "ScriptableObjects/TechnologyData", order = 2)]
     public class TechnologyData : ScriptableObject
     {
+        public PointsType ProductionType;
         public TechnologyDataPerLevel[] DataPerTechnologyLevel;
         public Sprite SpriteOfObject;
     }

@@ -75,26 +75,9 @@ namespace InGameUi
 
             foreach (var building in buildingsManager.CurrentBuildings)
             {
-                if (p_gathering)
-                {
-                    if (building.BuildingMainData.PerLevelData[building.CurrentLevel].ProductionType !=
-                        PointsType.Resource &&
-                        building.BuildingMainData.PerLevelData[building.CurrentLevel].ProductionType !=
-                        PointsType.ResourcesAndDefense &&
-                    building.BuildingMainData.PerLevelData[building.CurrentLevel].ProductionType !=
-                        PointsType.DefenseAndResources)
-                        continue;
-                }
-                else
-                {
-                    if (building.BuildingMainData.PerLevelData[building.CurrentLevel].ProductionType !=
-                        PointsType.Defense &&
-                        building.BuildingMainData.PerLevelData[building.CurrentLevel].ProductionType !=
-                        PointsType.ResourcesAndDefense &&
-                        building.BuildingMainData.PerLevelData[building.CurrentLevel].ProductionType !=
-                        PointsType.DefenseAndResources)
-                        continue;
-                }
+                var productionType = building.BuildingMainData.PerLevelData[building.CurrentLevel].ProductionType;
+                if (ShouldSkip(p_gathering, productionType))
+                    continue;
 
                 var newGathering = Instantiate(_gatheringDefenseEntryPrefab, contentTransform);
                 _runtimeBuildingsUiToDestroy.Add(newGathering);
@@ -104,9 +87,42 @@ namespace InGameUi
                 script.BuildingName.GetComponent<TextMeshProUGUI>().text = building.BuildingMainData.Type.ToString();
                 script.BuildingIcon.GetComponent<Image>().sprite = building.BuildingMainData.Icon;
 
-                script.BuildingInfo.GetComponent<TextMeshProUGUI>().text = p_gathering
-                    ? $"Production Points Per Day: {buildingsManager.GetProductionOfBuilding(building.BuildingMainData.Type)}"
-                    : $"Defense Points Per Day: {buildingsManager.GetProductionOfBuilding(building.BuildingMainData.Type)}";
+                var productionPoints = buildingsManager.GetProductionOfBuilding(building.BuildingMainData.Type);
+                
+                if (p_gathering)
+                {
+                    if (productionType == PointsType.DefenseAndResources)
+                    {
+                        script.BuildingInfo.GetComponent<TextMeshProUGUI>().text =
+                            $"Resource Points: {productionPoints/2}\nDefense Points: {productionPoints}";
+                    }
+                    else if (productionType == PointsType.Resource)
+                    {
+                        script.BuildingInfo.GetComponent<TextMeshProUGUI>().text = $"Resource Points: {productionPoints}";
+                    }
+                    else if (productionType == PointsType.ResourcesAndDefense)
+                    {
+                        script.BuildingInfo.GetComponent<TextMeshProUGUI>().text =
+                            $"Resource Points: {productionPoints} \n Defense Points: {productionPoints / 2}";
+                    }
+                }
+                else
+                {
+                    if (productionType == PointsType.ResourcesAndDefense)
+                    {
+                        script.BuildingInfo.GetComponent<TextMeshProUGUI>().text =
+                            $"Defense Points: {productionPoints / 2}\nResource Points: {productionPoints}";
+                    }
+                    else if (productionType == PointsType.Defense)
+                    {
+                        script.BuildingInfo.GetComponent<TextMeshProUGUI>().text = $"Defense Points: {productionPoints}";
+                    }
+                    else if (productionType == PointsType.DefenseAndResources)
+                    {
+                        script.BuildingInfo.GetComponent<TextMeshProUGUI>().text =
+                            $"Defense Points: {productionPoints}\nResource Points: {productionPoints/2}";
+                    }
+                }
 
                 if (building.IsBeeingUpgradedOrBuilded || _buildingPanel.WillBuildingBeUpgraded(building))
                 {
@@ -130,6 +146,22 @@ namespace InGameUi
                         UnAssignWorkerHandler(building, script, p_gathering);
                 }
             }
+        }
+
+        private bool ShouldSkip(bool p_gathering, PointsType p_pointsType)
+        {
+            if (p_gathering)
+            {
+                if (p_pointsType != PointsType.Resource && p_pointsType != PointsType.DefenseAndResources && p_pointsType != PointsType.ResourcesAndDefense)
+                    return true;
+            }
+            else
+            {
+                if (p_pointsType != PointsType.Defense && p_pointsType != PointsType.DefenseAndResources && p_pointsType != PointsType.ResourcesAndDefense)
+                    return true;
+            }
+
+            return false;
         }
 
         private void AssignWorkerHandler(Building p_building, SingleBuildingRefs p_script, bool p_gathering)

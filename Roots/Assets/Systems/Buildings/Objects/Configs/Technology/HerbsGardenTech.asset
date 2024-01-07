@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4462eaa3d7574021977e5437be530cbb, type: 3}
   m_Name: HerbsGardenTech
   m_EditorClassIdentifier: 
+  ProductionType: 3
   DataPerTechnologyLevel:
   - RequiredBuildingLevel: 1
     OtherBuildingsRequirements:
@@ -34,3 +35,4 @@ MonoBehaviour:
     WorksDayToAchieve: 3
     MinigameDuration: 12
     Efficiency: 1.3
+  SpriteOfObject: {fileID: 0}
