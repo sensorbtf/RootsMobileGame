@@ -21,12 +21,8 @@ namespace Minigames
 
             if (_timer <= 0)
             {
-                _timer = 0;
-                _isGameActive = false;
-                _collectPointsButton.interactable = true;
                 _leftSideButton.interactable = false;
                 _rightSideButton.interactable = false;
-                _timeText.text = $"Collect: {_score:F0} resource points";
             }
         }
 
@@ -46,7 +42,8 @@ namespace Minigames
             
             _score += _efficiency;
             StartMinigame();
-            _scoreText.text = $"Score: {_score:F1}";
+            
+            base.AddScore();
         }
 
         public override void StartMinigame()

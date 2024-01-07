@@ -35,6 +35,34 @@ MonoBehaviour:
     m_Key: _neededLvlText
     m_Metadata:
       m_Items: []
+  - m_Id: 892977810956288
+    m_Key: new_mission_bonus
+    m_Metadata:
+      m_Items: []
+  - m_Id: 892977836122112
+    m_Key: resource_points_collect
+    m_Metadata:
+      m_Items: []
+  - m_Id: 892977836122113
+    m_Key: defense_points_collect
+    m_Metadata:
+      m_Items: []
+  - m_Id: 892977836122114
+    m_Key: star_dust_points_collect
+    m_Metadata:
+      m_Items: []
+  - m_Id: 892977836122115
+    m_Key: resources_defense_points_collect
+    m_Metadata:
+      m_Items: []
+  - m_Id: 892977836122116
+    m_Key: defense_resources_points_collect
+    m_Metadata:
+      m_Items: []
+  - m_Id: 894426527752192
+    m_Key: score_minigame
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

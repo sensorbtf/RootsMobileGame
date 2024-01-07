@@ -152,7 +152,8 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Woodcutter_Minigame_Background_0: -2668995228864897620
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

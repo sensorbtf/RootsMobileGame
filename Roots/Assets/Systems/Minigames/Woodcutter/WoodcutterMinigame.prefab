@@ -174,6 +174,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3439efec6785db24cb990e79e0c45af3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _audioManager: {fileID: 0}
+  _localization: {fileID: 11400000, guid: 5b363b699512a314aa1418817c7f3297, type: 2}
   _timer: 0
   _efficiency: 0
   _isGameActive: 0
@@ -184,7 +186,6 @@ MonoBehaviour:
   _coutdownText: {fileID: 5333791134265138347}
   _scoreText: {fileID: 6920239915713746157}
   _timeText: {fileID: 8059085436923613334}
-  _audioManager: {fileID: 0}
   _leftSideButton: {fileID: 3837221556311353436}
   _rightSideButton: {fileID: 376955267903293133}
   _hitSounds:

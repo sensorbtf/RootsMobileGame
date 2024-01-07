@@ -38,6 +38,35 @@ MonoBehaviour:
     m_Localized: "Needed level:\t"
     m_Metadata:
       m_Items: []
+  - m_Id: 892977810956288
+    m_Localized: The main city needs any amount of {0}. In this mission, working
+      in {1} provides more raw materials by {2}%.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 892977836122112
+    m_Localized: 'Collect: {0} Resource Points'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 892977836122113
+    m_Localized: 'Collect: {0} Defense Points'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 892977836122114
+    m_Localized: 'Collect: {0} Star Dust'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 892977836122115
+    m_Localized: 'Collect: {0} Resource Points and {1} Defense Points'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 892977836122116
+    m_Localized: 'Collect: {0} Defense Points and {1} Resource Points'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 894426527752192
+    m_Localized: 'Score:'
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

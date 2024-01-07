@@ -3,6 +3,7 @@ using System.Collections;
 using AudioSystem;
 using Buildings;using TMPro;
 using UnityEngine;
+using UnityEngine.Localization;
 using UnityEngine.UI;
 
 namespace Minigames
@@ -10,7 +11,8 @@ namespace Minigames
     public abstract class Minigame : MonoBehaviour
     {
         [SerializeField] internal AudioManager _audioManager;
-
+        [SerializeField] internal MinigameLocalizationSO _localization;
+        
         [HideInInspector] public float _timer;
         [HideInInspector] public float _efficiency;
         [HideInInspector] public bool _isGameActive;
@@ -20,9 +22,9 @@ namespace Minigames
         public Button _collectPointsButton;
         public TextMeshProUGUI _coutdownText;
         public TextMeshProUGUI _scoreText;
-
         public TextMeshProUGUI _timeText;
-
+        
+        
         public event Action OnMinigameEnded;
         public event Action<PointsType, int> OnMiniGamePointsCollected;
         
@@ -34,8 +36,38 @@ namespace Minigames
                 return;
 
             UpdateTimerText();
-        }
+            
+            if (_timer <= 0)
+            {
+                _timer = 0;
+                _isGameActive = false;
+                _collectPointsButton.interactable = true;
+                
+                var points = $"{_score:F0}";
 
+                var halfPoints = Mathf.CeilToInt(_score / 2);
+                var pointsTwo = $"{halfPoints:F0}";
+                
+                switch (_type)
+                {
+                    case PointsType.Resource:
+                        _timeText.text = _localization.ResourcePointsCollect.GetLocalizedString().Replace("0", points);
+                        break;
+                    case PointsType.Defense:
+                        _timeText.text = _localization.DefensePointsCollect.GetLocalizedString().Replace("0", points);
+                        break;
+                    case PointsType.StarDust:
+                        _timeText.text = _localization.StarDustPointsCollect.GetLocalizedString().Replace("0", points);
+                        break;
+                    case PointsType.ResourcesAndDefense:
+                        _timeText.text = _localization.ResourcesAndDefenseCollect.GetLocalizedString().Replace("0", points).Replace("1", pointsTwo);
+                        break;
+                    case PointsType.DefenseAndResources:
+                        _timeText.text = _localization.DefenseAndResourcesCollect.GetLocalizedString().Replace("0", points).Replace("1", pointsTwo);
+                        break;
+                }
+            }
+        }
 
         public virtual void SetupGame(Building p_building)
         {
@@ -99,7 +131,10 @@ namespace Minigames
             _coutdownText.enabled = false;
         }
 
-        public abstract void AddScore();
+        public virtual void AddScore()
+        {
+            _scoreText.text = $"{_localization.ScoreText.GetLocalizedString()}: {_score:F0}";
+        }
 
         public abstract void StartMinigame();
     }

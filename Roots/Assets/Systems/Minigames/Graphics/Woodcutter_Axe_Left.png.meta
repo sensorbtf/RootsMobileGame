@@ -152,7 +152,8 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Woodcutter_Axe_Left_0: -4515162615682646830
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

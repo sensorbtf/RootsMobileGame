@@ -38,6 +38,15 @@ MonoBehaviour:
     m_Localized: 'Wymagany poziom:'
     m_Metadata:
       m_Items: []
+  - m_Id: 892977810956288
+    m_Localized: "G\u0142\xF3wne miasto potrzebuje ka\u017Cdej ilo\u015Bci {0}. W
+      tej misji praca w {1} zapewnia wi\u0119cej surowc\xF3w o {2}%"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 894426527752192
+    m_Localized: 'Punkty:'
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
