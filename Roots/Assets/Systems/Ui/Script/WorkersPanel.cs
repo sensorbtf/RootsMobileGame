@@ -85,12 +85,16 @@ namespace InGameUi
             UpdateWorkersText();
             UpdateButtonText();
 
+            var resourcePoints = 0;
+            var defensePoints = 0;
+            TextMeshProUGUI resourcePointsText = null;
+            TextMeshProUGUI defensePointsText = null;
+            
             for (var i = 0; i < 3; i++)
             {
                 var newBar = Instantiate(_barPrefab, contentTransform);
                 _runtimeBuildingsUiToDestroy.Add(newBar);
                 var scriptOfBar = newBar.GetComponent<WorkersDisplacementBarRefs>();
-                var points = 0;
                 GameObject newEntry = null;
 
                 switch (i)
@@ -131,11 +135,11 @@ namespace InGameUi
                                     _buildingPanel.WillBuildingBeCancelled(building, out var wasOnList);
 
                                 if (building.HaveWorker && willBeCancelled)
-                                    references.NewInfo.text = "Will Be Paused";
+                                    references.NewInfo.text = "Will Be paused";
                                 else if (building.IsDamaged && !building.HaveWorker && !willBeCancelled && wasOnList)
                                     references.NewInfo.text = "Will be repaired";
                                 else if (building.IsDamaged && !building.HaveWorker && willBeCancelled && wasOnList)
-                                    references.NewInfo.text = "Will be Paused";
+                                    references.NewInfo.text = "Will be paused";
                                 else if (!building.HaveWorker && !willBeCancelled && wasOnList)
                                     references.NewInfo.text = "Will be resumed";
                                 else if (building.HaveWorker) references.NewInfo.text = "In Progress";
@@ -166,13 +170,19 @@ namespace InGameUi
                     case 1:
                         foreach (var building in _gatheringDefensePanel.BuildingsOnQueue)
                         {
-                            if (building.BuildingMainData.PerLevelData[building.CurrentLevel].ProductionType !=
-                                PointsType.ResourcesAndDefense &&
-                                building.BuildingMainData.PerLevelData[building.CurrentLevel].ProductionType !=
-                                PointsType.Resource)
+                            if (building.BuildingMainData.PerLevelData[building.CurrentLevel].ProductionType == PointsType.Defense)
                                 continue;
 
-                            points += buildingsManager.GetProductionOfBuilding(building.BuildingMainData.Type);
+                            if (building.BuildingMainData.PerLevelData[building.CurrentLevel].ProductionType == PointsType.ResourcesAndDefense)
+                            {
+                                defensePoints +=
+                                    buildingsManager.GetProductionOfBuilding(building.BuildingMainData.Type) / 2;
+                            }
+
+                            if (building.BuildingMainData.PerLevelData[building.CurrentLevel].ProductionType != PointsType.DefenseAndResources)
+                            {
+                                resourcePoints += buildingsManager.GetProductionOfBuilding(building.BuildingMainData.Type);
+                            }
                             
                             newEntry = Instantiate(_iconPrefab, scriptOfBar.ScrollContext);
 
@@ -184,23 +194,28 @@ namespace InGameUi
                             references.GlowEffect.color = GetColor(building.BuildingMainData.GodType);
                             references.Informations.text = "Worker Assigned";
                         }
-
-                        scriptOfBar.BarText.text = $"Resource Points: +{points}";
+                        
+                        resourcePointsText = scriptOfBar.BarText;
                         scriptOfBar.BarButton.onClick.AddListener(() => OnGatheringOrDefenseButtonClicked(true));
                         
                         scriptOfBar.BarButton.interactable = !_narratorManager.ShouldBlockResource();
                         break;
                     case 2:
-
                         foreach (var building in _gatheringDefensePanel.BuildingsOnQueue)
                         {
-                            if (building.BuildingMainData.PerLevelData[building.CurrentLevel].ProductionType !=
-                                PointsType.ResourcesAndDefense &&
-                                building.BuildingMainData.PerLevelData[building.CurrentLevel].ProductionType !=
-                                PointsType.Defense)
+                            if (building.BuildingMainData.PerLevelData[building.CurrentLevel].ProductionType == PointsType.Resource)
                                 continue;
 
-                            points += buildingsManager.GetProductionOfBuilding(building.BuildingMainData.Type);
+                            if (building.BuildingMainData.PerLevelData[building.CurrentLevel].ProductionType == PointsType.DefenseAndResources)
+                            {
+                                resourcePoints += buildingsManager.GetProductionOfBuilding(building.BuildingMainData.Type) / 2;
+                            }
+                            
+                            if (building.BuildingMainData.PerLevelData[building.CurrentLevel].ProductionType != PointsType.ResourcesAndDefense)
+                            {
+                                defensePoints += buildingsManager.GetProductionOfBuilding(building.BuildingMainData.Type);
+                            }
+
 
                             newEntry = Instantiate(_iconPrefab, scriptOfBar.ScrollContext);
 
@@ -213,8 +228,7 @@ namespace InGameUi
                             references.Informations.text = "Worker Assigned";
                         }
 
-                        scriptOfBar.BarText.text = $"Defense Points: +{points}";
-
+                        defensePointsText = scriptOfBar.BarText;
                         scriptOfBar.BarButton.onClick.AddListener(() => OnGatheringOrDefenseButtonClicked(false));
                         
                         if (_narratorManager.CurrentTutorialStep == TutorialStep.AfterRankUp_Q16)
@@ -238,6 +252,9 @@ namespace InGameUi
                         break;
                 }
             }
+            
+            resourcePointsText.text = $"Resource Points: +{resourcePoints}";
+            defensePointsText.text = $"Defense Points: +{defensePoints}";
         }
 
         private Color GetColor(GodType p_godType)
@@ -306,8 +323,9 @@ namespace InGameUi
         {
             _finishAssigning.SetActive(true);
 
-            if (_workersManager.BaseWorkersAmounts - _workersManager.OverallAssignedWorkers == 0 ||
-                buildingsManager.CurrentBuildings.Count - 1 < _workersManager.BaseWorkersAmounts)
+            if (_workersManager.BaseWorkersAmounts - _workersManager.OverallAssignedWorkers == 0 || 
+                ((int)_narratorManager.CurrentTutorialStep > 19 &&
+                buildingsManager.CurrentBuildings.Count - 1 < _workersManager.BaseWorkersAmounts)) // -1 because cottage
             {
                 _activateButton.onClick.RemoveAllListeners();
                 _activateButton.onClick.AddListener(AssignWorkersForNewDay);
@@ -316,7 +334,7 @@ namespace InGameUi
             }
             else
             {
-                _activateButtonText.text = "Set workers to work";
+                _activateButtonText.text = "Set all workers to work";
                 _activateButton.interactable = false;
             }
         }

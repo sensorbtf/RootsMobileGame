@@ -44,17 +44,17 @@ MonoBehaviour:
   - Requirements:
       ResourcePoints: 20
       DaysToComplete: 1
-    ProductionType: 1
+    ProductionType: 4
     ProductionAmountPerDay: 20
   - Requirements:
       ResourcePoints: 30
       DaysToComplete: 2
-    ProductionType: 1
+    ProductionType: 4
     ProductionAmountPerDay: 25
   - Requirements:
       ResourcePoints: 60
       DaysToComplete: 3
-    ProductionType: 1
+    ProductionType: 4
     ProductionAmountPerDay: 30
   Technology: {fileID: 11400000, guid: 60df8f1c2368c674faf18d34c26b7773, type: 2}
   references:

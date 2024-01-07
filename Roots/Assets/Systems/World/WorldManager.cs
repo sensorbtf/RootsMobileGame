@@ -57,7 +57,10 @@ namespace World
             
             if (!p_willBeLoaded) 
                 StartMission(true);
-
+            else
+            {
+                _workersManager.BaseWorkersAmounts = _buildingsManager.GetFarmProductionAmount != 0 ? _buildingsManager.GetFarmProductionAmount : 1;
+            }
             _buildingsManager.OnPointsGathered += HandleOverallResourcesQuests;
             _buildingsManager.OnBuildingStateChanged += CheckBuildingsQuests;
             _buildingsManager.OnBuildingTechnologyLvlUp += CheckTechnologyBuildingsQuests;
@@ -66,7 +69,7 @@ namespace World
         public void StartNewDay()
         {
             CurrentDay++;
-            _workersManager.BaseWorkersAmounts = _buildingsManager.GetFarmProductionAmount;
+            _workersManager.BaseWorkersAmounts = _buildingsManager.GetFarmProductionAmount != 0 ? _buildingsManager.GetFarmProductionAmount : 1;
 
             if (CurrentDay == FinalHiddenStormDay)
             {

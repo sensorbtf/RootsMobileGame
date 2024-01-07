@@ -173,6 +173,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: baf63b2cc3b4631488f12ca9214fb308, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _audioManager: {fileID: 0}
+  _localization: {fileID: 11400000, guid: 5b363b699512a314aa1418817c7f3297, type: 2}
   _timer: 0
   _efficiency: 0
   _isGameActive: 0

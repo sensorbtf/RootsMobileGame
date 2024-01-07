@@ -66,6 +66,114 @@ MonoBehaviour:
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
+  FarmInfo:
+    m_TableReference:
+      m_TableCollectionName: GUID:22d71a5c37154b44b900b979d13ef516
+    m_TableEntryReference:
+      m_KeyId: 902969138012160
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  GuardTowerInfo:
+    m_TableReference:
+      m_TableCollectionName: GUID:22d71a5c37154b44b900b979d13ef516
+    m_TableEntryReference:
+      m_KeyId: 902969142206465
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  WoodcutterInfo:
+    m_TableReference:
+      m_TableCollectionName: GUID:22d71a5c37154b44b900b979d13ef516
+    m_TableEntryReference:
+      m_KeyId: 902969142206464
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  Alchemical_HutInfo:
+    m_TableReference:
+      m_TableCollectionName: GUID:22d71a5c37154b44b900b979d13ef516
+    m_TableEntryReference:
+      m_KeyId: 902969142206466
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  Mining_ShaftInfo:
+    m_TableReference:
+      m_TableCollectionName: GUID:22d71a5c37154b44b900b979d13ef516
+    m_TableEntryReference:
+      m_KeyId: 902969142206467
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  Ritual_CircleInfo:
+    m_TableReference:
+      m_TableCollectionName: GUID:22d71a5c37154b44b900b979d13ef516
+    m_TableEntryReference:
+      m_KeyId: 902969142206468
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  Peat_ExcavationInfo:
+    m_TableReference:
+      m_TableCollectionName: GUID:22d71a5c37154b44b900b979d13ef516
+    m_TableEntryReference:
+      m_KeyId: 902969142206469
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  Charcoal_PileInfo:
+    m_TableReference:
+      m_TableCollectionName: GUID:22d71a5c37154b44b900b979d13ef516
+    m_TableEntryReference:
+      m_KeyId: 902969142206470
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  Herbs_GardenInfo:
+    m_TableReference:
+      m_TableCollectionName: GUID:22d71a5c37154b44b900b979d13ef516
+    m_TableEntryReference:
+      m_KeyId: 902969142206471
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  ApiaryInfo:
+    m_TableReference:
+      m_TableCollectionName: GUID:22d71a5c37154b44b900b979d13ef516
+    m_TableEntryReference:
+      m_KeyId: 902969142206472
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  WorkshopInfo:
+    m_TableReference:
+      m_TableCollectionName: GUID:22d71a5c37154b44b900b979d13ef516
+    m_TableEntryReference:
+      m_KeyId: 902969142206473
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  Sacrificial_AltarInfo:
+    m_TableReference:
+      m_TableCollectionName: GUID:22d71a5c37154b44b900b979d13ef516
+    m_TableEntryReference:
+      m_KeyId: 902969142206474
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   references:
     version: 2
     RefIds: []

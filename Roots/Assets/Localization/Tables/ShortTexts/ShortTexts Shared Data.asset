@@ -63,6 +63,54 @@ MonoBehaviour:
     m_Key: score_minigame
     m_Metadata:
       m_Items: []
+  - m_Id: 902969138012160
+    m_Key: farm_activity
+    m_Metadata:
+      m_Items: []
+  - m_Id: 902969142206464
+    m_Key: woodcutter_activity
+    m_Metadata:
+      m_Items: []
+  - m_Id: 902969142206465
+    m_Key: guard_tower_activity
+    m_Metadata:
+      m_Items: []
+  - m_Id: 902969142206466
+    m_Key: alchemical_hut_activity
+    m_Metadata:
+      m_Items: []
+  - m_Id: 902969142206467
+    m_Key: minig_shaft_activity
+    m_Metadata:
+      m_Items: []
+  - m_Id: 902969142206468
+    m_Key: ritual_circle_activity
+    m_Metadata:
+      m_Items: []
+  - m_Id: 902969142206469
+    m_Key: peat_excavation_activity
+    m_Metadata:
+      m_Items: []
+  - m_Id: 902969142206470
+    m_Key: charcoal_pile_activity
+    m_Metadata:
+      m_Items: []
+  - m_Id: 902969142206471
+    m_Key: herbs_garden_activity
+    m_Metadata:
+      m_Items: []
+  - m_Id: 902969142206472
+    m_Key: apiary_activity
+    m_Metadata:
+      m_Items: []
+  - m_Id: 902969142206473
+    m_Key: workshop_activity
+    m_Metadata:
+      m_Items: []
+  - m_Id: 902969142206474
+    m_Key: sacrificial_altar_activity
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

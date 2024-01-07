@@ -12,5 +12,18 @@ namespace Minigames
         public LocalizedString StarDustPointsCollect;
         public LocalizedString ResourcesAndDefenseCollect;
         public LocalizedString DefenseAndResourcesCollect;
+        
+        public LocalizedString FarmInfo;
+        public LocalizedString GuardTowerInfo;
+        public LocalizedString WoodcutterInfo;
+        public LocalizedString Alchemical_HutInfo;
+        public LocalizedString Mining_ShaftInfo;
+        public LocalizedString Ritual_CircleInfo;
+        public LocalizedString Peat_ExcavationInfo;
+        public LocalizedString Charcoal_PileInfo;
+        public LocalizedString Herbs_GardenInfo;
+        public LocalizedString ApiaryInfo;
+        public LocalizedString WorkshopInfo;
+        public LocalizedString Sacrificial_AltarInfo;
     }
 }

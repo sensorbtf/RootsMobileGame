@@ -67,6 +67,54 @@ MonoBehaviour:
     m_Localized: 'Score:'
     m_Metadata:
       m_Items: []
+  - m_Id: 902969138012160
+    m_Localized: Collect vegetables
+    m_Metadata:
+      m_Items: []
+  - m_Id: 902969142206464
+    m_Localized: Chop the tree
+    m_Metadata:
+      m_Items: []
+  - m_Id: 902969142206465
+    m_Localized: Check horizon
+    m_Metadata:
+      m_Items: []
+  - m_Id: 902969142206466
+    m_Localized: Make mixture
+    m_Metadata:
+      m_Items: []
+  - m_Id: 902969142206467
+    m_Localized: Split the ore
+    m_Metadata:
+      m_Items: []
+  - m_Id: 902969142206468
+    m_Localized: Empower the sign
+    m_Metadata:
+      m_Items: []
+  - m_Id: 902969142206469
+    m_Localized: Collect peat
+    m_Metadata:
+      m_Items: []
+  - m_Id: 902969142206470
+    m_Localized: Rise the fire
+    m_Metadata:
+      m_Items: []
+  - m_Id: 902969142206471
+    m_Localized: Collect herbs
+    m_Metadata:
+      m_Items: []
+  - m_Id: 902969142206472
+    m_Localized: Kill the hornets
+    m_Metadata:
+      m_Items: []
+  - m_Id: 902969142206473
+    m_Localized: Chop the wood
+    m_Metadata:
+      m_Items: []
+  - m_Id: 902969142206474
+    m_Localized: Pray
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

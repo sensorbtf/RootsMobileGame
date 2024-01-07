@@ -47,6 +47,54 @@ MonoBehaviour:
     m_Localized: 'Punkty:'
     m_Metadata:
       m_Items: []
+  - m_Id: 902969138012160
+    m_Localized: Zbierz warzywa
+    m_Metadata:
+      m_Items: []
+  - m_Id: 902969142206464
+    m_Localized: Zetnij drzewo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 902969142206465
+    m_Localized: Obserwuj horyzont
+    m_Metadata:
+      m_Items: []
+  - m_Id: 902969142206466
+    m_Localized: "Przyrz\u0105d\u017A mikstur\u0119"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 902969142206467
+    m_Localized: "Roz\u0142up rud\u0119"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 902969142206468
+    m_Localized: Wzmocnij znak
+    m_Metadata:
+      m_Items: []
+  - m_Id: 902969142206469
+    m_Localized: Zbierz torf
+    m_Metadata:
+      m_Items: []
+  - m_Id: 902969142206470
+    m_Localized: "Wznie\u0107 ogie\u0144"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 902969142206471
+    m_Localized: "Zbierz zio\u0142a"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 902969142206472
+    m_Localized: Zabij szerszenie
+    m_Metadata:
+      m_Items: []
+  - m_Id: 902969142206473
+    m_Localized: "R\u0105baj drzewo"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 902969142206474
+    m_Localized: "Pom\xF3dl si\u0119"
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
