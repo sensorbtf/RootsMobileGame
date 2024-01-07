@@ -1,14 +1,13 @@
 fileFormatVersion: 2
-guid: 4d6a99baee23b654f9e4bb672ae0b438
-AssetOrigin:
-  serializedVersion: 1
-  productId: 103811
-  packageName: 'Fantasy Wooden GUI : Free'
-  packageVersion: 2.0
-  assetPath: Assets/Fantasy Wooden GUI  Free/normal_ui_set A/IRONY TITLE  empty.png
-  uploadId: 294936
+guid: e1bc781bc78a7434abe6a9ee14d7b6a1
 TextureImporter:
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      213: 3188051658978461371
+    second: Arrow_Icon_0
+  - first:
+      213: -300013322594662549
+    second: Arrow_Icon_1
   externalObjects: {}
   serializedVersion: 12
   mipmaps:
@@ -28,7 +27,7 @@ TextureImporter:
     heightScale: 0.25
     normalMapFilter: 0
     flipGreenChannel: 0
-  isReadable: 1
+  isReadable: 0
   streamingMipmaps: 0
   streamingMipmapsPriority: 0
   vTOnly: 0
@@ -70,9 +69,9 @@ TextureImporter:
   compressionQualitySet: 0
   textureFormatSet: 0
   ignorePngGamma: 0
-  applyGammaDecoding: 1
+  applyGammaDecoding: 0
   swizzle: 50462976
-  cookieLightType: 1
+  cookieLightType: 0
   platformSettings:
   - serializedVersion: 3
     buildTarget: DefaultTexturePlatform
@@ -124,7 +123,49 @@ TextureImporter:
     forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
-    sprites: []
+    sprites:
+    - serializedVersion: 2
+      name: Arrow_Icon_0
+      rect:
+        serializedVersion: 2
+        x: 57
+        y: 116
+        width: 8
+        height: 13
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: bb68103c71c3e3c20800000000000000
+      internalID: 3188051658978461371
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Arrow_Icon_1
+      rect:
+        serializedVersion: 2
+        x: 62
+        y: 85
+        width: 246
+        height: 154
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b674cdef87326dbf0800000000000000
+      internalID: -300013322594662549
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -135,7 +176,9 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Arrow_Icon_0: 3188051658978461371
+      Arrow_Icon_1: -300013322594662549
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
