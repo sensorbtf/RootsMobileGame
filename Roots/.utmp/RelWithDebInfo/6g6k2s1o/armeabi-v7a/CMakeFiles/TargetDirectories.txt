@@ -1,0 +1,5 @@
+G:/Fork Source Codes/RootsMobileGame/Roots/.utmp/RelWithDebInfo/6g6k2s1o/armeabi-v7a/CMakeFiles/edit_cache.dir
+G:/Fork Source Codes/RootsMobileGame/Roots/.utmp/RelWithDebInfo/6g6k2s1o/armeabi-v7a/CMakeFiles/rebuild_cache.dir
+G:/Fork Source Codes/RootsMobileGame/Roots/.utmp/RelWithDebInfo/6g6k2s1o/armeabi-v7a/FramePacing/CMakeFiles/swappywrapper.dir
+G:/Fork Source Codes/RootsMobileGame/Roots/.utmp/RelWithDebInfo/6g6k2s1o/armeabi-v7a/FramePacing/CMakeFiles/edit_cache.dir
+G:/Fork Source Codes/RootsMobileGame/Roots/.utmp/RelWithDebInfo/6g6k2s1o/armeabi-v7a/FramePacing/CMakeFiles/rebuild_cache.dir

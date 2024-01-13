@@ -13,8 +13,7 @@ using UnityEngine.UI;
 
 namespace InGameUi
 {
-    public class WorkersPanel : MonoBehaviour
-    {
+    public class WorkersPanel : MonoBehaviour    {
         [SerializeField] private BuildingsManager buildingsManager;
         [SerializeField] private WorkersManager _workersManager;
         [SerializeField] private MainGameManager _gameManager;

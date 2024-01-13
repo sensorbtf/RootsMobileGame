@@ -2071,7 +2071,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 803414373}
   m_HandleRect: {fileID: 803414372}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -5682,7 +5682,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 232618602}
   m_HandleRect: {fileID: 232618601}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -7229,7 +7229,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 32.2
+  m_fontSize: 31.3
   m_fontSizeBase: 45
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -8308,8 +8308,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -553.0401, y: 387}
-  m_SizeDelta: {x: 246.4798, y: -1919}
+  m_AnchoredPosition: {x: -527.36694, y: 387}
+  m_SizeDelta: {x: -954.0255, y: -1919}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &824526944
 GameObject:
@@ -9061,7 +9061,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 30.7
+  m_fontSize: 30.2
   m_fontSizeBase: 35
   m_fontWeight: 400
   m_enableAutoSizing: 1
