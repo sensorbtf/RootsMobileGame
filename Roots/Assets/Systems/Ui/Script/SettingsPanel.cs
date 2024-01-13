@@ -3,6 +3,8 @@ using GameManager;
 using GeneralSystems;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Localization;
+using UnityEngine.Localization.Settings;
 using UnityEngine.UI;
 
 namespace InGameUi
@@ -22,9 +24,13 @@ namespace InGameUi
         [SerializeField] private TextMeshProUGUI _muteMusicText;
         [SerializeField] private TextMeshProUGUI _muteEffectText;
         [SerializeField] private TextMeshProUGUI _resetWorldText;
+        
+        [SerializeField] private LocalizedString _resetWorld;
+        [SerializeField] private LocalizedString _resetWorldConfirm;
 
         private void Start()
         {
+            LocalizationSettings.SelectedLocaleChanged += OnLocaleChanged;
             gameObject.SetActive(false);
 
             HandleSoundSettings();
@@ -56,6 +62,11 @@ namespace InGameUi
             ChangeResetButton(false);
             ChangeLanguage((Languages)PlayerPrefs.GetInt("Setting_Language", 0));
         }
+        
+        private void OnDestroy()
+        {
+            LocalizationSettings.SelectedLocaleChanged -= OnLocaleChanged;
+        }
 
         public void OpenPanel()
         {
@@ -73,11 +84,14 @@ namespace InGameUi
             gameObject.SetActive(false);
         }
 
+        private bool _enableReset;
+        
         private void ChangeResetButton(bool p_enableReset)
         {
+            _enableReset = p_enableReset;
             if (p_enableReset)
             {
-                _resetWorldText.text = "Confirm";
+                _resetWorldText.text = _resetWorldConfirm.GetLocalizedString();
                 
                 _resetGameButton.onClick.RemoveAllListeners();
                 _resetGameButton.onClick.AddListener(delegate
@@ -88,7 +102,7 @@ namespace InGameUi
             }
             else
             {
-                _resetWorldText.text = "Delete Save";
+                _resetWorldText.text = _resetWorld.GetLocalizedString();
                 
                 _resetGameButton.onClick.RemoveAllListeners();
                 _resetGameButton.onClick.AddListener(delegate
@@ -121,7 +135,7 @@ namespace InGameUi
             PlayerPrefs.Save();
         }
 
-        private void ResetGame() // TODO: Popup confirmation needed
+        private void ResetGame()
         {
             _gameManager.ResetSave();
         }
@@ -143,6 +157,18 @@ namespace InGameUi
         {
             _gameManager.ChangeLocale(p_language);
             PlayerPrefs.SetInt("Setting_Language", (int)p_language);
+        }
+        
+        private void OnLocaleChanged(Locale p_locale)
+        {
+            if (_enableReset)
+            {
+                _resetWorldText.text = _resetWorldConfirm.GetLocalizedString();
+            }
+            else
+            {
+                _resetWorldText.text = _resetWorld.GetLocalizedString();
+            }
         }
     }
 

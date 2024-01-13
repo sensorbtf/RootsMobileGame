@@ -34,6 +34,44 @@ MonoBehaviour:
     m_Localized: "Rodzaje punkt\xF3w"
     m_Metadata:
       m_Items: []
+  - m_Id: 3104967228383232
+    m_Localized: Ustawienia
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3106845324468224
+    m_Localized: "J\u0119zyk"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3106802278326272
+    m_Localized: Efekty
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3106750822604800
+    m_Localized: Muzyka
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3107962162765824
+    m_Localized: "Usu\u0144 zapis"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3107964972949504
+    m_Localized: "Potwierd\u017A"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3111764379033600
+    m_Localized: "Usu\u0144 zapis"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3118440092000256
+    m_Localized: "Ka\u017Cda misja obejmuje konkretn\u0105 liczb\u0119 dni. Nadej\u015Bcie
+      burzy zawsze ma miejsce w tych ostatnich, wi\u0119c to od ciebie zale\u017Cy,
+      czy zaryzykujesz kolejny dzie\u0144 pracy, czy przedwcze\u015Bnie uciekniesz."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3121260719497216
+    m_Localized: Misje i burze
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

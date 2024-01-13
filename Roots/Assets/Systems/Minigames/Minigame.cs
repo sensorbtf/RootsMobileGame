@@ -21,9 +21,9 @@ namespace Minigames
         [HideInInspector] public float _score;
         [HideInInspector] public PointsType _type;
         public Button _collectPointsButton;
-        public TextMeshProUGUI _coutdownText;
-        public TextMeshProUGUI _scoreText;
-        public TextMeshProUGUI _timeText;
+        public TextMeshProUGUI _coutdownText; // Countdown
+        public TextMeshProUGUI _scoreText; // top panel title 
+        public TextMeshProUGUI _timeText; // bottom button time text
 
         public event Action OnMinigameEnded;
         public event Action<PointsType, int> OnMiniGamePointsCollected;

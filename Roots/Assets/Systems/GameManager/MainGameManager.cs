@@ -95,6 +95,7 @@ namespace GameManager
         {
             _loadingPanel.SetActive(true);
             _savingManager.OnAuthenticationEnded += () => StartCoroutine(CustomStart());
+            _worldManager.OnNewMissionStart += InitiateSaving;
 
             _lightManager.SetTimers(_oneDayTimerDurationInSeconds / 2f, _oneDayTimerDurationInSeconds);
             _minigamesPlayed = 0;
@@ -123,6 +124,7 @@ namespace GameManager
         {
             _savingManager.OnAuthenticationEnded -= () => StartCoroutine(CustomStart());
             _savingManager.OnLoad -= LoadSavedData;
+            _worldManager.OnNewMissionStart -= InitiateSaving;
         }
 
         private IEnumerator CustomStart()

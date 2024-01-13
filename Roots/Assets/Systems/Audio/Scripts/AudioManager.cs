@@ -16,6 +16,7 @@ namespace AudioSystem
         [SerializeField] private AudioClip _unavaiableButtonClicked;
         [SerializeField] private AudioClip[] _thunderstormsSounds;
 
+        private bool _blockEffects = false;
         public void CustomStart()
         {
             _musicSource.clip = _backgroundMusic;
@@ -24,23 +25,35 @@ namespace AudioSystem
 
         public void PlaySpecificSoundEffect(AudioClip p_audioClip)
         {
+            if (_blockEffects)
+                return;
+            
             _effectSource.clip = p_audioClip;
             _effectSource.Play();
         }
         
         public void CreateNewAudioSource(AudioClip p_audioClip)
         {
+            if (_blockEffects)
+                return;
+            
             StartCoroutine(GenerateNewAudioSource(p_audioClip));
         }
 
         public void PlayButtonSoundEffect(bool p_isInteractable)
         {
+            if (_blockEffects)
+                return;
+            
             _buttonSource.clip = p_isInteractable ? _avaiableButtonClicked : _unavaiableButtonClicked;
             _buttonSource.Play();
         }
         
         public void PlayThunderstormSoundEffect()
         {
+            if (_blockEffects)
+                return;
+            
             StartCoroutine(GenerateNewAudioSource(_thunderstormsSounds[Random.Range(0, _thunderstormsSounds.Length)]));
         }
 
@@ -68,7 +81,7 @@ namespace AudioSystem
 
         public void TryToPlayWritingEffect(AudioClip p_audioClip)
         {
-            if (_typingSource.isPlaying)
+            if (_blockEffects || _typingSource.isPlaying)
                 return;
 
             _typingSource.clip = p_audioClip;

@@ -34,6 +34,44 @@ MonoBehaviour:
     m_Localized: Types of points
     m_Metadata:
       m_Items: []
+  - m_Id: 3104967228383232
+    m_Localized: Settings
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3106845324468224
+    m_Localized: Language
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3106802278326272
+    m_Localized: Effects
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3106750822604800
+    m_Localized: Music
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3107962162765824
+    m_Localized: Delete save
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3107964972949504
+    m_Localized: Confirm
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3111764379033600
+    m_Localized: Reset progress
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3118440092000256
+    m_Localized: Every mission is determined by specific number of days. You never
+      known, when exactly storm will come but there is always chance for it in last
+      few days.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3121260719497216
+    m_Localized: Storms and missions
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

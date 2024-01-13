@@ -155,6 +155,10 @@ MonoBehaviour:
     m_Key: Quest_21
     m_Metadata:
       m_Items: []
+  - m_Id: 10427995221979136
+    m_Key: Quest_End
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

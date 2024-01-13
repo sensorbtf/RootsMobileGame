@@ -16,8 +16,6 @@ namespace Minigames
 
         private new void Update()
         {
-            _timeText.text = $"Erease background";
-
             if (!_isErasing)
                 return;
             
@@ -49,6 +47,7 @@ namespace Minigames
             {
                 _timer = 0;
                 _isGameActive = false;
+                _topLayer.SetActive(false);
                 _collectPointsButton.interactable = true;
 
                 _timeText.text = "Check storm in 2 days";
@@ -82,6 +81,9 @@ namespace Minigames
             _score = 0;
 
             _collectPointsButton.interactable = false;
+            
+            _timeText.text = $"Blur out panel";
+            _scoreText.text = $"Reveal Horizon";
         }
 
         private Vector2 GetInputPosition(Vector2 p_inputPos)

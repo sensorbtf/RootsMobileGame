@@ -152,7 +152,8 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Polish flag_0: -5406590835037563812
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

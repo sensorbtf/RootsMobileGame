@@ -31,6 +31,42 @@ MonoBehaviour:
     m_Key: resources_info_panel_title
     m_Metadata:
       m_Items: []
+  - m_Id: 3104967228383232
+    m_Key: "settings_panel_title\t"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3106750822604800
+    m_Key: settings_music
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3106802278326272
+    m_Key: settings_effects
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3106845324468224
+    m_Key: settings_language
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3107962162765824
+    m_Key: settings_delete_save
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3107964972949504
+    m_Key: settings_delete_save_confirm
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3111764379033600
+    m_Key: settings_reset_option
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3118440092000256
+    m_Key: storm_info_panel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 3121260719497216
+    m_Key: storm_info_panel_title
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

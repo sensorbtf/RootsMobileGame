@@ -58,6 +58,7 @@ namespace InGameUi
         private Dictionary<RectTransform, List<GameObject>> _createdImages;
         [SerializeField] private TextMeshProUGUI _currentMissionText;
         [SerializeField] private TextMeshProUGUI _currentRankText;
+        [SerializeField] private Button _stormButton;
         private Button _endDayButton;
 
         private TextMeshProUGUI _endDayButtonText;
@@ -155,6 +156,9 @@ namespace InGameUi
                 button.onClick.RemoveAllListeners();
                 button.onClick.AddListener(delegate { _infoPanel.ShowResourcesInfo(); });
             }
+            
+            _stormButton.onClick.RemoveAllListeners();
+            _stormButton.onClick.AddListener(delegate { _infoPanel.ShowStormInfo(); });
             
             _buildingsManager.OnResourcePointsChange += RefreshResourcePoints;
             _buildingsManager.OnDefensePointsChange += RefreshDefensePoints;
