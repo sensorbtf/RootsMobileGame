@@ -1,7 +1,7 @@
 ﻿{
     "name": "Narrator",
     "rootNamespace": "",
-    "references": ["GUID:d24ae5f4135c15b478887a8fab11029b"],
+    "references": ["GUID:d24ae5f4135c15b478887a8fab11029b","GUID:0d2fdfb670512784b99df29ee93927fc"],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

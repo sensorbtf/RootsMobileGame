@@ -1,11 +1,13 @@
 ﻿using System;
 using Buildings;
+using World;
 using UnityEngine;
 
 namespace Narrator
 {
     public class NarratorManager: MonoBehaviour
     {
+        [SerializeField] private WorldManager _worldManager;
         [SerializeField] private BuildingsManager _buildingsManager;
         [SerializeField] private bool _enableNarrator = true;
         
@@ -31,6 +33,8 @@ namespace Narrator
             _buildingsManager.OnTutorialStart += StartTutorial;
             _buildingsManager.OnBuildingStateChanged += CheckBuildingBuilt;
             _buildingsManager.OnBuildingTechnologyLvlUp += CheckBuildingTechLevelUp;
+
+            _worldManager.OnNewDayStarted += TryToActivateBonus;
         }
 
         private void OnDestroy()
@@ -39,6 +43,8 @@ namespace Narrator
             _buildingsManager.OnTutorialStart -= StartTutorial;
             _buildingsManager.OnBuildingStateChanged -= CheckBuildingBuilt;
             _buildingsManager.OnBuildingTechnologyLvlUp -= CheckBuildingTechLevelUp;
+            
+            _worldManager.OnNewMissionStart -= TryToActivateBonus;
         }
 
         public void TryToActivateNarrator(TutorialStep p_step)
@@ -151,6 +157,16 @@ namespace Narrator
         public bool ShouldBlockSkipButton()
         {
             return _currentTutorialStep is TutorialStep.OnTechnologyInFarmLvlUp_Q13 or TutorialStep.OnFarmPanelClosed_Q15;
+        }
+        
+        private void TryToActivateBonus()
+        {
+            if (_currentTutorialStep < TutorialStep.Quests_End)
+                return;
+
+            _buildingsManager.TryToActivateBonus();
+            
+            OnTutorialAdvancement?.Invoke(true);
         }
     }
     

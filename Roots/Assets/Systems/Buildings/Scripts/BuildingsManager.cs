@@ -4,6 +4,7 @@ using System.Linq;
 using AudioSystem;
 using Gods;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Buildings
 {
@@ -48,9 +49,10 @@ namespace Buildings
         [HideInInspector] public List<Building> BuildingWithEnabledMinigame;
         [HideInInspector] public List<Building> BuildingsToGatherFrom;
         [HideInInspector] public List<Building> BuildingsWithTechnologyUpgrade;
-
+        
         #region Properties
 
+        private CurrentMissionBonus _bonus;
         private int _resourcesStoredInBasement;
         private bool _tutorialStarted = false;
         public List<Building> CurrentBuildings { get; private set; }
@@ -85,6 +87,8 @@ namespace Buildings
             get => _resourcesStoredInBasement;
         }
 
+        public CurrentMissionBonus Bonus => _bonus;
+        
         public int CurrentResourcePoints { get; private set; }
 
         public int CurrentDefensePoints { get; private set; }
@@ -387,11 +391,10 @@ namespace Buildings
 
         private void GatherPoints(BuildingType p_type, PointsType p_pointsType, int p_amount)
         {
-            var god = CurrentBuildings.Find(x => x.BuildingMainData.Type == p_type).BuildingMainData.GodType;
-            var amountWithBlessing = Mathf.CeilToInt(p_amount + p_amount * _godsManager.GetBlessingValue(god));
-
-            HandlePointsManipulation(p_pointsType, amountWithBlessing, true, true);
-            OnPointsGathered?.Invoke(p_pointsType, amountWithBlessing);
+            var amount = GetProductionOfBuilding(p_type);
+            
+            HandlePointsManipulation(p_pointsType, amount, true, true);
+            OnPointsGathered?.Invoke(p_pointsType, amount);
         }
 
         private void HandleBuildingClicked(Building p_building)
@@ -464,12 +467,20 @@ namespace Buildings
         public int GetProductionOfBuilding(BuildingType p_building)
         {
             var specificBuilding = CurrentBuildings.Find(x => x.BuildingMainData.Type == p_building);
-            var production = specificBuilding.BuildingMainData.PerLevelData[specificBuilding.CurrentLevel]
+            float production = specificBuilding.BuildingMainData.PerLevelData[specificBuilding.CurrentLevel]
                 .ProductionAmountPerDay;
 
-            return Mathf.CeilToInt(production +
-                                   production *
-                                   _godsManager.GetBlessingValue(specificBuilding.BuildingMainData.GodType));
+            if (_godsManager.IsAnyBlessingActivated(specificBuilding.BuildingMainData.GodType))
+            {
+                production += production * _godsManager.GetBlessingValue(specificBuilding.BuildingMainData.GodType);
+            }
+            
+            if (_bonus != null && _bonus.Building == p_building)
+            {
+                production *= _bonus.BonusInPercents;
+            }
+            
+            return Mathf.RoundToInt(production);
         }
 
         public BuildingType GetGodsBuilding(GodType p_godName)
@@ -631,6 +642,7 @@ namespace Buildings
             return new BuildingManagerSavedData
             {
                 Buildings = savedBuildings,
+                BonusPerMission = _bonus,
                 ResourcesStoredInBasement = _resourcesStoredInBasement,
                 CurrentResourcePoints = CurrentResourcePoints,
                 CurrentDefensePoints = CurrentDefensePoints,
@@ -641,6 +653,7 @@ namespace Buildings
         public void LoadSavedData(BuildingManagerSavedData p_data)
         {
             _resourcesStoredInBasement = p_data.ResourcesStoredInBasement;
+            _bonus = p_data.BonusPerMission;
             CurrentResourcePoints = p_data.CurrentResourcePoints;
             CurrentDefensePoints = p_data.CurrentDefensePoints;
             CurrentDestinyShards = p_data.ShardsOfDestinyAmount;
@@ -711,6 +724,38 @@ namespace Buildings
         }
 
         #endregion
+
+        private float[] _bonuses = new float[] { 1.05f, 1.1f, 1.15f, 1.2f, 1.25f, 1.3f, 1.35f, 1.4f, 1.5f };
+        
+        public void TryToActivateBonus()
+        {
+            var index = Random.Range(0, CurrentBuildings.Count);
+            var bonus = _bonuses[Random.Range(0, _bonuses.Length)];
+
+            for (int i = 0; i < 50; i++)
+            {
+                if (CurrentBuildings[index].BuildingMainData.Type == BuildingType.Cottage)
+                {
+                    index = Random.Range(0, CurrentBuildings.Count);
+                    continue;
+                }
+                
+                _bonus = new CurrentMissionBonus
+                {
+                    Building = BuildingType.Farm,
+                    BonusInPercents = bonus
+                };
+                
+                break;
+            }
+        }
+    }
+    
+    [Serializable]
+    public class CurrentMissionBonus
+    {
+        public BuildingType Building;
+        public float BonusInPercents;
     }
 
     [Serializable]
@@ -734,6 +779,7 @@ namespace Buildings
     public struct BuildingManagerSavedData
     {
         public List<BuildingSavedData> Buildings;
+        public CurrentMissionBonus BonusPerMission;
         public int ResourcesStoredInBasement;
         public int CurrentResourcePoints;
         public int CurrentDefensePoints;

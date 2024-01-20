@@ -1,4 +1,5 @@
 using AudioSystem;
+using Buildings;
 using GeneralSystems;
 using InGameUi;
 using TMPro;
@@ -12,6 +13,7 @@ public class InfoPanel : MonoBehaviour
 {
     [Header("System Refs")]
     [SerializeField] private AudioManager _audioManager;
+    [SerializeField] private BuildingsManager _buildingsManager;
 
     [Header("Refs")]
     [SerializeField] private Button _button;
@@ -20,11 +22,14 @@ public class InfoPanel : MonoBehaviour
     
     [Header("Info Prefabs")]
     [SerializeField] private GameObject _resourcesInfoGo;
-    [SerializeField] private GameObject _stormMeter;
+    [SerializeField] private GameObject _textInfoGo;
+    
+    [SerializeField] private TextMeshProUGUI _textGoText;
 
     [Header("Localization")] 
     [SerializeField] LocalizedString _resourcePanelTitle;
     [SerializeField] LocalizedString _stormPanelTitle;
+    [SerializeField] LocalizedString _stormPanelText;
     [SerializeField] LocalizedString _buttonName;
 
     private void Start()
@@ -32,54 +37,47 @@ public class InfoPanel : MonoBehaviour
         LocalizationSettings.SelectedLocaleChanged += OnLocaleChanged;
 
         gameObject.SetActive(false);
-        _button.onClick.AddListener(delegate 
-        { 
+        _button.onClick.AddListener(delegate
+        {
             _audioManager.PlayButtonSoundEffect(true);
-            HandleTurnOnOff(false); 
+            HandleTurnOnOff(false);
         });
+            
+        _resourcesInfoGo.SetActive(false);
+        _textInfoGo.SetActive(false);
     }
     
     private void OnDestroy()
     {
         LocalizationSettings.SelectedLocaleChanged -= OnLocaleChanged;
     }
-
+    
     public void ShowResourcesInfo()
     {
         HandleTurnOnOff(true);
         _title.text = _resourcePanelTitle.GetLocalizedString();
         _resourcesInfoGo.SetActive(true);
-        _stormMeter.SetActive(false);
     }
     
     public void ShowStormInfo()
     {
         HandleTurnOnOff(true);
         _title.text = _stormPanelTitle.GetLocalizedString();
-        _resourcesInfoGo.SetActive(false);
-        _stormMeter.SetActive(true);
+        _textInfoGo.SetActive(true);
     }
 
-    private void HandleTurnOnOff(bool p_turnOffPanel)
+    private void HandleTurnOnOff(bool p_turnOn)
     {
-        gameObject.SetActive(p_turnOffPanel);
-        GameplayHud.BlockHud = p_turnOffPanel;
-        CameraController.IsUiOpen = p_turnOffPanel;
+        gameObject.SetActive(p_turnOn);
+        GameplayHud.BlockHud = p_turnOn;
+        CameraController.IsUiOpen = p_turnOn;
         
         _resourcesInfoGo.SetActive(false);
-        _stormMeter.SetActive(false);
+        _textInfoGo.SetActive(false);
     }
     
     private void OnLocaleChanged(Locale p_locale)
     {
-        if (_resourcesInfoGo.activeSelf)
-        {
-            _title.text = _resourcePanelTitle.GetLocalizedString();
-        }
-        else if (_stormMeter.activeSelf)
-        {
-            _title.text = _stormPanelTitle.GetLocalizedString();
-        }
         _buttonText.text = _buttonName.GetLocalizedString();
     }
 }

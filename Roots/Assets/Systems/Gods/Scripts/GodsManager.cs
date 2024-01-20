@@ -76,6 +76,15 @@ namespace Gods
 
             return 0f;
         }
+        
+        public bool IsAnyBlessingActivated(GodType p_godType)
+        {
+            foreach (var blessing in PlayerCurrentBlessings)
+                if (blessing.Key.GodName == p_godType && blessing.Value > BlessingLevel.Noone)
+                    return true;
+
+            return false;
+        }
 
         public float GetBlessingValue(BlessingLevel p_level)
         {
@@ -228,6 +237,7 @@ namespace Gods
         }
 
         #endregion
+        
     }
 
     [Serializable]

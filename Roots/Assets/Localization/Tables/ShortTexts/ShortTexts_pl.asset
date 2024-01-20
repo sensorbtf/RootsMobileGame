@@ -39,8 +39,9 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 892977810956288
-    m_Localized: "G\u0142\xF3wne miasto potrzebuje ka\u017Cdej ilo\u015Bci {0}. W
-      tej misji praca w {1} zapewnia wi\u0119cej surowc\xF3w o {2}%"
+    m_Localized: "G\u0142\xF3wne miasto zg\u0142osi\u0142o pilne zapotrzebowanie
+      na okre\u015Blone surowce. W tej misji praca w {0} zapewnia wi\u0119cej surowc\xF3w
+      o {1}%"
     m_Metadata:
       m_Items: []
   - m_Id: 894426527752192

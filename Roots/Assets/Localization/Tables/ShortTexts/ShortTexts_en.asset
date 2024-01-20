@@ -39,8 +39,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 892977810956288
-    m_Localized: The main city needs any amount of {0}. In this mission, working
-      in {1} provides more raw materials by {2}%.
+    m_Localized: The main city announced demand of specific resources. In this mission,
+      working in {0} provides more points by {1}%.
     m_Metadata:
       m_Items: []
   - m_Id: 892977836122112

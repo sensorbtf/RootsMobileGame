@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
+using System.Linq;
 using AudioSystem;
+using Buildings;
 using GeneralSystems;
 using Narrator;
 using TMPro;
@@ -15,6 +17,7 @@ namespace InGameUi
     {
         [Header("System refs")]
         [SerializeField] private UiManager _uiManager;
+        [SerializeField] private BuildingsManager _buildingsManager;
         [SerializeField] private AudioManager _audioManager;
         [SerializeField] private NarratorManager _narratorManager;
         [SerializeField] private GameObject _viniete;
@@ -62,9 +65,20 @@ namespace InGameUi
 
         private void ActivateNarrator(bool p_show)
         {
-            if (p_show)
+            if (_narratorManager.CurrentTutorialStep == TutorialStep.Quests_End && _buildingsManager.Bonus != null)
             {
                 ShowAndMovePanel(true);
+            }
+            else
+            {
+                if (p_show)
+                {
+                    ShowAndMovePanel(true);
+                }
+                else
+                {
+                    Text.text = GetCurrentText();
+                }
             }
         }
 
@@ -75,9 +89,7 @@ namespace InGameUi
             
             StartCoroutine(MoveUI(_start.localPosition, p_shouldType));
             
-            Debug.Log("test _start.localPositio" + _start.localPosition);
-            
-            if (GetCurrentText().Text.Length == _narratorManager.CurrentSubText + 1)
+            if (TutorialTexts[(int)_narratorManager.CurrentTutorialStep].Text.Length == _narratorManager.CurrentSubText + 1)
             {
                 OnOffButton.onClick.RemoveAllListeners();
                 OnOffButton.onClick.AddListener(HideAndMovePanel);
@@ -101,7 +113,6 @@ namespace InGameUi
             }
             else
             {
-                Debug.Log("test _end.localPositio" + _end.localPosition);
                 StartCoroutine(MoveUI(_end.localPosition, false));
                 OnOffButton.onClick.RemoveAllListeners();
                 OnOffButton.onClick.AddListener(delegate { ShowAndMovePanel(false); });
@@ -122,10 +133,10 @@ namespace InGameUi
             else
             {
                 _narratorManager.AddToSubtext();
-                _typingCoroutine = StartCoroutine(TypeText(GetCurrentText().Text[_narratorManager.CurrentSubText].GetLocalizedString()));
+                _typingCoroutine = StartCoroutine(TypeText(GetCurrentText()));
             }
             
-            if (GetCurrentText().Text.Length == _narratorManager.CurrentSubText + 1)
+            if (TutorialTexts[(int)_narratorManager.CurrentTutorialStep].Text.Length == _narratorManager.CurrentSubText + 1)
             {
                 OnOffButton.onClick.RemoveAllListeners();
                 OnOffButton.onClick.AddListener(HideAndMovePanel);
@@ -157,9 +168,7 @@ namespace InGameUi
 
             if (p_shouldStartTyping)
             {
-                _typingCoroutine =
-                    StartCoroutine(
-                        TypeText(GetCurrentText().Text[_narratorManager.CurrentSubText].GetLocalizedString()));
+                _typingCoroutine = StartCoroutine(TypeText(GetCurrentText()));
             }
             else
             {
@@ -171,14 +180,13 @@ namespace InGameUi
         {
             Text.text = "";
             _viniete.SetActive(true);
-            
+
             foreach (char c in p_text)
             {
                 _audioManager.TryToPlayWritingEffect(_soundEffect);
                 Text.text += c;
                 yield return new WaitForSeconds(_typingSpeed);
             }
-
 
             _typingCoroutine = null;
             _audioManager.MuteWritingEffect();
@@ -193,20 +201,27 @@ namespace InGameUi
             _audioManager.MuteWritingEffect();
             _typingCoroutine = null;
 
-            Text.text = GetCurrentText().Text[_narratorManager.CurrentSubText].GetLocalizedString();
+            Text.text = GetCurrentText();
         }
 
         private void OnLocaleChanged(Locale p_locale)
         {
             if (_narratorManager.CurrentTutorialStep != TutorialStep.Start)
             {
-                Text.text = GetCurrentText().Text[_narratorManager.CurrentSubText].GetLocalizedString();
+                Text.text = GetCurrentText();
             }
         }
 
-        private TutorialTexts GetCurrentText()
+        private string GetCurrentText()
         {
-            return TutorialTexts[(int)_narratorManager.CurrentTutorialStep];
+            if (_narratorManager.CurrentTutorialStep == TutorialStep.Quests_End && _buildingsManager.Bonus != null)
+            {
+                var text = TutorialTexts.Last().Text[0].GetLocalizedString();
+
+                return string.Format(text, _buildingsManager.Bonus.Building, _buildingsManager.Bonus.BonusInPercents);
+            }
+            
+            return TutorialTexts[(int)_narratorManager.CurrentTutorialStep].Text[_narratorManager.CurrentSubText].GetLocalizedString();
         }
     }
 
