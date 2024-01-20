@@ -324,7 +324,7 @@ namespace InGameUi
 
             if (_workersManager.BaseWorkersAmounts - _workersManager.OverallAssignedWorkers == 0 || 
                 ((int)_narratorManager.CurrentTutorialStep > 19 &&
-                buildingsManager.CurrentBuildings.Count - 1 < _workersManager.BaseWorkersAmounts)) // -1 because cottage
+                buildingsManager.CurrentBuildings.Count - 1 != 0 && buildingsManager.CurrentBuildings.Count - 1 < _workersManager.BaseWorkersAmounts)) // -1 because cottage
             {
                 _activateButton.onClick.RemoveAllListeners();
                 _activateButton.onClick.AddListener(AssignWorkersForNewDay);
