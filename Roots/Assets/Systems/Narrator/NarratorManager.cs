@@ -24,7 +24,7 @@ namespace Narrator
             }
             else
             {
-                _currentTutorialStep = TutorialStep.OnWorkersPanelOpenAfterRestart_Q21;
+                _currentTutorialStep = TutorialStep.Quests_End;
             }
             
             _buildingsManager.OnBuildingRepaired += CheckBuildingRepaired;
@@ -114,7 +114,7 @@ namespace Narrator
             }
             else
             {
-                _currentTutorialStep = TutorialStep.OnWorkersPanelOpenAfterRestart_Q21;
+                _currentTutorialStep = TutorialStep.Quests_End;
             }
             
             OnTutorialAdvancement?.Invoke(false);
@@ -185,5 +185,6 @@ namespace Narrator
         OnAfterDefendPanel_Q19 = 18,
         OnMissionRestart_Q20 = 19,
         OnWorkersPanelOpenAfterRestart_Q21 = 20,
+        Quests_End = 21,
     }
 }

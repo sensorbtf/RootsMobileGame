@@ -345,6 +345,10 @@ namespace InGameUi
                 _narratorManager.TryToActivateNarrator(TutorialStep.OnWorkersPanelOpenAfterRestart_Q21);
                 _godsButton.gameObject.SetActive(true);
             }
+            else if (_narratorManager.CurrentTutorialStep == TutorialStep.OnWorkersPanelOpenAfterRestart_Q21)
+            {
+                _narratorManager.TryToActivateNarrator(TutorialStep.OnWorkersPanelOpenAfterRestart_Q21);
+            }
             else
             {
                 _godsButton.gameObject.SetActive(false);

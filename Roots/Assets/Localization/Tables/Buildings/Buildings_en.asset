@@ -23,7 +23,9 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 346000121856
-    m_Localized: CottageCottage
+    m_Localized: Residence's basement is a shelter for all workers and only safe
+      place to store excess resources on mission completion to recover them on the
+      next one
     m_Metadata:
       m_Items: []
   - m_Id: 1505477713920
@@ -31,7 +33,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1528571551744
-    m_Localized: FarmFarm
+    m_Localized: Main source of food for all workers that provides small amount of
+      resource points. Every level up of farm unlocks additional worker.
     m_Metadata:
       m_Items: []
   - m_Id: 1559617789952
@@ -39,7 +42,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1656925642752
-    m_Localized: WoodcutterWoodcutter
+    m_Localized: Wood is essential for creating new buildings and it's a main. Woodcutters
+      that work here will also help you extend borders of village.
     m_Metadata:
       m_Items: []
   - m_Id: 7052419588096
@@ -47,7 +51,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7052419588097
-    m_Localized: Guard TowerGuard Tower
+    m_Localized: First defense structure in village. Gives small portion of defense
+      points and let you check next days in case of storm.
     m_Metadata:
       m_Items: []
   - m_Id: 7052419588098
@@ -55,7 +60,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7052419588099
-    m_Localized: Alchemical HutAlchemical Hut
+    m_Localized: Place where magic and science meets to provide you with both defence
+      and resource points.
     m_Metadata:
       m_Items: []
   - m_Id: 7052419588100
@@ -63,7 +69,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7052419588101
-    m_Localized: Mining ShaftMining Shaft
+    m_Localized: A mine shaft, going deeper into the guts of the Earth with each
+      successive level. It allows the extraction of various types of raw materials.
     m_Metadata:
       m_Items: []
   - m_Id: 7052419588102
@@ -71,7 +78,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7052419588103
-    m_Localized: Ritual CircleRitual Circle
+    m_Localized: Noone knows what exactly comes with storm but runes created in Ritual
+      Circle always help to keep danger away.
     m_Metadata:
       m_Items: []
   - m_Id: 7052419588104
@@ -111,7 +119,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7052419588113
-    m_Localized: WorkshopWorkshop
+    m_Localized: Wood and mined ores are transported here to further processing.
     m_Metadata:
       m_Items: []
   - m_Id: 7052419588114
@@ -119,7 +127,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7052419588115
-    m_Localized: Sacrificial AltarSacrificial Altar
+    m_Localized: Sacrificial Altar is the most advanced building for providing Defense
+      Points and the only one which gives Star Dust from completing minigame.
     m_Metadata:
       m_Items: []
   references:
