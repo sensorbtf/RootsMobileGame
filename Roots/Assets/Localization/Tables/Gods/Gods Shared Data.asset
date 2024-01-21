@@ -1,0 +1,124 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5b11a58205ec3474ca216360e9fa74a8, type: 3}
+  m_Name: Gods Shared Data
+  m_EditorClassIdentifier: 
+  m_TableCollectionName: Gods
+  m_TableCollectionNameGuidString: aba472eb520d0e7489bb7a4fc9d048d9
+  m_Entries:
+  - m_Id: 11350738640896
+    m_Key: Veles
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11350742835200
+    m_Key: Perun
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11350742835201
+    m_Key: Svarog
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11350742835202
+    m_Key: 'Zirnitra '
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11350742835203
+    m_Key: Lada
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11350742835204
+    m_Key: Dziewona
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11350742835205
+    m_Key: Radegast
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11350742835206
+    m_Key: Morana
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11350742835207
+    m_Key: Svetovid
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11350742835208
+    m_Key: Ziva
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11350742835209
+    m_Key: Mokosh
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11350742835210
+    m_Key: Kresnik
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11350742835211
+    m_Key: none_blessing
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11350742835212
+    m_Key: small_blessing
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11350742835213
+    m_Key: medium_blessing
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11350742835214
+    m_Key: high_blessing
+    m_Metadata:
+      m_Items: []
+  - m_Id: 22198483853312
+    m_Key: deactivate_blessing
+    m_Metadata:
+      m_Items: []
+  - m_Id: 22198492241920
+    m_Key: activate_blessing
+    m_Metadata:
+      m_Items: []
+  - m_Id: 22198492241921
+    m_Key: buy_blessing
+    m_Metadata:
+      m_Items: []
+  - m_Id: 22198492241922
+    m_Key: deactivate_other_blessings
+    m_Metadata:
+      m_Items: []
+  - m_Id: 22198492241923
+    m_Key: choose_blessing
+    m_Metadata:
+      m_Items: []
+  - m_Id: 22198492241924
+    m_Key: small_blessing_efficiency
+    m_Metadata:
+      m_Items: []
+  - m_Id: 22198492241925
+    m_Key: medium_blessing_efficiency
+    m_Metadata:
+      m_Items: []
+  - m_Id: 22198492241926
+    m_Key: big_blessing_efficiency
+    m_Metadata:
+      m_Items: []
+  m_Metadata:
+    m_Items: []
+  m_KeyGenerator:
+    rid: 8926792452719771650
+  references:
+    version: 2
+    RefIds:
+    - rid: 8926792452719771650
+      type: {class: DistributedUIDGenerator, ns: UnityEngine.Localization.Tables, asm: Unity.Localization}
+      data:
+        m_CustomEpoch: 1705836237868

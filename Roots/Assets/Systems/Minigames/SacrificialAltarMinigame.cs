@@ -1,23 +1,23 @@
+using System;
 using Buildings;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 namespace Minigames
 {
-    public class CharcoalPileMinigame: Minigame // TODO particles of fire
+    public class SacrificialAltarMinigame : Minigame
     {
-        [SerializeField] private Button _buttonToMash;
+        [SerializeField] private Button _button;
 
         private new void Update()
         {
-            base.Update();
-
-            if (_timer <= 0)
+            if (_score >= _timer) // needed points
             {
                 _timer = 0;
                 _isGameActive = false;
                 _collectPointsButton.interactable = true;
-                _buttonToMash.interactable = false;
+                _button.interactable = false;
             }
         }
 
@@ -26,25 +26,24 @@ namespace Minigames
             base.SetupGame(p_building);
 
             _score = 0;
-            _buttonToMash.gameObject.GetComponent<Image>().sprite = 
-                p_building.BuildingMainData.Technology.SpriteOfObject;
-            _buttonToMash.onClick.AddListener(AddScore);
-            _buttonToMash.interactable = false;
+
+            _button.onClick.AddListener(AddScore);
+            _button.interactable = false;
             _collectPointsButton.interactable = false;
         }
 
         public override void AddScore()
         {
-            _buttonToMash.interactable = false;
+            _button.interactable = false;
+
             _score += _efficiency;
-            StartMinigame();
             
-            base.AddScore();
+            StartMinigame();
         }
 
         public override void StartMinigame()
         {
-            _buttonToMash.interactable = true;
+            _button.interactable = true;
         }
     }
 }

@@ -22,7 +22,7 @@ namespace Narrator
         {
             if (_enableNarrator)
             {
-                _currentTutorialStep = TutorialStep.Start;
+                _currentTutorialStep = TutorialStep.OnGameStarted_Q1;
             }
             else
             {
@@ -35,6 +35,9 @@ namespace Narrator
             _buildingsManager.OnBuildingTechnologyLvlUp += CheckBuildingTechLevelUp;
 
             _worldManager.OnNewDayStarted += TryToActivateBonus;
+            
+            _currentSubText = 0;
+            OnTutorialAdvancement?.Invoke(true);
         }
 
         private void OnDestroy()
@@ -44,7 +47,7 @@ namespace Narrator
             _buildingsManager.OnBuildingStateChanged -= CheckBuildingBuilt;
             _buildingsManager.OnBuildingTechnologyLvlUp -= CheckBuildingTechLevelUp;
             
-            _worldManager.OnNewMissionStart -= TryToActivateBonus;
+            _worldManager.OnNewDayStarted -= TryToActivateBonus;
         }
 
         public void TryToActivateNarrator(TutorialStep p_step)
@@ -65,6 +68,9 @@ namespace Narrator
 
         private void StartTutorial()
         {
+            if (!_enableNarrator)
+                return;
+            
             TryToActivateNarrator(TutorialStep.OnGameStarted_Q1);
             
             _buildingsManager.OnTutorialStart -= StartTutorial;
@@ -116,14 +122,14 @@ namespace Narrator
 
             if (_enableNarrator)
             {
-                _currentTutorialStep = TutorialStep.Start;
+                _currentTutorialStep = TutorialStep.OnGameStarted_Q1;
+                OnTutorialAdvancement?.Invoke(true);
             }
             else
             {
                 _currentTutorialStep = TutorialStep.Quests_End;
+                OnTutorialAdvancement?.Invoke(false);
             }
-            
-            OnTutorialAdvancement?.Invoke(false);
         }
 
         public bool ShouldBlockBuildingTab()

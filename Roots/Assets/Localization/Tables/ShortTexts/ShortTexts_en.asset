@@ -76,11 +76,11 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 902969142206465
-    m_Localized: Check horizon
+    m_Localized: Reveal Horizon
     m_Metadata:
       m_Items: []
   - m_Id: 902969142206466
-    m_Localized: Make mixture
+    m_Localized: Make potion
     m_Metadata:
       m_Items: []
   - m_Id: 902969142206467
@@ -113,6 +113,62 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 902969142206474
     m_Localized: Pray
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6057672029675520
+    m_Localized: Check storm in 2 next days
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6057672042258432
+    m_Localized: Receive {0} blessing from {1}
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6057672042258433
+    m_Localized: Move vegetables
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6057672042258434
+    m_Localized: Click the axes
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6057672042258435
+    m_Localized: Erase the panel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6057672042258436
+    m_Localized: Click on the boiler at the right time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6057672042258437
+    m_Localized: Click the ore
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6057672042258438
+    m_Localized: Click the sign
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6057672042258439
+    m_Localized: Move the peat
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6057672042258440
+    m_Localized: Click on fire
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6057672042258441
+    m_Localized: Click on herbs
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6057672042258442
+    m_Localized: Click on hornets
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6057672042258443
+    m_Localized: Click on the trunk at the right time
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6057672042258444
+    m_Localized: Wait
     m_Metadata:
       m_Items: []
   references:

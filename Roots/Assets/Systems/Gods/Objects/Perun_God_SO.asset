@@ -13,4 +13,16 @@ MonoBehaviour:
   m_Name: Perun_God_SO
   m_EditorClassIdentifier: 
   GodName: 2
+  GodLocalizedName:
+    m_TableReference:
+      m_TableCollectionName: GUID:aba472eb520d0e7489bb7a4fc9d048d9
+    m_TableEntryReference:
+      m_KeyId: 11350742835200
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   GodImage: {fileID: 21300000, guid: 1cd4ea5945086aa459d7b84ee0b52148, type: 3}
+  references:
+    version: 2
+    RefIds: []

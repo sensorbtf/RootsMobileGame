@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Localization;
 
 namespace Gods
 {
@@ -6,6 +7,7 @@ namespace Gods
     public class GodDataSO : ScriptableObject
     {
         public GodType GodName;
+        public LocalizedString GodLocalizedName;
         public Sprite GodImage;
     }
 

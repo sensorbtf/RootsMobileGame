@@ -44,7 +44,7 @@ namespace InGameUi
 
         private Coroutine _typingCoroutine;
 
-        private void Start()
+        private void Awake()
         {
             LocalizationSettings.SelectedLocaleChanged += OnLocaleChanged;
             _narratorManager.OnTutorialAdvancement += ActivateNarrator;
@@ -65,9 +65,16 @@ namespace InGameUi
 
         private void ActivateNarrator(bool p_show)
         {
-            if (_narratorManager.CurrentTutorialStep == TutorialStep.Quests_End && _buildingsManager.Bonus != null)
+            if (_narratorManager.CurrentTutorialStep == TutorialStep.Quests_End)
             {
-                ShowAndMovePanel(true);
+                if (_buildingsManager.Bonus != null && _buildingsManager.Bonus.Building != BuildingType.Cottage)
+                {
+                    ShowAndMovePanel(true);
+                }
+                else
+                {
+                    Text.text = TutorialTexts[(int)TutorialStep.Quests_End].Text[_narratorManager.CurrentSubText].GetLocalizedString();
+                }
             }
             else
             {
@@ -217,10 +224,10 @@ namespace InGameUi
             if (_narratorManager.CurrentTutorialStep == TutorialStep.Quests_End && _buildingsManager.Bonus != null)
             {
                 var text = TutorialTexts.Last().Text[0].GetLocalizedString();
-
-                return string.Format(text, _buildingsManager.Bonus.Building, _buildingsManager.Bonus.BonusInPercents);
+                return string.Format(text, _buildingsManager.GetSpecificBuilding(_buildingsManager.Bonus.Building)
+                    .BuildingMainData.BuildingName.GetLocalizedString(), _buildingsManager.Bonus.BonusInPercents);
             }
-            
+
             return TutorialTexts[(int)_narratorManager.CurrentTutorialStep].Text[_narratorManager.CurrentSubText].GetLocalizedString();
         }
     }

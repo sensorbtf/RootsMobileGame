@@ -43,6 +43,11 @@ MonoBehaviour:
     m_ReadOnly: 1
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: aba472eb520d0e7489bb7a4fc9d048d9
+    m_Address: Assets/Localization/Tables/Gods/Gods Shared Data.asset
+    m_ReadOnly: 1
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 1
   m_Settings: {fileID: 11400000, guid: 480e2a3d04384944bb89c7d9afdb7370, type: 2}
   m_SchemaSet:

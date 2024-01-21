@@ -52,12 +52,6 @@ namespace InGameUi
                         _currentMinigameScript.OnMiniGamePointsCollected += CollectPointsFromMinigame;
                         _currentMinigameScript.OnMinigameEnded += GoBackToSpecificPanel;
 
-                        if (_currentMinigameScript is WatchtowerRightLeftClickingMinigame)
-                        {
-                            var watchTowerMinigame = _currentMinigameScript as WatchtowerRightLeftClickingMinigame;
-                            watchTowerMinigame.OnStormReveal += RevealStorm;
-                        }
-
                         break;
                     }
             }
@@ -70,19 +64,8 @@ namespace InGameUi
             {
                 _currentMinigameScript.OnMiniGamePointsCollected -= CollectPointsFromMinigame;
                 _currentMinigameScript.OnMinigameEnded -= GoBackToSpecificPanel;
-                if (_currentMinigameScript is WatchtowerRightLeftClickingMinigame watchTowerMinigame)
-                {
-                    watchTowerMinigame.OnStormReveal -= RevealStorm;
-                }
+                
             }
-        }
-
-        private void RevealStorm(int p_daysToSee)
-        {
-            _worldManager.RevealStorm(p_daysToSee);
-
-            var watchTowerMinigame = _currentMinigameScript as WatchtowerRightLeftClickingMinigame;
-            watchTowerMinigame.OnStormReveal -= RevealStorm;
         }
 
         private void CollectPointsFromMinigame(PointsType p_pointsType, int p_pointsNumber)

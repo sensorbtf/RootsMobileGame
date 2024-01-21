@@ -59,6 +59,14 @@ MonoBehaviour:
     m_Key: defense_resources_points_collect
     m_Metadata:
       m_Items: []
+  - m_Id: 6057672029675520
+    m_Key: check_storm_minigame
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6057672042258432
+    m_Key: get_godblessing_minigame
+    m_Metadata:
+      m_Items: []
   - m_Id: 894426527752192
     m_Key: score_minigame
     m_Metadata:
@@ -109,6 +117,54 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 902969142206474
     m_Key: sacrificial_altar_activity
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6057672042258433
+    m_Key: farm_activity_bottom
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6057672042258434
+    m_Key: woodcutter_activity_bottom
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6057672042258435
+    m_Key: guard_tower_activity_bottom
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6057672042258436
+    m_Key: alchemical_hut_activity_bottom
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6057672042258437
+    m_Key: minig_shaft_activity_bottom
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6057672042258438
+    m_Key: ritual_circle_activity_bottom
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6057672042258439
+    m_Key: peat_excavation_activity_bottom
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6057672042258440
+    m_Key: charcoal_pile_activity_bottom
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6057672042258441
+    m_Key: herbs_garden_activity_bottom
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6057672042258442
+    m_Key: apiary_activity_bottom
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6057672042258443
+    m_Key: workshop_activity_bottom
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6057672042258444
+    m_Key: sacrificial_altar_activity_bottom
     m_Metadata:
       m_Items: []
   m_Metadata:

@@ -1,0 +1,119 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9620f8c34305754d8cc9a7e49e852d9, type: 3}
+  m_Name: Gods_pl
+  m_EditorClassIdentifier: 
+  m_LocaleId:
+    m_Code: pl
+  m_SharedData: {fileID: 11400000, guid: aba472eb520d0e7489bb7a4fc9d048d9, type: 2}
+  m_Metadata:
+    m_Items: []
+  m_TableData:
+  - m_Id: 11350738640896
+    m_Localized: Weles
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11350742835200
+    m_Localized: Perun
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11350742835201
+    m_Localized: "Swar\xF3g"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11350742835202
+    m_Localized: Zirnitra
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11350742835203
+    m_Localized: "\u0141ada"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11350742835204
+    m_Localized: Dziewanna
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11350742835205
+    m_Localized: Radegast
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11350742835206
+    m_Localized: Marzanna
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11350742835207
+    m_Localized: "\u015Awi\u0119towit"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11350742835208
+    m_Localized: "\u017Bywa"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11350742835209
+    m_Localized: Mokosz
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11350742835210
+    m_Localized: Kresnik
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11350742835211
+    m_Localized: "Brak b\u0142ogos\u0142awie\u0144stwa"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11350742835212
+    m_Localized: "Pomniejsze b\u0142ogos\u0142awie\u0144stwo"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11350742835213
+    m_Localized: "Normalne b\u0142ogos\u0142awie\u0144stwo"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 11350742835214
+    m_Localized: "Du\u017Ce b\u0142ogos\u0142awie\u0144stwo"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 22198483853312
+    m_Localized: Dezaktywuj
+    m_Metadata:
+      m_Items: []
+  - m_Id: 22198492241920
+    m_Localized: Aktywuj ({0})
+    m_Metadata:
+      m_Items: []
+  - m_Id: 22198492241921
+    m_Localized: "Kup za {0} Gwiezdnego Py\u0142u"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 22198492241922
+    m_Localized: "Dezaktywuj pozosta\u0142e b\u0142ogos\u0142awie\u0144stwa"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 22198492241923
+    m_Localized: "Wybierz poziom b\u0142ogos\u0142awie\u0144stwa"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 22198492241924
+    m_Localized: "Ma\u0142e b\u0142ogos\u0142awie\u0144stwo \\n +{0}% skuteczno\u015Bci"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 22198492241925
+    m_Localized: "\u015Arednie b\u0142ogos\u0142awie\u0144stwo \\n +{0}% skuteczno\u015Bci"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 22198492241926
+    m_Localized: "Du\u017Ce b\u0142ogos\u0142awie\u0144stwo \\n +{0}% skuteczno\u015Bci"
+    m_Metadata:
+      m_Items: []
+  references:
+    version: 2
+    RefIds: []

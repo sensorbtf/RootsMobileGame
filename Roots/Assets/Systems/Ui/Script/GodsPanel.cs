@@ -8,6 +8,7 @@ using GeneralSystems;
 using Gods;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Localization;
 using UnityEngine.UI;
 
 namespace InGameUi
@@ -33,6 +34,17 @@ namespace InGameUi
         [SerializeField] private AudioClip _smallEffectActivation;
         [SerializeField] private AudioClip _mediumEffectActivation;
         [SerializeField] private AudioClip _bigEffectActivation;
+
+        [Header("Localization Refs")] 
+        [SerializeField] private LocalizedString _deactivateBlessing;
+        [SerializeField] private LocalizedString _activateBlessing;
+        [SerializeField] private LocalizedString _deactivateOtherBlessings;
+        [SerializeField] private LocalizedString _buyForText;
+        [SerializeField] private LocalizedString _chooseBlessingLevel;
+        [SerializeField] private LocalizedString _smallBlessingEfficiency;
+        [SerializeField] private LocalizedString _mediumBlessingEfficiency;
+        [SerializeField] private LocalizedString _bigBlessingEfficiency;
+        
         
         private List<GameObject> _createdGodsInstances;
         
@@ -70,10 +82,10 @@ namespace InGameUi
                 var newGodRef = newGod.GetComponent<GodInstanceUI>();
                 var buildingToInfluence = _buildingsManager.GetGodsBuilding(god.GodName);
 
-                newGodRef.GodName.text = god.GodName.ToString();
+                newGodRef.GodName.text = god.GodLocalizedName.GetLocalizedString();
                 newGodRef.GodImage.sprite = god.GodImage;
-                newGodRef.AffectedBuilding.sprite = _buildingsManager.GetBuildingIcon(buildingToInfluence);
-                newGodRef.AffectedBuildingText.text = buildingToInfluence.ToString();
+                newGodRef.AffectedBuilding.sprite = _buildingsManager.GetBuildingIcon(buildingToInfluence.Type);
+                newGodRef.AffectedBuildingText.text = buildingToInfluence.BuildingName.GetLocalizedString();
                 newGodRef.Slider.value = (int)_godsManager.GetCurrentBlessingLevel(god.GodName);
                 OnSliderValueChange(newGodRef, god.GodName);
                 newGodRef.Slider.onValueChanged.AddListener(delegate { OnSliderValueChange(newGodRef, god.GodName); });
@@ -117,7 +129,7 @@ namespace InGameUi
                     OnSliderValueChange(p_newGodRef, p_godType);
                 });
 
-                p_newGodRef.ActivationButtonText.text = "Deactivate";
+                p_newGodRef.ActivationButtonText.text = _deactivateBlessing.GetLocalizedString();
                 SwitchEffectColor(p_newGodRef);
                 p_newGodRef.ActivationButton.gameObject.SetActive(true);
             }
@@ -132,8 +144,8 @@ namespace InGameUi
                     OnSliderValueChange(p_newGodRef, p_godType);
                 });
 
-                p_newGodRef.ActivationButtonText.text =
-                    $"Buy for {_godsManager.BlessingPrices[blessingOnSlider]} Destiny Shards";
+                p_newGodRef.ActivationButtonText.text = string.Format(_buyForText.GetLocalizedString(),
+                    _godsManager.BlessingPrices[blessingOnSlider]);
                 p_newGodRef.GlowEffect.color = _godsManager.NoEffect;
                 //p_newGodRef.SliderHandleImage.color = _godsManager.NoEffect;
                 p_newGodRef.SliderFillImage.color = _godsManager.NoEffect;
@@ -144,7 +156,7 @@ namespace InGameUi
                 var currentBlessingLvl = _godsManager.GetCurrentBlessingLevel(p_godType);
                 if (currentBlessingLvl != 0 && currentBlessingLvl != blessingOnSlider)
                 {
-                    p_newGodRef.BlessingChooserText.text = "Deactivate other blessing";
+                    p_newGodRef.BlessingChooserText.text = _deactivateOtherBlessings.GetLocalizedString();
                     p_newGodRef.ActivationButton.gameObject.SetActive(false);
                     return;
                 }
@@ -156,7 +168,7 @@ namespace InGameUi
                     OnSliderValueChange(p_newGodRef, p_godType);
                 });
 
-                p_newGodRef.ActivationButtonText.text = $"Activate ({amountOfBlessings})";
+                p_newGodRef.ActivationButtonText.text = string.Format(_activateBlessing.GetLocalizedString(), amountOfBlessings);
                 p_newGodRef.GlowEffect.color = _godsManager.NoEffect;
                 p_newGodRef.ActivationButton.gameObject.SetActive(true);
             }
@@ -206,19 +218,19 @@ namespace InGameUi
             switch (p_newGodRef.Slider.value)
             {
                 case 0:
-                    p_newGodRef.BlessingChooserText.text = "Choose blessing level";
+                    p_newGodRef.BlessingChooserText.text = _chooseBlessingLevel.GetLocalizedString();
                     break;
                 case 1:
-                    p_newGodRef.BlessingChooserText.text =
-                        $"Small Blessing \n +{Mathf.CeilToInt(_godsManager.GetBlessingValue(p_blessingOnSlider) * 100)}% efficiency";
+                    p_newGodRef.BlessingChooserText.text = string.Format(_smallBlessingEfficiency.GetLocalizedString(),
+                        Mathf.CeilToInt(_godsManager.GetBlessingValue(p_blessingOnSlider) * 100));
                     break;
                 case 2:
-                    p_newGodRef.BlessingChooserText.text =
-                        $"Medium Blessing \n +{Mathf.CeilToInt(_godsManager.GetBlessingValue(p_blessingOnSlider) * 100)}% efficiency";
+                    p_newGodRef.BlessingChooserText.text = string.Format(_mediumBlessingEfficiency.GetLocalizedString(),
+                        Mathf.CeilToInt(_godsManager.GetBlessingValue(p_blessingOnSlider) * 100));
                     break;
                 case 3:
-                    p_newGodRef.BlessingChooserText.text =
-                        $"Big Blessing \n +{Mathf.CeilToInt(_godsManager.GetBlessingValue(p_blessingOnSlider) * 100)}% efficiency";
+                    p_newGodRef.BlessingChooserText.text = string.Format(_bigBlessingEfficiency.GetLocalizedString(),
+                        Mathf.CeilToInt(_godsManager.GetBlessingValue(p_blessingOnSlider) * 100));
                     break;
             }
         }

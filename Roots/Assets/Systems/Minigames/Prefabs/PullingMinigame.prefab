@@ -179,13 +179,11 @@ MonoBehaviour:
   _timer: 0
   _efficiency: 0
   _isGameActive: 0
-  _givesResources: 0
+  _isWatchtower: 0
   _score: 0
   _type: 0
   _collectPointsButton: {fileID: 5029027541657629896}
   _coutdownText: {fileID: 6885093161393003625}
-  _scoreText: {fileID: 4639216421102461910}
-  _timeText: {fileID: 5414854810081285241}
   _destructionRegionGo: {fileID: 178114358168973576}
   _prefabToInstantiate: {fileID: 3807329171339079616, guid: c7c87c039e3628a498f933311d40cc00, type: 3}
   _placeToInstantiate: {fileID: 1923040761159946779}
@@ -544,17 +542,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &5414854810081285241 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 5852637194347671637, guid: 4b1a958325abe1140bc8c30088eef6f8, type: 3}
-  m_PrefabInstance: {fileID: 1881892524182807596}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &4525260845043110041
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -770,14 +757,3 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 5772291268032390036, guid: 193f02142d5e17449999241e2772fedb, type: 3}
   m_PrefabInstance: {fileID: 5598613513182182699}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &4639216421102461910 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 996293404043534077, guid: 193f02142d5e17449999241e2772fedb, type: 3}
-  m_PrefabInstance: {fileID: 5598613513182182699}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

@@ -13,4 +13,16 @@ MonoBehaviour:
   m_Name: Morana_God_SO
   m_EditorClassIdentifier: 
   GodName: 8
+  GodLocalizedName:
+    m_TableReference:
+      m_TableCollectionName: GUID:aba472eb520d0e7489bb7a4fc9d048d9
+    m_TableEntryReference:
+      m_KeyId: 11350742835206
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   GodImage: {fileID: 21300000, guid: d3626a0d4f5bd734b9f2a65505c2a82a, type: 3}
+  references:
+    version: 2
+    RefIds: []

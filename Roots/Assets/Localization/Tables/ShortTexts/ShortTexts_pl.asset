@@ -40,8 +40,8 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 892977810956288
     m_Localized: "G\u0142\xF3wne miasto zg\u0142osi\u0142o pilne zapotrzebowanie
-      na okre\u015Blone surowce. W tej misji praca w {0} zapewnia wi\u0119cej surowc\xF3w
-      o {1}%"
+      na okre\u015Blone surowce. W tej misji praca w budynku {0} zapewnia wi\u0119cej
+      surowc\xF3w o {1}%"
     m_Metadata:
       m_Items: []
   - m_Id: 894426527752192
@@ -94,6 +94,82 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 902969142206474
     m_Localized: "Pom\xF3dl si\u0119"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 892977836122112
+    m_Localized: "Zbierz: {0} Punkt\xF3w Surowc\xF3w"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 892977836122113
+    m_Localized: "Zbierz: {0} Punkt\xF3w Obrony"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 892977836122114
+    m_Localized: "Zbierz: {0} Gwiezdnego Py\u0142u"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 892977836122115
+    m_Localized: "Zbierz: {0} Punkt\xF3w Surowc\xF3w i {1} Punkt\xF3w Obrony"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 892977836122116
+    m_Localized: "Zbierz: {0} Punkt\xF3w Obrony i {1} Punkt\xF3w Surowc\xF3w"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6057672029675520
+    m_Localized: "Sprawd\u017A burz\u0119 w nast\u0119pnych 2 dniach"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6057672042258432
+    m_Localized: "Przyjmij {0} b\u0142ogos\u0142awie\u0144stwo od {1}"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6057672042258433
+    m_Localized: "Przeno\u015B warzywa"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6057672042258434
+    m_Localized: Klikaj w siekiery
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6057672042258435
+    m_Localized: "Wyma\u017C panel"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6057672042258436
+    m_Localized: "Klikaj w kocio\u0142 w odpowiedniej chwili"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6057672042258437
+    m_Localized: "Klikaj w rud\u0119"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6057672042258438
+    m_Localized: Klikaj w znak
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6057672042258439
+    m_Localized: "Przeno\u015B torf"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6057672042258440
+    m_Localized: "Klikaj w ogie\u0144"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6057672042258441
+    m_Localized: "Klikaj w zio\u0142a"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6057672042258442
+    m_Localized: Klikaj w szerszenie
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6057672042258443
+    m_Localized: "Klikaj w pie\u0144 w odpowiedniej chwili"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6057672042258444
+    m_Localized: Czekaj
     m_Metadata:
       m_Items: []
   references:

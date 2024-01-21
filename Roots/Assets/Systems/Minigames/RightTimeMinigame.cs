@@ -9,10 +9,11 @@ namespace Minigames
     public class RightTimeMinigame : Minigame
     {
         [SerializeField] private GameObject _movingObject; 
+        [SerializeField] private RectTransform _movingObjectRect; 
         [SerializeField] private int _moveSpeed;
         [SerializeField] private float _blockingDuration = 200f;
-        [SerializeField] private Transform _startPosition;
-        [SerializeField] private Transform _endPosition;
+        [SerializeField] private RectTransform _startPosition;
+        [SerializeField] private RectTransform _endPosition;
         [SerializeField] private RectTransform _targetPosition; 
         [SerializeField] private Button _buttonToClick; 
         [SerializeField] private BoxCollider2D _movingObjectCollider;
@@ -46,11 +47,14 @@ namespace Minigames
 
         private void MoveObject()
         {
-            var target = _isMovingToEnd ? _endPosition.position : _startPosition.position;
-            _movingObject.transform.position = Vector2.MoveTowards(_movingObject.transform.position,
-                target, _currentMovementSpeed * Time.deltaTime);
+            Vector2 targetAnchoredPosition = _isMovingToEnd ? _endPosition.anchoredPosition : _startPosition.anchoredPosition;
 
-            if (Vector2.Distance(_movingObject.transform.position, target) < 0.1f)
+            float step = _currentMovementSpeed * Time.deltaTime;
+
+            _movingObjectRect.anchoredPosition = Vector2.MoveTowards(_movingObjectRect.anchoredPosition,
+                targetAnchoredPosition, step);
+
+            if (Vector2.Distance(_movingObjectRect.anchoredPosition, targetAnchoredPosition) < 0.1f)
             {
                 _isMovingToEnd = !_isMovingToEnd;
             }
@@ -77,7 +81,6 @@ namespace Minigames
 
             _timer = 0;
             _isGameActive = false;
-            _timeText.text = $"Collect: {_score:F0} resource points";
         }
 
         public override void SetupGame(Building p_building)
@@ -104,13 +107,14 @@ namespace Minigames
         {
             _currentMovementSpeed += _bonusPerClick;
             _score += _efficiency;
-            _scoreText.text = $"Score: {_score:F1}";
+            
+            base.AddScore();
         }
         
         private void TryToGetPoints()
         {
-            Vector2 boxSize = _targetPositionCollider.size;
-            var transform1 = _targetPositionCollider.transform;
+            Vector2 boxSize = _movingObjectCollider.size;
+            var transform1 = _movingObjectCollider.transform;
             Vector2 boxPosition = transform1.position;
 
             float angle = transform1.eulerAngles.z;
@@ -119,7 +123,7 @@ namespace Minigames
 
             Collider2D[] results = Physics2D.OverlapBoxAll(boxPosition, boxSize, angle, filter.layerMask);
 
-            if (Array.Exists(results, collider => collider == _movingObjectCollider))
+            if (Array.Exists(results, collider => collider == _targetPositionCollider))
             {
                 AddScore();
             }

@@ -2,33 +2,88 @@
 using System.Collections;
 using AudioSystem;
 using Buildings;
+using Gods;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Localization;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
+using World;
 
 namespace Minigames
 {
     public abstract class Minigame : MonoBehaviour
     {
         [SerializeField] internal AudioManager _audioManager;
+        [SerializeField] internal WorldManager _worldManager;
+        [SerializeField] internal BuildingsManager _buildingsManager;
+        [SerializeField] internal GodsManager _godsManager;
         [SerializeField] internal MinigameLocalizationSO _localization;
 
         [HideInInspector] public float _timer;
         [HideInInspector] public float _efficiency;
         [HideInInspector] public bool _isGameActive;
-        [HideInInspector] public bool _givesResources;
+        private bool _isWatchtower;
+        private bool _isAltar;
+        private GodType _selectedGod;
+        private BlessingLevel _selectedBlessing;
+
         [HideInInspector] public float _score;
         [HideInInspector] public PointsType _type;
         public Button _collectPointsButton;
         public TextMeshProUGUI _coutdownText; // Countdown
-        public TextMeshProUGUI _scoreText; // top panel title 
-        public TextMeshProUGUI _timeText; // bottom button time text
+        private TextMeshProUGUI _scoreText; // top panel title 
+        private TextMeshProUGUI _timeText; // bottom button time text
 
         public event Action OnMinigameEnded;
         public event Action<PointsType, int> OnMiniGamePointsCollected;
 
-        public event Action<int> OnStormReveal;
+        public virtual void SetupGame(Building p_building)
+        {
+            _score = 0;
+            _timeText.text = SelectRightBottomText(p_building.BuildingMainData.Type);
+            _scoreText.text = SelectRightTopText(p_building.BuildingMainData.Type);
+
+            var audioMgr = FindObjectOfType<AudioManager>();
+            if (audioMgr != null)
+                _audioManager = audioMgr;
+            var worldMgr = FindObjectOfType<WorldManager>();
+            if (worldMgr != null)
+                _worldManager = worldMgr;
+            var buildingsMgr = FindObjectOfType<BuildingsManager>();
+            if (buildingsMgr != null)
+                _buildingsManager = buildingsMgr;
+            var godsMgr = FindObjectOfType<GodsManager>();
+            if (godsMgr != null)
+                _godsManager = godsMgr;
+            
+            _timer = p_building.BuildingMainData.Technology.DataPerTechnologyLevel[p_building.CurrentTechnologyLvl]
+                .MinigameDuration;
+            _efficiency = p_building.BuildingMainData.Technology.DataPerTechnologyLevel[p_building.CurrentTechnologyLvl]
+                .Efficiency;
+            _type = p_building.BuildingMainData.Technology.ProductionType;
+
+            _collectPointsButton.onClick.AddListener(EndMinigame);
+            _collectPointsButton.interactable = false;
+
+            if (p_building.BuildingMainData.Type == BuildingType.GuardTower)
+            {
+                _isWatchtower = true;
+                _isAltar = false;
+            }
+            else if (p_building.BuildingMainData.Type == BuildingType.Sacrificial_Altar)
+            {
+                _isWatchtower = false;
+                _isAltar = true;
+            }
+            else
+            {
+                _isWatchtower = false;
+                _isAltar = false;
+            }
+
+            StartCoroutine(StartCountdown());
+        }
 
         public virtual void Update()
         {
@@ -42,70 +97,80 @@ namespace Minigames
                 _timer = 0;
                 _isGameActive = false;
                 _collectPointsButton.interactable = true;
-
-                var points = $"{_score:F0}";
-
-                var halfPoints = Mathf.CeilToInt(_score / 2);
-                var pointsTwo = $"{halfPoints:F0}";
-
-                switch (_type)
+                
+                if (_isWatchtower)
                 {
-                    case PointsType.Resource:
-                        _timeText.text = _localization.ResourcePointsCollect.GetLocalizedString().Replace("0", points);
-                        break;
-                    case PointsType.Defense:
-                        _timeText.text = _localization.DefensePointsCollect.GetLocalizedString().Replace("0", points);
-                        break;
-                    case PointsType.StarDust:
-                        _timeText.text = _localization.StarDustPointsCollect.GetLocalizedString().Replace("0", points);
-                        break;
-                    case PointsType.ResourcesAndDefense:
-                        _timeText.text = _localization.ResourcesAndDefenseCollect.GetLocalizedString()
-                            .Replace("0", points).Replace("1", pointsTwo);
-                        break;
-                    case PointsType.DefenseAndResources:
-                        _timeText.text = _localization.DefenseAndResourcesCollect.GetLocalizedString()
-                            .Replace("0", points).Replace("1", pointsTwo);
-                        break;
+                    _timeText.text = _localization.GuardTowerStorm.GetLocalizedString();
+                }
+                else if (_isAltar)
+                {
+                    _selectedGod = _buildingsManager.GetRandomGodInBuildings();
+                    var maxAffordablePrice = 0;
+
+                    foreach (var blessingEntry in _godsManager.BlessingPrices)
+                    {
+                        int blessingPrice = blessingEntry.Value;
+                        BlessingLevel currentBlessingLevel = blessingEntry.Key;
+
+                        if (_score >= blessingPrice && blessingPrice > maxAffordablePrice)
+                        {
+                            _selectedBlessing = currentBlessingLevel;
+                            maxAffordablePrice = blessingPrice;
+                        }
+                    }
+                    
+                    var text = string.Format(_localization.SacrificialAltarReward.GetLocalizedString(), 
+                        _godsManager.GetBlessingName(_selectedBlessing),
+                        _godsManager.GetGodName(_selectedGod));
+                    
+                    _timeText.text = text;
+                }
+                else
+                {
+                    var points = $"{_score:F0}";
+
+                    var halfPoints = Mathf.CeilToInt(_score / 2);
+                    var pointsTwo = $"{halfPoints:F0}";
+                    
+                    switch (_type)
+                    {
+                        case PointsType.Resource:
+                            _timeText.text = string.Format(_localization.ResourcePointsCollect.GetLocalizedString(), points);
+                            break;
+                        case PointsType.Defense:
+                            _timeText.text = string.Format(_localization.DefensePointsCollect.GetLocalizedString(), points);
+                            break;
+                        case PointsType.StarDust:
+                            _timeText.text = string.Format(_localization.StarDustPointsCollect.GetLocalizedString(), points);
+                            break;
+                        case PointsType.ResourcesAndDefense:
+                            _timeText.text = string.Format(_localization.ResourcesAndDefenseCollect.GetLocalizedString(), points, pointsTwo);
+                            break;
+                        case PointsType.DefenseAndResources:
+                            _timeText.text = string.Format(_localization.DefenseAndResourcesCollect.GetLocalizedString(), points, pointsTwo);
+                            break;
+                    }
                 }
             }
         }
 
-        public virtual void SetupGame(Building p_building)
-        {
-            _score = 0;
-            _timeText.text = SelectRightText(p_building.BuildingMainData.Type);
-
-            AudioManager myObject = FindObjectOfType<AudioManager>();
-
-            if (myObject != null)
-            {
-                _audioManager = myObject;
-            }
-
-            _timer = p_building.BuildingMainData.Technology.DataPerTechnologyLevel[p_building.CurrentTechnologyLvl]
-                .MinigameDuration;
-            _efficiency = p_building.BuildingMainData.Technology.DataPerTechnologyLevel[p_building.CurrentTechnologyLvl]
-                .Efficiency;
-            _type = p_building.BuildingMainData.Technology.ProductionType;
-
-            _collectPointsButton.onClick.AddListener(EndMinigame);
-            _collectPointsButton.interactable = false;
-
-            if (p_building.BuildingMainData.Type == BuildingType.GuardTower)
-                _givesResources = false;
-            else
-                _givesResources = true;
-
-            StartCoroutine(StartCountdown());
-        }
-
         private void EndMinigame()
         {
-            if (_givesResources)
-                OnMiniGamePointsCollected?.Invoke(_type, (int)_score);
+            if (_isWatchtower)
+            {
+                _worldManager.RevealStorm(2);
+            }
+            else if (_isAltar)
+            {
+                if (_selectedBlessing != BlessingLevel.Noone)
+                {
+                    _godsManager.BuySpecificBlessing(_selectedGod, _selectedBlessing);
+                }
+            }
             else
-                OnStormReveal?.Invoke(2);
+            {
+                OnMiniGamePointsCollected?.Invoke(_type, (int)_score);
+            }
 
             OnMinigameEnded?.Invoke();
         }
@@ -141,7 +206,7 @@ namespace Minigames
 
         public abstract void StartMinigame();
 
-        private string SelectRightText(BuildingType p_type)
+        private string SelectRightBottomText(BuildingType p_type)
         {
             switch (p_type)
             {
@@ -169,6 +234,39 @@ namespace Minigames
                     return _localization.WorkshopInfo.GetLocalizedString();
                 case BuildingType.Sacrificial_Altar:
                     return _localization.Sacrificial_AltarInfo.GetLocalizedString();
+            }
+
+            return "Enjoy Minigame";
+        }
+
+        private string SelectRightTopText(BuildingType p_type)
+        {
+            switch (p_type)
+            {
+                case BuildingType.Farm:
+                    return _localization.FarmInfoBottom.GetLocalizedString();
+                case BuildingType.GuardTower:
+                    return _localization.GuardTowerInfoBottom.GetLocalizedString();
+                case BuildingType.Woodcutter:
+                    return _localization.WoodcutterInfoBottom.GetLocalizedString();
+                case BuildingType.Alchemical_Hut:
+                    return _localization.Alchemical_HutInfoBottom.GetLocalizedString();
+                case BuildingType.Mining_Shaft:
+                    return _localization.Mining_ShaftInfoBottom.GetLocalizedString();
+                case BuildingType.Ritual_Circle:
+                    return _localization.Ritual_CircleInfoBottom.GetLocalizedString();
+                case BuildingType.Peat_Excavation:
+                    return _localization.Peat_ExcavationInfoBottom.GetLocalizedString();
+                case BuildingType.Charcoal_Pile:
+                    return _localization.Charcoal_PileInfoBottom.GetLocalizedString();
+                case BuildingType.Herbs_Garden:
+                    return _localization.Herbs_GardenInfoBottom.GetLocalizedString();
+                case BuildingType.Apiary:
+                    return _localization.ApiaryInfoBottom.GetLocalizedString();
+                case BuildingType.Workshop:
+                    return _localization.WorkshopInfoBottom.GetLocalizedString();
+                case BuildingType.Sacrificial_Altar:
+                    return _localization.Sacrificial_AltarInfoBottom.GetLocalizedString();
             }
 
             return "Enjoy Minigame";

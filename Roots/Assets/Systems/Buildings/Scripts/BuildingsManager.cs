@@ -10,24 +10,25 @@ namespace Buildings
 {
     public class BuildingsManager : MonoBehaviour
     {
-        [Header("System References")]
-        [SerializeField] private AudioManager _audioManager;
+        [Header("System References")] [SerializeField]
+        private AudioManager _audioManager;
+
         [SerializeField] private GodsManager _godsManager;
         [SerializeField] private WorkersManager _workersManager;
         [SerializeField] private BuildingTransforms[] _placesForBuildings;
         [SerializeField] private BuildingDatabase _buildingsDatabase;
         [SerializeField] private int _startingDestinyPoints = 3000;
 
-        [Header("Icons")]
-        public Sprite DefenseAndResourcesPointsIcon;
+        [Header("Icons")] public Sprite DefenseAndResourcesPointsIcon;
         public Sprite ResourcesAndDefensePointsIcon;
         public Sprite ResourcesPointsIcon;
         public Sprite DefensePointsIcon;
         public Sprite ShardsOfDestinyIcon;
         public Sprite FinishBuildingIcon;
-        
-        [Header("Audio Clips")]
-        [SerializeField] private AudioClip _buildingFinishedEffect;
+
+        [Header("Audio Clips")] [SerializeField]
+        private AudioClip _buildingFinishedEffect;
+
         [SerializeField] private AudioClip CottageSoundEffect;
         [SerializeField] private AudioClip FarmSoundEffect;
         [SerializeField] private AudioClip GuardTowerSoundEffect;
@@ -49,7 +50,7 @@ namespace Buildings
         [HideInInspector] public List<Building> BuildingWithEnabledMinigame;
         [HideInInspector] public List<Building> BuildingsToGatherFrom;
         [HideInInspector] public List<Building> BuildingsWithTechnologyUpgrade;
-        
+
         #region Properties
 
         private CurrentMissionBonus _bonus;
@@ -76,7 +77,8 @@ namespace Buildings
             get
             {
                 var building = GetSpecificBuilding(BuildingType.Cottage);
-                return GetSpecificBuilding(BuildingType.Cottage).BuildingMainData.PerLevelData[building.CurrentLevel].ProductionAmountPerDay;
+                return GetSpecificBuilding(BuildingType.Cottage).BuildingMainData.PerLevelData[building.CurrentLevel]
+                    .ProductionAmountPerDay;
             }
         }
 
@@ -88,7 +90,7 @@ namespace Buildings
         }
 
         public CurrentMissionBonus Bonus => _bonus;
-        
+
         public int CurrentResourcePoints { get; private set; }
 
         public int CurrentDefensePoints { get; private set; }
@@ -106,9 +108,9 @@ namespace Buildings
         public event Action<int, bool> OnResourcePointsChange;
         public event Action<int, bool> OnDefensePointsChange;
         public event Action<int, bool> OnDestinyShardsPointsChange;
-        
+
         public event Action OnTutorialStart;
-        
+
         #endregion
 
         public void StartOnWorld(bool p_willBeLoaded)
@@ -146,9 +148,9 @@ namespace Buildings
                 building.TryToHighlight();
             }
 
-            if (_tutorialStarted) 
+            if (_tutorialStarted)
                 return;
-            
+
             if (ShouldStartTutorial())
             {
                 OnTutorialStart?.Invoke();
@@ -235,7 +237,7 @@ namespace Buildings
                         CompletlyNewBuildings.Add(building);
                     else if (building.CurrentLevel > 1)
                         UpgradedBuildings.Add(building);
-                    else if (building.IsDamaged) 
+                    else if (building.IsDamaged)
                         RepairedBuildings.Add(building);
                 }
             }
@@ -267,7 +269,7 @@ namespace Buildings
 
             if (p_building.CurrentLevel + 1 >= p_building.BuildingMainData.PerLevelData.Length)
                 return false;
-            
+
             if (CurrentResourcePoints < p_building.BuildingMainData.PerLevelData
                     [p_building.CurrentLevel].Requirements.ResourcePoints)
                 return false;
@@ -304,7 +306,7 @@ namespace Buildings
                     newBuilding = newBuildingGo.GetComponent<Building>();
                     newBuilding.SetFirstStage();
                     newBuilding.CurrentLevel = 0;
-                    
+
                     newBuilding.InitiateBuildingSequence();
                 }
 
@@ -317,7 +319,7 @@ namespace Buildings
                 newBuilding.OnBuildingDamaged += HandleBuildingDamaged;
             }
         }
-        
+
         private void OnDestroy()
         {
             foreach (var newBuilding in CurrentBuildings)
@@ -358,7 +360,7 @@ namespace Buildings
         private void PublishBuildingRepaired(Building p_building)
         {
             _audioManager.PlaySpecificSoundEffect(_buildingFinishedEffect);
-            
+
             AssignWorker(p_building, false);
             OnBuildingStateChanged?.Invoke(p_building);
             OnBuildingRepaired?.Invoke(p_building);
@@ -367,7 +369,7 @@ namespace Buildings
         private void PublishBuildingBuiltEvent(Building p_building, bool p_unassignWorkers)
         {
             _audioManager.PlaySpecificSoundEffect(_buildingFinishedEffect);
-            
+
             if (p_building.BuildingMainData.LevelToEnableMinigame == p_building.CurrentLevel)
                 BuildingWithEnabledMinigame.Add(p_building);
 
@@ -392,7 +394,7 @@ namespace Buildings
         private void GatherPoints(BuildingType p_type, PointsType p_pointsType, int p_amount)
         {
             var amount = GetProductionOfBuilding(p_type);
-            
+
             HandlePointsManipulation(p_pointsType, amount, true, true);
             OnPointsGathered?.Invoke(p_pointsType, amount);
         }
@@ -400,10 +402,10 @@ namespace Buildings
         private void HandleBuildingClicked(Building p_building)
         {
             _audioManager.PlaySpecificSoundEffect(GetRightSoundEffect(p_building.BuildingMainData.Type));
-            
+
             OnBuildingClicked?.Invoke(p_building);
         }
-        
+
         public void AssignWorker(Building p_building, bool p_assign)
         {
             if ((p_assign && p_building.HaveWorker) || (!p_assign && !p_building.HaveWorker))
@@ -463,7 +465,7 @@ namespace Buildings
             CurrentResourcePoints = 0;
             CurrentDefensePoints = 0;
         }
-        
+
         public int GetProductionOfBuilding(BuildingType p_building)
         {
             var specificBuilding = CurrentBuildings.Find(x => x.BuildingMainData.Type == p_building);
@@ -474,25 +476,38 @@ namespace Buildings
             {
                 production += production * _godsManager.GetBlessingValue(specificBuilding.BuildingMainData.GodType);
             }
-            
+
             if (_bonus != null && _bonus.Building == p_building)
             {
                 production *= _bonus.BonusInPercents;
             }
-            
+
             return Mathf.RoundToInt(production);
         }
 
-        public BuildingType GetGodsBuilding(GodType p_godName)
+        public BuildingData GetGodsBuilding(GodType p_godName)
         {
             foreach (var building in _buildingsDatabase.allBuildings)
                 if (building.GodType == p_godName)
-                    return building.Type;
+                    return building;
 
             Debug.LogError("Error in gods/building in BuildingsManager: GetGodsBuilding");
-            return BuildingType.Cottage;
+            return null;
         }
-        
+
+        public GodType GetRandomGodInBuildings()
+        {
+            var filteredBuildings = CurrentBuildings.Where(building => building.BuildingMainData.Type != BuildingType.Cottage).ToList();
+
+            if (filteredBuildings.Count == 0)
+            {
+                return GodType.Noone;
+            }
+
+            int randomIndex = Random.Range(0, filteredBuildings.Count);
+            return filteredBuildings[randomIndex].BuildingMainData.GodType;
+        }
+
         public bool CheckIfGodsBuildingIsBuilt(GodType p_godName)
         {
             foreach (var building in CurrentBuildings)
@@ -510,13 +525,13 @@ namespace Buildings
         {
             return _buildingsDatabase.allBuildings.Find(x => x.Type == p_building).Icon;
         }
-        
+
         private bool ShouldStartTutorial()
         {
             return CurrentBuildings.Count == 1 && CurrentBuildings
                 .First(x => x.BuildingMainData.Type == BuildingType.Cottage).IsDamaged;
         }
-        
+
         private AudioClip GetRightSoundEffect(BuildingType p_type)
         {
             switch (p_type)
@@ -553,12 +568,13 @@ namespace Buildings
         }
 
         #region PointsManipulation
+
         public void HandlePointsManipulation(PointsType p_pointsType, int p_pointsNumber, bool p_add,
             bool p_createEffect = false)
         {
             var specificValue = p_pointsNumber;
 
-            if (!p_add) 
+            if (!p_add)
                 specificValue = 0 - p_pointsNumber;
 
             switch (p_pointsType)
@@ -609,8 +625,9 @@ namespace Buildings
 
             OnDestinyShardsPointsChange?.Invoke(p_amountOfResources, p_createEffect);
         }
+
         #endregion
-        
+
         #region Saving
 
         public BuildingManagerSavedData GetSavedData()
@@ -700,7 +717,7 @@ namespace Buildings
                     if (probableBuilding.IsDamaged)
                     {
                         probableBuilding.SetDestroyStage();
-                    }  
+                    }
                     else if (probableBuilding.IsBeeingUpgradedOrBuilded)
                     {
                         if (probableBuilding.CurrentLevel == 0)
@@ -717,7 +734,7 @@ namespace Buildings
                 // postawić jeśli nie istnieje, wczytać dane
                 // jeszcze trzeba zapisać questy
             }
-            
+
             OnResourcePointsChange?.Invoke(0, false);
             OnDestinyShardsPointsChange?.Invoke(0, false);
             OnDefensePointsChange?.Invoke(0, false);
@@ -726,7 +743,7 @@ namespace Buildings
         #endregion
 
         private float[] _bonuses = new float[] { 1.05f, 1.1f, 1.15f, 1.2f, 1.25f, 1.3f, 1.35f, 1.4f, 1.5f };
-        
+
         public void TryToActivateBonus()
         {
             var index = Random.Range(0, CurrentBuildings.Count);
@@ -739,18 +756,18 @@ namespace Buildings
                     index = Random.Range(0, CurrentBuildings.Count);
                     continue;
                 }
-                
+
                 _bonus = new CurrentMissionBonus
                 {
                     Building = BuildingType.Farm,
                     BonusInPercents = bonus
                 };
-                
+
                 break;
             }
         }
     }
-    
+
     [Serializable]
     public class CurrentMissionBonus
     {

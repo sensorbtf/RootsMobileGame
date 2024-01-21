@@ -13,4 +13,16 @@ MonoBehaviour:
   m_Name: Zirnitra_God_SO
   m_EditorClassIdentifier: 
   GodName: 4
+  GodLocalizedName:
+    m_TableReference:
+      m_TableCollectionName: GUID:aba472eb520d0e7489bb7a4fc9d048d9
+    m_TableEntryReference:
+      m_KeyId: 11350742835202
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   GodImage: {fileID: 21300000, guid: 0f618a0910c5bb2429ebe2f26fe26f92, type: 3}
+  references:
+    version: 2
+    RefIds: []

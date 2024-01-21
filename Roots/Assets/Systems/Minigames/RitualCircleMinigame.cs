@@ -13,15 +13,12 @@ namespace Minigames
 
         private new void Update()
         {
-            _timeText.text = $"Achieve {_timer} points";
-
             if (_score >= _timer) // needed points
             {
                 _timer = 0;
                 _isGameActive = false;
                 _collectPointsButton.interactable = true;
                 _button.interactable = false;
-                _timeText.text = $"Collect: {_score:F0} resource points";
             }
         }
 
@@ -46,7 +43,6 @@ namespace Minigames
             _score += realEfficiency;
             
             StartMinigame();
-            _scoreText.text = $"Score: {_score:F0}";
         }
 
         public override void StartMinigame()

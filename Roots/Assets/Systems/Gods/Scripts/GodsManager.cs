@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Localization;
 
 namespace Gods
 {
@@ -14,12 +15,17 @@ namespace Gods
         [SerializeField] private int _smallBlessingPrice = 5;
         [SerializeField] private int _mediumBlessingPrice = 10;
         [SerializeField] private int _bigBlessingPrice = 20;
-        
+
         public Color NoEffect;
         public Color SmallEffect;
         public Color MediumEffect;
         public Color BigEffect;
-        
+
+        public LocalizedString NoneBlessing;
+        public LocalizedString SmallBlessing;
+        public LocalizedString MediumBlessing;
+        public LocalizedString BigBlessing;
+
         private Dictionary<BlessingLevel, float> _blessingValues;
 
         private List<Blessing> _playerStoredBlessings;
@@ -27,10 +33,10 @@ namespace Gods
         public Dictionary<GodDataSO, BlessingLevel> PlayerCurrentBlessings { get; private set; }
 
         public Dictionary<BlessingLevel, int> BlessingPrices { get; private set; }
-        
+
         public void CustomStart(bool p_willBeLoaded)
         {
-            _playerStoredBlessings = new List<Blessing>(); 
+            _playerStoredBlessings = new List<Blessing>();
             PlayerCurrentBlessings = new Dictionary<GodDataSO, BlessingLevel>();
 
             _blessingValues = new Dictionary<BlessingLevel, float> // TODO: LOAD/SAVE
@@ -51,7 +57,7 @@ namespace Gods
             foreach (var god in _database.AllGods)
             {
                 PlayerCurrentBlessings.Add(god, BlessingLevel.Noone);
-                
+
                 if (p_willBeLoaded)
                     continue;
 
@@ -68,6 +74,28 @@ namespace Gods
             }
         }
 
+        public string GetGodName(GodType p_godType)
+        {
+            return _database.AllGods.Find(x => x.GodName == p_godType).GodLocalizedName.GetLocalizedString();
+        }
+        
+        public string GetBlessingName(BlessingLevel p_blessingLevel)
+        {
+            switch (p_blessingLevel)
+            {
+                case BlessingLevel.Noone:
+                    return NoneBlessing.GetLocalizedString();
+                case BlessingLevel.Small:
+                    return SmallBlessing.GetLocalizedString();
+                case BlessingLevel.Medium:
+                    return MediumBlessing.GetLocalizedString();
+                case BlessingLevel.Big:
+                    return BigBlessing.GetLocalizedString();
+            }
+            
+            return NoneBlessing.GetLocalizedString();
+        }
+
         public float GetBlessingValue(GodType p_godType)
         {
             foreach (var blessing in PlayerCurrentBlessings)
@@ -76,7 +104,7 @@ namespace Gods
 
             return 0f;
         }
-        
+
         public bool IsAnyBlessingActivated(GodType p_godType)
         {
             foreach (var blessing in PlayerCurrentBlessings)
@@ -102,7 +130,7 @@ namespace Gods
 
         public void ResetBlessingOnNewDayStart()
         {
-            foreach (var blessing in PlayerCurrentBlessings.ToList()) 
+            foreach (var blessing in PlayerCurrentBlessings.ToList())
                 PlayerCurrentBlessings[blessing.Key] = BlessingLevel.Noone;
         }
 
@@ -197,8 +225,9 @@ namespace Gods
 
             return null;
         }
-        
+
         #region Saving
+
         public GodsManagerSavedData GetSavedData()
         {
             var blessingLevels = new List<BlessingPerGod>();
@@ -208,28 +237,28 @@ namespace Gods
                 {
                     GodType = blessings.Key.GodName,
                     BlessingLevel = blessings.Value,
-                }); 
+                });
             }
-            
+
             return new GodsManagerSavedData
             {
                 SavedBlessings = _playerStoredBlessings.ToArray(),
                 BlessingsLevelsByType = blessingLevels.ToArray(),
             };
-        } 
+        }
 
         public void LoadSavedData(GodsManagerSavedData p_data)
         {
-            _playerStoredBlessings = new List<Blessing>(); 
+            _playerStoredBlessings = new List<Blessing>();
             _playerStoredBlessings.AddRange(p_data.SavedBlessings);
 
             foreach (var blessingLevel in p_data.BlessingsLevelsByType)
             {
                 foreach (var gods in PlayerCurrentBlessings)
                 {
-                    if (gods.Key.GodName != blessingLevel.GodType) 
+                    if (gods.Key.GodName != blessingLevel.GodType)
                         continue;
-                    
+
                     PlayerCurrentBlessings[gods.Key] = blessingLevel.BlessingLevel;
                     break;
                 }
@@ -237,7 +266,6 @@ namespace Gods
         }
 
         #endregion
-        
     }
 
     [Serializable]
@@ -246,21 +274,21 @@ namespace Gods
         public BlessingLevelAmount[] AmountByType;
         public GodType Type;
     }
-    
+
     [Serializable]
     public class BlessingLevelAmount
     {
         public int Amount;
         public BlessingLevel TypeLevel;
     }
-    
+
     [Serializable]
     public struct GodsManagerSavedData
     {
         public Blessing[] SavedBlessings;
         public BlessingPerGod[] BlessingsLevelsByType;
     }
-    
+
     [Serializable]
     public struct BlessingPerGod
     {

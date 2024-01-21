@@ -210,8 +210,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 10427995221979136
-    m_Localized: Grow your village.\n Gather resources \n Complete missions \n Prepare
-      for storm \n That's your duty
+    m_Localized: Grow your village. Gather resources. Complete missions. Prepare
+      for storm. That's your duty
     m_Metadata:
       m_Items: []
   references:
