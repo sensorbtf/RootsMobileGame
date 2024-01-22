@@ -71,9 +71,12 @@ public class InfoPanel : MonoBehaviour
         gameObject.SetActive(p_turnOn);
         GameplayHud.BlockHud = p_turnOn;
         CameraController.IsUiOpen = p_turnOn;
-        
-        _resourcesInfoGo.SetActive(false);
-        _textInfoGo.SetActive(false);
+
+        if (!p_turnOn)
+        {
+            _resourcesInfoGo.SetActive(false);
+            _textInfoGo.SetActive(false);
+        }
     }
     
     private void OnLocaleChanged(Locale p_locale)

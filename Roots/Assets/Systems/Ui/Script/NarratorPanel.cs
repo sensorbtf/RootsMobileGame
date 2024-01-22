@@ -221,7 +221,7 @@ namespace InGameUi
 
         private string GetCurrentText()
         {
-            if (_narratorManager.CurrentTutorialStep == TutorialStep.Quests_End && _buildingsManager.Bonus != null)
+            if (_narratorManager.CurrentTutorialStep == TutorialStep.Quests_End && _buildingsManager.Bonus != null && _buildingsManager.Bonus.Building != BuildingType.Cottage)
             {
                 var text = TutorialTexts.Last().Text[0].GetLocalizedString();
                 return string.Format(text, _buildingsManager.GetSpecificBuilding(_buildingsManager.Bonus.Building)

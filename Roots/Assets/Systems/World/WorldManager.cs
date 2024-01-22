@@ -47,7 +47,7 @@ namespace World
         public event Action OnQuestsProgress;
         public event Action OnNewMissionStart;
         public event Action<int> OnStormCheck;
-        public event Action<List<BuildingType>, bool> OnStormCame;
+        public event Action<List<BuildingData>, bool> OnStormCame;
 
         public void CustomStart(bool p_willBeLoaded)
         {
@@ -145,7 +145,7 @@ namespace World
 
         public void HandleEndMissionConsequences(bool p_lowerDamages, bool p_haveWon)
         {
-            var damagedBuildings = new List<BuildingType>();
+            var damagedBuildings = new List<BuildingData>();
 
             foreach (var building in _buildingsManager.CurrentBuildings)
             {
@@ -157,7 +157,7 @@ namespace World
                 if (random == 1) // need better evaluation
                 {
                     building.IsDamaged = true;
-                    damagedBuildings.Add(building.BuildingMainData.Type);
+                    damagedBuildings.Add(building.BuildingMainData);
                 }
             }
 

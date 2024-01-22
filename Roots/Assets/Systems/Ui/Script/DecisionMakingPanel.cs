@@ -6,17 +6,41 @@ using GameManager;
 using GeneralSystems;
 using Narrator;
 using UnityEngine;
+using UnityEngine.Localization;
 using World;
 
 namespace InGameUi
 {
     public class DecisionMakingPanel : MonoBehaviour
     {
+        [Header("System Refs")]
         [SerializeField] private AudioManager _audioManager;
         [SerializeField] private NarratorManager _narratorManager;
         [SerializeField] private MainGameManager _gameManager;
         [SerializeField] private WorldManager _worldManager;
         [SerializeField] private AdsForRewards _rewardingAdsManager;
+
+        [Header("Localization")] 
+        [SerializeField] private LocalizedString _advertisement;
+        [SerializeField] private LocalizedString _advertInfo;
+        [SerializeField] private LocalizedString _advertWatch;
+        [SerializeField] private LocalizedString _advertBack;
+        [SerializeField] private LocalizedString _welcomeBack;
+        [SerializeField] private LocalizedString _abstenceText;
+        [SerializeField] private LocalizedString _collectStarDust;
+        [SerializeField] private LocalizedString _continue;
+        [SerializeField] private LocalizedString _destroyedBuildings;
+        [SerializeField] private LocalizedString _newMission;
+        [SerializeField] private LocalizedString _tryAgain;
+        [SerializeField] private LocalizedString _leftSettlementUnprotected;
+        [SerializeField] private LocalizedString _monstersCameAndDestroyed;
+        [SerializeField] private LocalizedString _starDustLoweringDamage;
+        [SerializeField] private LocalizedString _enoughResourcesGathered;
+        [SerializeField] private LocalizedString _leavingEalierText;
+        [SerializeField] private LocalizedString _leavingEalierTextDesc;
+        [SerializeField] private LocalizedString _leavingEalierConfirm;
+        [SerializeField] private LocalizedString _leavingEalierRefuse;
+        
         private DecisionMakingRefs _uiReferences;
 
         private void Start()
@@ -41,15 +65,15 @@ namespace InGameUi
         public void AdvertisementAlert()
         {
             HandleTurnOnOff(true);
-            
-            _uiReferences.Title.text = "Advertisement";
-            _uiReferences.Description.text = $"Do you want to Watch advertisement to get free Start Dust?";
+
+            _uiReferences.Title.text = _advertisement.GetLocalizedString();
+            _uiReferences.Description.text = _advertInfo.GetLocalizedString();
 
             _uiReferences.NoButtonGo.gameObject.SetActive(true);
             _uiReferences.YesButtonGo.gameObject.SetActive(true);
             
-            _uiReferences.YesButtonText.text = "Watch";
-            _uiReferences.NoButtonText.text = "Back";
+            _uiReferences.YesButtonText.text = _advertWatch.GetLocalizedString();
+            _uiReferences.NoButtonText.text = _advertBack.GetLocalizedString();
 
             _uiReferences.YesButton.onClick.AddListener(delegate
             {
@@ -68,10 +92,10 @@ namespace InGameUi
         {
             HandleTurnOnOff(true);
             
-            _uiReferences.Title.text = "Welcome back";
-            _uiReferences.Description.text =
-                $"Absence time: {_gameManager.HoursOfAbstence} hours. You were granted with {_gameManager.FreeSkipsGotten}/{_gameManager.MaxFreeSkipsAmount} free skips \n Now you have {_gameManager.FreeSkipsLeft} free skips left";
-
+            _uiReferences.Title.text = _welcomeBack.GetLocalizedString();
+            _uiReferences.Description.text = string.Format(_abstenceText.GetLocalizedString(), _gameManager.HoursOfAbstence,
+                _gameManager.FreeSkipsGotten, _gameManager.FreeSkipsLeft, _gameManager.MaxFreeSkipsAmount);
+            
             _uiReferences.NoButtonGo.gameObject.SetActive(false);
             _uiReferences.YesButtonGo.gameObject.SetActive(true);
 
@@ -82,7 +106,8 @@ namespace InGameUi
                     _audioManager.PlayButtonSoundEffect(_uiReferences.YesButton.interactable);
                     HandleDestinyShardsGift();
                 });
-                _uiReferences.YesButtonText.text = $"Collect {_gameManager.GetDailyReward} Destiny Shards";
+
+                _uiReferences.YesButtonText.text = string.Format(_collectStarDust.GetLocalizedString(), _gameManager.GetDailyReward);
             }
             else
             {
@@ -91,15 +116,15 @@ namespace InGameUi
                     _audioManager.PlayButtonSoundEffect(_uiReferences.YesButton.interactable);
                     HandleTurnOnOff(false);
                 });
-                _uiReferences.YesButtonText.text = "Continue";
+                _uiReferences.YesButtonText.text = _continue.GetLocalizedString();
             }
         }
 
-        private void ViewStormConsequencesPanel(List<BuildingType> p_destroyedBuildings, bool p_won)
+        private void ViewStormConsequencesPanel(List<BuildingData> p_destroyedBuildings, bool p_won)
         {
             HandleTurnOnOff(true);
             
-            _uiReferences.Title.text = "Destroyed Buildings";
+            _uiReferences.Title.text = _destroyedBuildings.GetLocalizedString();
             _uiReferences.Description.text = "";
 
             foreach (var buildingType in p_destroyedBuildings) 
@@ -107,7 +132,7 @@ namespace InGameUi
 
             var hasCompletedMission = p_won && _worldManager.AreResourcesEnough();
 
-            _uiReferences.YesButtonText.text = hasCompletedMission ? "Start New Mission" : "Try Again";
+            _uiReferences.YesButtonText.text = hasCompletedMission ? _newMission.GetLocalizedString() : _tryAgain.GetLocalizedString();
             _uiReferences.YesButton.onClick.AddListener(delegate
             {
                 _audioManager.PlayButtonSoundEffect(_uiReferences.YesButton.interactable);
@@ -125,9 +150,8 @@ namespace InGameUi
         {
             HandleTurnOnOff(true);
 
-            _uiReferences.Title.text = "You left your settlement unprotected";
-            _uiReferences.Description.text =
-                "As usual, monsters came with storm and started to demolish everything on their way";
+            _uiReferences.Title.text = _leftSettlementUnprotected.GetLocalizedString();
+            _uiReferences.Description.text = _monstersCameAndDestroyed.GetLocalizedString();
             
             _uiReferences.NoButtonGo.gameObject.SetActive(true);
             _uiReferences.YesButtonGo.gameObject.SetActive(true);
@@ -137,21 +161,21 @@ namespace InGameUi
                 _audioManager.PlayButtonSoundEffect(_uiReferences.YesButton.interactable);
                 HandleLeaveEffects(true);
             });
-            _uiReferences.YesButtonText.text = "Continue";
+            _uiReferences.YesButtonText.text = _continue.GetLocalizedString();
             _uiReferences.NoButton.onClick.AddListener(delegate
             {
                 _audioManager.PlayButtonSoundEffect(_uiReferences.NoButton.interactable);
                 HandleLeaveEffects(false);
             });
-            _uiReferences.NoButtonText.text = "Offer Destiny Shards for least damages";
+            _uiReferences.NoButtonText.text = _starDustLoweringDamage.GetLocalizedString();
         }
 
         private void ViewResourcesMetPanel()
         {
             HandleTurnOnOff(true);
 
-            _uiReferences.Title.text = "You gathered enough resources";
-            _uiReferences.Description.text = "Do you want to leave earlier?";
+            _uiReferences.Title.text = _enoughResourcesGathered.GetLocalizedString();
+            _uiReferences.Description.text = _leavingEalierTextDesc.GetLocalizedString();
 
             _uiReferences.NoButtonGo.gameObject.SetActive(true);
             _uiReferences.YesButtonGo.gameObject.SetActive(true);
@@ -161,13 +185,13 @@ namespace InGameUi
                 _audioManager.PlayButtonSoundEffect(_uiReferences.YesButton.interactable);
                 HandleLeaveDecision(true);
             });
-            _uiReferences.YesButtonText.text = "Yes, leave everything for monsters";
+            _uiReferences.YesButtonText.text = _leavingEalierConfirm.GetLocalizedString();
             _uiReferences.NoButton.onClick.AddListener(delegate
             {
                 _audioManager.PlayButtonSoundEffect(_uiReferences.NoButton.interactable);
                 HandleLeaveDecision(false);
             });
-            _uiReferences.NoButtonText.text = "No, keep working.";
+            _uiReferences.NoButtonText.text = _leavingEalierRefuse.GetLocalizedString();
         }
 
         private void HandleLeaveDecision(bool p_wantToLeave)
@@ -205,7 +229,7 @@ namespace InGameUi
                 _audioManager.PlayButtonSoundEffect(_uiReferences.YesButton.interactable);
                 HandleTurnOnOff(false);
             });
-            _uiReferences.YesButtonText.text = "Continue";
+            _uiReferences.YesButtonText.text = _continue.GetLocalizedString();
         }
 
         private void HandleTurnOnOff(bool p_turnOffPanel)
