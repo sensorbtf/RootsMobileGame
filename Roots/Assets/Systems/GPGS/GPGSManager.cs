@@ -40,7 +40,6 @@ namespace GooglePlayServices
             else
             {
                 _infoText.text = $"Failed";
-                // local save?
             }
         }
 
