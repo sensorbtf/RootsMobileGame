@@ -67,6 +67,74 @@ MonoBehaviour:
     m_Key: bonus_info_panel_title
     m_Metadata:
       m_Items: []
+  - m_Id: 6898489438937088
+    m_Key: decision_advertisement
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6898489451520000
+    m_Key: decision_advertInfo
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6898489451520001
+    m_Key: decision_advertWatch
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6898489451520002
+    m_Key: decision_welcomeBack
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6898489451520003
+    m_Key: decision_abstenceText
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6898489451520004
+    m_Key: decision_collectStarDust
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6898489451520005
+    m_Key: decision_continue
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6898489451520006
+    m_Key: decision_destroyedBuildings
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6898489451520007
+    m_Key: decision_newMission
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6898489451520008
+    m_Key: decision_tryAgain
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6898489451520009
+    m_Key: decision_leftSettlementUnprotected
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6898489451520010
+    m_Key: decision_monstersCameAndDestroyed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6898489451520011
+    m_Key: decision_starDustLoweringDamage
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6898489451520012
+    m_Key: decision_enoughResourcesGathered
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6898489451520013
+    m_Key: decision_leavingEalierTextDesc
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6898489451520014
+    m_Key: decision_leavingEalierConfirm
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6898489451520015
+    m_Key: decision_leavingEalierRefuse
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

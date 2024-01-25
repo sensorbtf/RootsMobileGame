@@ -1657,7 +1657,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 46.3
+  m_fontSize: 52.8
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -5906,7 +5906,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 48.55
+  m_fontSize: 52.8
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -6375,7 +6375,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 48.5
+  m_fontSize: 72
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -8328,8 +8328,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5943958}
   m_AnchorMax: {x: 0, y: 0.80200005}
-  m_AnchoredPosition: {x: -10.041016, y: 6.4599}
-  m_SizeDelta: {x: 20.0817, y: -374.09}
+  m_AnchoredPosition: {x: -10.041016, y: 9.582214}
+  m_SizeDelta: {x: 1, y: -397.3644}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &824526944
 GameObject:
@@ -8363,8 +8363,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5943958}
   m_AnchorMax: {x: 0, y: 0.80200005}
-  m_AnchoredPosition: {x: -599.30005, y: 6.460022}
-  m_SizeDelta: {x: 18.599, y: -379.4998}
+  m_AnchoredPosition: {x: -599.30005, y: 9.582214}
+  m_SizeDelta: {x: 1, y: -397.3644}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &878255198
 GameObject:
@@ -8895,6 +8895,180 @@ MonoBehaviour:
   _gameManager: {fileID: 1423804878}
   _worldManager: {fileID: 1218957329}
   _rewardingAdsManager: {fileID: 911663803}
+  _advertisement:
+    m_TableReference:
+      m_TableCollectionName: GUID:e95e1cf7a5a57a24db940eccf802409f
+    m_TableEntryReference:
+      m_KeyId: 6898489438937088
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  _advertInfo:
+    m_TableReference:
+      m_TableCollectionName: GUID:e95e1cf7a5a57a24db940eccf802409f
+    m_TableEntryReference:
+      m_KeyId: 6898489451520000
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  _advertWatch:
+    m_TableReference:
+      m_TableCollectionName: GUID:e95e1cf7a5a57a24db940eccf802409f
+    m_TableEntryReference:
+      m_KeyId: 6898489451520001
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  _advertBack:
+    m_TableReference:
+      m_TableCollectionName: GUID:e95e1cf7a5a57a24db940eccf802409f
+    m_TableEntryReference:
+      m_KeyId: 3847782588416
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  _welcomeBack:
+    m_TableReference:
+      m_TableCollectionName: GUID:e95e1cf7a5a57a24db940eccf802409f
+    m_TableEntryReference:
+      m_KeyId: 6898489451520002
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  _abstenceText:
+    m_TableReference:
+      m_TableCollectionName: GUID:e95e1cf7a5a57a24db940eccf802409f
+    m_TableEntryReference:
+      m_KeyId: 6898489451520003
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  _collectStarDust:
+    m_TableReference:
+      m_TableCollectionName: GUID:e95e1cf7a5a57a24db940eccf802409f
+    m_TableEntryReference:
+      m_KeyId: 6898489451520004
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  _continue:
+    m_TableReference:
+      m_TableCollectionName: GUID:e95e1cf7a5a57a24db940eccf802409f
+    m_TableEntryReference:
+      m_KeyId: 6898489451520005
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  _destroyedBuildings:
+    m_TableReference:
+      m_TableCollectionName: GUID:e95e1cf7a5a57a24db940eccf802409f
+    m_TableEntryReference:
+      m_KeyId: 6898489451520006
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  _newMission:
+    m_TableReference:
+      m_TableCollectionName: GUID:e95e1cf7a5a57a24db940eccf802409f
+    m_TableEntryReference:
+      m_KeyId: 6898489451520007
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  _tryAgain:
+    m_TableReference:
+      m_TableCollectionName: GUID:e95e1cf7a5a57a24db940eccf802409f
+    m_TableEntryReference:
+      m_KeyId: 6898489451520008
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  _leftSettlementUnprotected:
+    m_TableReference:
+      m_TableCollectionName: GUID:e95e1cf7a5a57a24db940eccf802409f
+    m_TableEntryReference:
+      m_KeyId: 6898489451520009
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  _monstersCameAndDestroyed:
+    m_TableReference:
+      m_TableCollectionName: GUID:e95e1cf7a5a57a24db940eccf802409f
+    m_TableEntryReference:
+      m_KeyId: 6898489451520010
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  _starDustLoweringDamage:
+    m_TableReference:
+      m_TableCollectionName: GUID:e95e1cf7a5a57a24db940eccf802409f
+    m_TableEntryReference:
+      m_KeyId: 6898489451520011
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  _enoughResourcesGathered:
+    m_TableReference:
+      m_TableCollectionName: GUID:e95e1cf7a5a57a24db940eccf802409f
+    m_TableEntryReference:
+      m_KeyId: 6898489451520012
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  _leavingEalierText:
+    m_TableReference:
+      m_TableCollectionName: GUID:e95e1cf7a5a57a24db940eccf802409f
+    m_TableEntryReference:
+      m_KeyId: 6898489451520013
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  _leavingEalierTextDesc:
+    m_TableReference:
+      m_TableCollectionName: GUID:e95e1cf7a5a57a24db940eccf802409f
+    m_TableEntryReference:
+      m_KeyId: 6898489451520013
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  _leavingEalierConfirm:
+    m_TableReference:
+      m_TableCollectionName: GUID:e95e1cf7a5a57a24db940eccf802409f
+    m_TableEntryReference:
+      m_KeyId: 6898489451520014
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  _leavingEalierRefuse:
+    m_TableReference:
+      m_TableCollectionName: GUID:e95e1cf7a5a57a24db940eccf802409f
+    m_TableEntryReference:
+      m_KeyId: 6898489451520015
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &920443027
 GameObject:
   m_ObjectHideFlags: 0
@@ -14694,7 +14868,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 59.2
+  m_fontSize: 64.4
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -92342,7 +92516,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 41.85
+  m_fontSize: 55.65
   m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 1

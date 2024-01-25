@@ -72,6 +72,78 @@ MonoBehaviour:
     m_Localized: Misje i burze
     m_Metadata:
       m_Items: []
+  - m_Id: 6898489438937088
+    m_Localized: Reklama
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6898489451520000
+    m_Localized: "Chcesz obejrze\u0107 reklam\u0119 wzamian za dodatkowy Gwiezdny
+      Py\u0142?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6898489451520001
+    m_Localized: Obejrzyj
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6898489451520002
+    m_Localized: Witaj Ponownie!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6898489451520003
+    m_Localized: "Czas nieobecno\u015Bci: {0} godzin \\n Otrzyma\u0142e\u015B {1}
+      darmowych przyspiesze\u0144 czasu \\n Teraz pozosta\u0142o {2}/{3} darmowych
+      przyspiesze\u0144 czasu"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6898489451520004
+    m_Localized: "Zbierz {0} Gwiezdnego Py\u0142u"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6898489451520005
+    m_Localized: Kontynuuj
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6898489451520006
+    m_Localized: Zniszczone Budynki
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6898489451520007
+    m_Localized: "Rozpocznij Now\u0105 Misj\u0119"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6898489451520008
+    m_Localized: "Spr\xF3buj Ponownie"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6898489451520009
+    m_Localized: "Zostawi\u0142e\u015B swoj\u0105 wiosk\u0119 ca\u0142kowicie bezbronn\u0105"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6898489451520010
+    m_Localized: "Jak zwykle, potwory nadci\u0105gn\u0119\u0142y wraz z burz\u0105
+      i zacz\u0119\u0142y niszczy\u0107 wszystko na swojej drodze"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6898489451520011
+    m_Localized: "Zaoferuj Od\u0142amki Przeznaczenia za jak najmniejsze szkody"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6898489451520012
+    m_Localized: "Zebra\u0142e\u015B wystarczaj\u0105c\u0105 ilo\u015B\u0107 zasob\xF3w"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6898489451520013
+    m_Localized: "Czy chcesz wyj\u015B\u0107 wcze\u015Bniej?"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6898489451520014
+    m_Localized: Tak, zostaw wszystko potworom
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6898489451520015
+    m_Localized: Nie, pracuj dalej.
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

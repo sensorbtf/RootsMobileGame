@@ -72,6 +72,76 @@ MonoBehaviour:
     m_Localized: Storms and missions
     m_Metadata:
       m_Items: []
+  - m_Id: 6898489438937088
+    m_Localized: Advertisement
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6898489451520000
+    m_Localized: Do you want to Watch advertisement to get free Start Dust?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6898489451520001
+    m_Localized: Watch
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6898489451520002
+    m_Localized: Welcome Back!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6898489451520003
+    m_Localized: 'Absence time: {0} hours \n You were granted with {1} free skips
+      \n Now you have {2}/{3} free skips left'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6898489451520004
+    m_Localized: Collect {0} Star Dust
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6898489451520005
+    m_Localized: Continue
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6898489451520006
+    m_Localized: Destroyed Buildings
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6898489451520007
+    m_Localized: Start New Mission
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6898489451520008
+    m_Localized: Try Again
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6898489451520009
+    m_Localized: You left your settlement unprotected
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6898489451520010
+    m_Localized: As usual, monsters came with storm and started to demolish everything
+      on their way
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6898489451520011
+    m_Localized: Offer Destiny Shards for least damages
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6898489451520012
+    m_Localized: You gathered enough resources
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6898489451520013
+    m_Localized: Do you want to leave earlier?
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6898489451520014
+    m_Localized: Yes, leave everything for monsters
+    m_Metadata:
+      m_Items: []
+  - m_Id: 6898489451520015
+    m_Localized: No, keep working.
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
