@@ -38,7 +38,7 @@ MonoBehaviour:
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
-  BaseCottageLevelNeeded: 5
+  BaseCottageLevelNeeded: 4
   LevelToEnableMinigame: 0
   PerLevelData:
   - Requirements:
@@ -56,7 +56,7 @@ MonoBehaviour:
       DaysToComplete: 3
     ProductionType: 1
     ProductionAmountPerDay: 30
-  Technology: {fileID: 11400000, guid: 17b384da89227fc4e989281ece026c0d, type: 2}
+  Technology: {fileID: 11400000, guid: 1dfcf68616bf0be47a815d95f75f4070, type: 2}
   references:
     version: 2
     RefIds: []

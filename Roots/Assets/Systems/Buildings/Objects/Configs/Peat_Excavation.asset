@@ -38,7 +38,7 @@ MonoBehaviour:
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
-  BaseCottageLevelNeeded: 5
+  BaseCottageLevelNeeded: 3
   LevelToEnableMinigame: 0
   PerLevelData:
   - Requirements:

@@ -26,8 +26,6 @@ namespace Minigames
             base.SetupGame(p_building);
 
             _score = 0;
-            _buttonToMash.gameObject.GetComponent<Image>().sprite = 
-                p_building.BuildingMainData.Technology.SpriteOfObject;
             _buttonToMash.onClick.AddListener(AddScore);
             _buttonToMash.interactable = false;
             _collectPointsButton.interactable = false;

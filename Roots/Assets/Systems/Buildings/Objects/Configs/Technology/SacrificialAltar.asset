@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4462eaa3d7574021977e5437be530cbb, type: 3}
   m_Name: SacrificialAltar
   m_EditorClassIdentifier: 
-  ProductionType: 4
+  ProductionType: 0
   DataPerTechnologyLevel:
   - RequiredBuildingLevel: 1
     OtherBuildingsRequirements:

@@ -8,7 +8,6 @@ namespace Buildings
     {
         public PointsType ProductionType;
         public TechnologyDataPerLevel[] DataPerTechnologyLevel;
-        public Sprite SpriteOfObject;
     }
 
     [Serializable]

@@ -56,7 +56,7 @@ MonoBehaviour:
       DaysToComplete: 3
     ProductionType: 2
     ProductionAmountPerDay: 15
-  Technology: {fileID: 11400000, guid: 60df8f1c2368c674faf18d34c26b7773, type: 2}
+  Technology: {fileID: 11400000, guid: 15154239ed9389e428eb2bd7f3761f4d, type: 2}
   references:
     version: 2
     RefIds: []
