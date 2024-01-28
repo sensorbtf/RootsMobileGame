@@ -239,6 +239,7 @@ namespace Saving
         public int LoginDay;
         public int FreeDaysSkipAmount;
         public int CurrentPlayerState;
+        public int MinigamesPlayed;
         public string TotalTimePlayed;
         public DateTime TimeOfWorkersSet;
         public string TimeOfWorkersSetISO8601; 

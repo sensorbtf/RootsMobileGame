@@ -1,3 +1,4 @@
+using System.Globalization;
 using AudioSystem;
 using GameManager;
 using GeneralSystems;
@@ -27,6 +28,8 @@ namespace InGameUi
         
         [SerializeField] private LocalizedString _resetWorld;
         [SerializeField] private LocalizedString _resetWorldConfirm;
+        
+        private bool _enableReset;
 
         private void Start()
         {
@@ -60,7 +63,15 @@ namespace InGameUi
             });
             
             ChangeResetButton(false);
-            ChangeLanguage((Languages)PlayerPrefs.GetInt("Setting_Language", 0));
+
+            if (PlayerPrefs.GetInt("Setting_Language", 0) == 0)
+            {
+                ChangeLanguage(DetectLanguage());
+            }
+            else
+            {
+                ChangeLanguage((Languages)PlayerPrefs.GetInt("Setting_Language", 0));
+            }
         }
         
         private void OnDestroy()
@@ -84,7 +95,6 @@ namespace InGameUi
             gameObject.SetActive(false);
         }
 
-        private bool _enableReset;
         
         private void ChangeResetButton(bool p_enableReset)
         {
@@ -158,7 +168,24 @@ namespace InGameUi
             _gameManager.ChangeLocale(p_language);
             PlayerPrefs.SetInt("Setting_Language", (int)p_language);
         }
-        
+
+        private Languages DetectLanguage()
+        {
+            CultureInfo cultureInfo = CultureInfo.CurrentCulture;
+            string isoLanguageName = cultureInfo.TwoLetterISOLanguageName;
+
+            switch (isoLanguageName)
+            {
+                case "en":
+                    return Languages.English;
+                case "pl":
+                    return Languages.Polish;
+                // Add more cases as needed for supported languages
+                default:
+                    return Languages.English; // Default language if not supported
+            }
+        }
+
         private void OnLocaleChanged(Locale p_locale)
         {
             if (_enableReset)

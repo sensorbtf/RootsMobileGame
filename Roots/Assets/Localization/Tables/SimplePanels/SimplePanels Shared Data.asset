@@ -31,6 +31,18 @@ MonoBehaviour:
     m_Key: resources_info_panel_title
     m_Metadata:
       m_Items: []
+  - m_Id: 8564960858644480
+    m_Key: workers_text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8564960879616000
+    m_Key: assign_worker_text
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8564960879616001
+    m_Key: unassign_worker_text
+    m_Metadata:
+      m_Items: []
   - m_Id: 3104967228383232
     m_Key: "settings_panel_title\t"
     m_Metadata:
@@ -133,6 +145,198 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 6898489451520015
     m_Key: decision_leavingEalierRefuse
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8564960883810304
+    m_Key: gathering_production_title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8564960883810305
+    m_Key: defense_production_title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8564960883810306
+    m_Key: resource_defense_production
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8564960883810307
+    m_Key: resource_production
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8564960883810308
+    m_Key: defense_production
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8564960883810309
+    m_Key: defense_resource_production
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8571842683904000
+    m_Key: start_building_buildingpanel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8571842683904001
+    m_Key: max_level_buildingpanel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8571842683904002
+    m_Key: _inProgress_buildingpanel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8571842683904003
+    m_Key: _cancel_buildingpanel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8571842683904004
+    m_Key: _cancelled_buildingpanel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8571842683904005
+    m_Key: _repair_buildingpanel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8571842683904006
+    m_Key: _stopRepair_buildingpanel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8571842683904007
+    m_Key: _daysToComplete_buildingpanel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8571842683904008
+    m_Key: _build_buildingpanel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8571842688098304
+    m_Key: _restartWork_buildingpanel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8576033934450688
+    m_Key: _panelTitle
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8576033934450689
+    m_Key: _buildings
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8576033934450690
+    m_Key: _willBeBuild
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8576033934450691
+    m_Key: _endInXDays
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8576033934450692
+    m_Key: _paused
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8576033934450693
+    m_Key: _willBePaused
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8576033934450694
+    m_Key: _willBeRepaired
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8576033934450695
+    m_Key: _willBeResumed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8576033934450696
+    m_Key: _workerAssigned
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8576033934450697
+    m_Key: _startDay
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8576033934450698
+    m_Key: _setWorkers
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8588383118860288
+    m_Key: _rankUpSummary
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8588383118860289
+    m_Key: _buildingsUnlocked
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8588383118860290
+    m_Key: _dayPassedStormSoon
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8588383118860291
+    m_Key: _dayPassed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8588383118860292
+    m_Key: _justBuilt
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8588383118860293
+    m_Key: _justUpgraded
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8588383118860294
+    m_Key: _justRepaired
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8588383118860295
+    m_Key: _minigameUnlocked
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8588383118860296
+    m_Key: _pointsToGather
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8588383118860297
+    m_Key: _technologyUpgrade
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8632871686152192
+    m_Key: _finalizeBuildingProcess
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8632871698735104
+    m_Key: _collectAvaiablePoints
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8632871702929408
+    m_Key: _planNextDay
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8632871702929409
+    m_Key: _settingWorkers
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8632871702929410
+    m_Key: _dayIsPassing
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8632871702929411
+    m_Key: _skippingFreeSkipText
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8632871702929412
+    m_Key: _skippingStartDustText
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8632871702929413
+    m_Key: _collectXYZDestinyShards
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8632871702929414
+    m_Key: _clickToRankUp
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8632871702929415
+    m_Key: _completeMissionToRankUp
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8632871702929416
+    m_Key: _endDay
     m_Metadata:
       m_Items: []
   m_Metadata:

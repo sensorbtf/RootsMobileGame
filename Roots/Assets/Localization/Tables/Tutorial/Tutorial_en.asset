@@ -214,6 +214,54 @@ MonoBehaviour:
       for storm. That's your duty
     m_Metadata:
       m_Items: []
+  - m_Id: 15902587467243520
+    m_Localized: Help workers in {0} {1} times
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15902587484020736
+    m_Localized: 'Repair: {0}'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15902587484020737
+    m_Localized: Get {0} to {1} lvl
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15902587484020738
+    m_Localized: Develop technology in {0} to {1} lvl
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15902587484020739
+    m_Localized: Get {0} Resource Points from minigame
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15902587484020740
+    m_Localized: Get {0} Defense Points from minigame
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15902587484020741
+    m_Localized: Get {0} Resource Points
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15902587484020742
+    m_Localized: Get {0} Defense Points
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15902587484020743
+    m_Localized: Completed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15902587484020744
+    m_Localized: 'Current level: {0}'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15902587484020745
+    m_Localized: Repair Building 0/1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15902587484020746
+    m_Localized: Minigames played {0}/{1}
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

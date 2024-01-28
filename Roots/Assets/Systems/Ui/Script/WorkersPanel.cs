@@ -9,11 +9,13 @@ using Gods;
 using Narrator;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Localization;
 using UnityEngine.UI;
 
 namespace InGameUi
 {
-    public class WorkersPanel : MonoBehaviour    {
+    public class WorkersPanel : MonoBehaviour    
+    {
         [SerializeField] private BuildingsManager buildingsManager;
         [SerializeField] private WorkersManager _workersManager;
         [SerializeField] private MainGameManager _gameManager;
@@ -31,12 +33,28 @@ namespace InGameUi
         [SerializeField] private GameObject _finishAssigning;
         [SerializeField] private Button _activateButton;
         [SerializeField] private TextMeshProUGUI _activateButtonText;
-        [SerializeField] private Button _godsButton;
         [SerializeField] private TextMeshProUGUI _numberOfWorkers;
+        [SerializeField] private Button _godsButton;
+        [SerializeField] private TextMeshProUGUI _tabName;
+
+        [SerializeField] private LocalizedString _panelTitle;
+        [SerializeField] private LocalizedString _inProgress;
+        [SerializeField] private LocalizedString _buildings;
+        [SerializeField] private LocalizedString _willBeBuild;
+        [SerializeField] private LocalizedString _endInXDays;
+        [SerializeField] private LocalizedString _paused;
+        [SerializeField] private LocalizedString _willBePaused;
+        [SerializeField] private LocalizedString _willBeRepaired;
+        [SerializeField] private LocalizedString _willBeResumed;
+        [SerializeField] private LocalizedString _workerAssigned;
+        [SerializeField] private LocalizedString _defensePoints;
+        [SerializeField] private LocalizedString _resourcesPoints;
+        [SerializeField] private LocalizedString _workers;
+        [SerializeField] private LocalizedString _startDay;
+        [SerializeField] private LocalizedString _setWorkers;
 
         private List<GameObject> _runtimeBuildingsUiToDestroy;
         
-        [SerializeField] private TextMeshProUGUI _tabName;
 
         private void Start()
         {
@@ -79,7 +97,7 @@ namespace InGameUi
             GameplayHud.BlockHud = true;
             CameraController.IsUiOpen = true;
             
-            _tabName.text = "Worker Displacement";
+            _tabName.text = _panelTitle.GetLocalizedString();
             
             UpdateWorkersText();
             UpdateButtonText();
@@ -99,7 +117,7 @@ namespace InGameUi
                 switch (i)
                 {
                     case 0:
-                        scriptOfBar.BarText.text = "Buildings";
+                        scriptOfBar.BarText.text = _buildings.GetLocalizedString();
 
                         foreach (var data in _buildingPanel.BuildingsToShow)
                         {
@@ -108,9 +126,9 @@ namespace InGameUi
 
                             references.NewGo.SetActive(true);
                             references.InfoGo.SetActive(true);
-                            references.NewInfo.text = "In Progress";
+                            references.NewInfo.text = _inProgress.GetLocalizedString();
 
-                            if (data.Value) references.NewInfo.text = "Will be build";
+                            if (data.Value) references.NewInfo.text = _willBeBuild.GetLocalizedString();
 
                             var building = buildingsManager.CurrentBuildings.Find(x => x.BuildingMainData == data.Key);
 
@@ -122,26 +140,26 @@ namespace InGameUi
                                         .DaysToComplete - building.CurrentDayOnQueue;
 
                                 if (building.IsDamaged && !building.HaveWorker)
-                                    references.Informations.text = "End in: 1 day";
+                                    references.Informations.text = string.Format(_endInXDays.GetLocalizedString(), "1");
                                 else
-                                    references.Informations.text = $"End in: {daysToComplete} day(s)";
-                                
+                                    references.Informations.text = string.Format(_endInXDays.GetLocalizedString(), daysToComplete);
+
                                 if (data.Value)
                                     continue;
 
-                                references.NewInfo.text = "Paused";
+                                references.NewInfo.text = _paused.GetLocalizedString();
                                 var willBeCancelled =
                                     _buildingPanel.WillBuildingBeCancelled(building, out var wasOnList);
 
                                 if (building.HaveWorker && willBeCancelled)
-                                    references.NewInfo.text = "Will Be paused";
+                                    references.NewInfo.text = _willBePaused.GetLocalizedString();
                                 else if (building.IsDamaged && !building.HaveWorker && !willBeCancelled && wasOnList)
-                                    references.NewInfo.text = "Will be repaired";
+                                    references.NewInfo.text = _willBeRepaired.GetLocalizedString();
                                 else if (building.IsDamaged && !building.HaveWorker && willBeCancelled && wasOnList)
-                                    references.NewInfo.text = "Will be paused";
+                                    references.NewInfo.text = _willBePaused.GetLocalizedString();
                                 else if (!building.HaveWorker && !willBeCancelled && wasOnList)
-                                    references.NewInfo.text = "Will be resumed";
-                                else if (building.HaveWorker) references.NewInfo.text = "In Progress";
+                                    references.NewInfo.text = _willBeResumed.GetLocalizedString();
+                                else if (building.HaveWorker) references.NewInfo.text = _inProgress.GetLocalizedString();
                             }
                             else
                             {
@@ -191,7 +209,7 @@ namespace InGameUi
                             references.NewGo.SetActive(false);
                             references.InfoGo.SetActive(true);
                             references.GlowEffect.color = GetColor(building.BuildingMainData.GodType);
-                            references.Informations.text = "Worker Assigned";
+                            references.Informations.text = _workerAssigned.GetLocalizedString();
                         }
                         
                         resourcePointsText = scriptOfBar.BarText;
@@ -224,7 +242,7 @@ namespace InGameUi
                             references.NewGo.SetActive(false);
                             references.InfoGo.SetActive(true);
                             references.GlowEffect.color = GetColor(building.BuildingMainData.GodType);
-                            references.Informations.text = "Worker Assigned";
+                            references.Informations.text = _workerAssigned.GetLocalizedString();
                         }
 
                         defensePointsText = scriptOfBar.BarText;
@@ -252,8 +270,8 @@ namespace InGameUi
                 }
             }
             
-            resourcePointsText.text = $"Resource Points: +{resourcePoints}";
-            defensePointsText.text = $"Defense Points: +{defensePoints}";
+            resourcePointsText.text = $"{_resourcesPoints.GetLocalizedString()} (+{resourcePoints})";
+            defensePointsText.text = $"{_defensePoints.GetLocalizedString()} (+{defensePoints})";
         }
 
         private Color GetColor(GodType p_godType)
@@ -315,7 +333,7 @@ namespace InGameUi
         {
             _buildingPanel.RefreshWorkersAmount();
             _numberOfWorkers.text =
-                $"Workers: {_workersManager.BaseWorkersAmounts}/{_workersManager.OverallAssignedWorkers}";
+                $"{_workers.GetLocalizedString()} {_workersManager.BaseWorkersAmounts}/{_workersManager.OverallAssignedWorkers}";
         }
 
         private void UpdateButtonText()
@@ -329,11 +347,11 @@ namespace InGameUi
                 _activateButton.onClick.RemoveAllListeners();
                 _activateButton.onClick.AddListener(AssignWorkersForNewDay);
                 _activateButton.interactable = true;
-                _activateButtonText.text = "Start the day";
+                _activateButtonText.text = _startDay.GetLocalizedString();
             }
             else
             {
-                _activateButtonText.text = "Set all workers to work";
+                _activateButtonText.text = _setWorkers.GetLocalizedString();
                 _activateButton.interactable = false;
             }
         }

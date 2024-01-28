@@ -5,6 +5,7 @@ using Buildings;
 using GeneralSystems;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Localization;
 using UnityEngine.UI;
 using World;
 
@@ -19,10 +20,21 @@ namespace InGameUi
         [SerializeField] private GameObject _buildingInfoPrefab;
         [SerializeField] private GameObject _goBackGo;
         [SerializeField] private Transform _contentTransform;
+        [SerializeField] private TextMeshProUGUI _panelTitle;
 
+        [SerializeField] private LocalizedString _rankUpSummary;
+        [SerializeField] private LocalizedString _buildingsUnlocked;
+        [SerializeField] private LocalizedString _dayPassedStormSoon;
+        [SerializeField] private LocalizedString _dayPassed;
+        [SerializeField] private LocalizedString _justBuilt;
+        [SerializeField] private LocalizedString _justUpgraded;
+        [SerializeField] private LocalizedString _justRepaired;
+        [SerializeField] private LocalizedString _minigameUnlocked;
+        [SerializeField] private LocalizedString _pointsToGather;
+        [SerializeField] private LocalizedString _technologyUpgrade;
+        
         private Button _goBackButton;
         private bool _isCottage;
-        [SerializeField] private TextMeshProUGUI _panelTitle;
         private List<GameObject> _runtimeBuildingsUiToDestroy;
 
         private TechnologyDataPerLevel[] _technology;
@@ -51,10 +63,10 @@ namespace InGameUi
             ActivateOnNewDay(_isCottage);
             _isCottage = false;
 
-            _panelTitle.text = "Rank up!";
+            _panelTitle.text = _rankUpSummary.GetLocalizedString();
 
             foreach (var building in buildingsManager.UnlockedBuildings)
-                CreateUiElement(building.Icon, $"New building unlocked: {building.Type}");
+                CreateUiElement(building.Icon, $"{_buildingsUnlocked.GetLocalizedString()} {building.BuildingName.GetLocalizedString()}");
 
             buildingsManager.UnlockedBuildings.Clear();
         }
@@ -103,35 +115,35 @@ namespace InGameUi
             
             if (worldManager.StormDaysRange.x < worldManager.CurrentDay)
             {
-                text = $"Day {worldManager.CurrentDay} of current mission has passed. Storm might hit us anytime";
+                text = string.Format(_dayPassedStormSoon.GetLocalizedString(), worldManager.CurrentDay);
             }
             else
             {
-                text = $"Day {worldManager.CurrentDay} has passed.";
+                text = string.Format(_dayPassed.GetLocalizedString(), worldManager.CurrentDay);
             }
             
             _panelTitle.text = text;
 
             foreach (var building in buildingsManager.UnlockedBuildings)
-                CreateUiElement(building.Icon, $"New building unlocked: {building.Type}");
+                CreateUiElement(building.Icon, $"{_buildingsUnlocked.GetLocalizedString()} {building.BuildingName.GetLocalizedString()}");
 
             foreach (var building in buildingsManager.CompletlyNewBuildings)
-                CreateUiElement(building.BuildingMainData.Icon, "Just built");
+                CreateUiElement(building.BuildingMainData.Icon, _justBuilt.GetLocalizedString());
 
             foreach (var building in buildingsManager.UpgradedBuildings)
-                CreateUiElement(building.BuildingMainData.Icon, "Building upgraded");
+                CreateUiElement(building.BuildingMainData.Icon, _justUpgraded.GetLocalizedString());
 
             foreach (var building in buildingsManager.RepairedBuildings)
-                CreateUiElement(building.BuildingMainData.Icon, "Building repaired");
+                CreateUiElement(building.BuildingMainData.Icon, _justRepaired.GetLocalizedString());
 
             foreach (var building in buildingsManager.BuildingWithEnabledMinigame)
-                CreateUiElement(building.BuildingMainData.Icon, "Minigame unlocked");
+                CreateUiElement(building.BuildingMainData.Icon, _minigameUnlocked.GetLocalizedString());
 
             foreach (var building in buildingsManager.BuildingsToGatherFrom)
-                CreateUiElement(building.BuildingMainData.Icon, "Points can be gathered");
+                CreateUiElement(building.BuildingMainData.Icon, _pointsToGather.GetLocalizedString());
 
             foreach (var building in buildingsManager.BuildingsWithTechnologyUpgrade)
-                CreateUiElement(building.BuildingMainData.Icon, "Technology can be upgraded");
+                CreateUiElement(building.BuildingMainData.Icon, _technologyUpgrade.GetLocalizedString());
 
             buildingsManager.BuildingsToGatherFrom.Clear();
             buildingsManager.UpgradedBuildings.Clear();

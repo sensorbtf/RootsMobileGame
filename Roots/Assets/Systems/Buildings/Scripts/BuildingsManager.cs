@@ -479,7 +479,7 @@ namespace Buildings
 
             if (_bonus != null && _bonus.Building == p_building)
             {
-                production *= _bonus.BonusInPercents;
+                production += production * _bonus.BonusInPercents;
             }
 
             return Mathf.RoundToInt(production);
@@ -521,15 +521,20 @@ namespace Buildings
             return false;
         }
 
-        public Sprite GetBuildingIcon(BuildingType p_building)
-        {
-            return _buildingsDatabase.allBuildings.Find(x => x.Type == p_building).Icon;
-        }
-
         private bool ShouldStartTutorial()
         {
             return CurrentBuildings.Count == 1 && CurrentBuildings
                 .First(x => x.BuildingMainData.Type == BuildingType.Cottage).IsDamaged;
+        }
+
+        public string GetLocalizedName(BuildingType p_building)
+        {
+            return _buildingsDatabase.allBuildings.Find(x => x.Type == p_building).BuildingName.GetLocalizedString();
+        }
+
+        public Sprite GetBuildingIcon(BuildingType p_building)
+        {
+            return _buildingsDatabase.allBuildings.Find(x => x.Type == p_building).Icon;
         }
 
         private AudioClip GetRightSoundEffect(BuildingType p_type)
@@ -742,7 +747,7 @@ namespace Buildings
 
         #endregion
 
-        private float[] _bonuses = new float[] { 1.05f, 1.1f, 1.15f, 1.2f, 1.25f, 1.3f, 1.35f, 1.4f, 1.5f };
+        private float[] _bonuses = { .05f, .1f, .15f, .2f, .25f, .3f, .35f, .4f, .5f };
 
         public void TryToActivateBonus()
         {

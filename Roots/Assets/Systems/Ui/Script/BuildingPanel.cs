@@ -5,6 +5,7 @@ using Buildings;
 using GeneralSystems;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Localization;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
@@ -20,13 +21,27 @@ namespace InGameUi
         [SerializeField] private GameObject _endBuildingButton;
         [SerializeField] private Transform contentTransform;
 
-        [SerializeField] private TextMeshProUGUI _buildingName;
+        [SerializeField] private TextMeshProUGUI _panelTitle;
         [SerializeField] private TextMeshProUGUI _numberOfWorkers;
         
         [Header("Audio")]
         [SerializeField] private AudioClip _onAssignEffect;
         [SerializeField] private AudioClip _onUnAssignEffect;
-         
+        
+        [Header("Localziation")]
+        [SerializeField] private LocalizedString _buildOrUpgrade;
+        [SerializeField] private LocalizedString _maxLevel;
+        [SerializeField] private LocalizedString _inProgress;
+        [SerializeField] private LocalizedString _cancel;
+        [SerializeField] private LocalizedString _cancelled;
+        [SerializeField] private LocalizedString _repair;
+        [SerializeField] private LocalizedString _stopRepair;
+        [SerializeField] private LocalizedString _daysToComplete;
+        [SerializeField] private LocalizedString _resourcePoints;
+        [SerializeField] private LocalizedString _build;
+        [SerializeField] private LocalizedString _restartWork;
+        [SerializeField] private LocalizedString _workers;
+        
         private List<BuildingData> _buildingsOnInPanelQueue;
         private Dictionary<Building, bool> _builtOrDamagedBuildings;
         private Dictionary<BuildingData, SingleBuildingRefs> _createdUiElements;
@@ -50,6 +65,7 @@ namespace InGameUi
             BuildingsToShow = new Dictionary<BuildingData, bool>();
             _createdUiElements = new Dictionary<BuildingData, SingleBuildingRefs>();
             gameObject.SetActive(false);
+            UpdateWorkersText();
         }
 
         private void OnDestroy()
@@ -78,14 +94,14 @@ namespace InGameUi
             ClosePanel();
             OnBackToWorkersPanel?.Invoke();
         }
-
+        
         public void HandleView(bool p_fromWorkerPanel = false)
         {
             gameObject.SetActive(true);
             CameraController.IsUiOpen = true;
             GameplayHud.BlockHud = true;
 
-            _buildingName.text = "Start Building";
+            _panelTitle.text = _buildOrUpgrade.GetLocalizedString();
 
             RefreshWorkersAmount();
             UpdateWorkersText();
@@ -169,7 +185,7 @@ namespace InGameUi
                     var script = newBuildingUi.GetComponent<SingleBuildingRefs>();
                     _createdUiElements.Add(buildingData, script);
 
-                    script.BuildingName.GetComponent<TextMeshProUGUI>().text = buildingData.Type.ToString();
+                    script.BuildingName.GetComponent<TextMeshProUGUI>().text = buildingData.BuildingName.GetLocalizedString();
                     script.BuildingInfo.GetComponent<TextMeshProUGUI>().text = "";
 
                     var builtBuilding = buildingsManager.GetSpecificBuilding(buildingData.Type);
@@ -251,7 +267,7 @@ namespace InGameUi
             }
             else
             {
-                info = "Max Level";
+                info = _maxLevel.GetLocalizedString();
             }
 
             p_refsScript.LevelInfo.GetComponent<TextMeshProUGUI>().text = info;
@@ -279,8 +295,8 @@ namespace InGameUi
         private void HandleInProgressBuildingCreation(SingleBuildingRefs p_refsScript, BuildingData p_buildingData,
             int p_level, bool p_wasBuilt = false) // add red cross to icon. Clicking -> canceling building
         {
-            p_refsScript.BuildingInfo.GetComponent<TextMeshProUGUI>().text = "In Progress";
-            p_refsScript.LevelInfo.GetComponent<TextMeshProUGUI>().text = "Cancel";
+            p_refsScript.BuildingInfo.GetComponent<TextMeshProUGUI>().text = _inProgress.GetLocalizedString();
+            p_refsScript.LevelInfo.GetComponent<TextMeshProUGUI>().text = _cancel.GetLocalizedString();
 
             p_refsScript.CreateOrUpgradeBuilding.interactable = true;
             p_refsScript.CreateOrUpgradeBuilding.image.color = Color.yellow;
@@ -294,15 +310,15 @@ namespace InGameUi
         {
             if (p_assign)
             {
-                p_refsScript.LevelInfo.GetComponent<TextMeshProUGUI>().text = "Repair";
-                p_refsScript.BuildingInfo.GetComponent<TextMeshProUGUI>().text = "Days To Complete: 1";
+                p_refsScript.LevelInfo.GetComponent<TextMeshProUGUI>().text = _repair.GetLocalizedString();
+                p_refsScript.BuildingInfo.GetComponent<TextMeshProUGUI>().text = $"{_daysToComplete.GetLocalizedString()} 1";
                 p_refsScript.CreateOrUpgradeBuilding.image.color = Color.green;
                 p_refsScript.CreateOrUpgradeBuilding.interactable = _workersManager.IsAnyWorkerFree();
             }
             else
             {
-                p_refsScript.LevelInfo.GetComponent<TextMeshProUGUI>().text = "Stop Repairing";
-                p_refsScript.BuildingInfo.GetComponent<TextMeshProUGUI>().text = "In Progress";
+                p_refsScript.LevelInfo.GetComponent<TextMeshProUGUI>().text = _stopRepair.GetLocalizedString();
+                p_refsScript.BuildingInfo.GetComponent<TextMeshProUGUI>().text = _inProgress.GetLocalizedString();
                 p_refsScript.CreateOrUpgradeBuilding.image.color = Color.yellow;
                 p_refsScript.CreateOrUpgradeBuilding.interactable = true;
             }
@@ -315,7 +331,7 @@ namespace InGameUi
 
         private void HandleCompletelyNewBuildingCreation(SingleBuildingRefs p_refsScript, BuildingData p_buildingData)
         {
-            p_refsScript.LevelInfo.GetComponent<TextMeshProUGUI>().text = "Build";
+            p_refsScript.LevelInfo.GetComponent<TextMeshProUGUI>().text = _build.GetLocalizedString();
             UpdateRequirementsText(p_refsScript, p_buildingData.PerLevelData[0].Requirements);
 
             if (buildingsManager.CanBuildBuilding(p_buildingData))
@@ -340,8 +356,8 @@ namespace InGameUi
             p_refsScript.CreateOrUpgradeBuilding.image.color = Color.cyan; // in progress
             p_refsScript.CreateOrUpgradeBuilding.interactable = true;
 
-            p_refsScript.BuildingInfo.GetComponent<TextMeshProUGUI>().text = "In Progress";
-            p_refsScript.LevelInfo.GetComponent<TextMeshProUGUI>().text = "Cancel";
+            p_refsScript.BuildingInfo.GetComponent<TextMeshProUGUI>().text = _inProgress.GetLocalizedString();
+            p_refsScript.LevelInfo.GetComponent<TextMeshProUGUI>().text = _cancel.GetLocalizedString();
 
             p_refsScript.CreateOrUpgradeBuilding.onClick.RemoveAllListeners();
             p_refsScript.CreateOrUpgradeBuilding.onClick.AddListener(() => AssigningWorkerHandler(p_buildingData,
@@ -354,8 +370,8 @@ namespace InGameUi
             p_refsScript.CreateOrUpgradeBuilding.image.color = Color.blue;
             p_refsScript.CreateOrUpgradeBuilding.interactable = _workersManager.IsAnyWorkerFree();
 
-            p_refsScript.BuildingInfo.GetComponent<TextMeshProUGUI>().text = "Cancelled";
-            p_refsScript.LevelInfo.GetComponent<TextMeshProUGUI>().text = "Back To Work";
+            p_refsScript.BuildingInfo.GetComponent<TextMeshProUGUI>().text = _cancelled.GetLocalizedString();
+            p_refsScript.LevelInfo.GetComponent<TextMeshProUGUI>().text = _restartWork.GetLocalizedString();
 
             p_refsScript.CreateOrUpgradeBuilding.onClick.RemoveAllListeners();
             p_refsScript.CreateOrUpgradeBuilding.onClick.AddListener(() => AssigningWorkerHandler(p_buildingData,
@@ -381,7 +397,7 @@ namespace InGameUi
                 if (building == null)
                 {
                     UpdateRequirementsText(p_refsScript, p_buildingData.PerLevelData[0].Requirements);
-                    p_refsScript.LevelInfo.GetComponent<TextMeshProUGUI>().text = "Build";
+                    p_refsScript.LevelInfo.GetComponent<TextMeshProUGUI>().text = _build.GetLocalizedString();
 
                     if (BuildingsToShow.ContainsKey(p_buildingData)) BuildingsToShow.Remove(p_buildingData);
                 }
@@ -390,10 +406,8 @@ namespace InGameUi
                     var nextLevel = building.CurrentLevel;
                     nextLevel++;
 
-                    p_refsScript.LevelInfo.GetComponent<TextMeshProUGUI>().text =
-                        $"{building.CurrentLevel} >> {nextLevel}";
-                    UpdateRequirementsText(p_refsScript,
-                        p_buildingData.PerLevelData[building.CurrentLevel].Requirements);
+                    p_refsScript.LevelInfo.GetComponent<TextMeshProUGUI>().text = $"{building.CurrentLevel} >> {nextLevel}";
+                    UpdateRequirementsText(p_refsScript, p_buildingData.PerLevelData[building.CurrentLevel].Requirements);
 
                     if (BuildingsToShow.ContainsKey(p_buildingData))
                         if (!building.IsBeeingUpgradedOrBuilded)
@@ -450,8 +464,8 @@ namespace InGameUi
                 {
                     if (_buildingsOnInPanelQueue.Contains(element.Key))
                     {
-                        element.Value.BuildingInfo.GetComponent<TextMeshProUGUI>().text = "In Progress";
-                        element.Value.LevelInfo.GetComponent<TextMeshProUGUI>().text = "Cancel";
+                        element.Value.BuildingInfo.GetComponent<TextMeshProUGUI>().text = _inProgress.GetLocalizedString();
+                        element.Value.LevelInfo.GetComponent<TextMeshProUGUI>().text = _cancel.GetLocalizedString();
 
                         element.Value.CreateOrUpgradeBuilding.interactable = true;
                         element.Value.CreateOrUpgradeBuilding.image.color = Color.yellow;
@@ -543,14 +557,14 @@ namespace InGameUi
         private void UpdateWorkersText()
         {
             _numberOfWorkers.text =
-                $"Workers: {_workersManager.BaseWorkersAmounts.ToString()}/{_workersManager.OverallAssignedWorkers}";
+                $"{_workers.GetLocalizedString()}{_workersManager.BaseWorkersAmounts}/{_workersManager.OverallAssignedWorkers}";
         }
 
         private void UpdateRequirementsText(SingleBuildingRefs p_script, Requirements p_requirements)
         {
             p_script.BuildingInfo.GetComponent<TextMeshProUGUI>().text =
-                $"Resource Points: {p_requirements.ResourcePoints}\n" +
-                $"Days To Complete: {p_requirements.DaysToComplete}\n";
+                $"{_resourcePoints.GetLocalizedString()} {p_requirements.ResourcePoints}\n" +
+                $"{_daysToComplete.GetLocalizedString()} {p_requirements.DaysToComplete}\n";
         }
 
         public void RefreshWorkersAmount()

@@ -4,6 +4,7 @@ using Buildings;
 using GeneralSystems;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Localization;
 using UnityEngine.UI;
 using UnityEngine.Serialization;
 
@@ -19,13 +20,24 @@ namespace InGameUi
         [SerializeField] private GameObject _gatheringDefenseEntryPrefab;
         [SerializeField] private GameObject _endWhileDisplacingWorkers;
         [SerializeField] private Transform contentTransform;
-
+        [SerializeField] private TextMeshProUGUI _numberOfWorkers;
+        [SerializeField] private TextMeshProUGUI _panelName;
+        
+        [SerializeField] private LocalizedString _gatheringPanelTitle;
+        [SerializeField] private LocalizedString _defensePanelTitle;
+        [SerializeField] private LocalizedString _workersText;
+        [SerializeField] private LocalizedString _buildingUpgrading;
+        [SerializeField] private LocalizedString _buildingDestroyed;
+        [SerializeField] private LocalizedString _assignText;
+        [SerializeField] private LocalizedString _unassignText;
+        [SerializeField] private LocalizedString _resourceDefenseProduction;
+        [SerializeField] private LocalizedString _resourceProduction;
+        [SerializeField] private LocalizedString _defenseProduction;
+        [SerializeField] private LocalizedString _defenseResourceProduction;
+        
         [HideInInspector] public List<Building> BuildingsOnQueue;
 
         private Dictionary<Building, SingleBuildingRefs> _createdUiElements;
-        [SerializeField] private TextMeshProUGUI _numberOfWorkers;
-
-        [SerializeField] private TextMeshProUGUI _panelName;
         private List<GameObject> _runtimeBuildingsUiToDestroy;
 
         private void Start()
@@ -73,6 +85,8 @@ namespace InGameUi
             _endWhileDisplacingWorkers.SetActive(true);
             UpdateWorkersText(p_gathering);
 
+            _panelName.text = p_gathering ? _gatheringPanelTitle.GetLocalizedString() : _defensePanelTitle.GetLocalizedString();
+            
             foreach (var building in buildingsManager.CurrentBuildings)
             {
                 var productionType = building.BuildingMainData.PerLevelData[building.CurrentLevel].ProductionType;
@@ -84,7 +98,7 @@ namespace InGameUi
 
                 var script = newGathering.GetComponent<SingleBuildingRefs>();
                 _createdUiElements.Add(building, script);
-                script.BuildingName.GetComponent<TextMeshProUGUI>().text = building.BuildingMainData.Type.ToString();
+                script.BuildingName.GetComponent<TextMeshProUGUI>().text = building.BuildingMainData.BuildingName.GetLocalizedString();
                 script.BuildingIcon.GetComponent<Image>().sprite = building.BuildingMainData.Icon;
 
                 var productionPoints = buildingsManager.GetProductionOfBuilding(building.BuildingMainData.Type);
@@ -93,47 +107,53 @@ namespace InGameUi
                 {
                     if (productionType == PointsType.DefenseAndResources)
                     {
-                        script.BuildingInfo.GetComponent<TextMeshProUGUI>().text =
-                            $"Resource Points: {productionPoints/2}\nDefense Points: {productionPoints}";
+                        var modProd = productionPoints / 2;
+                        var text = string.Format(_resourceDefenseProduction.GetLocalizedString(), modProd, productionPoints);
+                        script.BuildingInfo.GetComponent<TextMeshProUGUI>().text = text;
                     }
                     else if (productionType == PointsType.Resource)
                     {
-                        script.BuildingInfo.GetComponent<TextMeshProUGUI>().text = $"Resource Points: {productionPoints}";
+                        script.BuildingInfo.GetComponent<TextMeshProUGUI>().text = string.Format(_resourceProduction.GetLocalizedString(), productionPoints);
                     }
                     else if (productionType == PointsType.ResourcesAndDefense)
                     {
-                        script.BuildingInfo.GetComponent<TextMeshProUGUI>().text =
-                            $"Resource Points: {productionPoints} \n Defense Points: {productionPoints / 2}";
+                        var modProd = productionPoints / 2;
+                        var text = string.Format(_resourceDefenseProduction.GetLocalizedString(), productionPoints, modProd);
+                        script.BuildingInfo.GetComponent<TextMeshProUGUI>().text = text;
                     }
                 }
                 else
                 {
                     if (productionType == PointsType.ResourcesAndDefense)
                     {
-                        script.BuildingInfo.GetComponent<TextMeshProUGUI>().text =
-                            $"Defense Points: {productionPoints / 2}\nResource Points: {productionPoints}";
+                        var modProd = productionPoints / 2;
+                        var text = string.Format(_defenseResourceProduction.GetLocalizedString(), modProd, productionPoints);
+                        script.BuildingInfo.GetComponent<TextMeshProUGUI>().text = text;
                     }
                     else if (productionType == PointsType.Defense)
                     {
-                        script.BuildingInfo.GetComponent<TextMeshProUGUI>().text = $"Defense Points: {productionPoints}";
+                        script.BuildingInfo.GetComponent<TextMeshProUGUI>().text = string.Format(_defenseProduction.GetLocalizedString(), productionPoints);
                     }
                     else if (productionType == PointsType.DefenseAndResources)
                     {
-                        script.BuildingInfo.GetComponent<TextMeshProUGUI>().text =
-                            $"Defense Points: {productionPoints}\nResource Points: {productionPoints/2}";
+                        var modProd = productionPoints / 2;
+                        var text = string.Format(_defenseResourceProduction.GetLocalizedString(), productionPoints, modProd);
+                        script.BuildingInfo.GetComponent<TextMeshProUGUI>().text = text;
                     }
                 }
 
                 if (building.IsBeeingUpgradedOrBuilded || _buildingPanel.WillBuildingBeUpgraded(building))
                 {
                     script.IsInConstruction.SetActive(true);
-                    script.IsInConstruction.GetComponent<Image>().color = Color.white;
+                    script.IsInConstruction.GetComponent<Image>().color = new Color(255,155,0);
+                    script.IsInConstructionText.text = _buildingUpgrading.GetLocalizedString();
                     script.CreateOrUpgradeBuilding.interactable = false;
                 }
                 else if (building.IsDamaged)
                 {
                     script.IsInConstruction.SetActive(true);
                     script.IsInConstruction.GetComponent<Image>().color = Color.red;
+                    script.IsInConstructionText.text = _buildingDestroyed.GetLocalizedString();
                     script.CreateOrUpgradeBuilding.interactable = false;
                 }
                 else
@@ -168,7 +188,7 @@ namespace InGameUi
         {
             p_script.CreateOrUpgradeBuilding.image.color = Color.cyan;
             p_script.CreateOrUpgradeBuilding.interactable = true;
-            p_script.LevelInfo.text = "Un assign";
+            p_script.LevelInfo.text = _unassignText.GetLocalizedString();
 
             p_script.CreateOrUpgradeBuilding.onClick.RemoveAllListeners();
             p_script.CreateOrUpgradeBuilding.onClick.AddListener(() =>
@@ -179,7 +199,7 @@ namespace InGameUi
         {
             script.CreateOrUpgradeBuilding.image.color = Color.green;
             script.CreateOrUpgradeBuilding.interactable = _workersManager.IsAnyWorkerFree();
-            script.LevelInfo.text = "Assign";
+            script.LevelInfo.text = _assignText.GetLocalizedString();
 
             script.CreateOrUpgradeBuilding.onClick.RemoveAllListeners();
             script.CreateOrUpgradeBuilding.onClick.AddListener(() =>
@@ -247,12 +267,7 @@ namespace InGameUi
 
         private void UpdateWorkersText(bool p_gathering)
         {
-            if (p_gathering)
-                _numberOfWorkers.text =
-                    $"Workers: {_workersManager.BaseWorkersAmounts.ToString()}/{_workersManager.OverallAssignedWorkers}";
-            else
-                _numberOfWorkers.text =
-                    $"Workers: {_workersManager.BaseWorkersAmounts.ToString()}/{_workersManager.OverallAssignedWorkers}";
+                _numberOfWorkers.text = $"{_workersText.GetLocalizedString()} {_workersManager.BaseWorkersAmounts.ToString()}/{_workersManager.OverallAssignedWorkers}";
         }
     }
 }

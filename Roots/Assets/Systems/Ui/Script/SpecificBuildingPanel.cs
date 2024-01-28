@@ -54,8 +54,9 @@ namespace InGameUi
         [SerializeField] private LocalizedString _assignMoreWorkers;
         [SerializeField] private LocalizedString _requirementsMetText;
         [SerializeField] private LocalizedString _lvlText;
+        [SerializeField] private LocalizedString _buildingDestroyed;
+        [SerializeField] private LocalizedString _workInProgress;
 
-        private RectTransform _rectTransform;
         private bool _areRequirementsMet;
         private Building _building;
         private BuildingData _buildingData;
@@ -82,7 +83,6 @@ namespace InGameUi
             _lvlUpButton = _lvlUpGo.GetComponent<Button>();
             _lvlUpButtonText = _lvlUpGo.GetComponentInChildren<TextMeshProUGUI>();
             _startMiniGameButton = _getIntoWorkGo.GetComponent<Button>();
-            _rectTransform = GetComponent<RectTransform>();
             gameObject.SetActive(false);
         }
 
@@ -137,8 +137,20 @@ namespace InGameUi
             _getIntoWorkGo.SetActive(true);
             _scrollBarGo.SetActive(true);
             _sliderGos.SetActive(true);
+
+            var stateText = "";
             
-            _buildingName.text = $"{_buildingData.BuildingName.GetLocalizedString()} ({_building.CurrentLevel} {_lvlText.GetLocalizedString()})";
+            if (_building.IsDamaged)
+            {
+                stateText = _buildingDestroyed.GetLocalizedString();
+            }
+            else if (_building.IsBeeingUpgradedOrBuilded)
+            {
+                stateText = _workInProgress.GetLocalizedString();
+            }
+            
+            _buildingName.text = $"{_buildingData.BuildingName.GetLocalizedString()} " +
+                                 $"({_building.CurrentLevel} {_lvlText.GetLocalizedString()}) ({stateText})";
 
             if (_buildingData.Type == BuildingType.Cottage)
             {

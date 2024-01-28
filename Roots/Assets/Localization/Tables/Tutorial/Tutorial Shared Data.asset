@@ -159,6 +159,54 @@ MonoBehaviour:
     m_Key: Quest_End
     m_Metadata:
       m_Items: []
+  - m_Id: 15902587467243520
+    m_Key: _helpWorkersIn_Quest
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15902587484020736
+    m_Key: _repair_Quest
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15902587484020737
+    m_Key: _getXYZToXYZlvl_Quest
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15902587484020738
+    m_Key: _getTechLvlInXYZToXYZLvl_Quest
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15902587484020739
+    m_Key: _getResourcesMinigame_Quest
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15902587484020740
+    m_Key: _getDefenceMinigame_Quest
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15902587484020741
+    m_Key: _getResource_Quest
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15902587484020742
+    m_Key: _getDefence_Quest
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15902587484020743
+    m_Key: _completed_Quest
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15902587484020744
+    m_Key: _currentLevel_Quest
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15902587484020745
+    m_Key: _repairBuilding_Quest
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15902587484020746
+    m_Key: _doMinigameInXYZ_Quest
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

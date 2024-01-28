@@ -170,6 +170,7 @@ namespace GameManager
         {
             CurrentPlayerState = (DuringDayState)p_data.CurrentPlayerState;
             _loginDay = p_data.LoginDay;
+            _minigamesPlayed = p_data.MinigamesPlayed;
             FreeSkipsLeft = p_data.FreeDaysSkipAmount;
             _totalPlayTime = TimeSpan.Parse(p_data.TotalTimePlayed);
             var savedTime = p_data.TimeOfWorkersSet;
@@ -301,6 +302,7 @@ namespace GameManager
             _savingManager.SaveMainGame(new MainGameManagerSavedData
             {
                 LoginDay = _loginDay,
+                MinigamesPlayed = _minigamesPlayed,
                 FreeDaysSkipAmount = FreeSkipsLeft,
                 CurrentPlayerState = (int)CurrentPlayerState,
                 TotalTimePlayed = _totalPlayTime.ToString(),

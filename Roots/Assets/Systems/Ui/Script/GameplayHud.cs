@@ -6,6 +6,7 @@ using GameManager;
 using Narrator;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Localization;
 using UnityEngine.UI;
 using World;
 using Random = UnityEngine.Random;
@@ -98,11 +99,23 @@ namespace InGameUi
         [SerializeField] private Image ResourcePointsImage;
         [SerializeField] private TextMeshProUGUI ShardsOfDestiny;
         [SerializeField] private Image ShardsOfDestinyImage;
-
         [SerializeField] private Slider StormSlider;
 
+        [Header("Localization")] 
+        [SerializeField] private LocalizedString _finalizeBuildingProcess;
+        [SerializeField] private LocalizedString _collectAvaiablePoints;
+        [SerializeField] private LocalizedString _planNextDay;
+        [SerializeField] private LocalizedString _settingWorkers;
+        [SerializeField] private LocalizedString _dayIsPassing;
+        [SerializeField] private LocalizedString _skippingFreeSkipText;
+        [SerializeField] private LocalizedString _skippingStartDustText;
+        [SerializeField] private LocalizedString _collectXYZDestinyShards;
+        [SerializeField] private LocalizedString _completedQuest;
+        [SerializeField] private LocalizedString _clickToRankUp;
+        [SerializeField] private LocalizedString _completeMissionToRankUp;
+        [SerializeField] private LocalizedString _endDay;
+
         private bool _wasMainButtonRefreshed = true;
-        
         public static bool BlockHud;
         
         private void Awake()
@@ -484,12 +497,12 @@ namespace InGameUi
             {
                 case DuringDayState.FinishingBuilding:
                     _endDayButton.interactable = false;
-                    _endDayButtonText.text = "Finalize building process";
+                    _endDayButtonText.text = _finalizeBuildingProcess.GetLocalizedString();
                     _wasMainButtonRefreshed = true;
                     break;
                 case DuringDayState.CollectingResources:
                     _endDayButton.interactable = false;
-                    _endDayButtonText.text = "Collect available points";
+                    _endDayButtonText.text = _collectAvaiablePoints.GetLocalizedString();
                     _wasMainButtonRefreshed = true;
                     break;
                 case DuringDayState.WorkDayFinished:
@@ -498,7 +511,7 @@ namespace InGameUi
                     if (_wasMainButtonRefreshed)
                     {
                         _endDayButton.onClick.AddListener(OpenWorkersDisplacementPanel);
-                        _endDayButtonText.text = "Plan next day";
+                        _endDayButtonText.text = _planNextDay.GetLocalizedString();
                         _wasMainButtonRefreshed = false;
                     }
 
@@ -506,11 +519,11 @@ namespace InGameUi
 
                 case DuringDayState.SettingWorkers:
                     _endDayButton.interactable = false;
-                    _endDayButtonText.text = "Setting workers";
+                    _endDayButtonText.text =  _settingWorkers.GetLocalizedString();
                     break;
 
                 case DuringDayState.DayPassing:
-                    _endDayButtonText.text = "Day is passing...";
+                    _endDayButtonText.text = _dayIsPassing.GetLocalizedString();
                     _endDayButton.interactable = false;
                     SkipDayGo.SetActive(true);
                     _wasMainButtonRefreshed = true;
@@ -529,7 +542,7 @@ namespace InGameUi
                 _skipDayButton.interactable = true;
 
                 _skipDayButton.onClick.RemoveAllListeners();
-                _skipDayText.text = "Skip";
+                _skipDayText.text = _endDay.GetLocalizedString();
                 _paidSkipDayText.text = "";
                 _skipDayButton.onClick.AddListener(() => OnWorkDaySkipped(WayToSkip.NormalTimeSkip));
                 _wasMainButtonRefreshed = false;
@@ -542,10 +555,9 @@ namespace InGameUi
                 if (_wasMainButtonRefreshed)
                 {
                     if (skipPossibility == WayToSkip.FreeSkip)
-                        _paidSkipDayText.text = $"Skip by: Free Skips ({_gameManager.FreeSkipsLeft})";
+                        _paidSkipDayText.text = string.Format(_skippingFreeSkipText.GetLocalizedString(), _gameManager.FreeSkipsLeft);
                     else if (skipPossibility == WayToSkip.PaidSkip)
-                        _paidSkipDayText.text =
-                            $"Skip for: {_gameManager.DestinyShardsSkipPrice} Destiny Shards";
+                        _paidSkipDayText.text = string.Format(_skippingStartDustText.GetLocalizedString(), _gameManager.DestinyShardsSkipPrice);
 
                     _skipDayButton.onClick.RemoveAllListeners();
                     _skipDayButton.onClick.AddListener(() => OnWorkDaySkipped(skipPossibility));
@@ -591,8 +603,8 @@ namespace InGameUi
             _firstMissionButton.interactable = true;
             _firstMissionButton.onClick.RemoveAllListeners();
             _firstMissionButton.onClick.AddListener(() => GatherPointsFromQuest(0, p_completedQuest));
-            _firstMissionButtonText.text =
-                $"Collect {p_completedQuest.SpecificQuest.ShardsOfDestinyReward} Destiny Shards";
+            _firstMissionButtonText.text = string.Format(_collectXYZDestinyShards.GetLocalizedString(),
+                p_completedQuest.SpecificQuest.ShardsOfDestinyReward); 
         }
 
         private void HandleSecondQuestCompletion(Quest p_completedQuest)
@@ -600,8 +612,8 @@ namespace InGameUi
             _secondMissionButton.interactable = true;
             _secondMissionButton.onClick.RemoveAllListeners();
             _secondMissionButton.onClick.AddListener(() => GatherPointsFromQuest(1, p_completedQuest));
-            _secondMissionButtonText.text =
-                $"Collect {p_completedQuest.SpecificQuest.ShardsOfDestinyReward} Destiny Shards";
+            _secondMissionButtonText.text = string.Format(_collectXYZDestinyShards.GetLocalizedString(),
+                p_completedQuest.SpecificQuest.ShardsOfDestinyReward);
         }
 
         private void GatherPointsFromQuest(int p_questIndex, Quest p_quest)
@@ -613,12 +625,12 @@ namespace InGameUi
             if (p_questIndex == 0)
             {
                 _firstMissionButton.interactable = false;
-                _firstMissionButtonText.text = "Completed";
+                _firstMissionButtonText.text = _completedQuest.GetLocalizedString();
             }
             else
             {
                 _secondMissionButton.interactable = false;
-                _secondMissionButtonText.text = "Completed";
+                _secondMissionButtonText.text = _completedQuest.GetLocalizedString();
             }
 
             _buildingsManager.HandlePointsManipulation(PointsType.StarDust,
@@ -636,7 +648,7 @@ namespace InGameUi
             if (_worldManager.CurrentMission >= _worldManager.NeededMissionToRankUp)
             {
                 var button = RankGo.GetComponent<Button>();
-                _currentRankText.text = "Click To Rank Up";
+                _currentRankText.text = _clickToRankUp.GetLocalizedString();
                 button.onClick.RemoveAllListeners();
                 button.onClick.AddListener(HandleQuestsCompletion);
                 button.interactable = true;
@@ -647,7 +659,7 @@ namespace InGameUi
             {
                 QuestsCompletedGo.SetActive(true);
                 QuestsCompletedGo.GetComponentInChildren<TextMeshProUGUI>().text =
-                    $"Complete mission {_worldManager.NeededMissionToRankUp} to rank up";
+                    string.Format(_completeMissionToRankUp.GetLocalizedString(), _worldManager.NeededMissionToRankUp);
             }
         }
 
@@ -682,7 +694,7 @@ namespace InGameUi
             if (_worldManager.CurrentQuests[0].IsRedeemed && _worldManager.CurrentQuests[1].IsRedeemed &&
                 _worldManager.CurrentMission >= _worldManager.NeededMissionToRankUp)
             {
-                _currentRankText.text = "Click To Rank Up";
+                _currentRankText.text = _clickToRankUp.GetLocalizedString();
             }
             else
             {

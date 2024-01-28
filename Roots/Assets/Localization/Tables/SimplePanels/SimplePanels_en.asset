@@ -144,6 +144,214 @@ MonoBehaviour:
     m_Localized: No, keep working.
     m_Metadata:
       m_Items: []
+  - m_Id: 8564960858644480
+    m_Localized: 'Workers: '
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8564960879616000
+    m_Localized: Assign
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8564960879616001
+    m_Localized: Unassign
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8564960883810304
+    m_Localized: Production Buildings
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8564960883810305
+    m_Localized: Defense Buildings
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8564960883810306
+    m_Localized: 'Resource Points: {0}
+
+      Defense Points: {1}'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8564960883810307
+    m_Localized: 'Resource Points: {0}'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8564960883810308
+    m_Localized: 'Defense Points: {0}'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8564960883810309
+    m_Localized: 'Resource Points: {0}
+
+      Defense Points: {1}'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8571842683904000
+    m_Localized: Build and Upgrade
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8571842683904001
+    m_Localized: Max Level
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8571842683904002
+    m_Localized: In Progress
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8571842683904003
+    m_Localized: Cancel
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8571842683904004
+    m_Localized: Cancelled
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8571842683904005
+    m_Localized: Repair
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8571842683904006
+    m_Localized: Stop Repairing
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8571842683904007
+    m_Localized: 'Days To Complete:'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8571842683904008
+    m_Localized: Build
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8571842688098304
+    m_Localized: Resume Work
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8576033934450688
+    m_Localized: Worker Displacement
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8576033934450689
+    m_Localized: Buildings
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8576033934450690
+    m_Localized: Will be build
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8576033934450691
+    m_Localized: 'End in: {0} days'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8576033934450692
+    m_Localized: Paused
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8576033934450693
+    m_Localized: Will be paused
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8576033934450694
+    m_Localized: Will be repaired
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8576033934450695
+    m_Localized: Will be resumed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8576033934450696
+    m_Localized: Worker Assigned
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8576033934450697
+    m_Localized: Start the day
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8576033934450698
+    m_Localized: Set all workers to work
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8588383118860288
+    m_Localized: Rank up!
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8588383118860289
+    m_Localized: 'New building unlocked:'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8588383118860290
+    m_Localized: Day {0} of current mission has passed. Storm might hit us anytime
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8588383118860291
+    m_Localized: Day {0} has passed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8588383118860292
+    m_Localized: Just built
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8588383118860293
+    m_Localized: Building upgraded
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8588383118860294
+    m_Localized: Building repaired
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8588383118860295
+    m_Localized: Minigame unlocked
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8588383118860296
+    m_Localized: Points can be gathered
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8588383118860297
+    m_Localized: Technology can be upgraded
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8632871686152192
+    m_Localized: Finalize building process
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8632871698735104
+    m_Localized: Collect buildings outcomes
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8632871702929408
+    m_Localized: Plan next day
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8632871702929409
+    m_Localized: Setting workers
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8632871702929410
+    m_Localized: Day is passing...
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8632871702929411
+    m_Localized: Skip by Free Skip ({0})
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8632871702929412
+    m_Localized: 'Skip for: {0} Star Dust'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8632871702929413
+    m_Localized: Collect {0} Star Dust
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8632871702929414
+    m_Localized: Click To Rank Up
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8632871702929415
+    m_Localized: Complete mission {0} to rank up
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8632871702929416
+    m_Localized: End Day
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

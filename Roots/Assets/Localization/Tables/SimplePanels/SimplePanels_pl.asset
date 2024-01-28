@@ -144,6 +144,211 @@ MonoBehaviour:
     m_Localized: Nie, pracuj dalej.
     m_Metadata:
       m_Items: []
+  - m_Id: 8564960858644480
+    m_Localized: 'Robotnicy: '
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8564960879616000
+    m_Localized: Przypisz
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8564960879616001
+    m_Localized: Odpisz
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8564960883810304
+    m_Localized: Budynki Produkcyjne
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8564960883810305
+    m_Localized: Budynki Obronne
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8564960883810306
+    m_Localized: "Punkty Surowc\xF3w: {0}\nPunkty Obrony: {1}"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8564960883810307
+    m_Localized: "Punkty Surowc\xF3w: {0}"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8564960883810308
+    m_Localized: 'Punkty Obrony: {0}'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8564960883810309
+    m_Localized: "Punkty Obrony: {0}\nPunkty Surowc\xF3w: {1}"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8571842683904000
+    m_Localized: Buduj i Ulepszaj
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8571842683904001
+    m_Localized: Maksymalny Poziom
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8571842683904002
+    m_Localized: W Trakcie
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8571842683904003
+    m_Localized: Przerwij
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8571842683904004
+    m_Localized: Przerwane
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8571842683904005
+    m_Localized: Napraw
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8571842683904006
+    m_Localized: "Przerwij napraw\u0119"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8571842683904007
+    m_Localized: 'Dni Pracy:'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8571842683904008
+    m_Localized: Zbuduj
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8571842688098304
+    m_Localized: "Wzn\xF3w Prac\u0119"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8576033934450688
+    m_Localized: "Przydzia\u0142 Pracy"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8576033934450689
+    m_Localized: Budynki
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8576033934450690
+    m_Localized: Zostanie zbudowany
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8576033934450691
+    m_Localized: Koniec po {0} dniach
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8576033934450692
+    m_Localized: Praca wstrzymana
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8576033934450693
+    m_Localized: Zlecono wstrzymanie
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8576033934450694
+    m_Localized: "Zlecono napraw\u0119"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8576033934450695
+    m_Localized: Zlecono wznowienie
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8576033934450696
+    m_Localized: Pracownik przypisany
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8576033934450697
+    m_Localized: "Rozpocznij dzie\u0144"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8576033934450698
+    m_Localized: "Rozdysponuj pracownik\xF3w"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8588383118860288
+    m_Localized: "Ranga zwi\u0119kszona"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8588383118860289
+    m_Localized: 'Odblokowano nowy budynek:'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8588383118860290
+    m_Localized: "Dzie\u0144 {0} misji min\u0105\u0142. Burza mo\u017Ce nadej\u015B\u0107
+      w ka\u017Cdej chwili"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8588383118860291
+    m_Localized: "Dzie\u0144 {0} misji min\u0105\u0142"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8588383118860292
+    m_Localized: Zbudowano
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8588383118860293
+    m_Localized: Ulepszono
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8588383118860294
+    m_Localized: Naprawiono
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8588383118860295
+    m_Localized: "Odblokowano minigr\u0119"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8588383118860296
+    m_Localized: Punkty do zebrania
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8588383118860297
+    m_Localized: Technologia do ulepszenia
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8632871686152192
+    m_Localized: "Uko\u0144cz prace budowlane"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8632871698735104
+    m_Localized: "Zbierz punkty z budyk\xF3w"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8632871702929408
+    m_Localized: "Zaplanuj kolejny dzie\u0144"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8632871702929409
+    m_Localized: Planowanie pracy
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8632871702929410
+    m_Localized: "Dzie\u0144 mija..."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8632871702929411
+    m_Localized: Darmowe Przyspieszenia ({0})
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8632871702929412
+    m_Localized: "Przyspiesz za {0} Gwiezdnego Py\u0142u"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8632871702929413
+    m_Localized: "Zbierz {0} Gwiezdnego Py\u0142u"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8632871702929414
+    m_Localized: "Kliknij, aby zwi\u0119kszy\u0107 rang\u0119"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8632871702929415
+    m_Localized: "Zrealizuj {0} misj\u0119, aby zwi\u0119kszy\u0107 rang\u0119"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8632871702929416
+    m_Localized: "Zako\u0144cz dzie\u0144"
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

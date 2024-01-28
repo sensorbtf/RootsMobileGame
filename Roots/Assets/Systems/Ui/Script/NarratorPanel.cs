@@ -224,8 +224,9 @@ namespace InGameUi
             if (_narratorManager.CurrentTutorialStep == TutorialStep.Quests_End && _buildingsManager.Bonus != null && _buildingsManager.Bonus.Building != BuildingType.Cottage)
             {
                 var text = TutorialTexts.Last().Text[0].GetLocalizedString();
+                var bonus = _buildingsManager.Bonus.BonusInPercents;
                 return string.Format(text, _buildingsManager.GetSpecificBuilding(_buildingsManager.Bonus.Building)
-                    .BuildingMainData.BuildingName.GetLocalizedString(), _buildingsManager.Bonus.BonusInPercents);
+                    .BuildingMainData.BuildingName.GetLocalizedString(), bonus*100);
             }
 
             return TutorialTexts[(int)_narratorManager.CurrentTutorialStep].Text[_narratorManager.CurrentSubText].GetLocalizedString();

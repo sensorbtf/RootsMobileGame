@@ -34,7 +34,7 @@ namespace Narrator
             _buildingsManager.OnBuildingStateChanged += CheckBuildingBuilt;
             _buildingsManager.OnBuildingTechnologyLvlUp += CheckBuildingTechLevelUp;
 
-            _worldManager.OnNewDayStarted += TryToActivateBonus;
+            _worldManager.OnNewMissionStart += TryToActivateBonus;
             
             _currentSubText = 0;
             OnTutorialAdvancement?.Invoke(true);
@@ -47,7 +47,7 @@ namespace Narrator
             _buildingsManager.OnBuildingStateChanged -= CheckBuildingBuilt;
             _buildingsManager.OnBuildingTechnologyLvlUp -= CheckBuildingTechLevelUp;
             
-            _worldManager.OnNewDayStarted -= TryToActivateBonus;
+            _worldManager.OnNewMissionStart -= TryToActivateBonus;
         }
 
         public void TryToActivateNarrator(TutorialStep p_step)

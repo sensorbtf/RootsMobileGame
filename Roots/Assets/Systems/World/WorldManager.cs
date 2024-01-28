@@ -4,6 +4,7 @@ using AudioSystem;
 using Buildings;
 using Gods;
 using UnityEngine;
+using UnityEngine.Localization;
 using Random = UnityEngine.Random;
 
 namespace World
@@ -212,6 +213,21 @@ namespace World
             }
         }
 
+        #region Quests
+
+        [SerializeField] private LocalizedString _helpWorkersIn;
+        [SerializeField] private LocalizedString _repair;
+        [SerializeField] private LocalizedString _getXYZToXYZlvl;
+        [SerializeField] private LocalizedString _getTechLvlInXYZToXYZLvl;
+        [SerializeField] private LocalizedString _getResourcesMinigame;
+        [SerializeField] private LocalizedString _getDefenceMinigame;
+        [SerializeField] private LocalizedString _getResource;
+        [SerializeField] private LocalizedString _getDefence;
+        [SerializeField] private LocalizedString _completed;
+        [SerializeField] private LocalizedString _currentLevel;
+        [SerializeField] private LocalizedString _repairBuilding;
+        [SerializeField] private LocalizedString _doMinigameInXYZ;
+
         public string GetSpecificQuestText(int p_index)
         {
             string textToReturn = null;
@@ -219,32 +235,34 @@ namespace World
             switch (CurrentQuests[p_index].SpecificQuest.QuestKind)
             {
                 case QuestType.DoMinigame:
-                    textToReturn = $"Help workers in {CurrentQuests[p_index].SpecificQuest.TargetName}";
+                    textToReturn = string.Format(_helpWorkersIn.GetLocalizedString(), 
+                        _buildingsManager.GetLocalizedName(CurrentQuests[p_index].SpecificQuest.TargetName), 
+                        CurrentQuests[p_index].SpecificQuest.TargetAmount);
                     break;
                 case QuestType.RepairBuilding:
-                    textToReturn = $"Repair {CurrentQuests[p_index].SpecificQuest.TargetName}";
+                    textToReturn = string.Format(_repair.GetLocalizedString(), _buildingsManager.GetLocalizedName(CurrentQuests[p_index].SpecificQuest.TargetName));
                     break;
                 case QuestType.AchieveBuildingLvl:
-                    textToReturn =
-                        $"Get {CurrentQuests[p_index].SpecificQuest.TargetName} to {CurrentQuests[p_index].SpecificQuest.TargetAmount} lvl";
+                    textToReturn = string.Format(_getXYZToXYZlvl.GetLocalizedString(), 
+                        _buildingsManager.GetLocalizedName(CurrentQuests[p_index].SpecificQuest.TargetName), 
+                        CurrentQuests[p_index].SpecificQuest.TargetAmount);
                     break;
                 case QuestType.AchieveTechnologyLvl:
-                    textToReturn =
-                        $"Develop technology in {CurrentQuests[p_index].SpecificQuest.TargetName} to {CurrentQuests[p_index].SpecificQuest.TargetAmount} lvl";
+                    textToReturn = string.Format(_getTechLvlInXYZToXYZLvl.GetLocalizedString(), 
+                        _buildingsManager.GetLocalizedName(CurrentQuests[p_index].SpecificQuest.TargetName),
+                        CurrentQuests[p_index].SpecificQuest.TargetAmount);
                     break;
                 case QuestType.MinigameResourcePoints:
-                    textToReturn =
-                        $"Get {CurrentQuests[p_index].SpecificQuest.TargetAmount} resource points from minigame";
+                    textToReturn = string.Format(_getResourcesMinigame.GetLocalizedString(),CurrentQuests[p_index].SpecificQuest.TargetAmount);
                     break;
                 case QuestType.MinigameDefensePoints:
-                    textToReturn =
-                        $"Get {CurrentQuests[p_index].SpecificQuest.TargetAmount} defense points from minigame";
+                    textToReturn = string.Format(_getDefenceMinigame.GetLocalizedString(),CurrentQuests[p_index].SpecificQuest.TargetAmount);
                     break;
                 case QuestType.ResourcePoints:
-                    textToReturn = $"Get {CurrentQuests[p_index].SpecificQuest.TargetAmount} resource points";
+                    textToReturn = string.Format(_getResource.GetLocalizedString(),CurrentQuests[p_index].SpecificQuest.TargetAmount);
                     break;
                 case QuestType.DefensePoints:
-                    textToReturn = $"Get {CurrentQuests[p_index].SpecificQuest.TargetAmount} defense points";
+                    textToReturn = string.Format(_getDefence.GetLocalizedString(),CurrentQuests[p_index].SpecificQuest.TargetAmount);
                     break;
             }
 
@@ -258,7 +276,7 @@ namespace World
             Building building;
 
             if (CurrentQuests[p_index].IsCompleted)
-                return "Completed";
+                return _completed.GetLocalizedString();
 
             switch (CurrentQuests[p_index].SpecificQuest.QuestKind)
             {
@@ -268,27 +286,26 @@ namespace World
                     if (building != null)
                         level = building.CurrentLevel;
 
-                    textToReturn = $"Current level: {level}";
+                    textToReturn = string.Format(_currentLevel.GetLocalizedString(), level);
                     break;
                 case QuestType.AchieveTechnologyLvl:
                     building = _buildingsManager.GetSpecificBuilding(CurrentQuests[p_index].SpecificQuest.TargetName);
 
                     if (building != null)
                         level = building.CurrentTechnologyLvl;
-                    textToReturn = $"Current level: {level}";
+                    textToReturn = string.Format(_currentLevel.GetLocalizedString(), level);
                     break;
                 case QuestType.MinigameResourcePoints:
                 case QuestType.MinigameDefensePoints:
                 case QuestType.DefensePoints:
                 case QuestType.ResourcePoints:
-                    textToReturn =
-                        $"{CurrentQuests[p_index].AchievedTargetAmount}/{CurrentQuests[p_index].SpecificQuest.TargetAmount}";
+                    textToReturn = $"{CurrentQuests[p_index].AchievedTargetAmount}/{CurrentQuests[p_index].SpecificQuest.TargetAmount}";
                     break;
                 case QuestType.RepairBuilding:
-                    textToReturn = "Repair Building 0/1";
+                    textToReturn = _repairBuilding.GetLocalizedString();
                     break;
                 case QuestType.DoMinigame:
-                    textToReturn = $"Do Minigame in {CurrentQuests[p_index].SpecificQuest.TargetName}";
+                    textToReturn = string.Format(_doMinigameInXYZ.GetLocalizedString(), CurrentQuests[p_index].AchievedTargetAmount, CurrentQuests[p_index].SpecificQuest.TargetAmount);
                     break;
             }
 
@@ -343,9 +360,8 @@ namespace World
                     if (p_pointsType is PointsType.Defense or PointsType.ResourcesAndDefense or PointsType.DefenseAndResources)
                         quest.AchievedTargetAmount += p_pointsNumber;
 
-                if (quest.SpecificQuest.QuestKind == QuestType.DoMinigame &&
-                    quest.SpecificQuest.TargetName == p_building)
-                    quest.IsCompleted = true;
+                if (quest.SpecificQuest.QuestKind == QuestType.DoMinigame && quest.SpecificQuest.TargetName == p_building)
+                    quest.AchievedTargetAmount++;
             }
 
             OnQuestsProgress?.Invoke();
@@ -383,6 +399,8 @@ namespace World
                 CheckTechnologyBuildingsQuests(building);
             }
         }
+
+        #endregion
 
         public void RevealStorm(int p_daysToSee)
         {

@@ -19,15 +19,15 @@ MonoBehaviour:
     m_Items: []
   m_TableData:
   - m_Id: 13582397267968
-    m_Localized: '- Resource Points'
+    m_Localized: Resource Points
     m_Metadata:
       m_Items: []
   - m_Id: 13582422433792
-    m_Localized: '- Defense Points'
+    m_Localized: Defense Points
     m_Metadata:
       m_Items: []
   - m_Id: 13582426628096
-    m_Localized: '- Start Dust'
+    m_Localized: Start Dust
     m_Metadata:
       m_Items: []
   - m_Id: 714902133465088
@@ -169,6 +169,26 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 6057672042258444
     m_Localized: Wait
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8543099303141376
+    m_Localized: Destroyed
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8543099319918592
+    m_Localized: Upgrading
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8634075505926144
+    m_Localized: Rang
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8634075518509056
+    m_Localized: Mission
+    m_Metadata:
+      m_Items: []
+  - m_Id: 8639765670699008
+    m_Localized: End Mission
     m_Metadata:
       m_Items: []
   references:

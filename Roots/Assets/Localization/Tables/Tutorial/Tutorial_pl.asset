@@ -19,27 +19,261 @@ MonoBehaviour:
     m_Items: []
   m_TableData:
   - m_Id: 3994826498048
-    m_Localized: 
+    m_Localized: "Jedynym sposobem na rozw\xF3j wioski jest zbieranie surowc\xF3w
+      dla g\u0142\xF3wnego miasta w zamian za projekty budowlane."
     m_Metadata:
       m_Items: []
   - m_Id: 4562726871040
-    m_Localized: 
+    m_Localized: "Ka\u017Cdy pracownik sp\u0119dza noc w Chacie. Jej piwnica to r\xF3wnie\u017C
+      jedyne bezpieczne miejsce do przechowywania niewielkiej ilo\u015Bci surowc\xF3w
+      na nast\u0119pn\u0105 misj\u0119."
     m_Metadata:
       m_Items: []
   - m_Id: 4562726871041
-    m_Localized: 
+    m_Localized: "Nie wahaj si\u0119. Pozw\xF3l swojemu jedynemu pracownikowi zaj\u0105\u0107
+      si\u0119 napraw\u0105 g\u0142\xF3wnego budynku - Chaty."
     m_Metadata:
       m_Items: []
   - m_Id: 3994809720832
-    m_Localized: 
+    m_Localized: "Jeste\u015B nadzorc\u0105 wioski i masz tylko jedno zadanie.\n\nMusisz
+      przetrwa\u0107."
     m_Metadata:
       m_Items: []
   - m_Id: 205056300736512
-    m_Localized: 
+    m_Localized: "Uko\u0144czenie ka\u017Cdej misji wymaga okre\u015Blonej ilo\u015Bci
+      surowc\xF3w i odbywa si\u0119 mi\u0119dzy niszczycielskimi burzami, kt\xF3re
+      wystawi\u0105 twoj\u0105 wiosk\u0119 na pr\xF3b\u0119."
     m_Metadata:
       m_Items: []
   - m_Id: 205056342679552
-    m_Localized: 
+    m_Localized: "Ostatni nadzorca uciek\u0142, zostawiaj\u0105c tylko zniszczon\u0105
+      Chat\u0119.\r\n\r\nNapraw j\u0105, planuj\u0105c sw\xF3j nast\u0119pny cykl
+      pracy."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 370743430275072
+    m_Localized: "Aby to zrobi\u0107, kliknij przycisk w lewym dolnym rogu ekranu."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 211852423782400
+    m_Localized: "Tam mo\u017Cesz zobaczy\u0107 podsumowanie wszystkiego, co wybra\u0142e\u015B
+      w konkretnych sekcjach pracy.\r\n\r\nPo skierowaniu pracownika do naprawy Chaty
+      naci\u015Bnij przycisk poni\u017Cej, aby rozpocz\u0105\u0107 nast\u0119pny
+      cykl."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 211852474114048
+    m_Localized: "Ka\u017Cdy dzie\u0144 trwa kilka godzin rzeczywistego czasu, ale
+      mo\u017Cesz pomin\u0105\u0107 ten proces oczekiwania, korzystaj\u0105c z Darmowych
+      Skok\xF3w lub wydaj\u0105c Szlify Przeznaczenia."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 211852474114049
+    m_Localized: "Aby pomin\u0105\u0107 ten dzie\u0144, naci\u015Bnij przycisk w
+      prawym dolnym rogu."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 211852474114050
+    m_Localized: "Gratulacje! Pomin\u0105\u0142e\u015B dzie\u0144 pracy a\u017C do
+      nast\u0119pnego poranka.\r\n\r\nTeraz musisz zako\u0144czy\u0107 ka\u017Cd\u0105
+      uko\u0144czon\u0105 aktywno\u015B\u0107, wi\u0119c \u015Bmia\u0142o kliknij
+      na naprawion\u0105 Chat\u0119"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 211852474114051
+    m_Localized: "Dobra robota! Teraz zaplanuj nast\u0119pny dzie\u0144 pracy, klikaj\u0105c
+      przycisk w lewym rogu."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 211852474114052
+    m_Localized: "Planuj\u0105c nowy dzie\u0144 pracy, musisz wybra\u0107 konkretn\u0105
+      prac\u0119 dla ka\u017Cdego dost\u0119pnego pracownika."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 211852474114053
+    m_Localized: "Mo\u017Cesz budowa\u0107 lub ulepsza\u0107 budynki, rozpoczyna\u0107
+      zbieranie surowc\xF3w lub zwi\u0119ksza\u0107 poziom obrony przed nast\u0119pn\u0105
+      burz\u0105.\r\n\r\nTo wszystko zale\u017Cy od ciebie, ale pami\u0119taj, \u017Ce
+      ka\u017Cdy wyb\xF3r jest wa\u017Cny dla rozwoju wioski."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 211852474114054
+    m_Localized: "Aby uko\u0144czy\u0107 misje, musisz zebra\u0107 wystarczaj\u0105c\u0105
+      ilo\u015B\u0107 punkt\xF3w surowc\xF3w.\r\n\r\nZostawienie wioski bez ochrony
+      spowoduje wi\u0119kszy poziom zniszcze\u0144, co utrudni twoj\u0105 nast\u0119pn\u0105
+      misj\u0119."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 211852474114055
+    m_Localized: "Teraz, gdy mamy miejsce do spania, nadszed\u0142 w\u0142a\u015Bciwy
+      czas, aby zacz\u0105\u0107 zbiera\u0107 jedzenie.\r\n\r\nZr\xF3b to, buduj\u0105c
+      Farm\u0119, kt\xF3ra okre\u015Bla liczb\u0119 pracownik\xF3w w twojej wiosce."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 211852474114056
+    m_Localized: "Dotknij dopiero co zbudowanej Farmy, aby zako\u0144czy\u0107 ca\u0142y
+      proces budowy."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1485459716235264
+    m_Localized: "Teraz kliknij ponownie Farm\u0119, aby uzyska\u0107 wszystkie informacje
+      o tym budynku."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 211852474114058
+    m_Localized: "Czy widzisz przyciski opisuj\u0105ce technologi\u0119 i pomagaj\u0105ce
+      twoim pracownikom?\r\n\r\nPrzydziel jednego pracownika do tego budynku, aby
+      odblokowa\u0107 unikaln\u0105 minigr\u0119 i pom\xF3c twojej wiosce rosn\u0105\u0107!"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1765999015026688
+    m_Localized: "Kieruj\u0105c pracownik\xF3w do pracy w budynkach produkcyjnych,
+      rozwijasz post\u0119p technologiczny, dzi\u0119ki kt\xF3remu mo\u017Cesz podnie\u015B\u0107
+      Poziom Technologii."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1765999052775424
+    m_Localized: "Poziom Technologii w budynku nie tylko odblokowuje minigr\u0119
+      do przyspieszania zbierania punkt\xF3w, ale tak\u017Ce zwi\u0119ksza doch\xF3d
+      z niego.\r\n"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1765999052775425
+    m_Localized: Teraz kliknij przycisk Podniesienia Poziomu Technologii.
+    m_Metadata:
+      m_Items: []
+  - m_Id: 211852474114061
+    m_Localized: "Z bardziej zaawansowanym Poziomem Technologii teraz mo\u017Cesz
+      pom\xF3c swojemu pracownikowi w polu.\r\n\r\nZr\xF3b to, klikaj\u0105c przycisk,
+      aby rozpocz\u0105\u0107 minigr\u0119 na czas."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1485459716235268
+    m_Localized: "Dobra robota! Pomagaj\u0105c pracownikom w budynku, mo\u017Cesz
+      zdoby\u0107 wiele dodatkowych punkt\xF3w, ale b\u0105d\u017A \u015Bwiadomy,
+      \u017Ce nie mo\u017Cesz wykonywa\u0107 pracy w ka\u017Cdym miejscu pracy."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 211852474114064
+    m_Localized: "Nadszed\u0142 czas, aby przygotowa\u0107 si\u0119 na nadchodz\u0105c\u0105
+      burz\u0119. Nigdy nie wiesz, kiedy dok\u0142adnie nadejdzie."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 211852474114065
+    m_Localized: "Aby odblokowa\u0107 plany budowy Wie\u017Cy Stra\u017Cniczej, odbierz
+      nagrod\u0119 za zadanie, naciskaj\u0105c miga\u0107 przyciski w prawym g\xF3rnym
+      rogu, a nast\u0119pnie Awansuj, aby odblokowa\u0107 nowy budynek i podnie\u015B
+      poziom Chaty."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1485459716235269
+    m_Localized: "Buduj\u0105c Wie\u017C\u0119 Stra\u017Cnicz\u0105, b\u0119dziesz
+      m\xF3g\u0142 nie tylko podnie\u015B\u0107 Punkty Obrony za pomoc\u0105 pracownik\xF3w,
+      ale tak\u017Ce sprawdzi\u0107, czy burza nast\u0105pi w ci\u0105gu najbli\u017Cszych
+      dw\xF3ch dni."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1485459716235270
+    m_Localized: "Zr\xF3b to, najpierw podnosz\u0105c Poziom Technologii, a nast\u0119pnie
+      graj\u0105c w minigr\u0119, kt\xF3ra wp\u0142ywa na Wska\u017Anik Burzy."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1765999052775426
+    m_Localized: "Wska\u017Anik Burzy pokazuje wszystkie dni, kt\xF3re trwa pojedyncza
+      misja.\r\n\r\nGdy wska\u017Anik zmieni kszta\u0142t na b\u0142yskawic\u0119,
+      burza mo\u017Ce nast\u0105pi\u0107 w dowolnym dniu."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1765999052775427
+    m_Localized: "Widzisz? Wygl\u0105da na to, \u017Ce ta noc mo\u017Ce przynie\u015B\u0107
+      ze sob\u0105 niebezpiecze\u0144stwo, ale poniewa\u017C nie masz wystarczaj\u0105cej
+      ilo\u015Bci punkt\xF3w surowc\xF3w, nie mo\u017Cesz po prostu uciec z powrotem
+      do miasta.\n\nB\u0119dziesz musia\u0142 stawi\u0107 temu czo\u0142a."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1485459716235271
+    m_Localized: "Nadesz\u0142a burza, ale jest na tyle s\u0142aba, \u017Ce mo\u017Cesz
+      walczy\u0107 sam. Teraz mo\u017Cesz wybra\u0107 budynek, kt\xF3ry chcesz broni\u0107
+      za wszelk\u0105 cen\u0119, aby upewni\u0107 si\u0119, \u017Ce nie zostanie
+      uszkodzony przez potwory."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1765999052775428
+    m_Localized: "Uda\u0142o ci si\u0119 obroni\u0107 wiosk\u0119, ale kosztem wszystkich
+      Punkt\xF3w Surowc\xF3w, kt\xF3re nie mog\u0142y by\u0107 ukryte w piwnicy.\r\n\r\nMisja
+      na okre\u015Blon\u0105 ilo\u015B\u0107 Surowc\xF3w wci\u0105\u017C jest na
+      stole, wi\u0119c zakasaj r\u0119kawy i zabierz si\u0119 do pracy."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1765999052775429
+    m_Localized: "Czujesz si\u0119 zagubiony co do kolejnych krok\xF3w? \u015Amia\u0142o
+      sprawd\u017A zadania poboczne w prawym g\xF3rnym rogu, aby wr\xF3ci\u0107 na
+      \u015Bcie\u017Ck\u0119 rozwoju twojej wioski."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1765999052775430
+    m_Localized: "Ka\u017Cde wykonane zadanie poboczne zapewni ci Szlify Przeznaczenia,
+      podczas gdy Awansowanie da ci nowe plany budynk\xF3w.\r\n\r\nI pami\u0119taj
+      - przegrywanie jest cz\u0119\u015Bci\u0105 procesu."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 1765999052775431
+    m_Localized: "Uzyska\u0142e\u015B dost\u0119p do specjalnych b\u0142ogos\u0142awie\u0144stw
+      od bog\xF3w.\r\n\r\nKliknij przycisk Panelu Bog\xF3w, aby uzyska\u0107 dost\u0119p
+      do wzmocnie\u0144 dla konkretnych budynk\xF3w."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 10427995221979136
+    m_Localized: "Rozwijaj swoj\u0105 wiosk\u0119. Zbieraj surowce. Wykonuj misje.
+      Przygotuj si\u0119 na burz\u0119. To twoje zadanie."
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15902587467243520
+    m_Localized: "Wykonaj prac\u0119 w {0} {1} razy"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15902587484020736
+    m_Localized: 'Napraw: {0}'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15902587484020737
+    m_Localized: Ulepsz {0} do {1} poziomu
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15902587484020738
+    m_Localized: "Zwi\u0119ksz poziom Technologii w {0} do {1} poziomu"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15902587484020739
+    m_Localized: "Zdob\u0105d\u017A {1} Punkt\xF3w Surowc\xF3w z Minigry"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15902587484020740
+    m_Localized: " Zdob\u0105d\u017A {1} Punkt\xF3w Obrony z Minigry"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15902587484020741
+    m_Localized: "Zdob\u0105d\u017A {1} Punkt\xF3w Surowc\xF3w"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15902587484020742
+    m_Localized: "Zdob\u0105d\u017A {0} Punkt\xF3w Obrony"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15902587484020743
+    m_Localized: "Uko\u0144czono"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15902587484020744
+    m_Localized: 'Obecny poziom: {0}'
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15902587484020745
+    m_Localized: Napraw Budynek 0/1
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15902587484020746
+    m_Localized: Rozegrane Minigry {0}/{1}
     m_Metadata:
       m_Items: []
   references:
