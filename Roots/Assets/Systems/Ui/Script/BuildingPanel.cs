@@ -563,7 +563,7 @@ namespace InGameUi
         private void UpdateRequirementsText(SingleBuildingRefs p_script, Requirements p_requirements)
         {
             p_script.BuildingInfo.GetComponent<TextMeshProUGUI>().text =
-                $"{_resourcePoints.GetLocalizedString()} {p_requirements.ResourcePoints}\n" +
+                $"{_resourcePoints.GetLocalizedString()}: {p_requirements.ResourcePoints}\n" +
                 $"{_daysToComplete.GetLocalizedString()} {p_requirements.DaysToComplete}\n";
         }
 

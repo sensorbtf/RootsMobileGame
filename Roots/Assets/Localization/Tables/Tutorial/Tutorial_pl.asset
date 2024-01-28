@@ -245,15 +245,15 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 15902587484020739
-    m_Localized: "Zdob\u0105d\u017A {1} Punkt\xF3w Surowc\xF3w z Minigry"
+    m_Localized: "Zdob\u0105d\u017A {0} Punkt\xF3w Surowc\xF3w z Minigry"
     m_Metadata:
       m_Items: []
   - m_Id: 15902587484020740
-    m_Localized: " Zdob\u0105d\u017A {1} Punkt\xF3w Obrony z Minigry"
+    m_Localized: " Zdob\u0105d\u017A {0} Punkt\xF3w Obrony z Minigry"
     m_Metadata:
       m_Items: []
   - m_Id: 15902587484020741
-    m_Localized: "Zdob\u0105d\u017A {1} Punkt\xF3w Surowc\xF3w"
+    m_Localized: "Zdob\u0105d\u017A {0} Punkt\xF3w Surowc\xF3w"
     m_Metadata:
       m_Items: []
   - m_Id: 15902587484020742

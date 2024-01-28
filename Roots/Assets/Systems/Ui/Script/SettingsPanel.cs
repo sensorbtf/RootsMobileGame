@@ -147,6 +147,7 @@ namespace InGameUi
 
         private void ResetGame()
         {
+            PlayerPrefs.DeleteAll();
             _gameManager.ResetSave();
         }
 

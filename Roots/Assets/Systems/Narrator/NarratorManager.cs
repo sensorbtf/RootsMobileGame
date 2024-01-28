@@ -37,7 +37,6 @@ namespace Narrator
             _worldManager.OnNewMissionStart += TryToActivateBonus;
             
             _currentSubText = 0;
-            OnTutorialAdvancement?.Invoke(true);
         }
 
         private void OnDestroy()
