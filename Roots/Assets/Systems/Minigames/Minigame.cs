@@ -14,10 +14,6 @@ namespace Minigames
 {
     public abstract class Minigame : MonoBehaviour
     {
-        [SerializeField] internal AudioManager _audioManager;
-        [SerializeField] internal WorldManager _worldManager;
-        [SerializeField] internal BuildingsManager _buildingsManager;
-        [SerializeField] internal GodsManager _godsManager;
         [SerializeField] internal MinigameLocalizationSO _localization;
 
         [HideInInspector] public float _timer;
@@ -27,13 +23,18 @@ namespace Minigames
         private bool _isAltar;
         private GodType _selectedGod;
         private BlessingLevel _selectedBlessing;
+        
+        internal AudioManager _audioManager;
+        internal WorldManager _worldManager;
+        internal BuildingsManager _buildingsManager;
+        internal GodsManager _godsManager;
 
         [HideInInspector] public float _score;
         [HideInInspector] public PointsType _type;
         public Button _collectPointsButton;
         public TextMeshProUGUI _coutdownText; // Countdown
-        private TextMeshProUGUI _scoreText; // top panel title 
-        private TextMeshProUGUI _timeText; // bottom button time text
+        [SerializeField] private TextMeshProUGUI _scoreText; // top panel title 
+        [SerializeField] private TextMeshProUGUI _timeText; // bottom button time text
 
         public event Action OnMinigameEnded;
         public event Action<PointsType, int> OnMiniGamePointsCollected;

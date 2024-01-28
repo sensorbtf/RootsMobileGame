@@ -388,6 +388,17 @@ namespace World
         {
             OnStormCheck?.Invoke(p_daysToSee);
         }
+        
+        public bool WillStormBeInTwoDays()
+        {
+            var day = CurrentDay;
+            if (day + 2 < FinalHiddenStormDay)
+            {
+                return false;
+            }
+            
+            return true;
+        }
 
         #region Saving
         public WorldManagerSavedData GetSavedData()

@@ -9,8 +9,12 @@ namespace Minigames
 {
     public class WatchtowerRightLeftClickingMinigame : Minigame
     {
+        [SerializeField] private Sprite _stormBackground;
+        [SerializeField] private Sprite _sunBackground;
+        [SerializeField] private Image _background;
         [SerializeField] private GameObject _topLayer;
         [SerializeField] private Texture2D _topTexture;
+        [SerializeField] private int _brushSize;
         private bool _isErasing = false;
         private bool _erasedEverything = false;
 
@@ -70,6 +74,15 @@ namespace Minigames
         {
             base.SetupGame(p_building);
 
+            if (_worldManager.WillStormBeInTwoDays())
+            {
+                _background.sprite = _stormBackground;
+            }
+            else
+            {
+                _background.sprite = _sunBackground;
+            }
+            
             Image imageComponent = _topLayer.GetComponent<Image>();
             Sprite sprite = imageComponent.sprite;
             _topTexture = CreateReadableTexture(sprite.texture);
@@ -117,27 +130,28 @@ namespace Minigames
 
         private void EraseAtPosition(Vector2 p_position)
         {
-            int x = (int)(p_position.x * _topTexture.width);
-            int y = (int)(p_position.y * _topTexture.height);
-            int brushSize = 50;
-            float radiusSquared = brushSize * brushSize;
+            float radiusSquared = _brushSize * _brushSize;
 
-            for (int i = -brushSize; i <= brushSize; i++)
+            Color[] pixels = _topTexture.GetPixels();
+
+            for (int i = -_brushSize; i <= _brushSize; i++)
             {
-                for (int j = -brushSize; j <= brushSize; j++)
+                for (int j = -_brushSize; j <= _brushSize; j++)
                 {
-                    if (i * i + j * j <= radiusSquared)
-                    {
-                        int px = Mathf.Clamp(x + i, 0, _topTexture.width - 1);
-                        int py = Mathf.Clamp(y + j, 0, _topTexture.height - 1);
-                        _topTexture.SetPixel(px, py, new Color(0, 0, 0, 0));
-                    }
+                    if (!(i * i + j * j <= radiusSquared)) 
+                        continue;
+                    
+                    var px = Mathf.Clamp((int)(p_position.x * _topTexture.width) + i, 0, _topTexture.width - 1);
+                    var py = Mathf.Clamp((int)(p_position.y * _topTexture.height) + j, 0, _topTexture.height - 1);
+                    pixels[py * _topTexture.width + px] = new Color(0, 0, 0, 0);
                 }
             }
 
+            _topTexture.SetPixels(pixels);
             _topTexture.Apply();
             ApplyTextureToUI(_topTexture);
         }
+
         
         private void ApplyTextureToUI(Texture2D texture)
         {

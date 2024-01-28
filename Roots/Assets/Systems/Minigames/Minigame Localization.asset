@@ -66,6 +66,24 @@ MonoBehaviour:
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
+  GuardTowerStorm:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  SacrificialAltarReward:
+    m_TableReference:
+      m_TableCollectionName: 
+    m_TableEntryReference:
+      m_KeyId: 0
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   FarmInfo:
     m_TableReference:
       m_TableCollectionName: GUID:22d71a5c37154b44b900b979d13ef516
@@ -176,108 +194,108 @@ MonoBehaviour:
     m_LocalVariables: []
   FarmInfoBottom:
     m_TableReference:
-      m_TableCollectionName: 
+      m_TableCollectionName: GUID:22d71a5c37154b44b900b979d13ef516
     m_TableEntryReference:
-      m_KeyId: 0
+      m_KeyId: 6057672042258433
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
   GuardTowerInfoBottom:
     m_TableReference:
-      m_TableCollectionName: 
+      m_TableCollectionName: GUID:22d71a5c37154b44b900b979d13ef516
     m_TableEntryReference:
-      m_KeyId: 0
+      m_KeyId: 6057672042258435
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
   WoodcutterInfoBottom:
     m_TableReference:
-      m_TableCollectionName: 
+      m_TableCollectionName: GUID:22d71a5c37154b44b900b979d13ef516
     m_TableEntryReference:
-      m_KeyId: 0
+      m_KeyId: 6057672042258434
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
   Alchemical_HutInfoBottom:
     m_TableReference:
-      m_TableCollectionName: 
+      m_TableCollectionName: GUID:22d71a5c37154b44b900b979d13ef516
     m_TableEntryReference:
-      m_KeyId: 0
+      m_KeyId: 6057672042258436
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
   Mining_ShaftInfoBottom:
     m_TableReference:
-      m_TableCollectionName: 
+      m_TableCollectionName: GUID:22d71a5c37154b44b900b979d13ef516
     m_TableEntryReference:
-      m_KeyId: 0
+      m_KeyId: 6057672042258437
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
   Ritual_CircleInfoBottom:
     m_TableReference:
-      m_TableCollectionName: 
+      m_TableCollectionName: GUID:22d71a5c37154b44b900b979d13ef516
     m_TableEntryReference:
-      m_KeyId: 0
+      m_KeyId: 6057672042258438
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
   Peat_ExcavationInfoBottom:
     m_TableReference:
-      m_TableCollectionName: 
+      m_TableCollectionName: GUID:22d71a5c37154b44b900b979d13ef516
     m_TableEntryReference:
-      m_KeyId: 0
+      m_KeyId: 6057672042258439
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
   Charcoal_PileInfoBottom:
     m_TableReference:
-      m_TableCollectionName: 
+      m_TableCollectionName: GUID:22d71a5c37154b44b900b979d13ef516
     m_TableEntryReference:
-      m_KeyId: 0
+      m_KeyId: 6057672042258440
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
   Herbs_GardenInfoBottom:
     m_TableReference:
-      m_TableCollectionName: 
+      m_TableCollectionName: GUID:22d71a5c37154b44b900b979d13ef516
     m_TableEntryReference:
-      m_KeyId: 0
+      m_KeyId: 6057672042258441
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
   ApiaryInfoBottom:
     m_TableReference:
-      m_TableCollectionName: 
+      m_TableCollectionName: GUID:22d71a5c37154b44b900b979d13ef516
     m_TableEntryReference:
-      m_KeyId: 0
+      m_KeyId: 6057672042258442
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
   WorkshopInfoBottom:
     m_TableReference:
-      m_TableCollectionName: 
+      m_TableCollectionName: GUID:22d71a5c37154b44b900b979d13ef516
     m_TableEntryReference:
-      m_KeyId: 0
+      m_KeyId: 6057672042258443
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
   Sacrificial_AltarInfoBottom:
     m_TableReference:
-      m_TableCollectionName: 
+      m_TableCollectionName: GUID:22d71a5c37154b44b900b979d13ef516
     m_TableEntryReference:
-      m_KeyId: 0
+      m_KeyId: 6057672042258444
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0

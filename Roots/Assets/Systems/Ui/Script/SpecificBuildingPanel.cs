@@ -26,6 +26,9 @@ namespace InGameUi
         [SerializeField] private Slider _levelUpProgression;
         [SerializeField] private TextMeshProUGUI _sliderValue;
         [SerializeField] private GameObject _sliderGos;
+        [SerializeField] private Image _handleImage;
+        [SerializeField] private Sprite _workIcon;
+        [SerializeField] private Sprite _resourcesIcon;
 
         [Header("Efficiency Slider")]
         [SerializeField] private Slider _efficiencySlider;
@@ -52,7 +55,7 @@ namespace InGameUi
         [SerializeField] private LocalizedString _requirementsMetText;
         [SerializeField] private LocalizedString _lvlText;
 
-        
+        private RectTransform _rectTransform;
         private bool _areRequirementsMet;
         private Building _building;
         private BuildingData _buildingData;
@@ -79,7 +82,7 @@ namespace InGameUi
             _lvlUpButton = _lvlUpGo.GetComponent<Button>();
             _lvlUpButtonText = _lvlUpGo.GetComponentInChildren<TextMeshProUGUI>();
             _startMiniGameButton = _getIntoWorkGo.GetComponent<Button>();
-
+            _rectTransform = GetComponent<RectTransform>();
             gameObject.SetActive(false);
         }
 
@@ -134,7 +137,7 @@ namespace InGameUi
             _getIntoWorkGo.SetActive(true);
             _scrollBarGo.SetActive(true);
             _sliderGos.SetActive(true);
-            GetComponent<RectTransform>().sizeDelta = new Vector2(900, 1200);
+            
             _buildingName.text = $"{_buildingData.BuildingName.GetLocalizedString()} ({_building.CurrentLevel} {_lvlText.GetLocalizedString()})";
 
             if (_buildingData.Type == BuildingType.Cottage)
@@ -176,13 +179,14 @@ namespace InGameUi
             else
                 _levelUpProgression.value = buildingsManager.CurrentResourcePoints;
 
+            _handleImage.sprite = _resourcesIcon;
+            
             _sliderValue.text = $"{_resourcesInBasement.GetLocalizedString()} {_levelUpProgression.value}/{_levelUpProgression.maxValue}";
             _getIntoWorkGo.SetActive(false);
             _lvlUpGo.SetActive(false);
             _getIntoWorkGo.SetActive(false);
             _scrollBarGo.SetActive(false);
             _sliderGos.SetActive(false);
-            GetComponent<RectTransform>().sizeDelta = new Vector2(900, 700);
         }
 
         private void HandleView()
@@ -202,6 +206,8 @@ namespace InGameUi
             _durationSlider.maxValue = _buildingData.Technology.DataPerTechnologyLevel.Last().Efficiency;
             _durationSlider.value = _technology[_building.CurrentTechnologyLvl].Efficiency;
             _durationSliderValue.text = $"{_efficiencySlider.value}/{_efficiencySlider.maxValue}";
+            
+            _handleImage.sprite = _workIcon;
             
             var nextLevel = _building.CurrentTechnologyLvl;
             nextLevel++;

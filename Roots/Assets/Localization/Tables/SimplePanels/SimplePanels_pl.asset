@@ -90,9 +90,9 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 6898489451520003
-    m_Localized: "Czas nieobecno\u015Bci: {0} godzin \\n Otrzyma\u0142e\u015B {1}
-      darmowych przyspiesze\u0144 czasu \\n Teraz pozosta\u0142o {2}/{3} darmowych
-      przyspiesze\u0144 czasu"
+    m_Localized: "Po {0} godzinnej nieobecno\u015Bci otrzyma\u0142e\u015B {1} darmowych
+      przyspiesze\u0144 czasu\nTeraz masz dost\u0119p do {2} z {3} maksymalnie dost\u0119pnych
+      darmowych przyspiesze\u0144 czasu"
     m_Metadata:
       m_Items: []
   - m_Id: 6898489451520004

@@ -93,8 +93,10 @@ namespace InGameUi
             HandleTurnOnOff(true);
             
             _uiReferences.Title.text = _welcomeBack.GetLocalizedString();
-            _uiReferences.Description.text = string.Format(_abstenceText.GetLocalizedString(), _gameManager.HoursOfAbstence,
+            var text = string.Format(_abstenceText.GetLocalizedString(), _gameManager.HoursOfAbstence,
                 _gameManager.FreeSkipsGotten, _gameManager.FreeSkipsLeft, _gameManager.MaxFreeSkipsAmount);
+            _uiReferences.Description.text = text;
+            _uiReferences.Description.SetAllDirty();
             
             _uiReferences.NoButtonGo.gameObject.SetActive(false);
             _uiReferences.YesButtonGo.gameObject.SetActive(true);

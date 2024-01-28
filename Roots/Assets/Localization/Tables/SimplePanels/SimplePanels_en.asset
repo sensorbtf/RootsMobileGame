@@ -89,8 +89,10 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 6898489451520003
-    m_Localized: 'Absence time: {0} hours \n You were granted with {1} free skips
-      \n Now you have {2}/{3} free skips left'
+    m_Localized: 'After {0} hour absence, you received {1} free time skips
+
+      Now
+      you have access to {2} of max {3} free time skips'
     m_Metadata:
       m_Items: []
   - m_Id: 6898489451520004
