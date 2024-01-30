@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using AudioSystem;
 using Buildings;
 using GeneralSystems;
 using TMPro;
@@ -15,6 +16,7 @@ namespace InGameUi
         [FormerlySerializedAs("_buildingManager")] [SerializeField]
         private BuildingsManager buildingsManager;
 
+        [SerializeField] private AudioManager _audioManager;
         [SerializeField] private WorkersManager _workersManager;
         [SerializeField] private BuildingPanel _buildingPanel;
         [SerializeField] private GameObject _gatheringDefenseEntryPrefab;
@@ -22,6 +24,10 @@ namespace InGameUi
         [SerializeField] private Transform contentTransform;
         [SerializeField] private TextMeshProUGUI _numberOfWorkers;
         [SerializeField] private TextMeshProUGUI _panelName;
+        
+        [Header("Audio")]
+        [SerializeField] private AudioClip _onAssignEffect;
+        [SerializeField] private AudioClip _onUnAssignEffect;
         
         [SerializeField] private LocalizedString _gatheringPanelTitle;
         [SerializeField] private LocalizedString _defensePanelTitle;
@@ -58,7 +64,8 @@ namespace InGameUi
 
         private void ClosePanel()
         {
-            foreach (var createdUiElement in _runtimeBuildingsUiToDestroy) Destroy(createdUiElement);
+            foreach (var createdUiElement in _runtimeBuildingsUiToDestroy) 
+                Destroy(createdUiElement);
 
             CameraController.IsUiOpen = false;
 
@@ -66,7 +73,7 @@ namespace InGameUi
             _createdUiElements.Clear();
 
             GameplayHud.BlockHud = false;
-
+            _audioManager.PlayButtonSoundEffect(true);
             gameObject.SetActive(false);
         }
 
@@ -229,6 +236,8 @@ namespace InGameUi
                     _workersManager.WorkersInDefences++;
 
                 BuildingsOnQueue.Add(p_building);
+                _audioManager.CreateNewAudioSource(_onAssignEffect);
+
             }
             else
             {
@@ -238,6 +247,7 @@ namespace InGameUi
                     _workersManager.WorkersInDefences--;
 
                 BuildingsOnQueue.Remove(p_building);
+                _audioManager.CreateNewAudioSource(_onUnAssignEffect); 
             }
 
             UpdateWorkersText(p_gathering);

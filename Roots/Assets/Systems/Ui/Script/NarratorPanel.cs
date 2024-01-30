@@ -159,7 +159,7 @@ namespace InGameUi
                 Text.text = "";
             }
             
-            _audioManager.PlaySpecificSoundEffect(_unrollingPaper);
+            _audioManager.CreateNewAudioSource(_unrollingPaper);
             float elapsed = 0;
             Vector3 initialPosition = gameObject.transform.localPosition;
 

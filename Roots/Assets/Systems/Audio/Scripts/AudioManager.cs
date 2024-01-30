@@ -22,12 +22,12 @@ namespace AudioSystem
             _musicSource.clip = _backgroundMusic;
             _musicSource.Play();
         }
-
-        public void PlaySpecificSoundEffect(AudioClip p_audioClip)
+        
+        public void PlayWindEffect(AudioClip p_audioClip)
         {
-            if (_blockEffects)
+            if (_blockEffects || _effectSource.isPlaying)
                 return;
-            
+
             _effectSource.clip = p_audioClip;
             _effectSource.Play();
         }

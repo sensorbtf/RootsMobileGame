@@ -126,13 +126,13 @@ namespace InGameUi
         {
             if (p_scriptDefendToggle.isOn)
             {
-                _audioManager.PlaySpecificSoundEffect(_defendBuildingSound);
+                _audioManager.CreateNewAudioSource(_defendBuildingSound);
                 _workersManager.WorkersDefending++;
                 p_building.IsProtected = true;
             }
             else
             {
-                _audioManager.PlaySpecificSoundEffect(_undefendBuilding);
+                _audioManager.CreateNewAudioSource(_undefendBuilding);
                 _workersManager.WorkersDefending--;
                 p_building.IsProtected = false;
             }

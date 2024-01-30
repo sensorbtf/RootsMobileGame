@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using AudioSystem;
 using Buildings;
 using GameManager;
@@ -7,6 +8,7 @@ using Narrator;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Localization;
+using UnityEngine.Localization.Settings;
 using UnityEngine.UI;
 using World;
 using Random = UnityEngine.Random;
@@ -85,8 +87,10 @@ namespace InGameUi
         [SerializeField] private AudioClip _rankUpSound;
         [SerializeField] private AudioClip _onQuestCompletionSound;
         [SerializeField] private AudioClip _daySkippedSound;
+        [SerializeField] private AudioClip _pointGot;
 
         // Quests
+        private float _speedMultiplier = 200;
         private float _singleDayGoWidth;
         private Button _skipDayButton;
 
@@ -173,6 +177,8 @@ namespace InGameUi
             _stormButton.onClick.RemoveAllListeners();
             _stormButton.onClick.AddListener(delegate { _infoPanel.ShowStormInfo(); });
             
+            LocalizationSettings.SelectedLocaleChanged += OnLocaleChanged;
+            
             _buildingsManager.OnResourcePointsChange += RefreshResourcePoints;
             _buildingsManager.OnDefensePointsChange += RefreshDefensePoints;
             _buildingsManager.OnDestinyShardsPointsChange += RefreshShardsPoints;
@@ -208,6 +214,7 @@ namespace InGameUi
 
         private void OnDestroy()
         {
+            LocalizationSettings.SelectedLocaleChanged -= OnLocaleChanged;
             _buildingsManager.OnResourcePointsChange -= RefreshResourcePoints;
             _buildingsManager.OnDefensePointsChange -= RefreshDefensePoints;
             _buildingsManager.OnDestinyShardsPointsChange -= RefreshShardsPoints;
@@ -229,10 +236,17 @@ namespace InGameUi
 
         private void Update()
         {
+            VinetePanel.SetActive(BlockHud);
             _skipDayText.text = _gameManager.TimePassed;
 
-            MovePoints();
-            VinetePanel.SetActive(BlockHud);
+            if (_createdImages.Values.Any(x=> x.Count > 0))
+            {
+                MovePoints();
+            }
+            else
+            {
+                _speedMultiplier = 200;
+            }
 
             if (_state != DuringDayState.WorkDayFinished)
             {
@@ -423,32 +437,40 @@ namespace InGameUi
             if (p_makeIcons)
                 TryToCreatePoints(p_points, PointsType.Resource);
         }
+        
 
         private void TryToCreatePoints(int p_points, PointsType p_pointsType)
         {
             if (p_points <= 0)
                 return;
 
-            var dividedPoints = p_points / 3;
+            var dividedPoints = p_points / 2;
 
             if (dividedPoints == 0)
                 dividedPoints = 1;
 
+            var resolution = Mathf.Min(Screen.width, Screen.height);
+            
+            float jitterPercentage = 0.1f; 
+            float jitter = resolution * jitterPercentage;
+            float pointSizePercentage = resolution > 1080 ? 0.05f : 0.1f; 
+            float pointSize =  resolution * pointSizePercentage;
+            Vector2 pointSizeVector = new Vector2(pointSize, pointSize);
+
             for (var i = 0; i < dividedPoints; i++)
             {
                 var imageObject = new GameObject("Points" + i);
-                imageObject.transform.SetParent(_mainCanvas.transform);
+                imageObject.transform.SetParent(_mainCanvas.transform, false);
                 Image image = imageObject.AddComponent<Image>();
 
                 var rectTransform = imageObject.GetComponent<RectTransform>();
-                rectTransform.sizeDelta = new Vector2(50, 50);
+                rectTransform.sizeDelta = pointSizeVector;
+
                 Vector3 lastClickPosition = TransparentPanelClickHandler.LastClickPosition;
 
-                var jitter = 50f;
                 lastClickPosition.x += Random.Range(-jitter, jitter);
                 lastClickPosition.y += Random.Range(-jitter, jitter);
 
-                // Set the jittered position to the RectTransform
                 rectTransform.position = lastClickPosition;
 
                 switch (p_pointsType)
@@ -456,40 +478,60 @@ namespace InGameUi
                     case PointsType.Resource:
                         image.sprite = _buildingsManager.ResourcesPointsIcon;
                         _createdImages[ResourcePointsImage.rectTransform].Add(imageObject);
-                        _audioManager.PlaySpecificSoundEffect(_resourcePointsManipulation);
                         break;
                     case PointsType.Defense:
                         image.sprite = _buildingsManager.DefensePointsIcon;
                         _createdImages[DefensePointsImage.rectTransform].Add(imageObject);
-                        _audioManager.PlaySpecificSoundEffect(_defensePointsManipulation);
                         break;
                     case PointsType.StarDust:
                         image.sprite = _buildingsManager.ShardsOfDestinyIcon;
                         _createdImages[ShardsOfDestinyImage.rectTransform].Add(imageObject);
-                        _audioManager.PlaySpecificSoundEffect(_destinyShardsManipulation);
                         break;
                 }
             }
+            
+            switch (p_pointsType)
+            {
+                case PointsType.Resource:
+                    _audioManager.CreateNewAudioSource(_resourcePointsManipulation);
+                    break;
+                case PointsType.Defense:
+                    _audioManager.CreateNewAudioSource(_defensePointsManipulation);
+                    break;
+                case PointsType.StarDust:
+                    _audioManager.CreateNewAudioSource(_destinyShardsManipulation);
+                    break;
+            }
         }
-
+        
         private void MovePoints()
         {
+            _speedMultiplier += Time.deltaTime * 50f;
+            float referenceDimension = Screen.width + Screen.height;
+            float speedScaleFactor = referenceDimension / 1080f; 
+            float distanceThreshold = referenceDimension * 0.001f;
+
             foreach (var specificImages in _createdImages)
+            {
                 for (var i = specificImages.Value.Count - 1; i >= 0; i--)
                 {
                     var imageObject = specificImages.Value[i];
                     var rectTransform = imageObject.GetComponent<RectTransform>();
-                    rectTransform.position = Vector2.MoveTowards(rectTransform.position,
-                        specificImages.Key.transform.position, 1000 * Time.deltaTime);
+                    var speed = _speedMultiplier * speedScaleFactor * Time.deltaTime;
 
-                    if (Vector2.Distance(rectTransform.position, specificImages.Key.transform.position) < 0.1f)
+                    rectTransform.position = Vector2.MoveTowards(rectTransform.position,
+                        specificImages.Key.transform.position, speed);
+
+                    if (Vector2.Distance(rectTransform.position, specificImages.Key.transform.position) < distanceThreshold)
                     {
                         specificImages.Value.RemoveAt(i);
+                        _audioManager.CreateNewAudioSource(_pointGot);
                         Destroy(imageObject);
                     }
                 }
+            }
         }
-
+        
         private void MainButtonHandler(DuringDayState p_newState)
         {
             _state = p_newState;
@@ -583,7 +625,7 @@ namespace InGameUi
 
         private void OnWorkDaySkipped(WayToSkip p_skipSource)
         {
-            _audioManager.PlaySpecificSoundEffect(_daySkippedSound);
+            _audioManager.CreateNewAudioSource(_daySkippedSound);
             
             _skipDayButton.onClick.RemoveAllListeners();
             SkipDayGo.SetActive(false);
@@ -618,7 +660,7 @@ namespace InGameUi
 
         private void GatherPointsFromQuest(int p_questIndex, Quest p_quest)
         {
-            _audioManager.PlaySpecificSoundEffect(_onQuestCompletionSound);
+            _audioManager.CreateNewAudioSource(_onQuestCompletionSound);
 
             p_quest.IsRedeemed = true;
 
@@ -665,7 +707,7 @@ namespace InGameUi
 
         private void HandleQuestsCompletion()
         {
-            _audioManager.PlaySpecificSoundEffect(_rankUpSound);
+            _audioManager.CreateNewAudioSource(_rankUpSound);
 
             _narratorManager.TryToActivateNarrator(TutorialStep.AfterRankUp_Q16);
 
@@ -703,5 +745,59 @@ namespace InGameUi
         }
 
         #endregion
+
+        private void OnLocaleChanged(Locale p_locale)
+        {
+            RefreshQuestsText();
+            
+            if (_gameManager.CanUseSkipByTime)
+            {
+                _skipDayText.text = _endDay.GetLocalizedString();
+            }
+            
+            if (!_gameManager.CanUseSkipByTime && _gameManager.CanSkipDay(out var skipPossibility))
+            {
+                if (_wasMainButtonRefreshed)
+                {
+                    if (skipPossibility == WayToSkip.FreeSkip)
+                        _paidSkipDayText.text = string.Format(_skippingFreeSkipText.GetLocalizedString(), _gameManager.FreeSkipsLeft);
+                    else if (skipPossibility == WayToSkip.PaidSkip)
+                        _paidSkipDayText.text = string.Format(_skippingStartDustText.GetLocalizedString(), _gameManager.DestinyShardsSkipPrice);
+                }
+            }
+
+            if (_worldManager.CurrentMission >= _worldManager.NeededMissionToRankUp)
+            {
+                _currentRankText.text = _clickToRankUp.GetLocalizedString();
+            }
+            else
+            {
+                QuestsCompletedGo.GetComponentInChildren<TextMeshProUGUI>().text =
+                    string.Format(_completeMissionToRankUp.GetLocalizedString(), _worldManager.NeededMissionToRankUp);
+            }
+            
+            _currentRankText.text = _clickToRankUp.GetLocalizedString();
+            
+            switch (_state)
+            {
+                case DuringDayState.FinishingBuilding:
+                    _endDayButtonText.text = _finalizeBuildingProcess.GetLocalizedString();
+                    break;
+                case DuringDayState.CollectingResources:
+                    _endDayButtonText.text = _collectAvaiablePoints.GetLocalizedString();
+                    break;
+                case DuringDayState.WorkDayFinished:
+                        _endDayButtonText.text = _planNextDay.GetLocalizedString();
+                    break;
+
+                case DuringDayState.SettingWorkers:
+                    _endDayButtonText.text =  _settingWorkers.GetLocalizedString();
+                    break;
+
+                case DuringDayState.DayPassing:
+                    _endDayButtonText.text = _dayIsPassing.GetLocalizedString();
+                    break;
+            }
+        }
     }
 }

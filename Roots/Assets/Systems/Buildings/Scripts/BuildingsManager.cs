@@ -359,7 +359,7 @@ namespace Buildings
 
         private void PublishBuildingRepaired(Building p_building)
         {
-            _audioManager.PlaySpecificSoundEffect(_buildingFinishedEffect);
+            _audioManager.CreateNewAudioSource(_buildingFinishedEffect);
 
             AssignWorker(p_building, false);
             OnBuildingStateChanged?.Invoke(p_building);
@@ -368,7 +368,7 @@ namespace Buildings
 
         private void PublishBuildingBuiltEvent(Building p_building, bool p_unassignWorkers)
         {
-            _audioManager.PlaySpecificSoundEffect(_buildingFinishedEffect);
+            _audioManager.CreateNewAudioSource(_buildingFinishedEffect);
 
             if (p_building.BuildingMainData.LevelToEnableMinigame == p_building.CurrentLevel)
                 BuildingWithEnabledMinigame.Add(p_building);
@@ -401,7 +401,7 @@ namespace Buildings
 
         private void HandleBuildingClicked(Building p_building)
         {
-            _audioManager.PlaySpecificSoundEffect(GetRightSoundEffect(p_building.BuildingMainData.Type));
+            _audioManager.CreateNewAudioSource(GetRightSoundEffect(p_building.BuildingMainData.Type));
 
             OnBuildingClicked?.Invoke(p_building);
         }

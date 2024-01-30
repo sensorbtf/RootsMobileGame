@@ -142,15 +142,15 @@ namespace InGameUi
             
             if (_building.IsDamaged)
             {
-                stateText = _buildingDestroyed.GetLocalizedString();
+                stateText = $"({_buildingDestroyed.GetLocalizedString()}";
             }
             else if (_building.IsBeeingUpgradedOrBuilded)
             {
-                stateText = _workInProgress.GetLocalizedString();
+                stateText = $"({_workInProgress.GetLocalizedString()}";
             }
             
             _buildingName.text = $"{_buildingData.BuildingName.GetLocalizedString()} " +
-                                 $"({_building.CurrentLevel} {_lvlText.GetLocalizedString()}) ({stateText})";
+                                 $"({_building.CurrentLevel} {_lvlText.GetLocalizedString()}) {stateText}";
 
             if (_buildingData.Type == BuildingType.Cottage)
             {

@@ -131,7 +131,7 @@ namespace GameManager
         {
             _shouldUpdate = false;
 
-            Application.targetFrameRate = 30;
+            Application.targetFrameRate = 60;
             _startDayTime = DateTime.UtcNow;
             _sessionStartTime = DateTime.UtcNow;
 
@@ -164,7 +164,6 @@ namespace GameManager
         {
             yield return StartCoroutine(_savingManager.ChooseProperSave());
         }
-
 
         private void LoadSavedData(MainGameManagerSavedData p_data)
         {
@@ -243,7 +242,7 @@ namespace GameManager
                     InitiateSaving();
                     break;
                 case DuringDayState.DayPassing:
-                    _audioManager.PlaySpecificSoundEffect(_newDayStarted);
+                    _audioManager.CreateNewAudioSource(_newDayStarted);
                     _lightManager.SetMorningColorInstantly();
                     InitiateSaving();
                     break;
@@ -279,7 +278,7 @@ namespace GameManager
                 case DuringDayState.WorkDayFinished:
                     break;
                 case DuringDayState.SettingWorkers:
-                    _audioManager.PlaySpecificSoundEffect(_tawernMumbling);
+                    //_audioManager.PlaySpecificSoundEffect(_tawernMumbling);
                     break;
                 case DuringDayState.DayPassing:
                     _lightManager.UpdateLighting(_timeLeftInSeconds);
@@ -355,6 +354,7 @@ namespace GameManager
                     break;
             }
             
+            _audioManager.CreateNewAudioSource(_dayEnded);
             _lightManager.SetEveningColorInstantly();
             _worldManager.StartNewDay();
         }

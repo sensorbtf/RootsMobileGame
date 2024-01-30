@@ -127,7 +127,7 @@ namespace Buildings
             SetInGameStage();
 
             HaveWorker = false;
-
+            
             OnWorkDone?.Invoke(this, false);
         }
 

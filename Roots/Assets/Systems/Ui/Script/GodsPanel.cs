@@ -178,7 +178,7 @@ namespace InGameUi
 
         private void DeactivateSpecificBlessing(GodType p_godType, BlessingLevel p_currentBlessingLevel)
         {
-            _audioManager.PlaySpecificSoundEffect(_deactivateEffect);
+            _audioManager.CreateNewAudioSource(_deactivateEffect);
 
             _godsManager.DeactivateSpecificBlessing(p_godType, p_currentBlessingLevel);
         }
@@ -188,16 +188,16 @@ namespace InGameUi
             switch (p_currentBlessingLevel)
             {
                 case BlessingLevel.Noone:
-                    _audioManager.PlaySpecificSoundEffect(_nooneEffectActivation);
+                    _audioManager.CreateNewAudioSource(_nooneEffectActivation);
                     break;
                 case BlessingLevel.Small:
-                    _audioManager.PlaySpecificSoundEffect(_smallEffectActivation);
+                    _audioManager.CreateNewAudioSource(_smallEffectActivation);
                     break;
                 case BlessingLevel.Medium:
-                    _audioManager.PlaySpecificSoundEffect(_mediumEffectActivation);
+                    _audioManager.CreateNewAudioSource(_mediumEffectActivation);
                     break;
                 case BlessingLevel.Big:
-                    _audioManager.PlaySpecificSoundEffect(_bigEffectActivation);
+                    _audioManager.CreateNewAudioSource(_bigEffectActivation);
                     break;
             }
 
@@ -206,7 +206,7 @@ namespace InGameUi
 
         private void BuySpecificBlessing(GodType p_godType, BlessingLevel p_blessingLevel)
         {
-            _audioManager.PlaySpecificSoundEffect(_boughtEffect);
+            _audioManager.CreateNewAudioSource(_boughtEffect);
             
             _godsManager.BuySpecificBlessing(p_godType, p_blessingLevel);
             _buildingsManager.HandlePointsManipulation(PointsType.StarDust,

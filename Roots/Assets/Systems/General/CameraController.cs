@@ -1,21 +1,25 @@
 using System;
 using System.Collections.Generic;
+using AudioSystem;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using Random = UnityEngine.Random;
 
 namespace GeneralSystems
 {
-    // TODO: szum i efekt wizualny wiatru rzy ruszaniu się (zooming)
     public class CameraController : MonoBehaviour
     {
+        [SerializeField] private AudioManager _audioManager;
+        [SerializeField] private AudioClip[] _winds;
+        
         public static bool isDragging;
         public static bool IsUiOpen = false;
         public static bool WasZoomedIn = false;
         public float zoomOutMin = 1;
         public float zoomOutMax = 20;
 
-        public float zoomSpeed = 5f; // Adjust this for smoother zoom transitions
-        public float zoomOutFactor = 20f; // Adjust this for the amount of zoom out
+        public float zoomSpeed = 5f; 
+        public float zoomOutFactor = 20f; 
 
         private bool shouldRestoreZoom = false;
         private bool _startedOnGo = false;
@@ -75,7 +79,6 @@ namespace GeneralSystems
         
         private bool IsPointerOverUIObjectOnLayer(string layerName)
         {
-            // Check for both mouse and touch input
             Vector2 inputPosition;
             if (Input.GetMouseButton(0)) // If there's a mouse click
             {
@@ -156,7 +159,7 @@ namespace GeneralSystems
             if (Input.GetMouseButton(0))
             {
                 Vector3 direction = _touchStart - _camera.ScreenToWorldPoint(Input.mousePosition);
-                if (direction.magnitude > 1f) // Change this threshold as needed
+                if (direction.magnitude > 1f) 
                 {
                     isDragging = true;
                     ZoomOutWhileMoving();
@@ -228,6 +231,8 @@ namespace GeneralSystems
 
         private void ZoomOutWhileMoving()
         {
+            _audioManager.PlayWindEffect(_winds[Random.Range(0, _winds.Length)]);
+            
             _camera.orthographicSize = Mathf.Clamp(_camera.orthographicSize + zoomOutFactor, zoomOutMin, zoomOutMax);
         }
 

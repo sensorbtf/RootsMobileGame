@@ -383,12 +383,12 @@ namespace InGameUi
         {
             if (p_assign)
             {
-                _audioManager.PlaySpecificSoundEffect(_onAssignEffect);
+                _audioManager.CreateNewAudioSource(_onAssignEffect);
                 HandleStartedBuildingWork(p_refsScript, p_buildingData, p_buildingLevel, p_isBuilt);
             }
             else
             {
-                _audioManager.PlaySpecificSoundEffect(_onUnAssignEffect); 
+                _audioManager.CreateNewAudioSource(_onUnAssignEffect); 
                 p_refsScript.CreateOrUpgradeBuilding.image.color = Color.green;
                 p_refsScript.CreateOrUpgradeBuilding.interactable = _workersManager.IsAnyWorkerFree();
 
