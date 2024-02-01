@@ -96,7 +96,6 @@ namespace InGameUi
             var text = string.Format(_abstenceText.GetLocalizedString(), _gameManager.HoursOfAbstence,
                 _gameManager.FreeSkipsGotten, _gameManager.FreeSkipsLeft, _gameManager.MaxFreeSkipsAmount);
             _uiReferences.Description.text = text;
-            _uiReferences.Description.SetAllDirty();
             
             _uiReferences.NoButtonGo.gameObject.SetActive(false);
             _uiReferences.YesButtonGo.gameObject.SetActive(true);
@@ -129,8 +128,8 @@ namespace InGameUi
             _uiReferences.Title.text = _destroyedBuildings.GetLocalizedString();
             _uiReferences.Description.text = "";
 
-            foreach (var buildingType in p_destroyedBuildings) 
-                _uiReferences.Description.text += buildingType + "\n";
+            foreach (var building in p_destroyedBuildings) 
+                _uiReferences.Description.text += building.BuildingName.GetLocalizedString() + "\n";
 
             var hasCompletedMission = p_won && _worldManager.AreResourcesEnough();
 
@@ -141,7 +140,7 @@ namespace InGameUi
                 DealWithStormEffects(hasCompletedMission);
             });
             _uiReferences.YesButton.interactable = true;
-            
+            _uiReferences.YesButtonText.text = _continue.GetLocalizedString();
             _uiReferences.YesButtonGo.gameObject.SetActive(true);
             _uiReferences.NoButtonGo.gameObject.SetActive(false);
             
@@ -163,12 +162,15 @@ namespace InGameUi
                 _audioManager.PlayButtonSoundEffect(_uiReferences.YesButton.interactable);
                 HandleLeaveEffects(true);
             });
+            
             _uiReferences.YesButtonText.text = _continue.GetLocalizedString();
+            
             _uiReferences.NoButton.onClick.AddListener(delegate
             {
                 _audioManager.PlayButtonSoundEffect(_uiReferences.NoButton.interactable);
                 HandleLeaveEffects(false);
             });
+            
             _uiReferences.NoButtonText.text = _starDustLoweringDamage.GetLocalizedString();
         }
 
@@ -188,11 +190,13 @@ namespace InGameUi
                 HandleLeaveDecision(true);
             });
             _uiReferences.YesButtonText.text = _leavingEalierConfirm.GetLocalizedString();
+            
             _uiReferences.NoButton.onClick.AddListener(delegate
             {
                 _audioManager.PlayButtonSoundEffect(_uiReferences.NoButton.interactable);
                 HandleLeaveDecision(false);
             });
+            
             _uiReferences.NoButtonText.text = _leavingEalierRefuse.GetLocalizedString();
         }
 
@@ -202,18 +206,14 @@ namespace InGameUi
                 _worldManager.LeaveMission();
             else
                 _worldManager.HandleNewDayStarted(false);
-
-            HandleTurnOnOff(false);
         }
 
         private void HandleLeaveEffects(bool p_continueWithoutDSSpent)
         {
             if (p_continueWithoutDSSpent)
-                _worldManager.EndMission(true, false);
+                _worldManager.EndMission(true, true);
             else
                 _worldManager.EndMission(true, false);
-
-            HandleTurnOnOff(false);
         }
 
         private void DealWithStormEffects(bool p_won)
@@ -239,6 +239,9 @@ namespace InGameUi
             gameObject.SetActive(p_turnOffPanel);
             GameplayHud.BlockHud = p_turnOffPanel;
             CameraController.IsUiOpen = p_turnOffPanel;
+            
+            _uiReferences.YesButton.onClick.RemoveAllListeners();
+            _uiReferences.NoButton.onClick.RemoveAllListeners();
         }
     }
 }

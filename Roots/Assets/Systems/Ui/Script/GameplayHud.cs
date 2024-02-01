@@ -398,13 +398,17 @@ namespace InGameUi
                 var currentDay = i + 1;
 
                 gO.GetComponentInChildren<TextMeshProUGUI>().text = currentDay.ToString();
-                gO.GetComponentInChildren<Image>().color = i >= _worldManager.StormDaysRange.x ? StormDay : NormalDay;
+                gO.GetComponentInChildren<Image>().color = i -1 >= _worldManager.StormDaysRange.x ? StormDay : NormalDay;
 
                 _createdDaysStorm.Add(gO);
             }
 
             _singleDayGoWidth = -StormSliderBackground.GetComponent<RectTransform>().rect.width /
                                 _worldManager.StormDaysRange.y / 2;
+
+            _currentMissionText.text = _worldManager.CurrentMission.ToString();
+            ResourcePoints.text = $"{_buildingsManager.CurrentResourcePoints} / " +
+                                  $"{_worldManager.RequiredResourcePoints}";
 
             NewDayHandler();
         }
@@ -437,7 +441,6 @@ namespace InGameUi
             if (p_makeIcons)
                 TryToCreatePoints(p_points, PointsType.Resource);
         }
-        
 
         private void TryToCreatePoints(int p_points, PointsType p_pointsType)
         {
@@ -612,6 +615,11 @@ namespace InGameUi
         {
             EndMissionGo.SetActive(true);
             _endMissionButton.interactable = true;
+            _endMissionButton.onClick.AddListener(delegate
+            {
+                _worldManager.EndMission(true, false);
+                EndMissionGo.SetActive(false);
+            });
         }
 
         private void OpenWorkersDisplacementPanel()

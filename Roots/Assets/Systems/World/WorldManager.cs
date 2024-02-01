@@ -83,11 +83,6 @@ namespace World
                 if (!_buildingsManager.IsAnyBuildingNonGathered())
                     CheckResourcePoints();
             }
-
-            // if not: new day has started tooltip: info about last one + panel for worker displacement
-            // if yes: checlk if win
-            // afterone "keep working" there should be turned on button "End Mission"
-            //do other thins (days)
         }
 
         private void CheckResourcePoints()
@@ -163,6 +158,7 @@ namespace World
             }
 
             EndMissionHandler();
+            StartMission(p_haveWon);
             OnStormCame?.Invoke(damagedBuildings, p_haveWon);
         }
 
@@ -207,6 +203,7 @@ namespace World
             }
             else
             {
+                _buildingsManager.SetZeroResourcePoints();
                 _buildingsManager.HandlePointsManipulation(PointsType.Resource, _buildingsManager.ResourcesInBasement,
                     true);
                 _buildingsManager.ResourcesInBasement = 0;
@@ -248,9 +245,9 @@ namespace World
                         CurrentQuests[p_index].SpecificQuest.TargetAmount);
                     break;
                 case QuestType.AchieveTechnologyLvl:
-                    textToReturn = string.Format(_getTechLvlInXYZToXYZLvl.GetLocalizedString(), 
-                        _buildingsManager.GetLocalizedName(CurrentQuests[p_index].SpecificQuest.TargetName),
-                        CurrentQuests[p_index].SpecificQuest.TargetAmount);
+                    textToReturn = string.Format(_getTechLvlInXYZToXYZLvl.GetLocalizedString(),
+                        CurrentQuests[p_index].SpecificQuest.TargetAmount,
+                        _buildingsManager.GetLocalizedName(CurrentQuests[p_index].SpecificQuest.TargetName));
                     break;
                 case QuestType.MinigameResourcePoints:
                     textToReturn = string.Format(_getResourcesMinigame.GetLocalizedString(),CurrentQuests[p_index].SpecificQuest.TargetAmount);
@@ -368,7 +365,6 @@ namespace World
         }
 
         private void HandleOverallResourcesQuests(PointsType p_pointsType, int p_pointsNumber)
-            // get points only from gathering or minigame
         {
             foreach (var quest in CurrentQuests)
             {

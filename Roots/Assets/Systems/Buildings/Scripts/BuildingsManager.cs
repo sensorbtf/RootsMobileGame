@@ -771,6 +771,11 @@ namespace Buildings
                 break;
             }
         }
+
+        public void SetZeroResourcePoints()
+        {
+            HandlePointsManipulation(PointsType.Resource, CurrentResourcePoints, false);
+        }
     }
 
     [Serializable]
