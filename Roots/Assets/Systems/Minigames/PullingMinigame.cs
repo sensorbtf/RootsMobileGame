@@ -9,6 +9,7 @@ namespace Minigames
         [SerializeField] private GameObject _destructionRegionGo;
         [SerializeField] private GameObject _prefabToInstantiate;
         [SerializeField] private RectTransform _placeToInstantiate;
+        [SerializeField] private RectTransform _point;
 
         private GameObject _currentPrefab;
         private Collider2D _currentPrefabCollider;
@@ -27,6 +28,7 @@ namespace Minigames
             if (_timer <= 0)
             {
                 _currentPrefab.GetComponent<PullableObject>().EndMinigame();
+                Destroy(_currentPrefab);
                 _timer = 0;
                 _isGameActive = false;
                 _collectPointsButton.interactable = true;
@@ -51,7 +53,7 @@ namespace Minigames
         private void CreatePrefab()
         {
             _currentPrefab = Instantiate(_prefabToInstantiate, _placeToInstantiate);
-            _currentPrefab.GetComponent<PullableObject>().SetPosition(_placeToInstantiate);
+            _currentPrefab.GetComponent<PullableObject>().SetPosition(_point);
             _currentPrefabCollider = _currentPrefab.GetComponent<Collider2D>();
         }
 

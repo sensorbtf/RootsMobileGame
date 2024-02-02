@@ -103,15 +103,15 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 22198492241924
-    m_Localized: "Ma\u0142e b\u0142ogos\u0142awie\u0144stwo \\n +{0}% skuteczno\u015Bci"
+    m_Localized: "Ma\u0142e b\u0142ogos\u0142awie\u0144stwo\n+{0}% skuteczno\u015Bci"
     m_Metadata:
       m_Items: []
   - m_Id: 22198492241925
-    m_Localized: "\u015Arednie b\u0142ogos\u0142awie\u0144stwo \\n +{0}% skuteczno\u015Bci"
+    m_Localized: "\u015Arednie b\u0142ogos\u0142awie\u0144stwo\n+{0}% skuteczno\u015Bci"
     m_Metadata:
       m_Items: []
   - m_Id: 22198492241926
-    m_Localized: "Du\u017Ce b\u0142ogos\u0142awie\u0144stwo \\n +{0}% skuteczno\u015Bci"
+    m_Localized: "Du\u017Ce b\u0142ogos\u0142awie\u0144stwo\n+{0}% skuteczno\u015Bci"
     m_Metadata:
       m_Items: []
   references:

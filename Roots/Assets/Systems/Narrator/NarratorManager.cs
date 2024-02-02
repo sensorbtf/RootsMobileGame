@@ -119,7 +119,7 @@ namespace Narrator
             _currentTutorialStep = (TutorialStep)p_data.CurrentTutorialStep; 
             _currentSubText = p_data.CurrentSubText;
 
-            if (_enableNarrator)
+            if (_currentTutorialStep != TutorialStep.OnWorkersPanelOpenAfterRestart_Q21)
             {
                 _currentTutorialStep = TutorialStep.OnGameStarted_Q1;
                 OnTutorialAdvancement?.Invoke(true);

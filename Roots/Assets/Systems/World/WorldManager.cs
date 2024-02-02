@@ -188,7 +188,8 @@ namespace World
             Debug.Log("Storm power" + StormPower + "_finalHiddenStormDay" + FinalHiddenStormDay
                       + " in " + CurrentMission + " mission");
 
-            HandleResourceBasementTransition(false); //get resources from basement
+            if (CurrentMission != 1)
+                HandleResourceBasementTransition(false); //get resources from basement
             _workersManager.BaseWorkersAmounts = _buildingsManager.GetFarmProductionAmount;
 
             OnNewMissionStart?.Invoke();

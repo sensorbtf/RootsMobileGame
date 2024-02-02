@@ -107,6 +107,11 @@ namespace InGameUi
             TextMeshProUGUI resourcePointsText = null;
             TextMeshProUGUI defensePointsText = null;
             
+            if ((int)_narratorManager.CurrentTutorialStep > 19)
+            {
+                _godsButton.gameObject.SetActive(true);
+            }
+            
             for (var i = 0; i < 3; i++)
             {
                 var newBar = Instantiate(_barPrefab, contentTransform);

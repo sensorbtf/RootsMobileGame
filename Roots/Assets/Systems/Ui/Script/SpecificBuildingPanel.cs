@@ -123,8 +123,15 @@ namespace InGameUi
 
             _startMiniGameButton.onClick.RemoveAllListeners();
             _startMiniGameButton.onClick.AddListener(() => StartMiniGame(p_building));
-            _startMiniGameButton.interactable = _gameManager.CanPlayMinigame && p_building.CanPlayMinigame();
-
+            if (p_building.BuildingMainData.Type == BuildingType.Farm && (int)_narratorManager.CurrentTutorialStep >= 13 && (int)_narratorManager.CurrentTutorialStep < 16)
+            {
+                _startMiniGameButton.interactable = false;
+            }
+            else
+            {
+                _startMiniGameButton.interactable = _gameManager.CanPlayMinigame && p_building.CanPlayMinigame();
+            }
+            
             _goBackButton.interactable = true;
             _goBackButton.onClick.AddListener(ClosePanel);
 

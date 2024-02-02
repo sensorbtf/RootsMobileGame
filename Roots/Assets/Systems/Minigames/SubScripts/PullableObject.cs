@@ -3,7 +3,7 @@ using UnityEngine.EventSystems;
 
 public class PullableObject : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler
 {
-    private RectTransform _initialPosition;
+    [SerializeField] private RectTransform _initialPosition;
     private bool _isDragging;
     private bool _isGameOn;
     private Vector3 _offset;
@@ -11,7 +11,7 @@ public class PullableObject : MonoBehaviour, IDragHandler, IBeginDragHandler, IE
     public void SetPosition(RectTransform p_initialPosition)
     {
         _isGameOn = true;
-        _initialPosition = p_initialPosition;
+        _initialPosition.position = p_initialPosition.position;
     }
 
     public void OnBeginDrag(PointerEventData eventData)

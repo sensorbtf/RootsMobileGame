@@ -103,15 +103,21 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 22198492241924
-    m_Localized: Small Blessing \n +{0}% efficiency
+    m_Localized: 'Small Blessing
+
+      +{0}% efficiency'
     m_Metadata:
       m_Items: []
   - m_Id: 22198492241925
-    m_Localized: Medium Blessing \n +{0}% efficiency
+    m_Localized: 'Medium Blessing
+
+      +{0}% efficiency'
     m_Metadata:
       m_Items: []
   - m_Id: 22198492241926
-    m_Localized: Big Blessing \n +{0}% efficiency
+    m_Localized: 'Big Blessing
+
+      +{0}% efficiency'
     m_Metadata:
       m_Items: []
   references:

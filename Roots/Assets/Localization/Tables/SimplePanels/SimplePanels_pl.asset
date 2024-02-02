@@ -116,16 +116,16 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 6898489451520009
-    m_Localized: "Zostawi\u0142e\u015B swoj\u0105 wiosk\u0119 ca\u0142kowicie bezbronn\u0105"
+    m_Localized: "Zostawi\u0142e\u015B swoj\u0105 wiosk\u0119 bezbronn\u0105"
     m_Metadata:
       m_Items: []
   - m_Id: 6898489451520010
-    m_Localized: "Jak zwykle, potwory nadci\u0105gn\u0119\u0142y wraz z burz\u0105
-      i zacz\u0119\u0142y niszczy\u0107 wszystko na swojej drodze"
+    m_Localized: "Jak zwykle, potwory skryte w burzy zacz\u0119\u0142y niszczy\u0107
+      wszystko na swojej drodze"
     m_Metadata:
       m_Items: []
   - m_Id: 6898489451520011
-    m_Localized: "Zaoferuj Od\u0142amki Przeznaczenia za jak najmniejsze szkody"
+    m_Localized: "Zaoferuj {0} Gwiezdnego Py\u0142u za ni\u017Csze zniszczenia"
     m_Metadata:
       m_Items: []
   - m_Id: 6898489451520012
@@ -133,7 +133,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 6898489451520013
-    m_Localized: "Czy chcesz wyj\u015B\u0107 wcze\u015Bniej?"
+    m_Localized: "Czy chcesz powr\xF3ci\u0107 do miasta wcze\u015Bniej?"
     m_Metadata:
       m_Items: []
   - m_Id: 6898489451520014

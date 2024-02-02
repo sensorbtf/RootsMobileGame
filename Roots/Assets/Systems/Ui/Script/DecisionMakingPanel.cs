@@ -15,10 +15,12 @@ namespace InGameUi
     {
         [Header("System Refs")]
         [SerializeField] private AudioManager _audioManager;
+        [SerializeField] private BuildingsManager _buildingManager;
         [SerializeField] private NarratorManager _narratorManager;
         [SerializeField] private MainGameManager _gameManager;
         [SerializeField] private WorldManager _worldManager;
         [SerializeField] private AdsForRewards _rewardingAdsManager;
+        [SerializeField] private int _amountOfStarForLeaving;
 
         [Header("Localization")] 
         [SerializeField] private LocalizedString _advertisement;
@@ -168,10 +170,11 @@ namespace InGameUi
             _uiReferences.NoButton.onClick.AddListener(delegate
             {
                 _audioManager.PlayButtonSoundEffect(_uiReferences.NoButton.interactable);
+                _buildingManager.HandlePointsManipulation(PointsType.StarDust, _amountOfStarForLeaving, false);
                 HandleLeaveEffects(false);
             });
             
-            _uiReferences.NoButtonText.text = _starDustLoweringDamage.GetLocalizedString();
+            _uiReferences.NoButtonText.text = string.Format(_starDustLoweringDamage.GetLocalizedString(), _amountOfStarForLeaving);
         }
 
         private void ViewResourcesMetPanel()
@@ -205,7 +208,10 @@ namespace InGameUi
             if (p_wantToLeave)
                 _worldManager.LeaveMission();
             else
+            {
+                HandleTurnOnOff(false);
                 _worldManager.HandleNewDayStarted(false);
+            }
         }
 
         private void HandleLeaveEffects(bool p_continueWithoutDSSpent)

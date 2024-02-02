@@ -238,7 +238,9 @@ namespace InGameUi
         {
             VinetePanel.SetActive(BlockHud);
             _skipDayText.text = _gameManager.TimePassed;
-
+            if (!_worldManager.AreResourcesEnough())
+                EndMissionGo.SetActive(false);
+            
             if (_createdImages.Values.Any(x=> x.Count > 0))
             {
                 MovePoints();
@@ -321,8 +323,7 @@ namespace InGameUi
                 }
             }
         }
-
-
+        
         private void AfterLoadHandler()
         {
             RefreshStormSlider();
@@ -456,7 +457,7 @@ namespace InGameUi
             
             float jitterPercentage = 0.1f; 
             float jitter = resolution * jitterPercentage;
-            float pointSizePercentage = resolution > 1080 ? 0.05f : 0.1f; 
+            float pointSizePercentage = resolution > 1079 ? 0.05f : 0.1f; 
             float pointSize =  resolution * pointSizePercentage;
             Vector2 pointSizeVector = new Vector2(pointSize, pointSize);
 
@@ -509,7 +510,7 @@ namespace InGameUi
         
         private void MovePoints()
         {
-            _speedMultiplier += Time.deltaTime * 50f;
+            _speedMultiplier += Time.deltaTime * 80f;
             float referenceDimension = Screen.width + Screen.height;
             float speedScaleFactor = referenceDimension / 1080f; 
             float distanceThreshold = referenceDimension * 0.001f;
@@ -615,6 +616,8 @@ namespace InGameUi
         {
             EndMissionGo.SetActive(true);
             _endMissionButton.interactable = true;
+            
+            _endMissionButton.onClick.RemoveAllListeners();
             _endMissionButton.onClick.AddListener(delegate
             {
                 _worldManager.EndMission(true, false);
@@ -774,7 +777,8 @@ namespace InGameUi
                 }
             }
 
-            if (_worldManager.CurrentMission >= _worldManager.NeededMissionToRankUp)
+            if (_worldManager.CurrentQuests[0].IsRedeemed && _worldManager.CurrentQuests[1].IsRedeemed &&
+                _worldManager.CurrentMission >= _worldManager.NeededMissionToRankUp)
             {
                 _currentRankText.text = _clickToRankUp.GetLocalizedString();
             }

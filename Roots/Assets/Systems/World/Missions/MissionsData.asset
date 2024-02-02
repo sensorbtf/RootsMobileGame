@@ -18,7 +18,7 @@ MonoBehaviour:
     StormPowerRange: {x: 1, y: 1}
   - NeededResourcePoints: 50
     DaysOfStormRange: {x: 8, y: 8}
-    StormPowerRange: {x: 10, y: 20}
+    StormPowerRange: {x: 7, y: 9}
   - NeededResourcePoints: 80
     DaysOfStormRange: {x: 6, y: 9}
     StormPowerRange: {x: 15, y: 20}
