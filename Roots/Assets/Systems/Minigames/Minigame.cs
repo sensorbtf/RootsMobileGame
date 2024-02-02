@@ -90,9 +90,9 @@ namespace Minigames
         {
             if (!_isGameActive)
                 return;
-
-            UpdateTimerText();
-
+            
+            _timer -= Time.deltaTime;
+            
             if (_timer <= 0)
             {
                 _timer = 0;
@@ -152,7 +152,11 @@ namespace Minigames
                             break;
                     }
                 }
+
+                return;
             }
+            
+            UpdateTimerText();
         }
 
         private void EndMinigame()
@@ -178,7 +182,6 @@ namespace Minigames
 
         private void UpdateTimerText()
         {
-            _timer -= Time.deltaTime;
             _timeText.text = Mathf.FloorToInt(_timer).ToString();
         }
 

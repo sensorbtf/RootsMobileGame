@@ -4,6 +4,7 @@ using UnityEngine.EventSystems;
 public class PullableObject : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHandler
 {
     [SerializeField] private RectTransform _initialPosition;
+    [SerializeField] private Vector3 _initialPos;
     private bool _isDragging;
     private bool _isGameOn;
     private Vector3 _offset;
@@ -12,6 +13,7 @@ public class PullableObject : MonoBehaviour, IDragHandler, IBeginDragHandler, IE
     {
         _isGameOn = true;
         _initialPosition.position = p_initialPosition.position;
+        _initialPos = p_initialPosition.position;
     }
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -33,14 +35,14 @@ public class PullableObject : MonoBehaviour, IDragHandler, IBeginDragHandler, IE
         if (_isGameOn)
         {
             _isDragging = false;
-            transform.position = _initialPosition.position;
+            transform.position = _initialPos;
         }
     }
 
     public void EndMinigame()
     {
         _isGameOn = false;
-        transform.position = _initialPosition.position;
+        transform.position = _initialPos;
         _isDragging = false;
     }
 }

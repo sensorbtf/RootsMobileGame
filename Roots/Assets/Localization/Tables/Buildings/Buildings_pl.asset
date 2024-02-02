@@ -23,7 +23,9 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 346000121856
-    m_Localized: ChataChata
+    m_Localized: "Piwnica rezydencji jest schronieniem dla wszystkich pracownik\xF3w
+      i jedynym bezpiecznym miejscem do przechowywania nadmiaru zasob\xF3w po zako\u0144czeniu
+      misji, aby odzyska\u0107 je podczas nast\u0119pnej."
     m_Metadata:
       m_Items: []
   - m_Id: 1505477713920
@@ -31,7 +33,10 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1528571551744
-    m_Localized: FarmaFarma
+    m_Localized: "G\u0142\xF3wne \u017Ar\xF3d\u0142o po\u017Cywienia dla wszystkich
+      pracownik\xF3w. Zapewnia niewielk\u0105 ilo\u015B\u0107 punkt\xF3w zasob\xF3w
+      podczas pracy, a ka\u017Cdy wy\u017Cszy poziom farmy odblokowuje dodatkowego
+      pracownika."
     m_Metadata:
       m_Items: []
   - m_Id: 1559617789952
@@ -39,7 +44,9 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 1656925642752
-    m_Localized: WoodcutterWoodcutter
+    m_Localized: "Drewno jest niezb\u0119dne do tworzenia nowych budynk\xF3w i jest
+      g\u0142\xF3wnym. Pracuj\u0105cy tu drwale pomog\u0105 ci r\xF3wnie\u017C rozszerzy\u0107
+      granice wioski."
     m_Metadata:
       m_Items: []
   - m_Id: 7052419588096
@@ -47,7 +54,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7052419588097
-    m_Localized: "Wie\u017Ca Stra\u017CniczaWie\u017Ca Stra\u017Cnicza"
+    m_Localized: "Pierwsza struktura obronna w wiosce. Zapewnia niewielk\u0105 cz\u0119\u015B\u0107
+      punkt\xF3w obrony i pozwala sprawdzi\u0107 kolejne dni w przypadku burzy."
     m_Metadata:
       m_Items: []
   - m_Id: 7052419588098
@@ -55,7 +63,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7052419588099
-    m_Localized: Chata alchemikaChata alchemika
+    m_Localized: "Miejsce, w kt\xF3rym magia i nauka spotykaj\u0105 si\u0119, aby
+      zapewni\u0107 ci zar\xF3wno punkty obrony, jak i zasob\xF3w."
     m_Metadata:
       m_Items: []
   - m_Id: 7052419588100
@@ -63,7 +72,9 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7052419588101
-    m_Localized: "Szyb g\xF3rniczySzyb g\xF3rniczy"
+    m_Localized: "Szyb kopalniany, zag\u0142\u0119biaj\u0105cy si\u0119 w trzewia
+      Ziemi z ka\u017Cdym kolejnym poziomem. Umo\u017Cliwia wydobywanie r\xF3\u017Cnego
+      rodzaju surowc\xF3w."
     m_Metadata:
       m_Items: []
   - m_Id: 7052419588102
@@ -71,7 +82,9 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7052419588103
-    m_Localized: "Rytualny kr\u0105gRytualny kr\u0105g"
+    m_Localized: "Nikt nie wie, co dok\u0142adnie wi\u0105\u017Ce si\u0119 z burz\u0105,
+      ale runy stworzone w Rytualnym Kr\u0119gu zawsze pomagaj\u0105 trzyma\u0107
+      niebezpiecze\u0144stwo z daleka."
     m_Metadata:
       m_Items: []
   - m_Id: 7052419588104
@@ -79,7 +92,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7052419588105
-    m_Localized: Wykopywanie torfuWykopywanie torfu
+    m_Localized: "Torf jest idealny do nawo\u017Cenia p\xF3l oraz utrzymywania ognia
+      w piecach."
     m_Metadata:
       m_Items: []
   - m_Id: 7052419588106
@@ -87,7 +101,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7052419588107
-    m_Localized: "Stos w\u0119gla drzewnegoStos w\u0119gla drzewnego"
+    m_Localized: "Miejsce w formie wielkich kopc\xF3w. Wypala si\u0119 w nim w\u0119giel
+      drzewny, kt\xF3ry s\u0142u\u017Cy jako paliwo w piecach."
     m_Metadata:
       m_Items: []
   - m_Id: 7052419588108
@@ -95,7 +110,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7052419588109
-    m_Localized: "Ogr\xF3d zio\u0142owyOgr\xF3d zio\u0142owy"
+    m_Localized: "Uprawiane tutaj zio\u0142a stanowi\u0105 podstaw\u0119 mikstur,
+      lekarstw oraz s\u0105 cz\u0119\u015Bci\u0105 wielu rytua\u0142\xF3w."
     m_Metadata:
       m_Items: []
   - m_Id: 7052419588110
@@ -103,7 +119,9 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7052419588111
-    m_Localized: Pasieka
+    m_Localized: "Ule postawione obok ogrodu z zio\u0142ami s\u0105 go\u015Bcinnym
+      miejscem dla pszcz\xF3\u0142, kt\xF3re zapewniaj\u0105 dost\u0119p do wosku
+      i miodu."
     m_Metadata:
       m_Items: []
   - m_Id: 7052419588112
@@ -111,7 +129,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7052419588113
-    m_Localized: WarsztatWarsztat
+    m_Localized: "Drewno i wydobyte rudy s\u0105 tu transportowane w celu dalszej
+      obr\xF3bki na r\xF3\u017Cnorodne narz\u0119dzia i meble."
     m_Metadata:
       m_Items: []
   - m_Id: 7052419588114
@@ -119,7 +138,9 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7052419588115
-    m_Localized: "O\u0142tarz ofiarnyO\u0142tarz ofiarny"
+    m_Localized: "O\u0142tarz ofiarny to najbardziej zaawansowany budynek zapewniaj\u0105cy
+      punkty obrony. Granie w minigry zapewnia darmowe b\u0142ogos\u0142awie\u0144stwa
+      bog\xF3w."
     m_Metadata:
       m_Items: []
   references:

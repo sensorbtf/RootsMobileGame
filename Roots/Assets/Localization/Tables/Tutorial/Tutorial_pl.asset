@@ -93,8 +93,8 @@ MonoBehaviour:
   - m_Id: 211852474114053
     m_Localized: "Mo\u017Cesz budowa\u0107 lub ulepsza\u0107 budynki, rozpoczyna\u0107
       zbieranie surowc\xF3w lub zwi\u0119ksza\u0107 poziom obrony przed nast\u0119pn\u0105
-      burz\u0105.\r\n\r\nTo wszystko zale\u017Cy od ciebie, ale pami\u0119taj, \u017Ce
-      ka\u017Cdy wyb\xF3r jest wa\u017Cny dla rozwoju wioski."
+      burz\u0105.\n\nStrategiczne decyzje zawsze zale\u017C\u0105 od ciebie, a ka\u017Cdy
+      wyb\xF3r jest wa\u017Cny dla rozwoju wioski."
     m_Metadata:
       m_Items: []
   - m_Id: 211852474114054
@@ -112,8 +112,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 211852474114056
-    m_Localized: "Dotknij dopiero co zbudowanej Farmy, aby zako\u0144czy\u0107 ca\u0142y
-      proces budowy."
+    m_Localized: "Dotknij zbudowanej Farmy, aby zako\u0144czy\u0107 ca\u0142y proces
+      budowy."
     m_Metadata:
       m_Items: []
   - m_Id: 1485459716235264
@@ -122,9 +122,10 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 211852474114058
-    m_Localized: "Widzisz przyciski opisuj\u0105ce technologi\u0119 i mo\u017Cliwo\u015B\u0107
-      pomocy robotnikom?\n\nPrzydziel jednego pracownika do tego budynku, aby odblokowa\u0107
-      unikaln\u0105 minigr\u0119 i nast\u0119pnie pom\xF3c twojej wiosce rosn\u0105\u0107!"
+    m_Localized: "Widzisz przyciski opisuj\u0105ce technologi\u0119 oraz zapewniaj\u0105ce
+      mo\u017Cliwo\u015B\u0107 udzielenia pomocy w budynku?\n\nPrzydziel jednego
+      pracownika do tego budynku, aby odblokowa\u0107 unikaln\u0105 minigr\u0119
+      i przyspieszy\u0107 rozw\xF3j wioski."
     m_Metadata:
       m_Items: []
   - m_Id: 1765999015026688
@@ -144,8 +145,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 211852474114061
-    m_Localized: "Wraz z pierwszym Poziomem Technologii teraz mo\u017Cesz pom\xF3c
-      swojemu pracownikowi w polu.\n\nZr\xF3b to, klikaj\u0105c przycisk, aby rozpocz\u0105\u0107
+    m_Localized: "Z pierwszym Poziomem Technologii mo\u017Cesz teraz pom\xF3c swojemu
+      pracownikowi w polu.\n\nZr\xF3b to, klikaj\u0105c przycisk, kt\xF3ry aktywuje
       minigr\u0119 na czas."
     m_Metadata:
       m_Items: []
@@ -158,14 +159,14 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 211852474114064
     m_Localized: "Nadszed\u0142 czas, aby przygotowa\u0107 si\u0119 na nadchodz\u0105c\u0105
-      burz\u0119. Nigdy nie wiesz, kiedy dok\u0142adnie nadejdzie."
+      burz\u0119. Nigdy nie wiesz, kiedy ta dok\u0142adnie nadejdzie."
     m_Metadata:
       m_Items: []
   - m_Id: 211852474114065
     m_Localized: "Aby odblokowa\u0107 plany budowy Wie\u017Cy Stra\u017Cniczej, odbierz
       nagrod\u0119 za zadanie, naciskaj\u0105c migaj\u0105ce przyciski w prawym g\xF3rnym
-      rogu, a nast\u0119pnie Zwi\u0119ksz Rag\u0119, aby odblokowa\u0107 nowy budynek
-      i podnie\u015B poziom Chaty."
+      rogu, a nast\u0119pnie zwi\u0119ksz swoj\u0105 Rag\u0119, aby odblokowa\u0107
+      nowy budynek i podnie\u015B poziom Chaty."
     m_Metadata:
       m_Items: []
   - m_Id: 1485459716235269
@@ -189,8 +190,8 @@ MonoBehaviour:
   - m_Id: 1765999052775427
     m_Localized: "Widzisz? Wygl\u0105da na to, \u017Ce ta noc mo\u017Ce przynie\u015B\u0107
       ze sob\u0105 niebezpiecze\u0144stwo, ale poniewa\u017C nie masz wystarczaj\u0105cej
-      ilo\u015Bci punkt\xF3w surowc\xF3w, nie mo\u017Cesz po prostu uciec z powrotem
-      do miasta.\n\nB\u0119dziesz musia\u0142 stawi\u0107 burzy czo\u0142a."
+      ilo\u015Bci punkt\xF3w surowc\xF3w, nie mo\u017Cesz uciec z powrotem do miasta.\n\nB\u0119dziesz
+      musia\u0142 stawi\u0107 burzy czo\u0142a."
     m_Metadata:
       m_Items: []
   - m_Id: 1485459716235271
@@ -215,8 +216,8 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 1765999052775430
     m_Localized: "Ka\u017Cde wykonane zadanie poboczne zapewni ci Gwiezdny Py\u0142,
-      podczas gdy Awansowanie zapewni ci nowe plany budynk\xF3w.\n\nI pami\u0119taj
-      - przegrywanie jest cz\u0119\u015Bci\u0105 procesu."
+      podczas gdy zwi\u0119kszenie Rangi zapewni ci nowe plany budynk\xF3w.\n\nI
+      pami\u0119taj - przegrywanie jest cz\u0119\u015Bci\u0105 procesu."
     m_Metadata:
       m_Items: []
   - m_Id: 1765999052775431
@@ -251,7 +252,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 15902587484020740
-    m_Localized: " Zdob\u0105d\u017A {0} Punkt\xF3w Obrony z Minigry"
+    m_Localized: "Zdob\u0105d\u017A {0} Punkt\xF3w Obrony z Minigry"
     m_Metadata:
       m_Items: []
   - m_Id: 15902587484020741

@@ -87,7 +87,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7052419588105
-    m_Localized: Peat ExcavationPeat Excavation
+    m_Localized: Peat is ideal for fertilizing fields and keeping fires burning in
+      stoves.
     m_Metadata:
       m_Items: []
   - m_Id: 7052419588106
@@ -95,7 +96,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7052419588107
-    m_Localized: Charcoal PileCharcoal Pile
+    m_Localized: The place in the form of large mounds. It burns charcoal, which
+      is used as fuel in stoves.
     m_Metadata:
       m_Items: []
   - m_Id: 7052419588108
@@ -103,7 +105,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7052419588109
-    m_Localized: Herbs GardenHerbs Garden
+    m_Localized: Herbs grown here form the basis of concoctions, medicines and are
+      part of many rituals.
     m_Metadata:
       m_Items: []
   - m_Id: 7052419588110
@@ -111,7 +114,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7052419588111
-    m_Localized: ApiaryApiary
+    m_Localized: Hives placed next to the herb garden are hospitable places for bees
+      to provide access to wax and honey.
     m_Metadata:
       m_Items: []
   - m_Id: 7052419588112
@@ -119,7 +123,8 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 7052419588113
-    m_Localized: Wood and mined ores are transported here to further processing.
+    m_Localized: Wood and mined ores are transported here for further processing
+      into a variety of tools and furniture.
     m_Metadata:
       m_Items: []
   - m_Id: 7052419588114
@@ -128,7 +133,7 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 7052419588115
     m_Localized: Sacrificial Altar is the most advanced building for providing Defense
-      Points and the only one which gives Star Dust from completing minigame.
+      Points. Playing minigames here provides free god blessings.
     m_Metadata:
       m_Items: []
   references:

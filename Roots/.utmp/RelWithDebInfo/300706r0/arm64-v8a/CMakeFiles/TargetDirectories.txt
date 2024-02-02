@@ -1,0 +1,5 @@
+D:/Fork/RootsMobileGame/Roots/.utmp/RelWithDebInfo/300706r0/arm64-v8a/CMakeFiles/edit_cache.dir
+D:/Fork/RootsMobileGame/Roots/.utmp/RelWithDebInfo/300706r0/arm64-v8a/CMakeFiles/rebuild_cache.dir
+D:/Fork/RootsMobileGame/Roots/.utmp/RelWithDebInfo/300706r0/arm64-v8a/FramePacing/CMakeFiles/swappywrapper.dir
+D:/Fork/RootsMobileGame/Roots/.utmp/RelWithDebInfo/300706r0/arm64-v8a/FramePacing/CMakeFiles/edit_cache.dir
+D:/Fork/RootsMobileGame/Roots/.utmp/RelWithDebInfo/300706r0/arm64-v8a/FramePacing/CMakeFiles/rebuild_cache.dir

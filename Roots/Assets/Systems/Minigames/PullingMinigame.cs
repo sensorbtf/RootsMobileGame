@@ -17,18 +17,17 @@ namespace Minigames
 
         private new void Update()
         {
-            base.Update();
-
             if (!_isGameActive)
                 return;
-
+            
+            base.Update();
+            
             if (_destructionRegion.bounds.Intersects(_currentPrefabCollider.bounds)) 
                 OnGameobjectIntersect();
 
             if (_timer <= 0)
             {
                 _currentPrefab.GetComponent<PullableObject>().EndMinigame();
-                Destroy(_currentPrefab);
                 _timer = 0;
                 _isGameActive = false;
                 _collectPointsButton.interactable = true;
