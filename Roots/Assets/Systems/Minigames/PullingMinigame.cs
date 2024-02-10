@@ -15,6 +15,8 @@ namespace Minigames
         private Collider2D _currentPrefabCollider;
         private Collider2D _destructionRegion;
 
+        private bool _stopChecking;
+        
         private new void Update()
         {
             if (!_isGameActive)
@@ -22,8 +24,9 @@ namespace Minigames
             
             base.Update();
             
-            if (_destructionRegion.bounds.Intersects(_currentPrefabCollider.bounds)) 
-                OnGameobjectIntersect();
+            if (!_stopChecking)
+                if (_destructionRegion.bounds.Intersects(_currentPrefabCollider.bounds)) 
+                 OnGameobjectIntersect();
 
             if (_timer <= 0)
             {
@@ -40,10 +43,12 @@ namespace Minigames
 
             _destructionRegion = _destructionRegionGo.GetComponent<Collider2D>();
             _score = 0;
+            _stopChecking = false;
         }
 
         private void OnGameobjectIntersect()
         {
+            _stopChecking = true;
             Destroy(_currentPrefab);
             AddScore();
             CreatePrefab();
@@ -54,6 +59,7 @@ namespace Minigames
             _currentPrefab = Instantiate(_prefabToInstantiate, _placeToInstantiate);
             _currentPrefab.GetComponent<PullableObject>().SetPosition(_point);
             _currentPrefabCollider = _currentPrefab.GetComponent<Collider2D>();
+            _stopChecking = false;
         }
 
         public override void AddScore()
