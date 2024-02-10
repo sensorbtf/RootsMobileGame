@@ -6,6 +6,10 @@ namespace Minigames
     [CreateAssetMenu(fileName = "Minigame Localization", menuName = "ScriptableObjects/MinigameLocalization", order = 5)]
     public class MinigameLocalizationSO: ScriptableObject
     {
+        public AudioClip Countdown;
+        public AudioClip OnMinigameEnd;
+        public AudioClip PointsAdded;
+        
         public LocalizedString ScoreText;
         public LocalizedString ResourcePointsCollect;
         public LocalizedString DefensePointsCollect;

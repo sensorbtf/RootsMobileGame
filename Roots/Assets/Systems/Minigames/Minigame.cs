@@ -95,6 +95,7 @@ namespace Minigames
             
             if (_timer <= 0)
             {
+                _audioManager.CreateNewAudioSource(_localization.OnMinigameEnd);
                 _timer = 0;
                 _isGameActive = false;
                 _collectPointsButton.interactable = true;
@@ -187,6 +188,8 @@ namespace Minigames
 
         private IEnumerator StartCountdown()
         {
+            _audioManager.CreateNewAudioSource(_localization.Countdown);
+
             var count = 3;
 
             while (count > 0)
@@ -205,6 +208,8 @@ namespace Minigames
 
         public virtual void AddScore()
         {
+            _audioManager.CreateNewAudioSource(_localization.PointsAdded);
+
             _scoreText.text = $"{_localization.ScoreText.GetLocalizedString()} {_score:F0}";
         }
 

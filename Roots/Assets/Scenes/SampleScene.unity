@@ -257,7 +257,7 @@ GameObject:
   - component: {fileID: 13890666}
   m_Layer: 5
   m_Name: UI_Canvas
-  m_TagString: Untagged
+  m_TagString: MainCanvas
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5272,7 +5272,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 18.25
+  m_fontSize: 18.5
   m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -7858,7 +7858,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 30.6
+  m_fontSize: 31
   m_fontSizeBase: 45
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -8978,7 +8978,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5943958}
   m_AnchorMax: {x: 0, y: 0.80200005}
-  m_AnchoredPosition: {x: -10.041016, y: 9.582275}
+  m_AnchoredPosition: {x: -10.041046, y: 9.582275}
   m_SizeDelta: {x: 1, y: -397.3644}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &824526944
@@ -9907,7 +9907,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 30.25
+  m_fontSize: 30.7
   m_fontSizeBase: 35
   m_fontWeight: 400
   m_enableAutoSizing: 1

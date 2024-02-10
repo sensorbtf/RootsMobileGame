@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8014266679280984997}
   - component: {fileID: 1119330559604039605}
   m_Layer: 5
-  m_Name: SimpleClickerMinigame
+  m_Name: MiningShaftMinigame
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -33,6 +33,7 @@ RectTransform:
   - {fileID: 5200724053823256610}
   - {fileID: 4449950366571981188}
   - {fileID: 58938878153825931}
+  - {fileID: 6735624926239313767}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -52,12 +53,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 02450c6c32513c245a55855ce073ce01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _audioManager: {fileID: 0}
   _localization: {fileID: 11400000, guid: 5b363b699512a314aa1418817c7f3297, type: 2}
   _timer: 0
   _efficiency: 0
   _isGameActive: 0
-  _givesResources: 0
   _score: 0
   _type: 0
   _collectPointsButton: {fileID: 7005423593257857063}
@@ -65,6 +64,8 @@ MonoBehaviour:
   _scoreText: {fileID: 6920239915713746157}
   _timeText: {fileID: 8059085436923613334}
   _buttonToMash: {fileID: 2402167894105436681}
+  _pickaxe: {fileID: 8595287202973152388, guid: e459c38c9d65536499c3c1e0a8332a04, type: 3}
+  _pickaxeSound: {fileID: 8300000, guid: aa99e3c0a00023048a6c7b6070b05d87, type: 3}
 --- !u!1 &5144955445068129324
 GameObject:
   m_ObjectHideFlags: 0
@@ -94,8 +95,7 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 6735624926239313767}
+  m_Children: []
   m_Father: {fileID: 8014266679280984997}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -131,9 +131,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 43a7d98bd4222b64e933596512dc09ad, type: 3}
+  m_Sprite: {fileID: -3930749727195322912, guid: b39e21445299831409d8f001d3248292, type: 3}
   m_Type: 0
-  m_PreserveAspect: 0
+  m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
   m_FillAmount: 1
@@ -153,6 +153,7 @@ GameObject:
   - component: {fileID: 7315889294650094298}
   - component: {fileID: 5702672916285534649}
   - component: {fileID: 2402167894105436681}
+  - component: {fileID: 6634177721235862451}
   m_Layer: 5
   m_Name: ObjectToClickOn
   m_TagString: Untagged
@@ -167,17 +168,17 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5776199383827237509}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2304300336123453441}
+  m_Father: {fileID: 8014266679280984997}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -157}
-  m_SizeDelta: {x: -475.9148, y: -779.0593}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: -3.8460083, y: -219.81726}
+  m_SizeDelta: {x: 685.6103, y: 326.07373}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7315889294650094298
 CanvasRenderer:
@@ -200,7 +201,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 0.34901962, a: 0}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -240,7 +241,7 @@ MonoBehaviour:
   m_Colors:
     m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
     m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.21777701, g: 0.6603774, b: 0.12771448, a: 1}
+    m_PressedColor: {r: 1, g: 1, b: 1, a: 1}
     m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
     m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0}
     m_ColorMultiplier: 1
@@ -261,6 +262,52 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!61 &6634177721235862451
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5776199383827237509}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 1.9229736, y: 1.1410217}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0, y: 0}
+    oldSize: {x: 0, y: 0}
+    newSize: {x: 0, y: 0}
+    adaptiveTilingThreshold: 0
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 679.1704, y: 324.34247}
+  m_EdgeRadius: 0
 --- !u!1001 &3117997023065411675
 PrefabInstance:
   m_ObjectHideFlags: 0

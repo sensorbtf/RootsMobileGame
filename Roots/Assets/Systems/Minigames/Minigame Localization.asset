@@ -12,6 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b50da21be4e142179d980aed819d9e6f, type: 3}
   m_Name: Minigame Localization
   m_EditorClassIdentifier: 
+  Countdown: {fileID: 8300000, guid: b552ac8a6f01f6242b20e020d790618b, type: 3}
+  OnMinigameEnd: {fileID: 8300000, guid: ed2594ad7e5124548a8dd503d7e0569c, type: 3}
+  PointsAdded: {fileID: 8300000, guid: ceb053018862edb4b8ff7217cc4d2ed2, type: 3}
   ScoreText:
     m_TableReference:
       m_TableCollectionName: GUID:22d71a5c37154b44b900b979d13ef516
