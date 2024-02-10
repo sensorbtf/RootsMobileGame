@@ -10,6 +10,7 @@ namespace Minigames
         [SerializeField] private GameObject _prefabToInstantiate;
         [SerializeField] private RectTransform _placeToInstantiate;
         [SerializeField] private RectTransform _point;
+        [SerializeField] private AudioClip _pullingOutSound;
 
         private GameObject _currentPrefab;
         private Collider2D _currentPrefabCollider;
@@ -49,6 +50,7 @@ namespace Minigames
         private void OnGameobjectIntersect()
         {
             _stopChecking = true;
+            _currentPrefab.GetComponent<PullableObject>().OnBeginDraw -= AudioPlay;
             Destroy(_currentPrefab);
             AddScore();
             CreatePrefab();
@@ -58,8 +60,14 @@ namespace Minigames
         {
             _currentPrefab = Instantiate(_prefabToInstantiate, _placeToInstantiate);
             _currentPrefab.GetComponent<PullableObject>().SetPosition(_point);
+            _currentPrefab.GetComponent<PullableObject>().OnBeginDraw += AudioPlay;
             _currentPrefabCollider = _currentPrefab.GetComponent<Collider2D>();
             _stopChecking = false;
+        }
+
+        private void AudioPlay()
+        {
+            _audioManager.CreateNewAudioSource(_pullingOutSound);
         }
 
         public override void AddScore()

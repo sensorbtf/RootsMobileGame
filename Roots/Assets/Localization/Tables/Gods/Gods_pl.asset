@@ -114,6 +114,10 @@ MonoBehaviour:
     m_Localized: "Du\u017Ce b\u0142ogos\u0142awie\u0144stwo\n+{0}% skuteczno\u015Bci"
     m_Metadata:
       m_Items: []
+  - m_Id: 7315268275445760
+    m_Localized: "B\xF3stwa"
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

@@ -18,21 +18,17 @@ MonoBehaviour:
     OtherBuildingsRequirements:
     - Building: 0
       Level: 1
-    WorksDayToAchieve: 1
     MinigameDuration: 10
-    Efficiency: 1
+    Efficiency: 0.2
   - RequiredBuildingLevel: 1
     OtherBuildingsRequirements:
     - Building: 0
       Level: 1
-    WorksDayToAchieve: 2
     MinigameDuration: 11
-    Efficiency: 1.2
+    Efficiency: 0.3
   - RequiredBuildingLevel: 22
     OtherBuildingsRequirements:
     - Building: 0
       Level: 2
-    WorksDayToAchieve: 3
     MinigameDuration: 12
-    Efficiency: 1.3
-  SpriteOfObject: {fileID: 0}
+    Efficiency: 0.4

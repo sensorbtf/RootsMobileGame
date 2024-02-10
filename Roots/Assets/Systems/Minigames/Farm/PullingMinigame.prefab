@@ -188,6 +188,7 @@ MonoBehaviour:
   _prefabToInstantiate: {fileID: 3807329171339079616, guid: c7c87c039e3628a498f933311d40cc00, type: 3}
   _placeToInstantiate: {fileID: 1923040761159946779}
   _point: {fileID: 1783209737494594570}
+  _pullingOutSound: {fileID: 8300000, guid: 26df8736b0ff0f349ac0218750c5454f, type: 3}
 --- !u!1 &3662638299913187213
 GameObject:
   m_ObjectHideFlags: 0
@@ -309,7 +310,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 8, y: -179.61}
+  m_AnchoredPosition: {x: 8, y: -170}
   m_SizeDelta: {x: 1, y: 1}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &5144955445068129324

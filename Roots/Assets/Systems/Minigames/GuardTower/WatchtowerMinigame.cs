@@ -3,11 +3,12 @@ using System.Collections;
 using Buildings;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Localization;
 using UnityEngine.UI;
 
 namespace Minigames
 {
-    public class WatchtowerRightLeftClickingMinigame : Minigame
+    public class WatchtowerMinigame : Minigame
     {
         [SerializeField] private Sprite _stormBackground;
         [SerializeField] private Sprite _sunBackground;
@@ -15,13 +16,15 @@ namespace Minigames
         [SerializeField] private GameObject _topLayer;
         [SerializeField] private Texture2D _topTexture;
         [SerializeField] private int _brushSize;
-        private bool _isErasing = false;
+        [SerializeField] private LocalizedString _failed;
         private bool _erasedEverything = false;
 
         private new void Update()
         {
-            if (!_isErasing)
+            if (!_isGameActive)
                 return;
+            
+            base.Update();
             
             var pos = Vector2.zero;
             var inputDetected = false;
@@ -50,9 +53,20 @@ namespace Minigames
             if (_erasedEverything)
             {
                 _timer = 0;
+                base.Update();
                 _isGameActive = false;
                 _topLayer.SetActive(false);
                 _collectPointsButton.interactable = true;
+                return;
+            }
+            
+            if (_timer <= 0)
+            {
+                _timer = 0;
+                _isGameActive = false;
+                _collectPointsButton.interactable = true;
+                _timeText.text = _failed.GetLocalizedString();
+                return;
             }
         }
         
@@ -87,7 +101,6 @@ namespace Minigames
             Sprite sprite = imageComponent.sprite;
             _topTexture = CreateReadableTexture(sprite.texture);
 
-            _isErasing = false;
             _erasedEverything = false;
             _score = 0;
 
@@ -130,7 +143,7 @@ namespace Minigames
 
         private void EraseAtPosition(Vector2 p_position)
         {
-            float radiusSquared = _brushSize * _brushSize;
+            float radiusSquared = _brushSize * _brushSize * _efficiency;
 
             Color[] pixels = _topTexture.GetPixels();
 
@@ -151,7 +164,6 @@ namespace Minigames
             _topTexture.Apply();
             ApplyTextureToUI(_topTexture);
         }
-
         
         private void ApplyTextureToUI(Texture2D texture)
         {
@@ -164,14 +176,10 @@ namespace Minigames
 
         public override void AddScore()
         {
-            _score += _efficiency;
-            StartMinigame();
-            base.AddScore();
         }
 
         public override void StartMinigame()
         {
-            _isErasing = true;
             StartCoroutine(CheckErasureCompletion());
         }
         

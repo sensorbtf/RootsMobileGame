@@ -193,8 +193,7 @@ namespace Buildings
 
                 building.CurrentTechnologyDayOnQueue++;
 
-                if (building.CurrentTechnologyDayOnQueue == building.BuildingMainData.Technology
-                        .DataPerTechnologyLevel[building.CurrentTechnologyLvl].WorksDayToAchieve)
+                if (building.CurrentTechnologyDayOnQueue == 1+building.CurrentTechnologyLvl)
                     BuildingsWithTechnologyUpgrade.Add(building);
 
                 switch (building.BuildingMainData.PerLevelData[building.CurrentLevel].ProductionType)

@@ -18,21 +18,65 @@ MonoBehaviour:
     OtherBuildingsRequirements:
     - Building: 0
       Level: 1
-    WorksDayToAchieve: 1
     MinigameDuration: 10
     Efficiency: 1
   - RequiredBuildingLevel: 1
     OtherBuildingsRequirements:
     - Building: 0
       Level: 1
-    WorksDayToAchieve: 2
-    MinigameDuration: 11
+    MinigameDuration: 12
     Efficiency: 1.2
   - RequiredBuildingLevel: 22
     OtherBuildingsRequirements:
     - Building: 0
       Level: 2
-    WorksDayToAchieve: 3
-    MinigameDuration: 12
+    MinigameDuration: 13
     Efficiency: 1.3
-  SpriteOfObject: {fileID: 0}
+  - RequiredBuildingLevel: 22
+    OtherBuildingsRequirements:
+    - Building: 0
+      Level: 2
+    MinigameDuration: 14
+    Efficiency: 1.4
+  - RequiredBuildingLevel: 22
+    OtherBuildingsRequirements:
+    - Building: 0
+      Level: 2
+    MinigameDuration: 15
+    Efficiency: 1.5
+  - RequiredBuildingLevel: 22
+    OtherBuildingsRequirements:
+    - Building: 0
+      Level: 2
+    MinigameDuration: 16
+    Efficiency: 1.6
+  - RequiredBuildingLevel: 22
+    OtherBuildingsRequirements:
+    - Building: 0
+      Level: 2
+    MinigameDuration: 17
+    Efficiency: 1.7
+  - RequiredBuildingLevel: 22
+    OtherBuildingsRequirements:
+    - Building: 0
+      Level: 2
+    MinigameDuration: 18
+    Efficiency: 1.8
+  - RequiredBuildingLevel: 22
+    OtherBuildingsRequirements:
+    - Building: 0
+      Level: 2
+    MinigameDuration: 19
+    Efficiency: 1.9
+  - RequiredBuildingLevel: 22
+    OtherBuildingsRequirements:
+    - Building: 0
+      Level: 2
+    MinigameDuration: 20
+    Efficiency: 2
+  - RequiredBuildingLevel: 22
+    OtherBuildingsRequirements:
+    - Building: 0
+      Level: 2
+    MinigameDuration: 21
+    Efficiency: 2.1

@@ -181,8 +181,7 @@ namespace Buildings
         
         public bool CanUpgradeTechnology()
         {
-            return BuildingMainData.Technology.DataPerTechnologyLevel[CurrentTechnologyLvl].WorksDayToAchieve ==
-                   CurrentTechnologyDayOnQueue;
+            return 1+CurrentTechnologyLvl == CurrentTechnologyDayOnQueue;
         }
 
         public bool CanPlayMinigame()

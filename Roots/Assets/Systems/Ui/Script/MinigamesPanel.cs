@@ -95,6 +95,8 @@ namespace InGameUi
                 }
             }
             
+            _worldManager.HandleMinigamesQuests(PointsType.Nothing, 0, _currentBuilding.BuildingMainData.Type);
+            
             Destroy(_currentMinigame);
         }
 

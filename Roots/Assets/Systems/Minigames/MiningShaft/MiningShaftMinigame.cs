@@ -15,6 +15,9 @@ namespace Minigames
 
         private new void Update()
         {
+            if (!_isGameActive)
+                return;
+            
             base.Update();
 
             if (_timer <= 0)

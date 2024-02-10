@@ -71,18 +71,18 @@ MonoBehaviour:
     m_LocalVariables: []
   GuardTowerStorm:
     m_TableReference:
-      m_TableCollectionName: 
+      m_TableCollectionName: GUID:22d71a5c37154b44b900b979d13ef516
     m_TableEntryReference:
-      m_KeyId: 0
+      m_KeyId: 6057672029675520
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
   SacrificialAltarReward:
     m_TableReference:
-      m_TableCollectionName: 
+      m_TableCollectionName: GUID:22d71a5c37154b44b900b979d13ef516
     m_TableEntryReference:
-      m_KeyId: 0
+      m_KeyId: 6057672042258432
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0

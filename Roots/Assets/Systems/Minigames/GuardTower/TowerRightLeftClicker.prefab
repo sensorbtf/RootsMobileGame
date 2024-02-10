@@ -69,6 +69,18 @@ MonoBehaviour:
   _topLayer: {fileID: 5111183635169419211}
   _topTexture: {fileID: 0}
   _brushSize: 50
+  _failed:
+    m_TableReference:
+      m_TableCollectionName: GUID:22d71a5c37154b44b900b979d13ef516
+    m_TableEntryReference:
+      m_KeyId: 13366213417541632
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &5111183635169419211
 GameObject:
   m_ObjectHideFlags: 0

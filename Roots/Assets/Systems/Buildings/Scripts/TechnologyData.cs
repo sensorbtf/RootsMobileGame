@@ -15,7 +15,6 @@ namespace Buildings
     {
         public int RequiredBuildingLevel;
         public OtherBuildingsRequirements[] OtherBuildingsRequirements;
-        public int WorksDayToAchieve;
         public float MinigameDuration;
         public float Efficiency;
     }

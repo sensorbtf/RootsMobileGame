@@ -177,8 +177,7 @@ namespace InGameUi
             }
             else if (_narratorManager.CurrentTutorialStep == TutorialStep.OnFourthWorkingPanelOpen_Q11)
             {
-                if (p_building.BuildingMainData.Type == BuildingType.Farm && p_building.CurrentTechnologyDayOnQueue == 
-                    p_building.BuildingMainData.Technology.DataPerTechnologyLevel[p_building.CurrentTechnologyLvl].WorksDayToAchieve)
+                if (p_building.BuildingMainData.Type == BuildingType.Farm && p_building.CurrentTechnologyDayOnQueue == 1+p_building.CurrentTechnologyLvl)
                 {
                     _narratorManager.TryToActivateNarrator(TutorialStep.OnFarmPanelWithTechnology_Q12);
                 }
@@ -212,7 +211,7 @@ namespace InGameUi
         {
             _description.text = _buildingData.Description.GetLocalizedString();
             _levelUpProgression.minValue = 0;
-            _levelUpProgression.maxValue = _technology[_building.CurrentTechnologyLvl].WorksDayToAchieve;
+            _levelUpProgression.maxValue = 1+_building.CurrentTechnologyLvl;
             _levelUpProgression.value = _building.CurrentTechnologyDayOnQueue;
             _sliderValue.text = $"{_workingDaysText.GetLocalizedString()} {_levelUpProgression.value}/{_levelUpProgression.maxValue}";
             

@@ -192,6 +192,10 @@ MonoBehaviour:
     m_Localized: "Zako\u0144cz Misj\u0119"
     m_Metadata:
       m_Items: []
+  - m_Id: 13366213417541632
+    m_Localized: "Spr\xF3buj ponownie"
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

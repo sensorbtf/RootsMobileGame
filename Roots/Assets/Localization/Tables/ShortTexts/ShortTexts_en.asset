@@ -191,6 +191,10 @@ MonoBehaviour:
     m_Localized: End Mission
     m_Metadata:
       m_Items: []
+  - m_Id: 13366213417541632
+    m_Localized: Try again
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

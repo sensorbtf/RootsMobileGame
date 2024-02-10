@@ -111,6 +111,10 @@ MonoBehaviour:
     m_Key: big_blessing_efficiency
     m_Metadata:
       m_Items: []
+  - m_Id: 7315268275445760
+    m_Key: gods_goddess
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

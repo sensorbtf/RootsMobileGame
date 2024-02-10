@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -9,6 +10,8 @@ public class PullableObject : MonoBehaviour, IDragHandler, IBeginDragHandler, IE
     private bool _isGameOn;
     private Vector3 _offset;
 
+    public event Action OnBeginDraw;
+    
     public void SetPosition(RectTransform p_initialPosition)
     {
         _isGameOn = true;
@@ -21,6 +24,7 @@ public class PullableObject : MonoBehaviour, IDragHandler, IBeginDragHandler, IE
         if (_isGameOn)
         {
             _isDragging = true;
+            OnBeginDraw.Invoke();
             _offset = transform.position - Input.mousePosition;
         }
     }

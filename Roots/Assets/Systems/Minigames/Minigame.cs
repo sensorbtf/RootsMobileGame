@@ -3,6 +3,7 @@ using System.Collections;
 using AudioSystem;
 using Buildings;
 using Gods;
+using Narrator;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Localization;
@@ -28,13 +29,14 @@ namespace Minigames
         internal WorldManager _worldManager;
         internal BuildingsManager _buildingsManager;
         internal GodsManager _godsManager;
+        internal NarratorManager _narrator;
 
         [HideInInspector] public float _score;
         [HideInInspector] public PointsType _type;
         public Button _collectPointsButton;
         public TextMeshProUGUI _coutdownText; // Countdown
         [SerializeField] private TextMeshProUGUI _scoreText; // top panel title 
-        [SerializeField] private TextMeshProUGUI _timeText; // bottom button time text
+        [SerializeField] internal TextMeshProUGUI _timeText; // bottom button time text
 
         public event Action OnMinigameEnded;
         public event Action<PointsType, int> OnMiniGamePointsCollected;
@@ -47,7 +49,10 @@ namespace Minigames
 
             var audioMgr = FindObjectOfType<AudioManager>();
             if (audioMgr != null)
-                _audioManager = audioMgr;
+                _audioManager = audioMgr; 
+            var narratorMgr = FindObjectOfType<NarratorManager>();
+            if (narratorMgr != null)
+                _narrator = narratorMgr;
             var worldMgr = FindObjectOfType<WorldManager>();
             if (worldMgr != null)
                 _worldManager = worldMgr;
@@ -90,9 +95,15 @@ namespace Minigames
         {
             if (!_isGameActive)
                 return;
-            
-            _timer -= Time.deltaTime;
-            
+
+            if (_isWatchtower && _narrator.CurrentTutorialStep < TutorialStep.Quests_End)
+            {
+            }
+            else
+            {
+                _timer -= Time.deltaTime;
+            }
+
             if (_timer <= 0)
             {
                 _audioManager.CreateNewAudioSource(_localization.OnMinigameEnd);
@@ -183,7 +194,14 @@ namespace Minigames
 
         private void UpdateTimerText()
         {
-            _timeText.text = Mathf.FloorToInt(_timer).ToString();
+            if (_isWatchtower && _narrator.CurrentTutorialStep < TutorialStep.Quests_End)
+            {
+                _timeText.text = SelectRightBottomText(BuildingType.GuardTower);
+            }
+            else
+            {
+                _timeText.text = Mathf.FloorToInt(_timer).ToString();
+            }
         }
 
         private IEnumerator StartCountdown()
@@ -210,7 +228,7 @@ namespace Minigames
         {
             _audioManager.CreateNewAudioSource(_localization.PointsAdded);
 
-            _scoreText.text = $"{_localization.ScoreText.GetLocalizedString()} {_score:F0}";
+            _scoreText.text = $"{_localization.ScoreText.GetLocalizedString()} {_score:F1}";
         }
 
         public abstract void StartMinigame();
