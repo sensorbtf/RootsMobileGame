@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 namespace Minigames
 {
-    public class RightTimeMinigame : Minigame
+    public class AlchemicalHutMinigame : Minigame
     {
         [SerializeField] private GameObject _movingObject; 
         [SerializeField] private RectTransform _movingObjectRect; 
@@ -18,13 +18,18 @@ namespace Minigames
         [SerializeField] private Button _buttonToClick; 
         [SerializeField] private BoxCollider2D _movingObjectCollider;
         [SerializeField] private BoxCollider2D _targetPositionCollider;
+        [SerializeField] private BoxCollider2D _caldurionCollider;
+        
+        [SerializeField] private AudioClip _intoCaldurion;
+        [SerializeField] private AudioClip _failedToClick;
 
         private bool _isMovingToEnd = true;
         private bool _isBlocked;
         private float _toBlockTimer;
         private int _bonusPerClick;
         private int _currentMovementSpeed;
-        
+        private GameObject _herbsToMove;
+
         private new void Update()   
         {
             base.Update();
@@ -58,6 +63,27 @@ namespace Minigames
             {
                 _isMovingToEnd = !_isMovingToEnd;
             }
+
+            if (_herbsToMove != null)
+            {
+                _herbsToMove.transform.position = Vector2.MoveTowards(_herbsToMove.transform.position,
+                    _caldurionCollider.gameObject.transform.position, step * 4);
+                
+                Vector2 boxSize = _herbsToMove.GetComponent<BoxCollider2D>().size;
+                var transform1 = _herbsToMove.transform;
+                Vector2 boxPosition = transform1.position;
+                float angle = transform1.eulerAngles.z;
+
+                ContactFilter2D filter = new ContactFilter2D().NoFilter();
+
+                Collider2D[] results = Physics2D.OverlapBoxAll(boxPosition, boxSize, angle, filter.layerMask);
+
+                if (Array.Exists(results, collider => collider == _caldurionCollider))
+                {
+                    _audioManager.CreateNewAudioSource(_intoCaldurion);
+                    Destroy(_herbsToMove);
+                }
+            }
         }
 
         private void HandleBlocking()
@@ -71,6 +97,7 @@ namespace Minigames
                 _buttonToClick.interactable = true;
                 _isBlocked = false;
                 _toBlockTimer = 0;
+                _movingObject.GetComponent<Image>().color = Color.white;
             }
         }
 
@@ -78,7 +105,10 @@ namespace Minigames
         {
             _buttonToClick.interactable = false;
             _collectPointsButton.interactable = true;
-
+            if (_herbsToMove != null)
+            {
+                Destroy(_herbsToMove);
+            }
             _timer = 0;
             _isGameActive = false;
         }
@@ -102,14 +132,6 @@ namespace Minigames
             _buttonToClick.onClick.AddListener(TryToGetPoints);
             _score = 0;
         }
-
-        public override void AddScore()
-        {
-            _currentMovementSpeed += _bonusPerClick;
-            _score += _efficiency;
-            
-            base.AddScore();
-        }
         
         private void TryToGetPoints()
         {
@@ -130,8 +152,19 @@ namespace Minigames
             else
             {
                 _isBlocked = true;
+                _movingObject.GetComponent<Image>().color = Color.red;
                 _buttonToClick.interactable = false;
+                _audioManager.CreateNewAudioSource(_failedToClick);
             }
+        }
+        
+        public override void AddScore()
+        {
+            _currentMovementSpeed += _bonusPerClick;
+            _score += _efficiency;
+            _herbsToMove = Instantiate(_movingObject, _movingObjectRect);
+            _herbsToMove.transform.position = _movingObjectRect.position;
+            base.AddScore();
         }
 
         public override void StartMinigame()
