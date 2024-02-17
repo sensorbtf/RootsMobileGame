@@ -77,7 +77,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 6898489451520000
-    m_Localized: Do you want to Watch advertisement to get free Start Dust?
+    m_Localized: Do you want to watch advertisement to get free Start Dust?
     m_Metadata:
       m_Items: []
   - m_Id: 6898489451520001
@@ -350,6 +350,10 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 8632871702929416
     m_Localized: End Day
+    m_Metadata:
+      m_Items: []
+  - m_Id: 15984250977165312
+    m_Localized: Watch advertisement for Star Dust
     m_Metadata:
       m_Items: []
   references:

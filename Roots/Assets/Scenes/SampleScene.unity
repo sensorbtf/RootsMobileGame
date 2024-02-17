@@ -1819,7 +1819,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 46.3
+  m_fontSize: 52.8
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -4339,7 +4339,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _worldManager: {fileID: 1218957329}
   _buildingsManager: {fileID: 7728127175900293271}
-  _enableNarrator: 1
+  _enableNarrator: 0
 --- !u!4 &394808268
 Transform:
   m_ObjectHideFlags: 0
@@ -5687,6 +5687,15 @@ MonoBehaviour:
     m_FallbackState: 0
     m_WaitForCompletion: 0
     m_LocalVariables: []
+  _addSkip:
+    m_TableReference:
+      m_TableCollectionName: GUID:e95e1cf7a5a57a24db940eccf802409f
+    m_TableEntryReference:
+      m_KeyId: 15984250977165312
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
   references:
     version: 2
     RefIds: []
@@ -6597,7 +6606,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 48.55
+  m_fontSize: 52.8
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -7066,7 +7075,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 48.5
+  m_fontSize: 72
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -8905,6 +8914,7 @@ GameObject:
   - component: {fileID: 819807017}
   - component: {fileID: 819807019}
   - component: {fileID: 819807018}
+  - component: {fileID: 819807020}
   m_Layer: 5
   m_Name: TabName
   m_TagString: Untagged
@@ -9028,6 +9038,46 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 819807016}
   m_CullTransparentMesh: 1
+--- !u!114 &819807020
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 819807016}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56eb0353ae6e5124bb35b17aff880f16, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_StringReference:
+    m_TableReference:
+      m_TableCollectionName: GUID:22d71a5c37154b44b900b979d13ef516
+    m_TableEntryReference:
+      m_KeyId: 14101176840527872
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  m_FormatArguments: []
+  m_UpdateString:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 819807018}
+        m_TargetAssemblyTypeName: TMPro.TMP_Text, Unity.TextMeshPro
+        m_MethodName: set_text
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  references:
+    version: 2
+    RefIds: []
 --- !u!1 &820155039
 GameObject:
   m_ObjectHideFlags: 0
@@ -12474,35 +12524,35 @@ MonoBehaviour:
   - CurrentLevelQuests:
     - SpecificQuest: {fileID: 11400000, guid: 648ec112f2beee84e98bde943cdbdee2, type: 2}
     - SpecificQuest: {fileID: 11400000, guid: 0f3e3b94be50c1244bad178efadbfaf5, type: 2}
-    NeededMissionToRankUp: 1
+    NeededMissionToRankUp: 2
   - CurrentLevelQuests:
     - SpecificQuest: {fileID: 11400000, guid: 0785e616d4d66ac46ad3c619c9d8c455, type: 2}
     - SpecificQuest: {fileID: 11400000, guid: 30adf459d196c704e8d205e374ce971f, type: 2}
-    NeededMissionToRankUp: 1
+    NeededMissionToRankUp: 2
   - CurrentLevelQuests:
     - SpecificQuest: {fileID: 11400000, guid: d5e1305aac05e48439495405f4634a7a, type: 2}
     - SpecificQuest: {fileID: 11400000, guid: b9b82a272bff72e429026e28a1e2ded7, type: 2}
-    NeededMissionToRankUp: 1
+    NeededMissionToRankUp: 3
   - CurrentLevelQuests:
     - SpecificQuest: {fileID: 11400000, guid: a57db582bd5673a45a178f9fff3f85af, type: 2}
     - SpecificQuest: {fileID: 11400000, guid: 94dfab6471c26d14882bfaf56dbc6dc8, type: 2}
-    NeededMissionToRankUp: 2
+    NeededMissionToRankUp: 3
   - CurrentLevelQuests:
     - SpecificQuest: {fileID: 11400000, guid: dace56705a818194fabdf4c206931069, type: 2}
     - SpecificQuest: {fileID: 11400000, guid: 72fdc4ac6e8cc7d4485655633f27518d, type: 2}
-    NeededMissionToRankUp: 2
+    NeededMissionToRankUp: 4
   - CurrentLevelQuests:
     - SpecificQuest: {fileID: 11400000, guid: cd48a48068726104ca857400176eea83, type: 2}
     - SpecificQuest: {fileID: 11400000, guid: eece7ce9710cc1d4b82de01e7c858b68, type: 2}
-    NeededMissionToRankUp: 2
+    NeededMissionToRankUp: 5
   - CurrentLevelQuests:
     - SpecificQuest: {fileID: 11400000, guid: 0a30dfd49a937e84fb5945daef265a75, type: 2}
     - SpecificQuest: {fileID: 11400000, guid: 6ba65e7d27eddc74886fac62472e22d1, type: 2}
-    NeededMissionToRankUp: 2
+    NeededMissionToRankUp: 5
   - CurrentLevelQuests:
     - SpecificQuest: {fileID: 11400000, guid: 2fa35a08d538c0c4a939a737fec694f2, type: 2}
     - SpecificQuest: {fileID: 11400000, guid: 4e0b14c26ec9fbc4fb224e0e4af9e3de, type: 2}
-    NeededMissionToRankUp: 2
+    NeededMissionToRankUp: 6
   - CurrentLevelQuests:
     - SpecificQuest: {fileID: 11400000, guid: 3492ef6b94914cf4daed3bd94e4c6f2d, type: 2}
     - SpecificQuest: {fileID: 11400000, guid: 71bee1e720173eb4ba42be4465a5d465, type: 2}
@@ -15315,6 +15365,7 @@ MonoBehaviour:
   _worldManager: {fileID: 1218957329}
   _buildingsManager: {fileID: 7728127175900293271}
   _savingManager: {fileID: 1423804877}
+  _narratorManager: {fileID: 394808267}
   _destinyShardsSkipPrice: 10
   _oneDayTimerDurationInSeconds: 3600
   _maxFreeDaysSkipAmount: 3
@@ -15758,7 +15809,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 59.2
+  m_fontSize: 64.4
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -93802,7 +93853,7 @@ MonoBehaviour:
   - SiteForBuilding: {fileID: 474101721}
     BuildingData: {fileID: 11400000, guid: dc5607c6841895743ac64b13de5de149, type: 2}
   _buildingsDatabase: {fileID: 11400000, guid: b3edb7efaacaa7243b73c8807b123489, type: 2}
-  _startingDestinyPoints: 100
+  _startingDestinyPoints: 0
   DefenseAndResourcesPointsIcon: {fileID: 21300000, guid: ccdb0e4dc91696b43a5ca8cea60c220e, type: 3}
   ResourcesAndDefensePointsIcon: {fileID: 21300000, guid: ccdb0e4dc91696b43a5ca8cea60c220e, type: 3}
   ResourcesPointsIcon: {fileID: 21300000, guid: 9ce0aa9ec4e105943959eaff215907b9, type: 3}
@@ -94450,7 +94501,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 41.85
+  m_fontSize: 55.65
   m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 1

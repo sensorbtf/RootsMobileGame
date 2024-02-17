@@ -118,6 +118,7 @@ namespace InGameUi
         [SerializeField] private LocalizedString _clickToRankUp;
         [SerializeField] private LocalizedString _completeMissionToRankUp;
         [SerializeField] private LocalizedString _endDay;
+        [SerializeField] private LocalizedString _addSkip;
 
         private bool _wasMainButtonRefreshed = true;
         public static bool BlockHud;
@@ -333,9 +334,7 @@ namespace InGameUi
             var rect = rectGo.anchoredPosition;
             rect.x = _singleDayGoWidth;
             rectGo.anchoredPosition = rect;
-
-            RefreshQuestsText();
-
+            
             _worldManager.CurrentQuests[0].OnCompletion += HandleFirstQuestCompletion;
             _worldManager.CurrentQuests[1].OnCompletion += HandleSecondQuestCompletion;
 
@@ -349,6 +348,7 @@ namespace InGameUi
                                       $"<color=red>{_worldManager.RequiredResourcePoints}</color>";
 
             CheckQuestsCompletion();
+            RefreshQuestsText();
         }
 
         private void NewDayHandler()
@@ -420,6 +420,8 @@ namespace InGameUi
 
             if (p_makeIcons)
                 TryToCreatePoints(p_points, PointsType.StarDust);
+
+            CheckDaySkipPossibility();
         }
 
         private void RefreshDefensePoints(int p_points, bool p_makeIcons)
@@ -610,6 +612,11 @@ namespace InGameUi
                     _wasMainButtonRefreshed = false;
                 }
             }
+            else
+            {
+                _paidSkipDayText.text = _addSkip.GetLocalizedString();
+                _skipDayButton.onClick.AddListener(() => _decisionsPanel.AdvertisementAlert());
+            }
         }
 
         private void ActivateEndMissionButton()
@@ -744,10 +751,19 @@ namespace InGameUi
 
             _currentMissionText.text = _worldManager.CurrentMission.ToString();
 
-            if (_worldManager.CurrentQuests[0].IsRedeemed && _worldManager.CurrentQuests[1].IsRedeemed &&
-                _worldManager.CurrentMission >= _worldManager.NeededMissionToRankUp)
+            if (_worldManager.CurrentQuests[0].IsRedeemed && _worldManager.CurrentQuests[1].IsRedeemed)
             {
-                _currentRankText.text = _clickToRankUp.GetLocalizedString();
+                if (_worldManager.CurrentMission >= _worldManager.NeededMissionToRankUp)
+                {
+                    _currentRankText.text = _clickToRankUp.GetLocalizedString();
+
+                }
+                else
+                {
+                    QuestsCompletedGo.SetActive(true);
+                    QuestsCompletedGo.GetComponentInChildren<TextMeshProUGUI>().text =
+                        string.Format(_completeMissionToRankUp.GetLocalizedString(), _worldManager.NeededMissionToRankUp);
+                }
             }
             else
             {

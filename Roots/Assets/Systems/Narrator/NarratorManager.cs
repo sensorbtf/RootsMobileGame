@@ -18,17 +18,21 @@ namespace Narrator
         public TutorialStep CurrentTutorialStep => _currentTutorialStep;
         public int CurrentSubText => _currentSubText;
         
-        private void Start()
+        public void CustomStart(bool p_willBeLoaded)
         {
-            if (_enableNarrator)
+            if (!p_willBeLoaded)
             {
-                _currentTutorialStep = TutorialStep.OnGameStarted_Q1;
+                if (_enableNarrator)
+                {
+                    _currentTutorialStep = TutorialStep.OnGameStarted_Q1;
+                }
+                else
+                {
+                    _currentTutorialStep = TutorialStep.Quests_End;
+                }
+
             }
-            else
-            {
-                _currentTutorialStep = TutorialStep.Quests_End;
-            }
-            
+
             _buildingsManager.OnBuildingRepaired += CheckBuildingRepaired;
             _buildingsManager.OnTutorialStart += StartTutorial;
             _buildingsManager.OnBuildingStateChanged += CheckBuildingBuilt;
@@ -119,7 +123,7 @@ namespace Narrator
             _currentTutorialStep = (TutorialStep)p_data.CurrentTutorialStep; 
             _currentSubText = p_data.CurrentSubText;
 
-            if (_currentTutorialStep != TutorialStep.OnWorkersPanelOpenAfterRestart_Q21)
+            if (_currentTutorialStep != TutorialStep.Quests_End)
             {
                 _currentTutorialStep = TutorialStep.OnGameStarted_Q1;
                 OnTutorialAdvancement?.Invoke(true);

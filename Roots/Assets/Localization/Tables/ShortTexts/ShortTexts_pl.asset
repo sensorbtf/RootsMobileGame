@@ -196,6 +196,10 @@ MonoBehaviour:
     m_Localized: "Spr\xF3buj ponownie"
     m_Metadata:
       m_Items: []
+  - m_Id: 14101176840527872
+    m_Localized: Select Buildings to Defend
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

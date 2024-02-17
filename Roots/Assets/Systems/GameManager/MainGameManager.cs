@@ -3,6 +3,7 @@ using System.Collections;
 using AudioSystem;
 using Buildings;
 using Gods;
+using Narrator;
 using Saving;
 using UnityEngine;
 using UnityEngine.Localization.Settings;
@@ -26,6 +27,7 @@ namespace GameManager
         [SerializeField] private WorldManager _worldManager;
         [SerializeField] private BuildingsManager _buildingsManager;
         [SerializeField] private SavingManager _savingManager;
+        [SerializeField] private NarratorManager _narratorManager;
         
         [Header("Variables")]
         [SerializeField] private int _destinyShardsSkipPrice;
@@ -99,8 +101,6 @@ namespace GameManager
 
             _lightManager.SetTimers(_oneDayTimerDurationInSeconds / 2f, _oneDayTimerDurationInSeconds);
             _minigamesPlayed = 0;
-            var language = PlayerPrefs.GetInt("Saved_Language", 0);
-            ChangeLocale((Languages)language);
         }
 
         private void Update() 
@@ -138,11 +138,13 @@ namespace GameManager
             bool isSaveAvailable = false;
             yield return StartCoroutine(_savingManager.CheckSave(result => isSaveAvailable = result));
             _worldManager.CustomStart(isSaveAvailable);
+            _narratorManager.CustomStart(isSaveAvailable);
 
             if (isSaveAvailable)
             {
                 _savingManager.OnLoad += LoadSavedData;
                 yield return StartCoroutine(ChooseAndLoadSave());
+                _loadingPanel.SetActive(false);
                 Debug.Log("Save loaded");
             }
             else
@@ -349,8 +351,7 @@ namespace GameManager
                     FreeSkipsLeft--;
                     break;
                 case WayToSkip.PaidSkip:
-                    _buildingsManager.HandlePointsManipulation(PointsType.StarDust, DestinyShardsSkipPrice,
-                        false);
+                    _buildingsManager.HandlePointsManipulation(PointsType.StarDust, DestinyShardsSkipPrice, false);
                     break;
             }
             

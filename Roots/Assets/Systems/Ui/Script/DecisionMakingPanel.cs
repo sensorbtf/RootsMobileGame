@@ -80,7 +80,8 @@ namespace InGameUi
             _uiReferences.YesButton.onClick.AddListener(delegate
             {
                 _audioManager.PlayButtonSoundEffect(_uiReferences.YesButton.interactable);
-                _rewardingAdsManager.ShowRewardedAdd(); 
+                _rewardingAdsManager.ShowRewardedAdd();
+                HandleTurnOnOff(false);
             });
             
             _uiReferences.NoButton.onClick.AddListener(delegate

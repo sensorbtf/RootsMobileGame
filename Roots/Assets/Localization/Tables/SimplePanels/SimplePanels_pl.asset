@@ -349,6 +349,10 @@ MonoBehaviour:
     m_Localized: "Zako\u0144cz dzie\u0144"
     m_Metadata:
       m_Items: []
+  - m_Id: 15984250977165312
+    m_Localized: "Obejrzyj reklam\u0119 za Gwiezdny Py\u0142"
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []

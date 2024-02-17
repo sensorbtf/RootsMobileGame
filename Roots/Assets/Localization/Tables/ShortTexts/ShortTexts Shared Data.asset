@@ -191,6 +191,10 @@ MonoBehaviour:
     m_Key: check_storm_minigame_fail
     m_Metadata:
       m_Items: []
+  - m_Id: 14101176840527872
+    m_Key: select_buildings_to_defend
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

@@ -339,6 +339,10 @@ MonoBehaviour:
     m_Key: _endDay
     m_Metadata:
       m_Items: []
+  - m_Id: 15984250977165312
+    m_Key: advert_on_hud
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

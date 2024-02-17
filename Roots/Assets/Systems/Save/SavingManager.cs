@@ -2,14 +2,12 @@
 using System.Collections;
 using System.Globalization;
 using System.IO;
-using System.Threading.Tasks;
 using Buildings;
 using Gods;
 using UnityEngine;
 using World;
 using GooglePlayServices;
 using Narrator;
-using UnityEngine.Serialization;
 
 namespace Saving
 {
@@ -44,7 +42,6 @@ namespace Saving
             yield return StartCoroutine(_gpgsManager.StartAuthentication());
 
             _path = Application.persistentDataPath + "/gameData.json";
-            Debug.Log(_path);
             _sessionStartTime = Time.time;
 
             OnAuthenticationEnded?.Invoke();

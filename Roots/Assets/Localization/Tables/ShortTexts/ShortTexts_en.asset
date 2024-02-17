@@ -195,6 +195,10 @@ MonoBehaviour:
     m_Localized: Try again
     m_Metadata:
       m_Items: []
+  - m_Id: 14101176840527872
+    m_Localized: Wybierz budynki do ochrony
+    m_Metadata:
+      m_Items: []
   references:
     version: 2
     RefIds: []
