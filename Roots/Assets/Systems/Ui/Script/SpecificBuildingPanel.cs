@@ -265,7 +265,7 @@ namespace InGameUi
                     uiReferences.BuildingIcon.sprite = currentBuilding.BuildingMainData.Icon;
                     uiReferences.NewGo.SetActive(false);
                     uiReferences.InfoGo.SetActive(true);
-                    uiReferences.Informations.text = $"Need lvl: {building.Level}";
+                    uiReferences.Informations.text = $"{_neededLvlText.GetLocalizedString()} {building.Level}";
 
                     if (currentBuilding.CurrentLevel >= building.Level)
                     {

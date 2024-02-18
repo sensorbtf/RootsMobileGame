@@ -24,7 +24,8 @@ namespace InGameUi
         [SerializeField] private Transform contentTransform;
         [SerializeField] private TextMeshProUGUI _numberOfWorkers;
         [SerializeField] private TextMeshProUGUI _panelName;
-        
+        [SerializeField] private TextMeshProUGUI _assignButtonText;
+
         [Header("Audio")]
         [SerializeField] private AudioClip _onAssignEffect;
         [SerializeField] private AudioClip _onUnAssignEffect;
@@ -40,7 +41,8 @@ namespace InGameUi
         [SerializeField] private LocalizedString _resourceProduction;
         [SerializeField] private LocalizedString _defenseProduction;
         [SerializeField] private LocalizedString _defenseResourceProduction;
-        
+        [SerializeField] private LocalizedString _back;
+
         [HideInInspector] public List<Building> BuildingsOnQueue;
 
         private Dictionary<Building, SingleBuildingRefs> _createdUiElements;
@@ -79,7 +81,8 @@ namespace InGameUi
 
         public void ConfirmWorkersAssigment()
         {
-            foreach (var building in BuildingsOnQueue) buildingsManager.AssignWorker(building, true);
+            foreach (var building in BuildingsOnQueue) 
+                buildingsManager.AssignWorker(building, true);
 
             BuildingsOnQueue.Clear();
         }
@@ -254,6 +257,32 @@ namespace InGameUi
             UpdateOtherButtonsUi();
         }
 
+        private void HandleTextOnConfirmButton(bool p_gathering)
+        {
+            if (p_gathering)
+            {
+                if (_workersManager.WorkersInResources > 0)
+                {
+                    _assignButtonText.text = _assignText.GetLocalizedString();
+                }
+                else
+                {
+                    _assignButtonText.text = _back.GetLocalizedString();
+                }
+            }
+            else
+            {
+                if (_workersManager.WorkersInDefences > 0)
+                {
+                    _assignButtonText.text = _assignText.GetLocalizedString();
+                }
+                else
+                {
+                    _assignButtonText.text = _back.GetLocalizedString();
+                }
+            }
+        }
+
         private void UpdateOtherButtonsUi()
         {
             foreach (var building in _createdUiElements)
@@ -277,7 +306,8 @@ namespace InGameUi
 
         private void UpdateWorkersText(bool p_gathering)
         {
-                _numberOfWorkers.text = $"{_workersText.GetLocalizedString()} {_workersManager.BaseWorkersAmounts.ToString()}/{_workersManager.OverallAssignedWorkers}";
+            _numberOfWorkers.text = $"{_workersText.GetLocalizedString()} {_workersManager.BaseWorkersAmounts.ToString()}/{_workersManager.OverallAssignedWorkers}";
+            HandleTextOnConfirmButton(p_gathering);
         }
     }
 }

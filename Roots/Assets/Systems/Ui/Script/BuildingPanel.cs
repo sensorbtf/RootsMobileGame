@@ -23,6 +23,7 @@ namespace InGameUi
 
         [SerializeField] private TextMeshProUGUI _panelTitle;
         [SerializeField] private TextMeshProUGUI _numberOfWorkers;
+        [SerializeField] private TextMeshProUGUI _assignButtonText;
         
         [Header("Audio")]
         [SerializeField] private AudioClip _onAssignEffect;
@@ -41,6 +42,8 @@ namespace InGameUi
         [SerializeField] private LocalizedString _build;
         [SerializeField] private LocalizedString _restartWork;
         [SerializeField] private LocalizedString _workers;
+        [SerializeField] private LocalizedString _assign;
+        [SerializeField] private LocalizedString _back;
         
         private List<BuildingData> _buildingsOnInPanelQueue;
         private Dictionary<Building, bool> _builtOrDamagedBuildings;
@@ -599,6 +602,8 @@ namespace InGameUi
             foreach (var building in _buildingsOnInPanelQueue)
                 if (!addedBuildings.Contains(building))
                     _workersManager.WorkersInBuilding++;
+
+            HandleTextOnConfirmButton();
         }
 
         public bool WillBuildingBeCancelled(Building p_building, out bool p_wasOnList)
@@ -619,6 +624,11 @@ namespace InGameUi
                 return true;
 
             return false;
+        }
+        
+        private void HandleTextOnConfirmButton()
+        {
+            _assignButtonText.text = _workersManager.WorkersInBuilding > 0 ? _assign.GetLocalizedString() : _back.GetLocalizedString();
         }
 
         private void HandleBuildEnded(Building p_building)

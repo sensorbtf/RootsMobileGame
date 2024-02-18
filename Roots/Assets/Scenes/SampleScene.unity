@@ -1819,7 +1819,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 52.8
+  m_fontSize: 46.3
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -5044,6 +5044,7 @@ MonoBehaviour:
   contentTransform: {fileID: 1441477791033925270}
   _panelTitle: {fileID: 1944436590}
   _numberOfWorkers: {fileID: 6727641353451183484}
+  _assignButtonText: {fileID: 452640200}
   _onAssignEffect: {fileID: 8300000, guid: 8290b0ac855b99740880c6193c7d0404, type: 3}
   _onUnAssignEffect: {fileID: 8300000, guid: 7a00086d005f91c4992561a7c6a70467, type: 3}
   _buildOrUpgrade:
@@ -5150,6 +5151,24 @@ MonoBehaviour:
       m_TableCollectionName: GUID:e95e1cf7a5a57a24db940eccf802409f
     m_TableEntryReference:
       m_KeyId: 8564960858644480
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  _assign:
+    m_TableReference:
+      m_TableCollectionName: GUID:e95e1cf7a5a57a24db940eccf802409f
+    m_TableEntryReference:
+      m_KeyId: 8564960879616000
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  _back:
+    m_TableReference:
+      m_TableCollectionName: GUID:e95e1cf7a5a57a24db940eccf802409f
+    m_TableEntryReference:
+      m_KeyId: 3847782588416
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0
@@ -6606,7 +6625,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 52.8
+  m_fontSize: 48.55
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -7075,7 +7094,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 72
+  m_fontSize: 48.5
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -15809,7 +15828,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 64.4
+  m_fontSize: 59.2
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -87864,6 +87883,7 @@ MonoBehaviour:
   contentTransform: {fileID: 291986916}
   _numberOfWorkers: {fileID: 151299854}
   _panelName: {fileID: 1328725343}
+  _assignButtonText: {fileID: 779632579}
   _onAssignEffect: {fileID: 8300000, guid: 8290b0ac855b99740880c6193c7d0404, type: 3}
   _onUnAssignEffect: {fileID: 8300000, guid: 7a00086d005f91c4992561a7c6a70467, type: 3}
   _gatheringPanelTitle:
@@ -87961,6 +87981,15 @@ MonoBehaviour:
       m_TableCollectionName: GUID:e95e1cf7a5a57a24db940eccf802409f
     m_TableEntryReference:
       m_KeyId: 8564960883810309
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  _back:
+    m_TableReference:
+      m_TableCollectionName: GUID:e95e1cf7a5a57a24db940eccf802409f
+    m_TableEntryReference:
+      m_KeyId: 3847782588416
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0
@@ -94501,7 +94530,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 55.65
+  m_fontSize: 41.85
   m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 1
