@@ -52,6 +52,45 @@ MonoBehaviour:
   _mediumBlessingPrice: 10
   _bigBlessingPrice: 20
   NoEffect: {r: 0, g: 0, b: 0, a: 0}
-  SmallEffect: {r: 0.13756847, g: 1, b: 0, a: 0.5882353}
-  MediumEffect: {r: 0.001004219, g: 0, b: 1, a: 0.5882353}
-  BigEffect: {r: 1, g: 0.5615011, b: 0, a: 0.5882353}
+  SmallEffect: {r: 0.25943187, g: 0.7735849, b: 0.12041653, a: 1}
+  MediumEffect: {r: 0.08530616, g: 0.123822175, b: 0.6698113, a: 1}
+  BigEffect: {r: 1, g: 0.5528071, b: 0, a: 1}
+  NoneBlessing:
+    m_TableReference:
+      m_TableCollectionName: GUID:aba472eb520d0e7489bb7a4fc9d048d9
+    m_TableEntryReference:
+      m_KeyId: 11350742835211
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  SmallBlessing:
+    m_TableReference:
+      m_TableCollectionName: GUID:aba472eb520d0e7489bb7a4fc9d048d9
+    m_TableEntryReference:
+      m_KeyId: 11350742835212
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  MediumBlessing:
+    m_TableReference:
+      m_TableCollectionName: GUID:aba472eb520d0e7489bb7a4fc9d048d9
+    m_TableEntryReference:
+      m_KeyId: 11350742835213
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  BigBlessing:
+    m_TableReference:
+      m_TableCollectionName: GUID:aba472eb520d0e7489bb7a4fc9d048d9
+    m_TableEntryReference:
+      m_KeyId: 11350742835214
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  references:
+    version: 2
+    RefIds: []

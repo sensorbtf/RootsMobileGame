@@ -104,7 +104,7 @@ MonoBehaviour:
     m_Metadata:
       m_Items: []
   - m_Id: 6898489451520006
-    m_Localized: Zniszczone Budynki
+    m_Localized: "Burza nadesz\u0142a i nie omin\u0119\u0142a budynk\xF3w"
     m_Metadata:
       m_Items: []
   - m_Id: 6898489451520007
@@ -351,6 +351,15 @@ MonoBehaviour:
       m_Items: []
   - m_Id: 15984250977165312
     m_Localized: "Obejrzyj reklam\u0119 za Gwiezdny Py\u0142"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 23917992748163072
+    m_Localized: "Burza nadesz\u0142a"
+    m_Metadata:
+      m_Items: []
+  - m_Id: 23917992769134592
+    m_Localized: "Mimo nadej\u015Bcia burzy skryte w niej otwory omin\u0119\u0142y
+      twoj\u0105 wiosk\u0119 i nie zniszczy\u0142y \u017Cadnego budynku"
     m_Metadata:
       m_Items: []
   references:

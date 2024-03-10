@@ -1819,7 +1819,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 46.3
+  m_fontSize: 52.8
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -6625,7 +6625,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 48.55
+  m_fontSize: 52.8
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -7094,7 +7094,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 48.5
+  m_fontSize: 72
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -9775,6 +9775,24 @@ MonoBehaviour:
       m_TableCollectionName: GUID:e95e1cf7a5a57a24db940eccf802409f
     m_TableEntryReference:
       m_KeyId: 6898489451520006
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  _zeroDestroyedBuildings:
+    m_TableReference:
+      m_TableCollectionName: GUID:e95e1cf7a5a57a24db940eccf802409f
+    m_TableEntryReference:
+      m_KeyId: 23917992748163072
+      m_Key: 
+    m_FallbackState: 0
+    m_WaitForCompletion: 0
+    m_LocalVariables: []
+  _zeroDestroyedBuildingsPart2:
+    m_TableReference:
+      m_TableCollectionName: GUID:e95e1cf7a5a57a24db940eccf802409f
+    m_TableEntryReference:
+      m_KeyId: 23917992769134592
       m_Key: 
     m_FallbackState: 0
     m_WaitForCompletion: 0
@@ -15828,7 +15846,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 59.2
+  m_fontSize: 64.4
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -90062,86 +90080,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 427532353298394474, guid: b98e20b3b1d84e043b2bb014eff76c2f, type: 3}
-      propertyPath: BigEffect.a
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 427532353298394474, guid: b98e20b3b1d84e043b2bb014eff76c2f, type: 3}
-      propertyPath: BigEffect.b
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 427532353298394474, guid: b98e20b3b1d84e043b2bb014eff76c2f, type: 3}
-      propertyPath: BigEffect.g
-      value: 0.5528071
-      objectReference: {fileID: 0}
-    - target: {fileID: 427532353298394474, guid: b98e20b3b1d84e043b2bb014eff76c2f, type: 3}
-      propertyPath: BigEffect.r
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 427532353298394474, guid: b98e20b3b1d84e043b2bb014eff76c2f, type: 3}
-      propertyPath: SmallEffect.a
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 427532353298394474, guid: b98e20b3b1d84e043b2bb014eff76c2f, type: 3}
-      propertyPath: SmallEffect.b
-      value: 0.12041653
-      objectReference: {fileID: 0}
-    - target: {fileID: 427532353298394474, guid: b98e20b3b1d84e043b2bb014eff76c2f, type: 3}
-      propertyPath: SmallEffect.g
-      value: 0.7735849
-      objectReference: {fileID: 0}
-    - target: {fileID: 427532353298394474, guid: b98e20b3b1d84e043b2bb014eff76c2f, type: 3}
-      propertyPath: SmallEffect.r
-      value: 0.25943187
-      objectReference: {fileID: 0}
-    - target: {fileID: 427532353298394474, guid: b98e20b3b1d84e043b2bb014eff76c2f, type: 3}
-      propertyPath: MediumEffect.a
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 427532353298394474, guid: b98e20b3b1d84e043b2bb014eff76c2f, type: 3}
-      propertyPath: MediumEffect.b
-      value: 0.6698113
-      objectReference: {fileID: 0}
-    - target: {fileID: 427532353298394474, guid: b98e20b3b1d84e043b2bb014eff76c2f, type: 3}
-      propertyPath: MediumEffect.g
-      value: 0.123822175
-      objectReference: {fileID: 0}
-    - target: {fileID: 427532353298394474, guid: b98e20b3b1d84e043b2bb014eff76c2f, type: 3}
-      propertyPath: MediumEffect.r
-      value: 0.08530616
-      objectReference: {fileID: 0}
-    - target: {fileID: 427532353298394474, guid: b98e20b3b1d84e043b2bb014eff76c2f, type: 3}
-      propertyPath: BigBlessing.m_TableEntryReference.m_KeyId
-      value: 11350742835214
-      objectReference: {fileID: 0}
-    - target: {fileID: 427532353298394474, guid: b98e20b3b1d84e043b2bb014eff76c2f, type: 3}
-      propertyPath: NoneBlessing.m_TableEntryReference.m_KeyId
-      value: 11350742835211
-      objectReference: {fileID: 0}
-    - target: {fileID: 427532353298394474, guid: b98e20b3b1d84e043b2bb014eff76c2f, type: 3}
-      propertyPath: SmallBlessing.m_TableEntryReference.m_KeyId
-      value: 11350742835212
-      objectReference: {fileID: 0}
-    - target: {fileID: 427532353298394474, guid: b98e20b3b1d84e043b2bb014eff76c2f, type: 3}
-      propertyPath: MediumBlessing.m_TableEntryReference.m_KeyId
-      value: 11350742835213
-      objectReference: {fileID: 0}
-    - target: {fileID: 427532353298394474, guid: b98e20b3b1d84e043b2bb014eff76c2f, type: 3}
-      propertyPath: BigBlessing.m_TableReference.m_TableCollectionName
-      value: GUID:aba472eb520d0e7489bb7a4fc9d048d9
-      objectReference: {fileID: 0}
-    - target: {fileID: 427532353298394474, guid: b98e20b3b1d84e043b2bb014eff76c2f, type: 3}
-      propertyPath: NoneBlessing.m_TableReference.m_TableCollectionName
-      value: GUID:aba472eb520d0e7489bb7a4fc9d048d9
-      objectReference: {fileID: 0}
-    - target: {fileID: 427532353298394474, guid: b98e20b3b1d84e043b2bb014eff76c2f, type: 3}
-      propertyPath: SmallBlessing.m_TableReference.m_TableCollectionName
-      value: GUID:aba472eb520d0e7489bb7a4fc9d048d9
-      objectReference: {fileID: 0}
-    - target: {fileID: 427532353298394474, guid: b98e20b3b1d84e043b2bb014eff76c2f, type: 3}
-      propertyPath: MediumBlessing.m_TableReference.m_TableCollectionName
-      value: GUID:aba472eb520d0e7489bb7a4fc9d048d9
-      objectReference: {fileID: 0}
     - target: {fileID: 3323690418667786242, guid: b98e20b3b1d84e043b2bb014eff76c2f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 986.6515
@@ -94530,7 +94468,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 41.85
+  m_fontSize: 55.65
   m_fontSizeBase: 24
   m_fontWeight: 400
   m_enableAutoSizing: 1

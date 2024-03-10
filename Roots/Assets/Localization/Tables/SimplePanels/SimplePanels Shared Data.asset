@@ -343,6 +343,14 @@ MonoBehaviour:
     m_Key: advert_on_hud
     m_Metadata:
       m_Items: []
+  - m_Id: 23917992748163072
+    m_Key: _zeroDestroyedBuildings_title
+    m_Metadata:
+      m_Items: []
+  - m_Id: 23917992769134592
+    m_Key: _zeroDestroyedBuildings_desc
+    m_Metadata:
+      m_Items: []
   m_Metadata:
     m_Items: []
   m_KeyGenerator:

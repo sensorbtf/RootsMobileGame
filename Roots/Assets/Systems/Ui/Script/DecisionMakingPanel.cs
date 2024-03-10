@@ -32,6 +32,8 @@ namespace InGameUi
         [SerializeField] private LocalizedString _collectStarDust;
         [SerializeField] private LocalizedString _continue;
         [SerializeField] private LocalizedString _destroyedBuildings;
+        [SerializeField] private LocalizedString _zeroDestroyedBuildings;
+        [SerializeField] private LocalizedString _zeroDestroyedBuildingsPart2;
         [SerializeField] private LocalizedString _newMission;
         [SerializeField] private LocalizedString _tryAgain;
         [SerializeField] private LocalizedString _leftSettlementUnprotected;
@@ -127,12 +129,20 @@ namespace InGameUi
         private void ViewStormConsequencesPanel(List<BuildingData> p_destroyedBuildings, bool p_won)
         {
             HandleTurnOnOff(true);
-            
-            _uiReferences.Title.text = _destroyedBuildings.GetLocalizedString();
-            _uiReferences.Description.text = "";
 
-            foreach (var building in p_destroyedBuildings) 
-                _uiReferences.Description.text += building.BuildingName.GetLocalizedString() + "\n";
+            if (p_destroyedBuildings.Count > 0)
+            {
+                _uiReferences.Title.text = _destroyedBuildings.GetLocalizedString();
+                _uiReferences.Description.text = "";
+
+                foreach (var building in p_destroyedBuildings) 
+                    _uiReferences.Description.text += building.BuildingName.GetLocalizedString() + "\n";
+            }
+            else
+            {
+                _uiReferences.Title.text = _zeroDestroyedBuildings.GetLocalizedString();
+                _uiReferences.Description.text = _zeroDestroyedBuildingsPart2.GetLocalizedString();
+            }
 
             var hasCompletedMission = p_won && _worldManager.AreResourcesEnough();
 
